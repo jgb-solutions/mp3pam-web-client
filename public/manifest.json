@@ -3,17 +3,17 @@
   "name": "MP3 Pam",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "/assets/images/favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "/assets/images/logo-trans.png",
+      "src": "/assets/images/MP3-Pam-Play-icon-192x192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/assets/images/logo-trans.png",
+      "src": "/assets/images/MP3-Pam-Play-icon-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
