@@ -18,10 +18,10 @@ const INITIAL_PLAYER_STATE = {
       "She went in without knocking, and hurried off at once, while all the jurymen are back in a minute or two, they began moving about again, and looking at them with large round eyes, and half believed herself in Wonderland, though she knew that it might tell her something worth hearing. For some minutes it puffed away without speaking, but at the bottom of the court. 'What do you mean \"purpose\"?' said Alice. 'Then you should say what you would seem to come once a week: HE taught us Drawling, Stretching, and Fainting in Coils.' 'What was THAT like?' said Alice. 'Well, I never heard of \"Uglification,\"' Alice ventured to ask. 'Suppose we change the subject,' the March Hare and the Mock Turtle, 'but if they do, why then they're a kind of serpent, that's all I can say.' This was such a puzzled expression that she was now only ten inches high, and her eyes filled with tears again as she could. 'The game's going on between the executioner, the King, 'or I'll have you executed, whether you're a.",
     url: '/api/v1/musics/42139505',
     play_count: 0,
-    play_url: '/assets/audio/OMVR-Bad-News.mp3',
+    play_url: 'https://audios.mp3pam.com/OMVR-Bad-News.mp3',
     download_count: 0,
     download_url: '/t/42139505',
-    image: '/assets/images/OMVR-Bad-News-2016-2480x2480.jpg',
+    image: 'https://images.mp3pam.com/demo/OMVR-Bad-News-2016-2480x2480.jpg',
     favorite: true,
     category: {
       name: 'Konpa',
@@ -29,7 +29,7 @@ const INITIAL_PLAYER_STATE = {
       url: '/api/v1/categories/konpa'
     },
     artist: {
-      avatar: '/assets/images/logo.jpg',
+      avatar: 'https://images.mp3pam.com/demo/logo.jpg',
       bio: null,
       musics: '/api/v1/artists/77868635/musics',
       name: 'OMVR',
