@@ -16,7 +16,7 @@ import {
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as playerActions from '../store/actions/player';
+import * as playerActions from '../store/actions/playerActions';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -453,8 +453,8 @@ class Player extends Component {
   }
 }
 
-const mapStateToProps = ({ player }) => ({
-  playerData: player
+const mapStateToProps = ({ playerReducer }) => ({
+  playerData: playerReducer
 });
 
 const mapActionsToprops = dispatch => ({

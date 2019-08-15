@@ -4,7 +4,7 @@ import Player from '../Player';
 import Left from '../Left';
 import Right from '../Right';
 import Content from '../Content';
-import Header from '../../components/Header';
+import Header from '../Header';
 
 const styles = {
   col: {
@@ -12,10 +12,9 @@ const styles = {
     paddingRight: 10,
     height: window.innerHeight - 86,
     overflowY: 'scroll'
-    // border: '1px solid white'
   }
 };
-const Main = props => {
+const MainScreen = props => {
   return (
     <>
       <CssBaseline />
@@ -52,4 +51,4 @@ const Main = props => {
   );
 };
 
-export default Main;
+export default MainScreen;

@@ -3,7 +3,7 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import { connect } from 'react-redux';
-import * as actions from '../store/actions';
+import * as searchActions from '../store/actions/searchActions';
 import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
@@ -91,13 +91,13 @@ const Search = props => {
 
 const mapStateToProps = state => {
   return {
-    term: state.search.term
+    term: state.searchReducer.term
   };
 };
 
 const mapActionsToprops = dispatch => {
   return {
-    search: actions.search
+    search: searchActions.search
   };
 };
 
