@@ -18,41 +18,12 @@ import persistedStore from './store';
 
 // Global Style
 import './App.css';
-const LoadingImage = props => (
-  <svg
-    width={200}
-    height={200}
-    viewBox="0 0 100 100"
-    preserveAspectRatio="xMidYMid"
-    className="prefix__lds-eclipse"
-    style={{
-      background: '0 0',
-    }}
-    {...props}
-  >
-    <path
-      d="M90.004 51.834a40 40 0 00-80 .332 40 42-.238 0180-.332"
-      fill="#cd1b54"
-    >
-      <animateTransform
-        attributeName="transform"
-        type="rotate"
-        calcMode="linear"
-        values="0 50 51;360 50 51"
-        keyTimes="0;1"
-        dur="1s"
-        begin="0s"
-        repeatCount="indefinite"
-      />
-    </path>
-  </svg>
-)
 const { store, persistor } = persistedStore();
 
 export default function App() {
   return (
     <Provider store={store}>
-      <PersistGate loading={<LoadingImage />} persistor={persistor}>
+      <PersistGate loading={null} persistor={persistor}>
         <Router>
           <MainScreen>
             <Switch>

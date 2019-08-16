@@ -6,6 +6,7 @@ const INITIAL_PLAYER_STATE = {
   repeat: 'none',
   position: 0,
   elapsed: '00.00',
+  currentTime: 0,
   duration: '00.00',
   onRepeat: false,
   isShuffled: false,

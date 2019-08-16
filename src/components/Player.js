@@ -137,31 +137,56 @@ class Player extends Component {
     this.setUpAudio();
   }
 
-  state = this.props.playerData;
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log(prevProps, prevState);
-    // save the current state in the redux store
-    if (prevState !== this.state) {
-      this.props.syncState(this.state);
-    }
-  }
-
   setUpAudio = () => {
     window.audio = this.audio = new Audio();
     this.audio.volume = this.state.volume / 100;
     this.audio.loop = this.state.repeat === 'one';
     this.audio.onended = this.onEnded;
     this.audio.ontimeupdate = this.onTimeUpdate;
+    this.audio.onpause = this.onPause;
+    this.audio.onplay = this.onPlay;
   };
 
+  state = this.props.playerData;
+
+  componentDidMount() {
+    // set the last state of the audio player
+    this.setPlayerFromLastState();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // save the current state in the redux store
+    if (prevState !== this.state) {
+      this.props.syncState(this.state);
+    }
+  }
+
+  setPlayerFromLastState = () => {
+      if (this.state.currentTime > 0) {
+      console.log('can resume');
+      this.setState({ isPlaying: false }, () => {
+        this.prepareAudio()
+        this.audio.currentTime = this.state.currentTime;
+      });
+    }
+  }
+
+  onPlay = () => {
+    this.setState({ isPlaying: true });
+  }
+
+  onPause = () => {
+    this.setState({ isPlaying: false });
+  }
+
   onTimeUpdate = () => {
-    const elapsed = this.audio.currentTime;
+    const currentTime = this.audio.currentTime;
     let duration = this.audio.duration;
     this.setState({
-      position: (elapsed / duration) * 100,
-      elapsed: this.formatTime(elapsed),
-      duration: duration > 0 ? this.formatTime(duration) : ''
+      position: (currentTime / duration) * 100,
+      elapsed: this.formatTime(currentTime),
+      duration: duration > 0 ? this.formatTime(duration) : '',
+      currentTime
     });
   };
 
@@ -191,8 +216,7 @@ class Player extends Component {
 
   play = () => {
     this.setState({ isPlaying: true }, () => {
-      this.audio.src = this.state.currentTrack.play_url;
-      this.audio.load();
+      this.prepareAudio();
       this.audio.play().then(
         () => {
           console.log('started playing...');
@@ -205,6 +229,10 @@ class Player extends Component {
     });
   };
 
+  prepareAudio = () => {
+    this.audio.src = this.state.currentTrack.play_url;
+    this.audio.load();
+  }
   resume = () => {
     this.audio.play();
     this.setState({ isPlaying: true });
@@ -309,8 +337,6 @@ class Player extends Component {
 
   handleQueue = () => {
     console.log('go to queue');
-    // console.log(props);
-    // props.history.push(Routes.queue);
   };
 
   toggleRepeat = () => {
@@ -338,14 +364,14 @@ class Player extends Component {
     const { classes } = this.props;
     const {
       volume,
-      isPlaying,
       repeat,
+      elapsed,
       duration,
       position,
-      elapsed,
-      currentTrack
+      isPlaying,
+      currentTrack,
     } = this.state;
-    console.log(duration, position, elapsed);
+
     return (
       <div className={classes.container}>
         <div className={classes.player}>

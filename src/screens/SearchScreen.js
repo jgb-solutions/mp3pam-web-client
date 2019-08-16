@@ -27,8 +27,8 @@ const SearchScreen = props => {
 
 const mapStateToProps = state => {
   return {
-    results: state.search.results,
-    term: state.search.term
+    results: state.searchReducer.results,
+    term: state.searchReducer.term
   };
 };
 
