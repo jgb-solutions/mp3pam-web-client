@@ -139,50 +139,47 @@ class Player extends Component {
 
   setUpAudio = () => {
     window.audio = this.audio = new Audio();
-    this.audio.volume = this.state.volume / 100;
-    this.audio.loop = this.state.repeat === 'one';
+    this.audio.volume = this.props.playerData.volume / 100;
+    this.audio.loop = this.props.playerData.repeat === 'one';
     this.audio.onended = this.onEnded;
     this.audio.ontimeupdate = this.onTimeUpdate;
     this.audio.onpause = this.onPause;
     this.audio.onplay = this.onPlay;
   };
 
-  state = this.props.playerData;
-
   componentDidMount() {
     // set the last state of the audio player
     this.setPlayerFromLastState();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  // componentDidUpdate(prevProps, prevState) {
     // save the current state in the redux store
-    if (prevState !== this.state) {
-      this.props.syncState(this.state);
-    }
-  }
+    // if (prevState !== this.props.playerData) {
+    //   this.props.syncState(this.props.playerData);
+    // }
+  // }
 
   setPlayerFromLastState = () => {
-      if (this.state.currentTime > 0) {
+      if (this.props.playerData.currentTime > 0) {
       console.log('can resume');
-      this.setState({ isPlaying: false }, () => {
-        this.prepareAudio()
-        this.audio.currentTime = this.state.currentTime;
-      });
+      this.props.syncState({ isPlaying: false });
+      this.prepareAudio();
+      this.audio.currentTime = this.props.playerData.currentTime;
     }
   }
 
   onPlay = () => {
-    this.setState({ isPlaying: true });
+    this.props.syncState({ isPlaying: true });
   }
 
   onPause = () => {
-    this.setState({ isPlaying: false });
+    this.props.syncState({ isPlaying: false });
   }
 
   onTimeUpdate = () => {
     const currentTime = this.audio.currentTime;
     let duration = this.audio.duration;
-    this.setState({
+    this.props.syncState({
       position: (currentTime / duration) * 100,
       elapsed: this.formatTime(currentTime),
       duration: duration > 0 ? this.formatTime(duration) : '',
@@ -191,15 +188,15 @@ class Player extends Component {
   };
 
   onEnded = () => {
-    if (this.state.repeat === 'all') {
+    if (this.props.playerData.repeat === 'all') {
       this.play();
     } else {
-      this.setState({ isPlaying: false, position: 0 });
+      this.props.syncState({ isPlaying: false, position: 0 });
     }
   };
 
   togglePlay = () => {
-    if (this.state.isPlaying) {
+    if (this.props.playerData.isPlaying) {
       this.pause();
     } else {
       this.playOrResume();
@@ -215,32 +212,31 @@ class Player extends Component {
   };
 
   play = () => {
-    this.setState({ isPlaying: true }, () => {
-      this.prepareAudio();
-      this.audio.play().then(
-        () => {
-          console.log('started playing...');
-        },
-        error => {
-          console.log('failed because ' + error);
-          this.setState({ isPlaying: false });
-        }
-      );
-    });
+    this.props.syncState({ isPlaying: true });
+    this.prepareAudio();
+    this.audio.play().then(
+      () => {
+        console.log('started playing...');
+      },
+      error => {
+        console.log('failed because ' + error);
+        this.props.syncState({ isPlaying: false });
+      }
+    );
   };
 
   prepareAudio = () => {
-    this.audio.src = this.state.currentTrack.play_url;
+    this.audio.src = this.props.playerData.currentTrack.play_url;
     this.audio.load();
   }
   resume = () => {
     this.audio.play();
-    this.setState({ isPlaying: true });
+    this.props.syncState({ isPlaying: true });
   };
 
   pause() {
     this.audio.pause();
-    this.setState({ isPlaying: false });
+    this.props.syncState({ isPlaying: false });
   }
 
   previous() {
@@ -325,14 +321,14 @@ class Player extends Component {
 
   handleSeekChange = (event, newPosition) => {
     this.audio.currentTime = (newPosition * this.audio.duration) / 100;
-    this.setState({ position: newPosition });
+    this.props.syncState({ position: newPosition });
   };
 
   handleVolumeChange = (event, newVolume) => {
     // update the audio native player volume and also update the state
     this.audio.volume = newVolume / 100;
 
-    this.setState({ volume: newVolume });
+    this.props.syncState({ volume: newVolume });
   };
 
   handleQueue = () => {
@@ -340,7 +336,7 @@ class Player extends Component {
   };
 
   toggleRepeat = () => {
-    this.setState(({ repeat }) => {
+    this.props.syncState(({ repeat }) => {
       switch (repeat) {
         case 'none':
           return { repeat: 'all' };
@@ -370,7 +366,7 @@ class Player extends Component {
       position,
       isPlaying,
       currentTrack,
-    } = this.state;
+    } = this.props.playerData;
 
     return (
       <div className={classes.container}>

@@ -1,8 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
-// import { animated, useSpring } from 'react-spring';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
+
+import Thumbnail from './Thumbnail';
 import colors from '../utils/colors';
 
 const useStyles = makeStyles(theme => ({
@@ -14,8 +15,8 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'nowrap',
     overflowX: 'auto'
   },
-  item: {
-    width: 180,
+  thumbnail: {
+    width: 175,
     marginRight: 21
   },
   link: { color: '#fff', textDecoration: 'none' },
@@ -27,28 +28,14 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     marginBottom: 15
   },
-  listTitle: {
+  category: {
     margin: 0,
     fontSize: 16
   },
-  img: {
-    width: 180
-  },
-  title: {
-    margin: 0,
-    fontSize: 14,
-    color: colors.white,
-  },
-  details: {
-    fontSize: 13,
-    color: '#9d9d9d',
-    marginTop: 5,
-    marginBottom: 0
-  }
 }));
 
 const ScrollingList = props => {
-  const { data, listTitle } = props;
+  const { data, category } = props;
   const styles = useStyles();
   let domElement = null;
 
@@ -68,8 +55,8 @@ const ScrollingList = props => {
   return (
     <div className={styles.container}>
       <div className={styles.listHeader}>
-        <Link to="/c/konpa" className={styles.link}>
-          <h2 className={styles.listTitle}>{listTitle || 'Konpa'}</h2>
+        <Link to="/cat/konpa" className={styles.link}>
+          <h2 className={styles.category}>{category}</h2>
         </Link>
         <div className={styles.arrows}>
           <KeyboardArrowLeft onClick={() => scroll('left')} />
@@ -83,18 +70,12 @@ const ScrollingList = props => {
           domElement = el;
         }}
       >
-        {data.map(music => (
-          <div key={music.title} className={styles.item}>
-            <div className={styles.imgContainer}>
-              <img src={music.img} alt={music.title} className={styles.img} />
-            </div>
-            <h3 className={styles.title}>{music.title}</h3>
-            <p className={styles.details}>
-              Drift away with child <br />
-              ambient music. <br />
-              926.457 FOLLOWERS
-            </p>
-          </div>
+        {data.map((set, index) => (
+          <Thumbnail
+            key={index}
+            className={styles.thumbnail}
+            set={set}
+          />
         ))}
       </div>
     </div>

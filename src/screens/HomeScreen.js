@@ -76,12 +76,12 @@ export default function Home() {
   return (
     <>
       <h1>Home</h1>
-      <ScrollingList listTitle="Featured" data={shuffle(data)} />
-      <ScrollingList listTitle="Rap" data={shuffle(data)} />
-      <ScrollingList listTitle="Compas" data={shuffle(data)} />
-      <ScrollingList listTitle="Reggae" data={shuffle(data)} />
-      <ScrollingList listTitle="Roots" data={shuffle(data)} />
-      <ScrollingList listTitle="Pop" data={shuffle(data)} />
+      <ScrollingList category="Featured" data={shuffle(data)} />
+      <ScrollingList category="Rap" data={shuffle(data)} />
+      <ScrollingList category="Compas" data={shuffle(data)} />
+      <ScrollingList category="Reggae" data={shuffle(data)} />
+      <ScrollingList category="Roots" data={shuffle(data)} />
+      <ScrollingList category="Pop" data={shuffle(data)} />
     </>
   );
 }

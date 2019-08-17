@@ -1,4 +1,8 @@
-import { SYNC_PLAYER_STATE } from '../actions/types';
+import {
+  SYNC_PLAYER_STATE,
+  PLAY_SET,
+  PAUSE_SET,
+} from '../actions/types';
 
 const INITIAL_PLAYER_STATE = {
   volume: 80,
@@ -42,9 +46,17 @@ const INITIAL_PLAYER_STATE = {
   playedTracks: []
 };
 export default function(playerState = INITIAL_PLAYER_STATE, playerAction) {
-  switch (playerAction.type) {
+  const { type, payload } = playerAction;
+
+  switch (type) {
     case SYNC_PLAYER_STATE:
-      return { ...playerState, ...playerAction.payload };
+      console.log(payload.updatedState)
+      return { ...playerState, ...payload.updatedState };
+    case PLAY_SET:
+      console.log({ ...playerState, ...{ currentPlaylist: payload.set } })
+      return { ...playerState, ...{ currentPlaylist: payload.set } };
+    case PAUSE_SET:
+      return { ...playerState, ...{ isPlaying: false }};
     default:
       return playerState;
   }
