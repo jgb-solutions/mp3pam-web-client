@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 
 import colors from '../utils/colors';
+import Routes from '../routes'
 import * as playerActions from '../store/actions/playerActions';
 
 const useStyles = makeStyles(theme => ({
@@ -26,23 +27,28 @@ const useStyles = makeStyles(theme => ({
   },
   transparentBackground: {
     opacity: 0,
-    zIndex: 5,
     position: 'absolute',
     backgroundColor: '#000',
     width: '100%',
     height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '&:hover': {
+      opacity: 0.7,
+    }
   },
   icon: {
     fontSize: 75,
     color: colors.white,
     '&:hover': {
       fontSize: 80,
+      opacity: 1,
     }
   },
-  playPauseButton: {
-    zIndex: 10,
-    opacity: 0,
-  },
+  // playPauseButton: {
+  //   opacity: 0,
+  // },
   title: {
     margin: 0,
     fontSize: 14,
@@ -75,17 +81,7 @@ const Thumbnail = props => {
   };
 
   const goToDetailPage = set => {
-    alert(set.title);
-  }
-
-  const updateHoverState = mouseOverOrNot => {
-    if (mouseOverOrNot) {
-      transparentBackgroundEl.style.opacity = 0.7;
-      playPauseButtonEl.style.opacity = 1;
-    } else {
-      transparentBackgroundEl.style.opacity = 0;
-      playPauseButtonEl.style.opacity = 0;
-    }
+    props.history.push(Routes.goToSetDetail(set.title), { set });
   }
 
   return (
@@ -94,25 +90,17 @@ const Thumbnail = props => {
         className={styles.imgContainer}
         style={{ backgroundImage: `url(${set.img})` }}>
         <div
-          ref={el => transparentBackgroundEl = el}
           className={styles.transparentBackground}
-          onClick={() => goToDetailPage(set)}
-          onMouseOver={() => updateHoverState(true)}
-          onMouseOut={() => updateHoverState(false)}
-          >
+          onClick={() => goToDetailPage(set)}>
+          <IconButton className={styles.playPauseButton}>
+            {isPlaying && (
+              <PauseCircleOutline className={styles.icon} />
+            )}
+            {!isPlaying && (
+              <PlayCircleOutline className={styles.icon} />
+            )}
+          </IconButton>
         </div>
-        <IconButton
-          ref={el => playPauseButtonEl = el}
-          className={styles.playPauseButton}
-          onMouseOver={() => updateHoverState(true)}
-          onClick={togglePlay}>
-          {isPlaying && (
-            <PauseCircleOutline className={styles.icon} />
-          )}
-          {!isPlaying && (
-            <PlayCircleOutline className={styles.icon} />
-          )}
-        </IconButton>
       </div>
       <h3 className={styles.title}>{set.title}</h3>
       <p className={styles.details}>

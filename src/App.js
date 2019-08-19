@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // Main screens
 import HomeScreen from './screens/HomeScreen';
 import UploadScreen from './screens/UploadScreen';
+import SetScreen from './screens/SetScreen';
 import AboutScreen from './screens/AboutScreen';
 import SearchScreen from './screens/SearchScreen';
 import FourOFourScreen from './screens/FourOFourScreen';
@@ -31,6 +32,7 @@ export default function App() {
               <Route path={Routes.search} exact component={SearchScreen} />
               <Route path={Routes.about} component={AboutScreen} />
               <Route path={Routes.upload} component={UploadScreen} />
+              <Route path={Routes.set} component={SetScreen} />
               <Route component={FourOFourScreen} />
             </Switch>
           </MainScreen>

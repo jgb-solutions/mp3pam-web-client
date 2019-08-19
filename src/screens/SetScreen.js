@@ -1,22 +1,18 @@
-import {
-  SYNC_PLAYER_STATE,
-  PLAY_SET,
-  PAUSE_SET,
-} from '../actions/types';
+// @flow
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { withStyles, darken } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const INITIAL_PLAYER_STATE = {
-  volume: 80,
-  isPlaying: false,
-  repeat: 'none',
-  position: 0,
-  elapsed: '00.00',
-  currentTime: 0,
-  duration: '00.00',
-  onRepeat: false,
-  isShuffled: false,
-  currentPlaylist: [],
-  currentTrack: {
-    title: 'Bad News',
+import * as playerActions from '../store/actions/playerActions';
+import colors from '../utils/colors';
+import { Button } from '@material-ui/core';
+
+const Set = props => {
+  const set = [{
+    title: 'Really great News',
     detail:
       "Cat, 'if you don't explain it is right?' 'In my youth,' Father William replied to his ear. Alice considered a little, and then said 'The fourth.' 'Two days wrong!' sighed the Lory, as soon as she.",
     lyrics:
@@ -26,36 +22,36 @@ const INITIAL_PLAYER_STATE = {
     play_url: 'https://audios.mp3pam.com/OMVR-Bad-News.mp3',
     download_count: 0,
     download_url: '/t/42139505',
-    image: 'https://images.mp3pam.com/demo/OMVR-Bad-News-2016-2480x2480.jpg',
+    image: 'https://images.mp3pam.com/demo/artist3.jpg',
     favorite: true,
     category: {
       name: 'Konpa',
       slug: 'konpa',
       url: '/api/v1/categories/konpa'
     },
-    artist: {
-      avatar: 'https://images.mp3pam.com/demo/logo.jpg',
-      bio: null,
-      musics: '/api/v1/artists/77868635/musics',
-      name: 'OMVR',
-      stageName: 'OMVR',
-      url: '/api/v1/artists/77868635',
-      verified: false
-    }
-  },
-  playedTracks: []
-};
-export default function(playerState = INITIAL_PLAYER_STATE, playerAction) {
-  const { type, payload } = playerAction;
+  }];
 
-  switch (type) {
-    case SYNC_PLAYER_STATE:
-      return { ...playerState, ...payload.updatedState };
-    case PLAY_SET:
-      return { ...playerState, ...{ currentPlaylist: payload.set } };
-    case PAUSE_SET:
-      return { ...playerState, ...{ isPlaying: false }};
-    default:
-      return playerState;
-  }
+  return (
+    <>
+      <h1>{ set[0].title }</h1>
+      <Button variant="contained" color="primary" onClick={() => {props.playSet(set)}}>
+        Primary
+      </Button>
+      <img alt={set[0].title} src={set[0].image} />
+    </>
+  );
 }
+
+const mapStateToProps = ({ playerReducer }) => ({
+  playerData: playerReducer
+});
+
+const mapActionsToprops = dispatch => ({
+  playSet: playerActions.playSet,
+  pauseSet: playerActions.pauseSet
+});
+
+export default connect(
+  null,
+  mapActionsToprops()
+)(withRouter((Set)));
