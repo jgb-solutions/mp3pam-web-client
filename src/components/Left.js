@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home, ViewQuilt } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
+import Routes from '../routes';
 
 const styles = theme => ({
   logo: {
@@ -28,12 +29,12 @@ const menu = [
   {
     name: 'Home',
     icon: <Home />,
-    to: '/'
+    to: Routes.home
   },
   {
     name: 'Browse',
     icon: <ViewQuilt />,
-    to: '/browse'
+    to: Routes.browse
   }
 ];
 

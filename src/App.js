@@ -28,7 +28,7 @@ export default function App() {
         <Router>
           <MainScreen>
             <Switch>
-              <Route path={Routes.root} exact component={HomeScreen} />
+              <Route path={Routes.home} exact component={HomeScreen} />
               <Route path={Routes.search} exact component={SearchScreen} />
               <Route path={Routes.about} component={AboutScreen} />
               <Route path={Routes.upload} component={UploadScreen} />

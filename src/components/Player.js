@@ -519,11 +519,9 @@ const mapStateToProps = ({ playerReducer }) => ({
   playerData: playerReducer
 });
 
-const mapActionsToprops = dispatch => ({
-  syncState: playerActions.syncState
-});
-
 export default connect(
   mapStateToProps,
-  mapActionsToprops()
+  {
+    syncState: playerActions.syncState
+  }
 )(withRouter(withStyles(styles)(Player)));

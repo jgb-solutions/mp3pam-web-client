@@ -67,8 +67,6 @@ const Thumbnail = props => {
 
   const { set } = props;
   const [isPlaying, setIsPlaying] = useState(false);
-  let transparentBackgroundEl = null;
-  let playPauseButtonEl = null;
 
   const togglePlay = () => {
     if (isPlaying) {

@@ -4,7 +4,7 @@ const Content = props => {
   return (
     <main
       style={{
-        paddingTop: 50,
+        paddingTop: 75,
         ...props.style
       }}
     >
