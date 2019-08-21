@@ -23,6 +23,7 @@ import { withStyles } from '@material-ui/core/styles';
 // import Routes from '../routes';
 import colors from '../utils/colors';
 import Slider from '../components/Slider';
+import { RESUME, PAUSE, PLAY } from '../store/actions/actions';
 
 const styles = theme => ({
   container: {
@@ -155,9 +156,32 @@ class Player extends Component {
     // Sync the play state for changes
     this.syncState(prevProps, prevState)
 
-    if (prevProps.playerData.currentPlaylist !== this.props.playerData.currentPlaylist) {
+    // play new set
+    if (
+      this.state.set.id !== this.props.playerData.set.id
+      && this.props.playerData.action === PLAY
+    ) {
       this.play();
-      console.log('playlist has been updated', this.state.currentPlaylist);
+      console.log('playlist has been updated', this.props.playerData.set.id);
+    }
+
+    // pausing the player
+    if (
+      this.state.action !== this.props.playerData.action
+      && this.props.playerData.action === PAUSE
+    ) {
+      this.audio.pause();
+      console.log('playlist is being pause for set ', this.props.playerData.set.id);
+    }
+
+    // Resume player
+    if (
+      this.props.playerData.action !== this.state.action
+      && this.props.playerData.action === RESUME
+    ) {
+      this.audio.play();
+      this.setState({ action: this.props.playerData.action })
+      console.log('resuming player');
     }
   }
 
@@ -200,12 +224,12 @@ class Player extends Component {
   }
 
   setPlayerFromLastState = () => {
-      if (this.state.currentTime > 0) {
-      console.log('can resume');
-      this.setState({ isPlaying: false });
+    if (this.state.currentTime > 0) {
       this.prepareAudio();
       this.audio.currentTime = this.state.currentTime;
     }
+
+    this.setState({ isPlaying: false });
   }
 
   onPlay = () => {
@@ -229,9 +253,9 @@ class Player extends Component {
 
   onEnded = () => {
     if (this.state.repeat === 'all') {
-      this.play();
+        this.playNext();
     } else {
-      this.setState({ isPlaying: false, position: 0 });
+      this.setState({ isPlaying: false })
     }
   };
 
@@ -297,7 +321,7 @@ class Player extends Component {
     }
   }
 
-  next = () => {
+  playNext = () => {
     if (this.isShuffled) {
       this.playCurrentTrack(this.randomTrack());
     } else {
@@ -379,6 +403,7 @@ class Player extends Component {
     this.setState(({ repeat }) => {
       switch (repeat) {
         case 'none':
+          this.audio.loop = false;
           return { repeat: 'all' };
         case 'all':
           this.audio.loop = true;
@@ -515,8 +540,8 @@ class Player extends Component {
   }
 }
 
-const mapStateToProps = ({ playerReducer }) => ({
-  playerData: playerReducer
+const mapStateToProps = ({ player }) => ({
+  playerData: player
 });
 
 export default connect(

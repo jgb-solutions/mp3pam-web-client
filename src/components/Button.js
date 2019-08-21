@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Button = props => {
+const Button = (props: { style: Object, onClick: Function }) => {
   const styles = useStyles();
   return (
     <>

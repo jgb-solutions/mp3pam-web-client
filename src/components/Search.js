@@ -89,19 +89,13 @@ const Search = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    term: state.searchReducer.term
-  };
-};
-
-const mapActionsToprops = dispatch => {
-  return {
-    search: searchActions.search
-  };
-};
+const mapStateToProps = ({ search }) => ({
+    term: search.term
+});
 
 export default connect(
   mapStateToProps,
-  mapActionsToprops()
+  {
+     search: searchActions.search
+  }
 )(withRouter(Search));

@@ -1,8 +1,10 @@
 import {
   SYNC_PLAYER_STATE,
   PLAY_SET,
-  PAUSE_SET,
+  PAUSE_PLAYER,
+  RESUME_SET,
 } from '../actions/types';
+import { PAUSE, RESUME } from '../actions/actions';
 
 const INITIAL_PLAYER_STATE = {
   volume: 80,
@@ -14,7 +16,11 @@ const INITIAL_PLAYER_STATE = {
   duration: '00.00',
   onRepeat: false,
   isShuffled: false,
-  currentPlaylist: [],
+  set: {
+    id: 2342423,
+    items: [],
+  },
+  action: null,
   currentTrack: {
     title: 'Bad News',
     detail:
@@ -52,9 +58,11 @@ export default function(playerState = INITIAL_PLAYER_STATE, playerAction) {
     case SYNC_PLAYER_STATE:
       return { ...playerState, ...payload.updatedState };
     case PLAY_SET:
-      return { ...playerState, ...{ currentPlaylist: payload.set } };
-    case PAUSE_SET:
-      return { ...playerState, ...{ isPlaying: false }};
+      return { ...playerState, ...{ set: payload.set } };
+    case RESUME_SET:
+      return { ...playerState, ...{ action: payload.action  } };
+    case PAUSE_PLAYER:
+      return { ...playerState, ...{ action: payload.action } };
     default:
       return playerState;
   }

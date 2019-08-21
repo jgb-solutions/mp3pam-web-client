@@ -71,7 +71,7 @@ const Thumbnail = props => {
   const togglePlay = () => {
     if (isPlaying) {
       setIsPlaying(false);
-      props.pauseSet();
+      props.pausePlayer();
     } else {
       setIsPlaying(true);
       props.playSet(set);
@@ -109,16 +109,9 @@ const Thumbnail = props => {
   );
 };
 
-const mapStateToProps = ({ playerReducer }) => ({
-  playerData: playerReducer
-});
-
-const mapActionsToprops = dispatch => ({
-  playSet: playerActions.playSet,
-  pauseSet: playerActions.pauseSet
-});
-
 export default connect(
-  mapStateToProps,
-  mapActionsToprops()
+  ({ player }) => ({
+    setID: player.set.id,
+    isPlaying: player.isPlaying
+  })
 )(withRouter((Thumbnail)));
