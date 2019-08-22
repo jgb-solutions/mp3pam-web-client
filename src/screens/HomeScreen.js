@@ -1,12 +1,12 @@
 // @flow
 import React from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { shuffle } from 'lodash-es';
 import ScrollingList from '../components/ScrollingList';
 
 const data = [
   {
-    img: 'https://images.mp3pam.com/demo/OMVR-Bad-News-2016-2480x2480.jpg',
+    img: 'https://images.mp3pam.com/demo/artist9.jpg',
     title: 'Breakfast',
     author: 'jill111',
     cols: 2,

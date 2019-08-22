@@ -77,7 +77,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Set = (props: { playSet: Function, pauseSet: Function }) => {
+const Set = (props: { playSet: Function, pauseSet: Function, resumeSet: Function }) => {
   const styles = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   function handleClick(event) {

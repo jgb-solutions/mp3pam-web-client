@@ -32,7 +32,7 @@ const INITIAL_PLAYER_STATE = {
     play_url: 'https://audios.mp3pam.com/OMVR-Bad-News.mp3',
     download_count: 0,
     download_url: '/t/42139505',
-    image: 'https://images.mp3pam.com/demo/OMVR-Bad-News-2016-2480x2480.jpg',
+    image: 'https://images.mp3pam.com/demo/artist9.jpg',
     favorite: true,
     category: {
       name: 'Konpa',
@@ -58,11 +58,11 @@ export default function(playerState = INITIAL_PLAYER_STATE, playerAction) {
     case SYNC_PLAYER_STATE:
       return { ...playerState, ...payload.updatedState };
     case PLAY_SET:
-      return { ...playerState, ...{ set: payload.set } };
+      return { ...playerState, ...{ ...payload } };
     case RESUME_SET:
-      return { ...playerState, ...{ action: payload.action  } };
+      return { ...playerState, ...{ ...payload  } };
     case PAUSE_PLAYER:
-      return { ...playerState, ...{ action: payload.action } };
+      return { ...playerState, ...{ ...payload } };
     default:
       return playerState;
   }
