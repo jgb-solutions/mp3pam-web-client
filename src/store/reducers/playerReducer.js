@@ -58,11 +58,13 @@ export default function(playerState = INITIAL_PLAYER_STATE, playerAction) {
     case SYNC_PLAYER_STATE:
       return { ...playerState, ...payload.updatedState };
     case PLAY_SET:
-      return { ...playerState, ...{ ...payload } };
+      return { ...playerState, ...payload };
     case RESUME_SET:
-      return { ...playerState, ...{ ...payload  } };
+      const newState = { ...playerState, ...payload };
+      console.log(newState === playerState);
+      return { ...playerState, ...payload };
     case PAUSE_PLAYER:
-      return { ...playerState, ...{ ...payload } };
+      return { ...playerState, ...payload };
     default:
       return playerState;
   }

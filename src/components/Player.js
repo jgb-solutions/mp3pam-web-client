@@ -136,10 +136,20 @@ const audio = new Audio();
 window.audio = audio;
 
 function Player(props) {
-  console.log('playerdata', props.playerData);
-  const [state, setState] = useState(props.playerData);
-  console.log('state', state);
-  const { classes } = props;
+  const { classes, storePlayerData, syncState } = props;
+  const [state, setState] = useState(storePlayerData);
+  // Audio events for when the component first mounts
+  useEffect(() => {
+    audio.volume = state.volume / 100;
+    audio.loop = state.repeat === 'one';
+    audio.onended = onEnded;
+    audio.ontimeupdate = onTimeUpdate;
+    audio.onpause = onPause;
+    audio.onplay = onPlay;
+
+    // set the last state of the audio player
+    setPlayerFromLastState();
+  }, []);
 
   const onPlay = () => {
     setState(prevState => ({
@@ -168,13 +178,14 @@ function Player(props) {
   };
 
   const onEnded = () => {
+    console.log('onEnd called', state.repeat);
     if (state.repeat === 'all') {
-        playNext();
+      playNext();
     } else {
       setState(prevState => ({
         ...prevState,
         isPlaying: false
-      }))
+      }));
     }
   };
 
@@ -195,9 +206,10 @@ function Player(props) {
   };
 
   const play = () => {
-    // setState(prevState => ({
-    //   ...prevState, isPlaying: true
-    // }));
+    setState(prevState => ({
+      ...prevState, isPlaying: true
+    }));
+
     prepareAudio();
     audio.play().then(
       () => {
@@ -216,6 +228,7 @@ function Player(props) {
     audio.src = state.currentTrack.play_url;
     audio.load();
   }
+
   const resume = () => {
     audio.play();
     setState(prevState => ({
@@ -234,7 +247,7 @@ function Player(props) {
 
   const previous = () => {
     if (state.isShuffled) {
-      playCurrentTrack(randomTrack());
+      playOrResume();
     } else {
       let indexToPlay;
       let totalTracksIndexes = state.playedTracks.length - 1;
@@ -246,26 +259,28 @@ function Player(props) {
         indexToPlay = totalTracksIndexes;
       }
 
-      playCurrentTrack(state.playedTracks[indexToPlay]);
+      playOrResume();
     }
   }
 
   const playNext = () => {
-    if (state.isShuffled) {
-      playCurrentTrack(randomTrack());
-    } else {
-      let indexToPlay;
-      let totalTracksIndexes = state.playedTracks.length - 1;
-      let currentIndex = findIndex(state.currentTrack);
+    // if (state.isShuffled) {
+    //   playCurrentTrack(randomTrack());
+    // } else {
+    //   let indexToPlay;
+    //   let totalTracksIndexes = state.playedTracks.length - 1;
+    //   let currentIndex = findIndex(state.currentTrack);
 
-      if (currentIndex < totalTracksIndexes) {
-        indexToPlay = currentIndex + 1;
-      } else {
-        indexToPlay = 0;
-      }
+    //   if (currentIndex < totalTracksIndexes) {
+    //     indexToPlay = currentIndex + 1;
+    //   } else {
+    //     indexToPlay = 0;
+    //   }
 
-      playCurrentTrack(state.playedTracks[indexToPlay]);
-    }
+    //   playCurrentTrack(state.playedTracks[indexToPlay]);
+    // }
+    console.log('playing next track');
+    playOrResume();
   };
 
   const randomTrack = () => {
@@ -280,11 +295,6 @@ function Player(props) {
     seconds = Math.floor(seconds % 60);
     seconds = seconds >= 10 ? seconds : '0' + seconds;
     return minutes + ':' + seconds;
-  };
-
-  const playCurrentTrack = track => {
-    state.currentTrack = track;
-    play(track.play_url);
   };
 
   const addTrack = track => {
@@ -335,28 +345,28 @@ function Player(props) {
   };
 
   const toggleRepeat = () => {
-    setState((prevState) => {
+    setState(prevState => {
       const { repeat } = prevState;
       let newRepeatVal = null;
 
       switch (repeat) {
         case 'none':
-          this.audio.loop = false;
+          audio.loop = false;
           newRepeatVal = 'all';
           break;
         case 'all':
-          this.audio.loop = true;
+          audio.loop = true;
           newRepeatVal = 'one';
           break;
         case 'one':
-          this.audio.loop = false;
+          audio.loop = false;
           newRepeatVal = 'none';
           break;
         default:
           newRepeatVal = 'all';
       }
 
-      return { ...prevState, repeat: newRepeatVal };
+      return { ...prevState, ...{ repeat: newRepeatVal } };
     });
   };
 
@@ -364,94 +374,77 @@ function Player(props) {
     console.log('repeat one');
   };
 
-  // Audio events
+  // update playing when the store state changes  // componentDidUpdate
   useEffect(() => {
-    audio.volume = state.volume / 100;
-    audio.loop = state.repeat === 'one';
-    audio.onended = onEnded;
-    audio.ontimeupdate = onTimeUpdate;
-    audio.onpause = onPause;
-    audio.onplay = onPlay;
-
-    // set the last state of the audio player
-    setPlayerFromLastState();
-  }, []);
-
-  // componentDidUpdate
-  useEffect(() => {
+    console.log(`wanting to ${storePlayerData.action}`);
     // play new set
     if (
-      state.set.id !== props.playerData.set.id
-      && props.playerData.action === PLAY
+      state.set.id !== storePlayerData.set.id
+      && storePlayerData.action === PLAY
     ) {
       play();
-      console.log('playlist has been updated', props.playerData.set.id);
+      setState(prevState => ({
+        ...prevState, action: PLAY }));
+      console.log('playlist has been updated', storePlayerData.set.id);
     }
 
     // pausing the player
-    if (
-      state.action !== props.playerData.action
-      && props.playerData.action === PAUSE
-    ) {
+    if (storePlayerData.action === PAUSE) {
       audio.pause();
       setState(prevState => ({
         ...prevState, action: PAUSE }));
-      console.log('playlist is being pause for set ', props.playerData.set.id);
+      console.log('playlist is being pause for set ', storePlayerData.set.id);
     }
 
     // Resume player
-    if (
-      props.playerData.action !== state.action
-      && props.playerData.action === RESUME
-    ) {
+    if (storePlayerData.action === RESUME) {
       audio.play();
       setState(prevState => ({
-        ...prevState, action: RESUME }));
-      setState(prevState => ({
-        ...prevState, action: props.playerData.action }));
+        ...prevState, action: RESUME }));;
       console.log('resuming player');
     }
-  }, []);
+  }, [storePlayerData.set, storePlayerData.action]);
+
+  // update the store state when some local states change
+  useEffect(() => {
+    syncState({ volume: state.volume });
+  }, [state.volume]);
 
   useEffect(() => {
-    if (props.playerData.volume !== state.volume) {
-      props.syncState({ volume: state.volume });
-    }
+    syncState({ isPlaying: state.isPlaying });
+  }, [state.isPlaying]);
 
-    if (props.playerData.isPlaying !== state.isPlaying) {
-      props.syncState({ isPlaying: state.isPlaying });
-    }
+  useEffect(() => {
+    syncState({ repeat: state.repeat });
+    console.log('repeat updated', state.repeat);
+  }, [state.repeat]);
 
-    if (props.playerData.repeat !== state.repeat) {
-      props.syncState({ repeat: state.repeat });
-    }
+  useEffect(() => {
+    syncState({ position: state.position });
+  }, [state.position]);
 
-    // if (state.position !== props.position) {
-    //   props.syncState({ position: state.position });
-    // }
+  useEffect(() => {
+    syncState({ elapsed: state.elapsed });
+  }, [state.elapsed]);
 
-    if (props.playerData.elapsed !== state.elapsed) {
-      props.syncState({ elapsed: state.elapsed });
-    }
+  useEffect(() => {
+  syncState({ currentTime: state.currentTime });
+  }, [state.currentTime]);
 
-    if (props.playerData.currentTime !== state.currentTime) {
-      props.syncState({ currentTime: state.currentTime });
-    }
+  useEffect(() => {
+    syncState({ duration: state.duration });
+  }, [state.duration]);
 
-    if (props.playerData.duration !== state.duration) {
-      props.syncState({ duration: state.duration });
-    }
+  useEffect(() => {
+    syncState({ repeat: state.repeat });
+  }, [ state.repeat ]);
 
-    if (props.playerData.onRepeat !== state.onRepeat) {
-      props.syncState({ onRepeat: state.onRepeat });
-    }
-
-    if (props.playerData.isShuffled !== state.isShuffled) {
-      props.syncState({ isShuffled: state.isShuffled });
-    }
-  }, []);
+  useEffect(() => {
+    syncState({ isShuffled: state.isShuffled });
+  }, [state.isShuffled]);
 
   const setPlayerFromLastState = () => {
+    console.log('udpating from last state')
     if (state.currentTime > 0) {
       prepareAudio();
       audio.currentTime = state.currentTime;
@@ -465,7 +458,6 @@ function Player(props) {
     <div className={classes.container}>
       <div className={classes.player}>
         <div className={classes.posterTitle}>
-          {console.log('render state', state.currentTrack)}
           <img
             src={state.currentTrack.image}
             className={classes.image}
@@ -574,6 +566,9 @@ function Player(props) {
 
 export default connect(
   ({ player }) => ({
-    playerData: player,
-  })
+    storePlayerData: player,
+  }),
+  {
+    syncState: playerActions.syncState
+  }
 )(withRouter(withStyles(styles)(Player)));
