@@ -75,7 +75,7 @@ const Thumbnail = (
 	const { set, isPlaying } = props;
 
 	const goToDetailPage = (set: SetInterface) => {
-		props.history.push(Routes.goToSetDetail(set.title), { set });
+		props.history.push(Routes.goToSetDetail(set.id), { set });
 	};
 
 	return (
@@ -94,7 +94,7 @@ const Thumbnail = (
 					</IconButton>
 				</div>
 			</div>
-			<h3 className={styles.title}>{set.title}</h3>
+			<h3 className={styles.title}>{set.name}</h3>
 			<p className={styles.details}>
 				Drift away with child <br />
 				ambient music. <br />

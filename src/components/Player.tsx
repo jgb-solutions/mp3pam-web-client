@@ -307,9 +307,9 @@ function Player(props: Props) {
 	};
 
 	const randomTrack = () => {
-		return state.playedTracks[
-			Math.floor(Math.random() * state.playedTracks.length)
-		];
+		// return state.playedTracks[
+		// 	Math.floor(Math.random() * state.playedTracks.length)
+		// ];
 	};
 
 	const formatTime = (seconds: number) => {
@@ -455,7 +455,7 @@ function Player(props: Props) {
 					<img
 						src={state.currentTrack.image}
 						className={classes.image}
-						alt={state.currentTrack.name}
+						alt={state.currentTrack.title}
 					/>
 					<div className={classes.titleArtist}>
 						<span className={classes.title}>

@@ -7,7 +7,8 @@ import {
 	darken,
 	Theme,
 	createStyles,
-	withStyles
+	withStyles,
+	makeStyles
 } from "@material-ui/core/styles";
 import { withRouter, Link, RouteComponentProps } from "react-router-dom";
 import { connect } from "react-redux";
@@ -19,66 +20,65 @@ import Routes from "../routes";
 import Button from "../components/Button";
 import SetInterface from "../interfaces/SetInterface";
 
-const styles = (theme: Theme) =>
-	createStyles({
-		row: {
-			display: "flex",
-			flexDirection: "row"
-		},
-		setCover: {
-			width: 220,
-			height: 220,
-			marginRight: 20,
-			"& img": {
-				maxWidth: "100%"
-			}
-		},
-		setByAuthor: {
-			fontSize: 12
-		},
-		setBy: {
-			color: darken(colors.white, 0.5)
-		},
-		setAuthor: {
-			textDecoration: "none",
-			color: colors.white,
-			"&:hover": {
-				textDecoration: "underline"
-			},
-			"&:link": {
-				textDecoration: "none",
-				color: "white"
-			}
-		},
-		setDetails: {
-			display: "flex",
-			flexDirection: "column",
-			justifyContent: "flex-end",
-			"& > *": {
-				padding: 0,
-				margin: 0
-			}
-		},
-		setType: {
-			fontSize: 12,
-			fontWeight: 400,
-			textTransform: "uppercase"
-		},
-		setName: {
-			fontSize: 48,
-			fontWeight: "bold"
-		},
-		iconBtn: {},
-		icon: {
-			color: colors.white,
-			fontSize: 30,
-			padding: 5,
-			border: "1px solid white",
-			borderRadius: "50%"
+const useStyles = makeStyles(() => ({
+	row: {
+		display: "flex",
+		flexDirection: "row"
+	},
+	setCover: {
+		width: 220,
+		height: 220,
+		marginRight: 20,
+		"& img": {
+			maxWidth: "100%"
 		}
-	});
+	},
+	setByAuthor: {
+		fontSize: 12
+	},
+	setBy: {
+		color: darken(colors.white, 0.5)
+	},
+	setAuthor: {
+		textDecoration: "none",
+		color: colors.white,
+		"&:hover": {
+			textDecoration: "underline"
+		},
+		"&:link": {
+			textDecoration: "none",
+			color: "white"
+		}
+	},
+	setDetails: {
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "flex-end",
+		"& > *": {
+			padding: 0,
+			margin: 0
+		}
+	},
+	setType: {
+		fontSize: 12,
+		fontWeight: 400,
+		textTransform: "uppercase"
+	},
+	setName: {
+		fontSize: 48,
+		fontWeight: "bold"
+	},
+	iconBtn: {},
+	icon: {
+		color: colors.white,
+		fontSize: 30,
+		padding: 5,
+		border: "1px solid white",
+		borderRadius: "50%"
+	}
+}));
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
 	playSet(set: SetInterface): void;
 	pauseSet(): void;
 	resumeSet(): void;
@@ -90,6 +90,7 @@ interface Props extends WithStyles<typeof styles> {
 const SetScreen = (props: Props & RouteComponentProps) => {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const { set } = props;
+	const styles = useStyles();
 
 	function handleClick(event: any) {
 		setAnchorEl(event.currentTarget);
@@ -134,7 +135,7 @@ const SetScreen = (props: Props & RouteComponentProps) => {
 							Konpa Kreyòl
 						</Link>
 					</p>
-					<div className={styles.buttonActions}>
+					<div>
 						<Button onClick={togglePlay}>
 							{props.isPlaying && props.setID === set.id ? "Pause" : "Play"}
 						</Button>
@@ -176,4 +177,4 @@ export default connect(
 		pauseSet: playerActions.pauseSet,
 		resumeSet: playerActions.resumeSet
 	}
-)(withRouter(withStyles(styles)(SetScreen)));
+)(withRouter(SetScreen));

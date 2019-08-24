@@ -8,77 +8,86 @@ const data = [
 	{
 		id: "43534",
 		image: "https://images.mp3pam.com/demo/artist9.jpg",
-		title: "Breakfast",
-		author: "jill111"
+		name: "Breakfast",
+		author: "jill111",
+		type: "album"
 	},
 	{
 		id: "fsafsfasd",
 		image: "https://images.mp3pam.com/demo/artist8.jpg",
-		title: "Tasty burger",
-		author: "director90"
+		name: "Tasty burger",
+		author: "director90",
+		type: "album"
 	},
 	{
 		id: "safksdf",
 		image: "https://images.mp3pam.com/demo/artist7.jpg",
-		title: "Camera",
-		author: "Danson67"
+		name: "Camera",
+		author: "Danson67",
+		type: "album"
 	},
 	{
 		id: "afasdfsdfssdkad",
 		image: "https://images.mp3pam.com/demo/artist6.jpg",
-		title: "Morning",
+		name: "Morning",
 		author: "fancycrave1",
-		featured: true
+		type: "album"
 	},
 	{
 		id: "23423423",
 		image: "https://images.mp3pam.com/demo/artist5.jpg",
-		title: "Hats",
-		author: "Hans"
+		name: "Hats",
+		author: "Hans",
+		type: "album"
 	},
 	{
 		id: "32424234",
 		image: "https://images.mp3pam.com/demo/artist4.jpg",
-		title: "Honey",
-		author: "fancycravel"
+		name: "Honey",
+		author: "fancycravel",
+		type: "album"
 	},
 	{
 		id: "2342343",
 		image: "https://images.mp3pam.com/demo/artist3.jpg",
-		title: "Vegetables",
+		name: "Vegetables",
 		author: "jill111",
-		cols: 2
+		type: "album"
 	},
 	{
 		id: "afasdfsdfsad",
 		image: "https://images.mp3pam.com/demo/artist2.jpg",
-		title: "Water plant",
-		author: "BkrmadtyaKarki"
+		name: "Water plant",
+		author: "BkrmadtyaKarki",
+		type: "album"
 	},
 	{
 		id: "as234234",
 		image: "https://images.mp3pam.com/demo/artist1.jpg",
-		title: "Mushrooms",
-		author: "PublicDomainPictures"
+		name: "Mushrooms",
+		author: "PublicDomainPictures",
+		type: "album"
 	},
 	{
 		id: "949493",
 		image: "https://images.mp3pam.com/demo/artist10.jpg",
-		title: "Olive oil",
-		author: "congerdesign"
+		name: "Olive oil",
+		author: "congerdesign",
+		type: "album"
 	},
 	{
 		id: "3243",
 		image: "https://images.mp3pam.com/demo/artist9.jpg",
-		title: "Sea star",
-		cols: 2,
-		author: "821292"
+		name: "Sea star",
+		author: "821292",
+		type: "album"
 	},
 	{
 		id: "3453453",
 		image: "https://images.mp3pam.com/demo/artist11.jpg",
-		title: "Bike",
-		author: "danfador"
+		name: "Bike",
+		author: "danfador",
+		type: "album"
 	}
 ];
 

@@ -1,10 +1,17 @@
+import CategoryInterface from "./CategoryInterface";
+import ArtistInterface from "./ArtistInterface";
+
 export default interface TrackInterface {
-  play_url: string,
-  image: string,
-  name: string,
-  title: string,
-  favorite: boolean,
-  artist: {
-  name: string,
-  }
+	url: string;
+	title: string;
+	image: string;
+	detail: string;
+	lyrics: string;
+	play_url: string;
+	favorite: boolean;
+	play_count: number;
+	download_url: string;
+	download_count: number;
+	artist: ArtistInterface;
+	category: CategoryInterface;
 }

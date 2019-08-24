@@ -1,8 +1,8 @@
 import {
-	SYNC_PLAYER_STATE,
 	PLAY_SET,
+	RESUME_SET,
 	PAUSE_PLAYER,
-	RESUME_SET
+	SYNC_PLAYER_STATE
 } from "../actions/types";
 import { PAUSE, RESUME } from "../actions/actions";
 import PlayerInterface from "../../interfaces/PlayerInterface";
@@ -18,8 +18,12 @@ const INITIAL_PLAYER_STATE = {
 	onRepeat: false,
 	isShuffled: false,
 	set: {
-		id: 2342423,
-		items: []
+		id: "2342423",
+		items: [],
+		image: "https://images.mp3pam.com/demo/artist9.jpg",
+		name: "Breakfast",
+		author: "jill111",
+		type: "album"
 	},
 	action: PAUSE,
 	currentTrack: {
