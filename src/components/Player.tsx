@@ -18,14 +18,14 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as playerActions from '../store/actions/playerActions';
 import IconButton from '@material-ui/core/IconButton';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme, WithStyles } from '@material-ui/core/styles';
 
 // import Routes from '../routes';
 import colors from '../utils/colors';
-import Slider from '../components/Slider';
+import Slider from './Slider';
 import { RESUME, PAUSE, PLAY } from '../store/actions/actions';
 
-const styles = theme => ({
+const styles = (theme: Theme) => createStyles({
   container: {
     display: 'flex',
     position: 'fixed',
@@ -133,23 +133,62 @@ const styles = theme => ({
 
 // Setup Audio
 const audio = new Audio();
-window.audio = audio;
 
-function Player(props) {
+interface Props extends WithStyles<typeof styles> {
+  syncState({}): void,
+  storePlayerData: {
+    volume: number,
+    repeat: string,
+    isPlaying: boolean,
+    currentTrack: {
+      play_url: string,
+      image: string,
+      name: string,
+      title: string,
+      favorite: boolean,
+      artist: {
+        name: string,
+      }
+    },
+    isShuffled: boolean,
+    playedTracks: Array<object>
+    action: any,
+    set: {
+      id: string,
+    },
+    position: number,
+    elapsed: string
+    duration: string,
+    currentTime: number,
+  }
+}
+
+function Player(props: Props) {
   const { classes, storePlayerData, syncState } = props;
   const [state, setState] = useState(storePlayerData);
+
   // Audio events for when the component first mounts
   useEffect(() => {
     audio.volume = state.volume / 100;
-    audio.loop = state.repeat === 'one';
+    audio.loop = state.repeat === 'one' || state.repeat === 'all';
     audio.onended = onEnded;
     audio.ontimeupdate = onTimeUpdate;
     audio.onpause = onPause;
     audio.onplay = onPlay;
-
-    // set the last state of the audio player
-    setPlayerFromLastState();
   }, []);
+
+  // set the last state of the audio player
+   useEffect(() => {
+    console.log('udpating from last state')
+    if (state.currentTime > 0) {
+      prepareAudio();
+      audio.currentTime = state.currentTime;
+    }
+    setState(prevState => ({
+      ...prevState,
+      isPlaying: false
+    }));
+   }, [])
 
   const onPlay = () => {
     setState(prevState => ({
@@ -179,13 +218,9 @@ function Player(props) {
 
   const onEnded = () => {
     console.log('onEnd called', state.repeat);
+    console.log(state)
     if (state.repeat === 'all') {
       playNext();
-    } else {
-      setState(prevState => ({
-        ...prevState,
-        isPlaying: false
-      }));
     }
   };
 
@@ -233,7 +268,8 @@ function Player(props) {
     audio.play();
     setState(prevState => ({
       ...prevState,
-      isPlaying: true
+      isPlaying: true,
+      action: null
     }));
   };
 
@@ -241,26 +277,27 @@ function Player(props) {
     audio.pause();
     setState(prevState => ({
       ...prevState,
-      isPlaying: false
+      isPlaying: false,
+      action: null,
     }));
   }
 
   const previous = () => {
-    if (state.isShuffled) {
-      playOrResume();
-    } else {
-      let indexToPlay;
-      let totalTracksIndexes = state.playedTracks.length - 1;
-      let currentIndex = findIndex(state.currentTrack);
+    // if (state.isShuffled) {
+    //   playOrResume();
+    // } else {
+    //   let indexToPlay;
+    //   let totalTracksIndexes = state.playedTracks.length - 1;
+    //   let currentIndex = findIndex(state.currentTrack);
 
-      if (currentIndex > 0) {
-        indexToPlay = currentIndex - 1;
-      } else {
-        indexToPlay = totalTracksIndexes;
-      }
+    //   if (currentIndex > 0) {
+    //     indexToPlay = currentIndex - 1;
+    //   } else {
+    //     indexToPlay = totalTracksIndexes;
+    //   }
 
-      playOrResume();
-    }
+    //   playOrResume();
+    // }
   }
 
   const playNext = () => {
@@ -289,40 +326,15 @@ function Player(props) {
     ];
   };
 
-  const formatTime = seconds => {
-    let minutes = Math.floor(seconds / 60);
-    minutes = minutes >= 10 ? minutes : '0' + minutes;
+  const formatTime = (seconds: number) => {
+    let minutes: number  = Math.floor(seconds / 60);
+    let sMinutes = minutes >= 10 ? minutes : '0' + minutes;
     seconds = Math.floor(seconds % 60);
-    seconds = seconds >= 10 ? seconds : '0' + seconds;
-    return minutes + ':' + seconds;
+    let sSeconds = seconds >= 10 ? seconds : '0' + seconds;
+    return sMinutes + ':' + sSeconds;
   };
 
-  const addTrack = track => {
-    if (!contains(track)) {
-      console.log('not here');
-      state.playedTracks.push(track);
-    }
-
-    console.table(state.playedTracks);
-  };
-
-  const contains = currentTrack => {
-    for (let i in state.playedTracks) {
-      if (state.playedTracks[i] === currentTrack) {
-        return true;
-      }
-    }
-
-    return false;
-  };
-
-  const findIndex = currentTrack => {
-    return state.playedTracks.findIndex(track => {
-      return currentTrack === track;
-    });
-  };
-
-  const handleSeekChange = (event, newPosition) => {
+  const handleSeekChange = (event: any, newPosition: number) => {
     audio.currentTime = (newPosition * audio.duration) / 100;
     setState(prevState => ({
       ...prevState,
@@ -330,7 +342,7 @@ function Player(props) {
     }));
   };
 
-  const handleVolumeChange = (event, newVolume) => {
+  const handleVolumeChange = (event: any, newVolume: number) => {
     // update the audio native player volume and also update the state
     audio.volume = newVolume / 100;
 
@@ -364,14 +376,11 @@ function Player(props) {
           break;
         default:
           newRepeatVal = 'all';
+          audio.loop = false;
       }
 
       return { ...prevState, ...{ repeat: newRepeatVal } };
     });
-  };
-
-  const handleRepeatOne = () => {
-    console.log('repeat one');
   };
 
   // update playing when the store state changes  // componentDidUpdate
@@ -397,10 +406,11 @@ function Player(props) {
     }
 
     // Resume player
-    if (storePlayerData.action === RESUME) {
+    if (storePlayerData.set.id === state.set.id && storePlayerData.action === RESUME) {
+      console.log(storePlayerData.action)
       audio.play();
       setState(prevState => ({
-        ...prevState, action: RESUME }));;
+        ...prevState, action: PLAY }));
       console.log('resuming player');
     }
   }, [storePlayerData.set, storePlayerData.action]);
@@ -437,22 +447,11 @@ function Player(props) {
 
   useEffect(() => {
     syncState({ repeat: state.repeat });
-  }, [ state.repeat ]);
+  }, [state.repeat]);
 
   useEffect(() => {
     syncState({ isShuffled: state.isShuffled });
   }, [state.isShuffled]);
-
-  const setPlayerFromLastState = () => {
-    console.log('udpating from last state')
-    if (state.currentTime > 0) {
-      prepareAudio();
-      audio.currentTime = state.currentTime;
-    }
-
-    setState(prevState => ({
-      ...prevState, isPlaying: false }));
-  }
 
   return (
     <div className={classes.container}>
@@ -487,7 +486,7 @@ function Player(props) {
               <SkipPrevious className={classes.icon} />
             </IconButton>
             <IconButton
-              className={classes.playPause}
+              // className={classes.playPause}
               onClick={togglePlay}
             >
               {state.isPlaying && (
@@ -507,7 +506,7 @@ function Player(props) {
               <SkipNext className={classes.icon} />
             </IconButton>
             <IconButton
-              className={classes.repeat}
+              // className={classes.repeat}
               onClick={toggleRepeat}
             >
               {state.repeat === 'none' && <Repeat className={classes.icon} />}
@@ -565,10 +564,10 @@ function Player(props) {
 };
 
 export default connect(
-  ({ player }) => ({
+  ({ player }: any) => ({
     storePlayerData: player,
   }),
   {
     syncState: playerActions.syncState
   }
-)(withRouter(withStyles(styles)(Player)));
+)(withStyles(styles)(Player));

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode, CSSProperties } from 'react';
 import { CssBaseline, Grid, Container } from '@material-ui/core';
 import Player from '../Player';
 import Left from '../Left';
@@ -14,34 +14,29 @@ const styles = {
     overflowY: 'scroll'
   }
 };
-const MainScreen = props => {
+
+const leftGridStyle = { ...styles.col, paddingTop: 10 } as CSSProperties;
+const mainGridStyle = {
+  ...styles.col,
+  backgroundColor: '#181818',
+  position: 'relative'
+} as CSSProperties;
+const rightGridStyle = { ...styles.col, paddingTop: 10 } as CSSProperties;
+
+const MainScreen = (props: { style?: Object, children: ReactNode }) => {
   return (
     <>
       <CssBaseline />
-      <Container
-        maxWidth="lg"
-        style={{
-          marginBottom: 50
-        }}
-      >
+      <Container maxWidth="lg" style={{ marginBottom: 50 }}>
         <Grid container>
-          <Grid item sm={2} xs={12} style={{ ...styles.col, paddingTop: 10 }}>
+          <Grid item sm={2} xs={12} style={leftGridStyle}>
             <Left />
           </Grid>
-          <Grid
-            item
-            sm={8}
-            xs={12}
-            style={{
-              ...styles.col,
-              backgroundColor: '#181818',
-              position: 'relative'
-            }}
-          >
+          <Grid item sm={8} xs={12} style={mainGridStyle}>
             <Header />
             <Content style={styles.col}>{props.children}</Content>
           </Grid>
-          <Grid item sm={2} xs={12} style={{ ...styles.col, paddingTop: 10 }}>
+          <Grid item sm={2} xs={12} style={rightGridStyle}>
             <Right />
           </Grid>
         </Grid>

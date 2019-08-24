@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-const Content = props => {
+const Content = (props: { style: Object, children: ReactNode}) => {
   return (
     <main
       style={{

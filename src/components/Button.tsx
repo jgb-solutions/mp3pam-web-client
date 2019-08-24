@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Button = (props: { style: Object, onClick: Function }) => {
+const Button = (props: { style: Object, onClick: () => void, children: React.ReactNode }) => {
   const styles = useStyles();
   return (
     <>

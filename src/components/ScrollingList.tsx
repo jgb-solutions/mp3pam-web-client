@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { DOMElement } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
@@ -37,9 +37,9 @@ const useStyles = makeStyles(theme => ({
 const ScrollingList = props => {
   const { data, category } = props;
   const styles = useStyles();
-  let domElement = null;
+  let domElement: any = null;
 
-  const scroll = dir => {
+  const scroll = (dir: string) => {
     const distance = 400;
     if (dir === 'left') {
       domElement.scrollLeft -= distance;

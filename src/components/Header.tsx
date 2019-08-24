@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Header = props => {
+const Header = (props: { }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -49,7 +49,7 @@ const Header = props => {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  function handleProfileMenuOpen(event) {
+  function handleProfileMenuOpen(event: any) {
     setAnchorEl(event.currentTarget);
   }
 
@@ -62,7 +62,7 @@ const Header = props => {
     handleMobileMenuClose();
   }
 
-  function handleMobileMenuOpen(event) {
+  function handleMobileMenuOpen(event: any) {
     setMobileMoreAnchorEl(event.currentTarget);
   }
 

@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home, ViewQuilt } from '@material-ui/icons';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Routes from '../routes';
+import { link } from 'fs';
+import { WithStyles } from '@material-ui/styles';
 
-const styles = theme => ({
+const styles = (theme: Theme) => createStyles({
   logo: {
     maxWidth: '100%',
     width: '200px'
@@ -38,7 +40,9 @@ const menu = [
   }
 ];
 
-const Left = ({ classes }) => {
+interface Props extends WithStyles<typeof styles> {}
+
+const Left = ({ classes }: Props) => {
   return (
     <>
       <Link to="/">
@@ -48,7 +52,7 @@ const Left = ({ classes }) => {
           alt='MP3 Pam logo'
         />
       </Link>
-      <p className={classes.menu}>
+      <p>
         {menu.map((menuItem, index) => (
           <Link key={index} to={menuItem.to} className={classes.link}>
             <span className={classes.linkIcon}>{menuItem.icon}</span>

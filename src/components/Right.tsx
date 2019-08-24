@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Right = props => {
+const Right = (props: any) => {
   return (
     <div>
       <h3>Right Side</h3>
