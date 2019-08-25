@@ -11,7 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import colors from "../utils/colors";
 import Routes from "../routes";
-import SetInterface from "../interfaces/SetInterface";
+import ListInterface from "../interfaces/ListInterface";
 
 const useStyles = makeStyles(theme => ({
 	imgContainer: {
@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 
 const Thumbnail = (
 	props: RouteComponentProps & {
-		set: SetInterface;
+		set: ListInterface;
 		className: string;
 		isPlaying: boolean;
 	}
@@ -73,7 +73,7 @@ const Thumbnail = (
 
 	const { set, isPlaying } = props;
 
-	const goToDetailPage = (set: SetInterface) => {
+	const goToDetailPage = (set: ListInterface) => {
 		props.history.push(Routes.goToSetDetail(set.id), { set });
 	};
 
@@ -103,6 +103,6 @@ const Thumbnail = (
 };
 
 export default connect(({ player }: any) => ({
-	setID: player.set.id,
+	setId: player.set.id,
 	isPlaying: player.isPlaying
 }))(withRouter(Thumbnail));

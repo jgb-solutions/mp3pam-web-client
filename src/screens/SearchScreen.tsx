@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Grid } from "@material-ui/core";
-import SetInterface from "../interfaces/SetInterface";
+import ListInterface from "../interfaces/ListInterface";
 import * as searchActions from "../store/actions/searchActions";
 
-const SearchScreen = (props: { term: string; results: SetInterface[] }) => {
+const SearchScreen = (props: { term: string; results: ListInterface[] }) => {
 	const { term, results } = props;
 	return (
 		<div>

@@ -4,7 +4,7 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
 import Thumbnail from "./Thumbnail";
-import SetInterface from "../interfaces/SetInterface";
+import ListInterface from "../interfaces/ListInterface";
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const ScrollingList = (props: { data: SetInterface[]; category: string }) => {
+const ScrollingList = (props: { data: ListInterface[]; category: string }) => {
 	const { data, category } = props;
 	const styles: any = useStyles();
 	let domElement: any = null;

@@ -1,4 +1,4 @@
-import SetInterface from "./SetInterface";
+import ListInterface from "./ListInterface";
 import TrackInterface from "./TrackInterface";
 import ArtistInterface from "./ArtistInterface";
 import CategoryInterface from "./CategoryInterface";
@@ -14,5 +14,5 @@ export default interface PlayerInterface {
 	duration: string;
 	currentTime: number;
 	currentTrack: TrackInterface;
-	set: SetInterface;
+	set: ListInterface;
 }

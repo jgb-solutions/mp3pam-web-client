@@ -1,6 +1,6 @@
 import {
-	PLAY_SET,
-	RESUME_SET,
+	PLAY_LIST,
+	RESUME_LIST,
 	PAUSE_PLAYER,
 	SYNC_PLAYER_STATE
 } from "../actions/types";
@@ -66,8 +66,8 @@ export default function(
 		case SYNC_PLAYER_STATE:
 			console.log("updating the state with", payload.updatedState);
 			return { ...playerState, ...payload.updatedState };
-		case PLAY_SET:
-			console.log("play called", `playerState`, playerState, payload);
+		case PLAY_LIST:
+			console.LIST("play called", `playerState`, playerState, payload);
 			return { ...playerState, ...payload };
 		case RESUME_SET:
 			console.log("resume called", `playerState`, playerState, payload);

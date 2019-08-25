@@ -10,7 +10,8 @@ import { FavoriteBorderRounded, MoreHorizOutlined } from "@material-ui/icons";
 import Routes from "../routes";
 import colors from "../utils/colors";
 import Button from "../components/Button";
-import SetInterface from "../interfaces/SetInterface";
+import useGetSet from '../hooks/useGetSet';
+import ListInterface from "../interfaces/ListInterface";
 import * as playerActions from "../store/actions/playerActions";
 
 const useStyles = makeStyles(() => ({
@@ -72,18 +73,24 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface Props {
-	playSet(set: SetInterface): void;
-	pauseSet(): void;
-	resumeSet(): void;
+	playSet(list: ListInterface): void;
+	pauseList(): void;
+	resumeList(): void;
 	isPlaying: boolean;
-	setID: string;
-	set: SetInterface;
+	listId: string;
+	set: ListInterface;
 }
 
-const SetScreen = (props: Props & RouteComponentProps) => {
+interface RouteParams {listId?: string, set?: ListInterface}
+
+const SetScreen = (props: Props & RouteComponentProps<any>) => {
 	const styles = useStyles();
 	const [anchorEl, setAnchorEl] = useState(null);
-	const [set, setSet] = useState(props.location.state.set);
+	const listParam = props.location.state
+	const [list, isLoading] = useGetSet(
+		props.match.params.listId,
+		props.location.state.set
+	);
 
 	function handleClick(event: any) {
 		setAnchorEl(event.currentTarget);
@@ -94,31 +101,36 @@ const SetScreen = (props: Props & RouteComponentProps) => {
 	}
 
 	const togglePlay = () => {
-		if (props.isPlaying && props.setID === set.id) {
-			props.pauseSet();
+		if (props.isPlaying && props.listId === list.id) {
+			props.pauseList();
 			console.log("pausing set");
 		}
 
-		if (!props.isPlaying && props.setID === set.id) {
-			props.resumeSet();
+		if (!props.isPlaying && props.listId === list.id) {
+			props.resumeList();
 			console.log("resuming set");
 		}
 
-		if (props.setID !== set.id) {
-			props.playSet(set);
+		if (props.listId !== list.id) {
+			props.playSet(list);
 			console.log("play set");
 		}
 	};
+
+
+	if (isLoading) {
+		return (<h1>Loading...</h1>)
+	}
 
 	return (
 		<>
 			<div className={styles.row}>
 				<div className={styles.setCover}>
-					<img src={set.image} alt={set.name} />
+					<img src={list.image} alt={list.name} />
 				</div>
 				<div className={styles.setDetails}>
-					<h5 className={styles.setType}>{set.type}</h5>
-					<h1 className={styles.setName}>{set.name}</h1>
+					<h5 className={styles.setType}>{list.type}</h5>
+					<h1 className={styles.setName}>{list.name}</h1>
 					<p className={styles.setByAuthor}>
 						<span className={styles.setBy}>By </span>
 						<Link
@@ -130,7 +142,7 @@ const SetScreen = (props: Props & RouteComponentProps) => {
 					</p>
 					<div>
 						<Button onClick={togglePlay}>
-							{props.isPlaying && props.setID === set.id ? "Pause" : "Play"}
+							{props.isPlaying && props.listId === list.id ? "Pause" : "Play"}
 						</Button>
 						<IconButton className={styles.iconBtn}>
 							<FavoriteBorderRounded className={styles.icon} />
@@ -162,12 +174,12 @@ const SetScreen = (props: Props & RouteComponentProps) => {
 
 export default connect(
 	({ player }: any) => ({
-		setID: player.set.id,
+		listId: player.list.id,
 		isPlaying: player.isPlaying
 	}),
 	{
-		playSet: playerActions.playSet,
-		pauseSet: playerActions.pauseSet,
-		resumeSet: playerActions.resumeSet
+		playSet: playerActions.playList,
+		pauseList: playerActions.pauseList,
+		resumeList: playerActions.resumeList
 	}
 )(withRouter(SetScreen));
