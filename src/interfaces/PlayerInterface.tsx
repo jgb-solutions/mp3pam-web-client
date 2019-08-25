@@ -5,7 +5,7 @@ import CategoryInterface from "./CategoryInterface";
 
 export default interface PlayerInterface {
 	volume: number;
-	repeat: string;
+	repeat: string | undefined;
 	isPlaying: boolean;
 	isShuffled: boolean;
 	action: string;

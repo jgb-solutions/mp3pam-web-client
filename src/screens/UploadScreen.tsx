@@ -1,8 +1,8 @@
-// @flow
 import axios from "axios";
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect } from "react";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { withStyles, darken } from "@material-ui/core/styles";
+
 import colors from "../utils/colors";
 
 const ProgressBar = withStyles({

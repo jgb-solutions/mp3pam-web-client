@@ -53,6 +53,7 @@ const Search = (
 
 	useEffect(() => {
 		updateSearchUrl();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchTerm]);
 
 	const handleChange = (event: any) => {

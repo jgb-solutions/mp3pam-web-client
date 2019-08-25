@@ -14,7 +14,6 @@ import {
 	PlaylistPlayOutlined
 } from "@material-ui/icons";
 import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as playerActions from "../store/actions/playerActions";
 import IconButton from "@material-ui/core/IconButton";
@@ -30,6 +29,7 @@ import colors from "../utils/colors";
 import Slider from "./Slider";
 import { RESUME, PAUSE, PLAY } from "../store/actions/actions";
 import PlayerInterface from "../interfaces/PlayerInterface";
+import { debounce } from "lodash-es";
 
 const styles = (theme: Theme) =>
 	createStyles({
@@ -142,7 +142,7 @@ const styles = (theme: Theme) =>
 const audio = new Audio();
 
 interface Props extends WithStyles<typeof styles> {
-	syncState({}): void;
+	syncState(state: any): void;
 	storePlayerData: PlayerInterface;
 }
 
@@ -150,7 +150,8 @@ function Player(props: Props) {
 	const { classes, storePlayerData, syncState } = props;
 	const [state, setState] = useState<PlayerInterface>({
 		...storePlayerData,
-		isPlaying: false
+		isPlaying: false,
+		action: PAUSE
 	});
 
 	// Audio events for when the component first mounts
@@ -161,6 +162,7 @@ function Player(props: Props) {
 		audio.ontimeupdate = onTimeUpdate;
 		audio.onpause = onPause;
 		audio.onplay = onPlay;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// set the last state of the audio player
@@ -170,10 +172,7 @@ function Player(props: Props) {
 			prepareAudio();
 			audio.currentTime = state.currentTime;
 		}
-		setState(prevState => ({
-			...prevState,
-			isPlaying: false
-		}));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const onPlay = () => {
@@ -204,10 +203,10 @@ function Player(props: Props) {
 
 	const onEnded = () => {
 		console.log("onEnd called", state.repeat);
-		console.log(state);
-		if (state.repeat === "all") {
-			playNext();
-		}
+		console.log(state.repeat);
+		// if (state.repeat === "all") {
+		// 	playNext();
+		// }
 	};
 
 	const togglePlay = () => {
@@ -344,28 +343,21 @@ function Player(props: Props) {
 
 	const toggleRepeat = () => {
 		setState(prevState => {
-			const { repeat } = prevState;
-			let newRepeatVal = null;
+			let newRepeatVal;
 
-			switch (repeat) {
+			switch (prevState.repeat) {
 				case "none":
-					audio.loop = false;
 					newRepeatVal = "all";
 					break;
 				case "all":
-					audio.loop = true;
 					newRepeatVal = "one";
 					break;
 				case "one":
-					audio.loop = false;
 					newRepeatVal = "none";
 					break;
-				default:
-					newRepeatVal = "all";
-					audio.loop = false;
 			}
 
-			return { ...prevState, ...{ repeat: newRepeatVal } };
+			return { ...prevState, repeat: newRepeatVal };
 		});
 	};
 
@@ -402,50 +394,69 @@ function Player(props: Props) {
 		) {
 			console.log(storePlayerData.action);
 			audio.play();
-			setState(prevState => ({
-				...prevState,
-				action: PLAY
-			}));
+			// setState(prevState => ({
+			// 	...prevState,
+			// 	action: RESUME
+			// }));
 			console.log("resuming player");
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [storePlayerData.set, storePlayerData.action]);
 
 	// update the store state when some local states change
 	useEffect(() => {
 		syncState({ volume: state.volume });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.volume]);
 
 	useEffect(() => {
 		syncState({ isPlaying: state.isPlaying });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.isPlaying]);
 
 	useEffect(() => {
+		const { repeat } = state;
+		console.log(`repeat state is ${repeat} and audio.loop is ${audio.loop}`);
+		audio.loop = repeat === "all" || repeat === "one";
 		syncState({ repeat: state.repeat });
-		console.log("repeat updated", state.repeat);
+		console.log(`repeat state is ${repeat} and audio.loop is ${audio.loop}`);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.repeat]);
 
-	useEffect(() => {
-		syncState({ position: state.position });
-	}, [state.position]);
+	// useEffect(() => {
+	// 	debounce(() => {
+	// 		syncState({ position: state.position });
+	// 	}, 1000)();
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [state.position]);
 
 	useEffect(() => {
-		syncState({ elapsed: state.elapsed });
+		debounce(() => {
+			syncState({ elapsed: state.elapsed, currentTime: state.currentTime });
+		}, 1000)();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.elapsed]);
 
-	useEffect(() => {
-		syncState({ currentTime: state.currentTime });
-	}, [state.currentTime]);
+	// useEffect(() => {
+	// 	debounce(() => {
+	// 		syncState({ currentTime: state.currentTime });
+	// 	}, 1000)();
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [state.currentTime]);
 
 	useEffect(() => {
 		syncState({ duration: state.duration });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.duration]);
 
 	useEffect(() => {
 		syncState({ repeat: state.repeat });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.repeat]);
 
 	useEffect(() => {
 		syncState({ isShuffled: state.isShuffled });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.isShuffled]);
 
 	return (
@@ -502,10 +513,7 @@ function Player(props: Props) {
 						<IconButton>
 							<SkipNext className={classes.icon} />
 						</IconButton>
-						<IconButton
-							// className={classes.repeat}
-							onClick={toggleRepeat}
-						>
+						<IconButton onClick={toggleRepeat}>
 							{state.repeat === "none" && <Repeat className={classes.icon} />}
 							{state.repeat === "all" && (
 								<Repeat

@@ -1,13 +1,10 @@
-import React, { DOMElement } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
 import Thumbnail from "./Thumbnail";
-import colors from "../utils/colors";
-import { WithStyles } from "@material-ui/styles";
 import SetInterface from "../interfaces/SetInterface";
-import CategoryInterface from "../interfaces/CategoryInterface";
 
 const useStyles = makeStyles(theme => ({
 	container: {

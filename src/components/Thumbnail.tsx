@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
 	VolumeUpOutlined,
 	PlayCircleOutline,
@@ -11,7 +11,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import colors from "../utils/colors";
 import Routes from "../routes";
-import * as playerActions from "../store/actions/playerActions";
 import SetInterface from "../interfaces/SetInterface";
 
 const useStyles = makeStyles(theme => ({

@@ -4,7 +4,7 @@ import {
 	PAUSE_PLAYER,
 	SYNC_PLAYER_STATE
 } from "../actions/types";
-import { PAUSE, RESUME } from "../actions/actions";
+import { PAUSE } from "../actions/actions";
 import PlayerInterface from "../../interfaces/PlayerInterface";
 
 const INITIAL_PLAYER_STATE = {
@@ -64,13 +64,14 @@ export default function(
 
 	switch (type) {
 		case SYNC_PLAYER_STATE:
+			console.log("updating the state with", payload.updatedState);
 			return { ...playerState, ...payload.updatedState };
 		case PLAY_SET:
 			console.log("play called", `playerState`, playerState, payload);
 			return { ...playerState, ...payload };
 		case RESUME_SET:
 			console.log("resume called", `playerState`, playerState, payload);
-			return { ...playerState, ...payload };
+			return { ...playerState, ...payload, set: { ...playerState.set } };
 		case PAUSE_PLAYER:
 			console.log("pause called", `playerState`, playerState, payload);
 			return { ...playerState, ...payload };

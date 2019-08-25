@@ -1,24 +1,17 @@
-import { FavoriteBorderRounded, MoreHorizOutlined } from "@material-ui/icons";
-import IconButton from "@material-ui/core/IconButton";
+import { connect } from "react-redux";
+import React, { useState } from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import React, { useState } from "react";
-import {
-	darken,
-	Theme,
-	createStyles,
-	withStyles,
-	makeStyles
-} from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
+import { darken, makeStyles } from "@material-ui/core/styles";
 import { withRouter, Link, RouteComponentProps } from "react-router-dom";
-import { connect } from "react-redux";
-import { WithStyles } from "@material-ui/styles";
+import { FavoriteBorderRounded, MoreHorizOutlined } from "@material-ui/icons";
 
-import * as playerActions from "../store/actions/playerActions";
-import colors from "../utils/colors";
 import Routes from "../routes";
+import colors from "../utils/colors";
 import Button from "../components/Button";
 import SetInterface from "../interfaces/SetInterface";
+import * as playerActions from "../store/actions/playerActions";
 
 const useStyles = makeStyles(() => ({
 	row: {
@@ -88,9 +81,9 @@ interface Props {
 }
 
 const SetScreen = (props: Props & RouteComponentProps) => {
-	const [anchorEl, setAnchorEl] = useState(null);
-	const { set } = props;
 	const styles = useStyles();
+	const [anchorEl, setAnchorEl] = useState(null);
+	const [set, setSet] = useState(props.location.state.set);
 
 	function handleClick(event: any) {
 		setAnchorEl(event.currentTarget);

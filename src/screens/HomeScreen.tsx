@@ -1,6 +1,4 @@
-// @flow
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { shuffle } from "lodash-es";
 import ScrollingList from "../components/ScrollingList";
 
@@ -104,7 +102,11 @@ export default function Home() {
 		<>
 			<h1>Home</h1>
 			{categories.map(category => (
-				<ScrollingList category={category} data={shuffle(data)} />
+				<ScrollingList
+					key={category}
+					category={category}
+					data={shuffle(data)}
+				/>
 			))}
 		</>
 	);
