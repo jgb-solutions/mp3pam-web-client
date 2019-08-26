@@ -64,28 +64,28 @@ const useStyles = makeStyles(theme => ({
 
 const Thumbnail = (
 	props: RouteComponentProps & {
-		set: ListInterface;
+		list: ListInterface;
 		className: string;
 		isPlaying: boolean;
 	}
 ) => {
 	const styles: any = useStyles();
 
-	const { set, isPlaying } = props;
+	const { list, isPlaying } = props;
 
-	const goToDetailPage = (set: ListInterface) => {
-		props.history.push(Routes.goToSetDetail(set.id), { set });
+	const goToDetailPage = (list: ListInterface) => {
+		props.history.push(Routes.goToListDetail(list.id), { listParam: list });
 	};
 
 	return (
 		<div className={props.className}>
 			<div
 				className={styles.imgContainer}
-				style={{ backgroundImage: `url(${set.image})` }}
+				style={{ backgroundImage: `url(${list.image})` }}
 			>
 				<div
 					className={styles.transparentBackground}
-					onClick={() => goToDetailPage(set)}
+					onClick={() => goToDetailPage(list)}
 				>
 					<IconButton className={styles.playPauseButton}>
 						{isPlaying && <PauseCircleOutline className={styles.icon} />}
@@ -93,7 +93,7 @@ const Thumbnail = (
 					</IconButton>
 				</div>
 			</div>
-			<h3 className={styles.title}>{set.name}</h3>
+			<h3 className={styles.title}>{list.name}</h3>
 			<p className={styles.details}>
 				Drift away with child <br />
 				ambient music. <br />
@@ -103,6 +103,6 @@ const Thumbnail = (
 };
 
 export default connect(({ player }: any) => ({
-	setId: player.set.id,
+	listId: player.list.id,
 	isPlaying: player.isPlaying
 }))(withRouter(Thumbnail));

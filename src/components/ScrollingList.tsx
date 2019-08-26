@@ -70,8 +70,8 @@ const ScrollingList = (props: { data: ListInterface[]; category: string }) => {
 					domElement = el;
 				}}
 			>
-				{data.map((set, index) => (
-					<Thumbnail key={index} className={styles.thumbnail} set={set} />
+				{data.map((list, index) => (
+					<Thumbnail key={index} className={styles.thumbnail} list={list} />
 				))}
 			</div>
 		</div>

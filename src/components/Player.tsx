@@ -366,7 +366,7 @@ function Player(props: Props) {
 		console.log(`wanting to ${storePlayerData.action}`);
 		// play new set
 		if (
-			state.set.id !== storePlayerData.set.id &&
+			state.list.id !== storePlayerData.list.id &&
 			storePlayerData.action === PLAY
 		) {
 			play();
@@ -374,7 +374,7 @@ function Player(props: Props) {
 				...prevState,
 				action: PLAY
 			}));
-			console.log("playlist has been updated", storePlayerData.set.id);
+			console.log("playlist has been updated", storePlayerData.list.id);
 		}
 
 		// pausing the player
@@ -384,24 +384,23 @@ function Player(props: Props) {
 				...prevState,
 				action: PAUSE
 			}));
-			console.log("playlist is being pause for set ", storePlayerData.set.id);
+			console.log("playlist is being pause for set ", storePlayerData.list.id);
 		}
 
 		// Resume player
 		if (
-			storePlayerData.set.id === state.set.id &&
-			storePlayerData.action === RESUME
+			storePlayerData.list.id === state.list.id
 		) {
+			console.log("resuming player");
 			console.log(storePlayerData.action);
 			audio.play();
 			// setState(prevState => ({
 			// 	...prevState,
 			// 	action: RESUME
 			// }));
-			console.log("resuming player");
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [storePlayerData.set, storePlayerData.action]);
+	}, [storePlayerData.list, storePlayerData.action]);
 
 	// update the store state when some local states change
 	useEffect(() => {

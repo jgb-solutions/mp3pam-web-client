@@ -17,7 +17,7 @@ const INITIAL_PLAYER_STATE = {
 	duration: "00.00",
 	onRepeat: false,
 	isShuffled: false,
-	set: {
+	list: {
 		id: "2342423",
 		items: [],
 		image: "https://images.mp3pam.com/demo/artist9.jpg",
@@ -67,11 +67,11 @@ export default function(
 			console.log("updating the state with", payload.updatedState);
 			return { ...playerState, ...payload.updatedState };
 		case PLAY_LIST:
-			console.LIST("play called", `playerState`, playerState, payload);
+			console.log("play called", `playerState`, playerState, payload);
 			return { ...playerState, ...payload };
-		case RESUME_SET:
+		case RESUME_LIST:
 			console.log("resume called", `playerState`, playerState, payload);
-			return { ...playerState, ...payload, set: { ...playerState.set } };
+			return { ...playerState, ...payload, set: { ...playerState.list } };
 		case PAUSE_PLAYER:
 			console.log("pause called", `playerState`, playerState, payload);
 			return { ...playerState, ...payload };

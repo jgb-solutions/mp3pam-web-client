@@ -3,7 +3,7 @@ import { makeStyles, lighten } from "@material-ui/core/styles";
 
 import colors from "../utils/colors";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
 	primaryBtn: {
 		backgroundColor: colors.primary,
 		color: colors.white,
@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
 			outline: "none"
 		}
 	}
-}));
+});
 
 const Button = (props: {
 	style?: Object;

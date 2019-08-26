@@ -1,6 +1,6 @@
 import TrackInterface from "./TrackInterface";
 
-export default interface SetInterface {
+export default interface ListInterface {
 	id: string;
 	items?: TrackInterface[];
 	name: string;

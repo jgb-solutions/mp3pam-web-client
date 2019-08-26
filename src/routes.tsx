@@ -5,8 +5,8 @@ const Routes = {
 	about: `/about`,
 	queue: `/queue`,
 	upload: `/upload`,
-	set: `/set/:id`,
-	goToSetDetail: (setID: string) => `/set/${setID}`,
+	list: `/list/:listId`,
+	goToListDetail: (setID: string) => `/list/${setID}`,
 	goToAuthorDetail: (authorID: string) => `/author/${authorID}`
 };
 
