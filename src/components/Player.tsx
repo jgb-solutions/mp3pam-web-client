@@ -390,6 +390,7 @@ function Player(props: Props) {
 		// Resume player
 		if (
 			storePlayerData.list.id === state.list.id
+			&& storePlayerData.action === RESUME
 		) {
 			console.log("resuming player");
 			console.log(storePlayerData.action);

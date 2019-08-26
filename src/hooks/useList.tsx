@@ -17,8 +17,10 @@ function useList(listId: string, listParam: ListInterface | undefined = undefine
         const response: any = await APIService.getList(listId);
         setList(response.data);
         setIsLoading(false);
+        console.log('response', response);
       } catch (error) {
         setError(error);
+        console.log(error);
         setIsLoading(false);
       }
     };

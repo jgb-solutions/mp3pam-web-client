@@ -64,7 +64,11 @@ const makeRequest = (url: string, verb: string, data = null) => {
 
 const APIService = {
 	getList: (listId: string) => {
-		return makeRequest(`${apiUrl}/list/${listId}`, 'get');
+		// const url = `https://api.mp3pam.com/workers/list?listId=${listId}`;
+		const url = `https://mp3pam-list-api.jgb-solutions.workers.dev?listId=${listId}`;
+		// `${apiUrl}/list?listId=${listId}`
+
+		return makeRequest(url, 'get');
 	},
 // 	getMusics: (url?) => {
 // 	if (! url) {
