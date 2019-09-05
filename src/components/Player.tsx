@@ -29,6 +29,7 @@ import colors from "../utils/colors";
 import Slider from "./Slider";
 import { RESUME, PAUSE, PLAY } from "../store/actions/actions";
 import PlayerInterface from "../interfaces/PlayerInterface";
+import AppStateInterface from "../interfaces/AppStateInterface";
 import { debounce } from "../utils/helpers";
 import { get } from "lodash-es";
 
@@ -169,7 +170,6 @@ function Player(props: Props) {
 
 	// set the last state of the audio player
 	useEffect(() => {
-		console.log("udpating from last state");
 		if (state.currentTime > 0) {
 			prepareAudio();
 			audio.currentTime = state.currentTime;
@@ -365,19 +365,19 @@ function Player(props: Props) {
 
 	// update playing when the store state changes  // componentDidUpdate
 	useEffect(() => {
-		console.log(`wanting to ${storePlayerData.action}`);
 		// play new set
 		if (
 			state.list.id !== storePlayerData.list.id &&
 			storePlayerData.action === PLAY
 		) {
+			const currentTrack = get(storePlayerData, 'list.items')[0]
+
 			setState(prevState => ({
 				...prevState,
 				action: PLAY,
 				list: storePlayerData.list,
-				currentTrack: get(storePlayerData, 'list.items')[0]
+				currentTrack
 			}));
-			console.log("playlist has been updated", storePlayerData.list.id);
 		}
 
 		// pausing the player
@@ -387,7 +387,6 @@ function Player(props: Props) {
 				...prevState,
 				action: PAUSE
 			}));
-			console.log("playlist is being pause for set ", storePlayerData.list.id);
 		}
 
 		// Resume player
@@ -395,16 +394,14 @@ function Player(props: Props) {
 			storePlayerData.list.id === state.list.id
 			&& storePlayerData.action === RESUME
 		) {
-			console.log("resuming player");
-			console.log(storePlayerData.action);
 			audio.play();
-			// setState(prevState => ({
-			// 	...prevState,
-			// 	action: RESUME
-			// }));
+			setState(prevState => ({
+				...prevState,
+				action: RESUME
+			}));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [storePlayerData.list, storePlayerData.action, storePlayerData.time]);
+	}, [storePlayerData.list, storePlayerData.action, storePlayerData.updateHack]);
 
 	// update the store state when some local states change
 	useEffect(() => {
@@ -414,8 +411,11 @@ function Player(props: Props) {
 
 	// play current track after it has been updated
 	useEffect(() => {
-		syncState({ currentTrack: state.currentTrack });
-		play();
+		if (storePlayerData.currentTrack.id !== state.currentTrack.id) {
+			syncState({ currentTrack: state.currentTrack });
+			play();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.currentTrack]);
 
 	useEffect(() => {
@@ -578,7 +578,7 @@ function Player(props: Props) {
 }
 
 export default connect(
-	({ player }: any) => ({
+	({ player }: AppStateInterface) => ({
 		storePlayerData: player
 	}),
 	{

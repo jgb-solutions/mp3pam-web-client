@@ -17,7 +17,6 @@ function useList(listId: string, listParam: ListInterface | undefined = undefine
         const response: any = await APIService.getList(listId);
         setList(response.data);
         setIsLoading(false);
-        console.log('response', response);
       } catch (error) {
         setError(error);
         console.log(error);
@@ -30,6 +29,7 @@ function useList(listId: string, listParam: ListInterface | undefined = undefine
     } else {
       fetchList();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return [ list, isLoading, error ];

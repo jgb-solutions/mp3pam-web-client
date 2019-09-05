@@ -17,7 +17,8 @@ const INITIAL_PLAYER_STATE = {
 	duration: "00.00",
 	onRepeat: false,
 	isShuffled: false,
-	time: '',
+	// Should be temporary
+	updateHack: '',
 	list: {
 		id: "2342423",
 		items: [],
@@ -28,6 +29,7 @@ const INITIAL_PLAYER_STATE = {
 	},
 	action: PAUSE,
 	currentTrack: {
+		id: '42139505',
 		title: "Bad News",
 		detail:
 			"Cat, 'if you don't explain it is right?' 'In my youth,' Father William replied to his ear. Alice considered a little, and then said 'The fourth.' 'Two days wrong!' sighed the Lory, as soon as she.",
@@ -65,16 +67,16 @@ export default function(
 
 	switch (type) {
 		case SYNC_PLAYER_STATE:
-			console.log("updating the state with", payload.updatedState);
+			// console.log("updating the state with", payload.updatedState);
 			return { ...playerState, ...payload.updatedState };
 		case PLAY_LIST:
-			console.log("play called", `playerState`, playerState, payload);
+			// console.log("play called", `playerState`, playerState, payload);
 			return { ...playerState, ...payload };
 		case RESUME_LIST:
-			console.log("resume called", `playerState`, playerState, payload);
-			return { ...playerState, ...payload, set: { ...playerState.list }, time: Date.now().toString() };
+			// console.log("resume called", `playerState`, playerState, payload);
+			return { ...playerState, ...payload, set: { ...playerState.list }, updateHack: Date.now().toString() };
 		case PAUSE_PLAYER:
-			console.log("pause called", `playerState`, playerState, payload);
+			// console.log("pause called", `playerState`, playerState, payload);
 			return { ...playerState, ...payload };
 		default:
 			return playerState;

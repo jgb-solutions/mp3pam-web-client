@@ -11,7 +11,7 @@ export default interface PlayerInterface {
 	elapsed: string;
 	duration: string;
 	currentTime: number;
-	time: string,
+	updateHack: string,
 	currentTrack: TrackInterface;
 	list: ListInterface;
 }

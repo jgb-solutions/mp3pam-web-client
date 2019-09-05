@@ -14,6 +14,7 @@ import Button from "../components/Button";
 import ListTable from '../components/ListTable';
 import ListInterface from "../interfaces/ListInterface";
 import * as playerActions from "../store/actions/playerActions";
+import AppStateInterface from "../interfaces/AppStateInterface";
 
 const useStyles = makeStyles(() => ({
 	row: {
@@ -79,6 +80,7 @@ interface Props {
 	resumeList(): void;
 	isPlaying: boolean;
 	playingListId: string;
+	currentTime: number;
 }
 
 interface RouteParams {listId: string, listParam: ListInterface}
@@ -99,19 +101,16 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 	}
 
 	const togglePlay = (list: ListInterface) => {
-		if (props.isPlaying && props.playingListId === listId) {
+		if (props.isPlaying &&  props.playingListId === list.id) {
 			props.pauseList();
-			console.log("pausing list");
 		}
 
-		if (!props.isPlaying && props.playingListId === listId) {
+		if (!props.isPlaying && props.playingListId === list.id) {
 			props.resumeList();
-			console.log("resuming list");
 		}
 
-		if (props.playingListId !== listId) {
+		if (props.playingListId !== list.id) {
 			props.playList(list);
-			console.log("play list");
 		}
 	};
 
@@ -144,7 +143,10 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 						</p>
 						<div>
 							<Button onClick={() => { togglePlay(list) }}>
-								{props.isPlaying && props.playingListId === listId ? "Pause" : "Play"}
+								{(props.playingListId !== list.id) && "Play"}
+								{(props.isPlaying && props.playingListId === list.id) && "Pause"}
+								{(!props.isPlaying && props.playingListId === list.id) && "Resume"}
+								{/* todo // using props.currentTime > 0  to display rsesume or replay */}
 							</Button>
 							<IconButton className={styles.iconBtn}>
 								<FavoriteBorderRounded className={styles.icon} />
@@ -176,9 +178,10 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 }
 
 export default connect(
-	({ player }: any) => ({
-		playingListId: player.listId,
+	({ player }: AppStateInterface) => ({
+		playingListId: player.list.id,
 		isPlaying: player.isPlaying,
+		currentTime: player.currentTime
 	}),
 	{
 		playList: playerActions.playList,

@@ -16,6 +16,7 @@ export const playList = (list: ListInterface) => {
 	// fetch List to play from the network
 	const listWithItems = { ...list, items: [
 		{
+			id: '421395238',
 			title: "Good News",
 			detail: "Some new detailr",
 			lyrics: " minute or two, they began ether you're a.",
