@@ -11,6 +11,7 @@ import Routes from "../routes";
 import colors from "../utils/colors";
 import useList from '../hooks/useList';
 import Button from "../components/Button";
+import ListTable from '../components/ListTable';
 import ListInterface from "../interfaces/ListInterface";
 import * as playerActions from "../store/actions/playerActions";
 
@@ -98,17 +99,17 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 	}
 
 	const togglePlay = (list: ListInterface) => {
-		if (props.isPlaying && props.playingListId === list.id) {
+		if (props.isPlaying && props.playingListId === listId) {
 			props.pauseList();
 			console.log("pausing list");
 		}
 
-		if (!props.isPlaying && props.playingListId === list.id) {
+		if (!props.isPlaying && props.playingListId === listId) {
 			props.resumeList();
 			console.log("resuming list");
 		}
 
-		if (props.playingListId !== list.id) {
+		if (props.playingListId !== listId) {
 			props.playList(list);
 			console.log("play list");
 		}
@@ -143,7 +144,7 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 						</p>
 						<div>
 							<Button onClick={() => { togglePlay(list) }}>
-								{props.isPlaying ? "Pause" : "Play"}
+								{props.isPlaying && props.playingListId === listId ? "Pause" : "Play"}
 							</Button>
 							<IconButton className={styles.iconBtn}>
 								<FavoriteBorderRounded className={styles.icon} />
@@ -169,14 +170,15 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 						</div>
 					</div>
 				</div>
+				<ListTable />
 			</>
 		) : null;
 }
 
 export default connect(
 	({ player }: any) => ({
-		playingListId: player.list.id,
-		isPlaying: player.isPlaying
+		playingListId: player.listId,
+		isPlaying: player.isPlaying,
 	}),
 	{
 		playList: playerActions.playList,

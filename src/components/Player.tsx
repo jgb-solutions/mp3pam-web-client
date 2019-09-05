@@ -29,7 +29,8 @@ import colors from "../utils/colors";
 import Slider from "./Slider";
 import { RESUME, PAUSE, PLAY } from "../store/actions/actions";
 import PlayerInterface from "../interfaces/PlayerInterface";
-import { debounce } from "lodash-es";
+import { debounce } from "../utils/helpers";
+import { get } from "lodash-es";
 
 const styles = (theme: Theme) =>
 	createStyles({
@@ -140,6 +141,7 @@ const styles = (theme: Theme) =>
 
 // Setup Audio
 const audio = new Audio();
+let syncStateTimeoutId: number;
 
 interface Props extends WithStyles<typeof styles> {
 	syncState(state: any): void;
@@ -369,10 +371,11 @@ function Player(props: Props) {
 			state.list.id !== storePlayerData.list.id &&
 			storePlayerData.action === PLAY
 		) {
-			play();
 			setState(prevState => ({
 				...prevState,
-				action: PLAY
+				action: PLAY,
+				list: storePlayerData.list,
+				currentTrack: get(storePlayerData, 'list.items')[0]
 			}));
 			console.log("playlist has been updated", storePlayerData.list.id);
 		}
@@ -401,13 +404,19 @@ function Player(props: Props) {
 			// }));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [storePlayerData.list, storePlayerData.action]);
+	}, [storePlayerData.list, storePlayerData.action, storePlayerData.time]);
 
 	// update the store state when some local states change
 	useEffect(() => {
 		syncState({ volume: state.volume });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.volume]);
+
+	// play current track after it has been updated
+	useEffect(() => {
+		syncState({ currentTrack: state.currentTrack });
+		play();
+	}, [state.currentTrack]);
 
 	useEffect(() => {
 		syncState({ isPlaying: state.isPlaying });
@@ -416,10 +425,8 @@ function Player(props: Props) {
 
 	useEffect(() => {
 		const { repeat } = state;
-		console.log(`repeat state is ${repeat} and audio.loop is ${audio.loop}`);
-		audio.loop = repeat === "all" || repeat === "one";
+		audio.loop = repeat === "one";
 		syncState({ repeat: state.repeat });
-		console.log(`repeat state is ${repeat} and audio.loop is ${audio.loop}`);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.repeat]);
 
@@ -433,7 +440,7 @@ function Player(props: Props) {
 	useEffect(() => {
 		debounce(() => {
 			syncState({ elapsed: state.elapsed, currentTime: state.currentTime });
-		}, 1000)();
+		}, 1000, syncStateTimeoutId);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.elapsed]);
 

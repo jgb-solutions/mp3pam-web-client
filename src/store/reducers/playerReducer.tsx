@@ -17,6 +17,7 @@ const INITIAL_PLAYER_STATE = {
 	duration: "00.00",
 	onRepeat: false,
 	isShuffled: false,
+	time: '',
 	list: {
 		id: "2342423",
 		items: [],
@@ -71,7 +72,7 @@ export default function(
 			return { ...playerState, ...payload };
 		case RESUME_LIST:
 			console.log("resume called", `playerState`, playerState, payload);
-			return { ...playerState, ...payload, set: { ...playerState.list } };
+			return { ...playerState, ...payload, set: { ...playerState.list }, time: Date.now().toString() };
 		case PAUSE_PLAYER:
 			console.log("pause called", `playerState`, playerState, payload);
 			return { ...playerState, ...payload };

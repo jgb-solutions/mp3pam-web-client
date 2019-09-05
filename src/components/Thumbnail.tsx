@@ -67,11 +67,12 @@ const Thumbnail = (
 		list: ListInterface;
 		className: string;
 		isPlaying: boolean;
+		listId: string
 	}
 ) => {
 	const styles: any = useStyles();
 
-	const { list, isPlaying } = props;
+	const { list, listId, isPlaying } = props;
 
 	const goToDetailPage = (list: ListInterface) => {
 		props.history.push(Routes.goToListDetail(list.id), { listParam: list });
@@ -88,8 +89,12 @@ const Thumbnail = (
 					onClick={() => goToDetailPage(list)}
 				>
 					<IconButton className={styles.playPauseButton}>
-						{isPlaying && <PauseCircleOutline className={styles.icon} />}
-						{!isPlaying && <PlayCircleOutline className={styles.icon} />}
+						{(isPlaying && listId === list.id) && (
+							<PauseCircleOutline className={styles.icon} />
+						)}
+						{(!isPlaying || (isPlaying && listId !== list.id)) && (
+							<PlayCircleOutline className={styles.icon} />
+						)}
 					</IconButton>
 				</div>
 			</div>

@@ -21,19 +21,6 @@ const Right = (props: any) => {
       <h3>Right Side</h3>
       <h3>Right Side</h3>
       <h3>Right Side</h3>
-      <h3>Right Side</h3>
-      <h3>Right Side</h3>
-      <h3>Right Side</h3>
-      <h3>Right Side</h3>
-      <h3>Right Side</h3>
-      <h3>Right Side</h3>
-      <h3>Right Side</h3>
-      <h3>Right Side</h3>
-      <h3>Right Side</h3>
-      <h3>Right Side</h3>
-      <h3>Right Side</h3>
-      <h3>Right Side</h3>
-      <h3>Right Side</h3>
     </div>
   );
 };

@@ -1,7 +1,5 @@
 import ListInterface from "./ListInterface";
 import TrackInterface from "./TrackInterface";
-import ArtistInterface from "./ArtistInterface";
-import CategoryInterface from "./CategoryInterface";
 
 export default interface PlayerInterface {
 	volume: number;
@@ -13,6 +11,7 @@ export default interface PlayerInterface {
 	elapsed: string;
 	duration: string;
 	currentTime: number;
+	time: string,
 	currentTrack: TrackInterface;
 	list: ListInterface;
 }
