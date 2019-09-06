@@ -6,11 +6,12 @@ import {
 } from "../actions/types";
 import { PAUSE } from "../actions/actions";
 import PlayerInterface from "../../interfaces/PlayerInterface";
+import { NONE } from "../../utils/constants";
 
 const INITIAL_PLAYER_STATE = {
 	volume: 80,
 	isPlaying: false,
-	repeat: "none",
+	repeat: NONE,
 	position: 0,
 	elapsed: "00.00",
 	currentTime: 0,

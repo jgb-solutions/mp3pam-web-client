@@ -26,6 +26,7 @@ import {
 
 // import Routes from '../routes';
 import colors from "../utils/colors";
+import { ALL, ONE, NONE } from '../utils/constants';
 import Slider from "./Slider";
 import { RESUME, PAUSE, PLAY } from "../store/actions/actions";
 import PlayerInterface from "../interfaces/PlayerInterface";
@@ -58,7 +59,6 @@ const styles = (theme: Theme) =>
 			flex: 1,
 			display: "flex",
 			alignItems: "center"
-			// border: '1px solid white'
 		},
 		image: {
 			width: 55,
@@ -82,15 +82,11 @@ const styles = (theme: Theme) =>
 			display: "flex",
 			justifyContent: "flex-end",
 			alignItems: "center"
-			// border: '1px solid white'
 		},
 		controls: {
 			flex: 2,
 			display: "flex",
-			// marginTop: 0,
 			flexDirection: "column"
-			// justifyContent: 'space-around'
-			// border: '1px solid white'
 		},
 		buttons: {
 			width: "37%",
@@ -98,20 +94,17 @@ const styles = (theme: Theme) =>
 			justifyContent: "space-between",
 			alignItems: "center",
 			alignSelf: "center"
-			// border: '1px solid white'
 		},
 		sliderTime: {
 			display: "flex",
 			width: "90%",
 			alignSelf: "center",
 			position: "relative"
-			// border: '1px solid white'
 		},
 		slider: {
 			flex: 1,
 			marginLeft: 40,
 			marginRight: 40,
-			// alignSelf: 'flex-end'
 			marginTop: -9
 		},
 		startTime: {
@@ -161,7 +154,7 @@ function Player(props: Props) {
 	// Audio events for when the component first mounts
 	useEffect(() => {
 		audio.volume = state.volume / 100;
-		audio.loop = state.repeat === "one" || state.repeat === "all";
+		audio.loop = state.repeat === ONE;
 		audio.onended = onEnded;
 		audio.ontimeupdate = onTimeUpdate;
 		audio.onpause = onPause;
@@ -206,8 +199,21 @@ function Player(props: Props) {
 
 	const onEnded = () => {
 		const items = get(state.list, 'items', [])
+		const { repeat } = state;
 
-		if (items.length > 1) {
+		const currentTrackIndex = findIndex(state.currentTrack, items)
+		const totalTracksIndexes = items.length - 1;
+
+		if (
+			items.length > 1 && repeat  === ALL
+			) {
+			playNext();
+		}
+
+		if (
+			items.length > 1 && repeat  === NONE &&
+			currentTrackIndex < totalTracksIndexes
+		) {
 			playNext();
 		}
 	};
@@ -278,19 +284,23 @@ function Player(props: Props) {
 				getRandomTrack(tracks)
 				play();
 		} else {
-		  let indexToPlay: number;
-		  let totalTracksIndexes = tracks.length - 1;
-		  let currentIndex = findIndex(state.currentTrack, tracks);
-		  if (currentIndex > 0) {
-		    indexToPlay = currentIndex - 1;
-		  } else {
-		    indexToPlay = totalTracksIndexes;
-			}
+			if (tracks.length > 1) {
+				let indexToPlay: number;
+				let totalTracksIndexes = tracks.length - 1;
+				let currentIndex = findIndex(state.currentTrack, tracks);
+				if (currentIndex > 0) {
+					indexToPlay = currentIndex - 1;
+				} else {
+					indexToPlay = totalTracksIndexes;
+				}
 
-			setState(prevState => ({
-				...prevState,
-				currentTrack: tracks[indexToPlay]
-			}))
+				setState(prevState => ({
+					...prevState,
+					currentTrack: tracks[indexToPlay]
+				}))
+			} else {
+				play();
+			}
 		}
 	};
 
@@ -300,20 +310,24 @@ function Player(props: Props) {
 			getRandomTrack(tracks)
 			play();
 		} else {
-		  let indexToPlay: number;
-		  let totalTracksIndexes = tracks.length - 1;
-		  let currentIndex = findIndex(state.currentTrack, tracks);
+			if (tracks.length > 1) {
+				let indexToPlay: number;
+				let totalTracksIndexes = tracks.length - 1;
+				let currentIndex = findIndex(state.currentTrack, tracks);
 
-		  if (currentIndex < totalTracksIndexes) {
-		    indexToPlay = currentIndex + 1;
-		  } else {
-		    indexToPlay = 0;
-		  }
+				if (currentIndex < totalTracksIndexes) {
+					indexToPlay = currentIndex + 1;
+				} else {
+					indexToPlay = 0;
+				}
 
-			setState(prevState => ({
-				...prevState,
-				currentTrack: tracks[indexToPlay]
-			}))
+				setState(prevState => ({
+					...prevState,
+					currentTrack: tracks[indexToPlay]
+				}))
+			} else {
+				play();
+			}
 		}
 	};
 
@@ -367,14 +381,14 @@ function Player(props: Props) {
 			let newRepeatVal;
 
 			switch (prevState.repeat) {
-				case "none":
-					newRepeatVal = "all";
+				case NONE:
+					newRepeatVal = ALL;
 					break;
-				case "all":
-					newRepeatVal = "one";
+				case ALL:
+					newRepeatVal = ONE;
 					break;
-				case "one":
-					newRepeatVal = "none";
+				case ONE:
+					newRepeatVal = NONE;
 					break;
 			}
 
@@ -451,17 +465,10 @@ function Player(props: Props) {
 
 	useEffect(() => {
 		const { repeat } = state;
-		audio.loop = repeat === "one";
-		syncState({ repeat: state.repeat });
+		audio.loop = repeat === ONE;
+		syncState({ repeat });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.repeat]);
-
-	// useEffect(() => {
-	// 	debounce(() => {
-	// 		syncState({ position: state.position });
-	// 	}, 1000)();
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [state.position]);
 
 	useEffect(() => {
 		debounce(() => {
@@ -545,14 +552,14 @@ function Player(props: Props) {
 							<SkipNext className={classes.icon} />
 						</IconButton>
 						<IconButton onClick={toggleRepeat}>
-							{state.repeat === "none" && <Repeat className={classes.icon} />}
-							{state.repeat === "all" && (
+							{state.repeat === NONE && <Repeat className={classes.icon} />}
+							{state.repeat === ALL && (
 								<Repeat
 									className={classes.icon}
 									style={{ color: colors.primary }}
 								/>
 							)}
-							{state.repeat === "one" && (
+							{state.repeat === ONE && (
 								<RepeatOne
 									className={classes.icon}
 									style={{ color: colors.primary }}
