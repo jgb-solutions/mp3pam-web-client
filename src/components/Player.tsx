@@ -32,6 +32,7 @@ import PlayerInterface from "../interfaces/PlayerInterface";
 import AppStateInterface from "../interfaces/AppStateInterface";
 import { debounce } from "../utils/helpers";
 import { get } from "lodash-es";
+import TrackInterface from "../interfaces/TrackInterface";
 
 const styles = (theme: Theme) =>
 	createStyles({
@@ -204,11 +205,11 @@ function Player(props: Props) {
 	};
 
 	const onEnded = () => {
-		console.log("onEnd called", state.repeat);
-		console.log(state.repeat);
-		// if (state.repeat === "all") {
-		// 	playNext();
-		// }
+		const items = get(state.list, 'items', [])
+
+		if (items.length > 1) {
+			playNext();
+		}
 	};
 
 	const togglePlay = () => {
@@ -236,7 +237,7 @@ function Player(props: Props) {
 		prepareAudio();
 		audio.play().then(
 			() => {
-				console.log("started playing...");
+				// console.log("started playing...");
 			},
 			error => {
 				console.log("failed because " + error);
@@ -271,46 +272,64 @@ function Player(props: Props) {
 		}));
 	};
 
-	const previous = () => {
-		// if (state.isShuffled) {
-		//   playOrResume();
-		// } else {
-		//   let indexToPlay;
-		//   let totalTracksIndexes = state.playedTracks.length - 1;
-		//   let currentIndex = findIndex(state.currentTrack);
-		//   if (currentIndex > 0) {
-		//     indexToPlay = currentIndex - 1;
-		//   } else {
-		//     indexToPlay = totalTracksIndexes;
-		//   }
-		//   playOrResume();
-		// }
+	const playPrevious = () => {
+		const tracks = get(state.list, 'items', [])
+			if (state.isShuffled) {
+				getRandomTrack(tracks)
+				play();
+		} else {
+		  let indexToPlay: number;
+		  let totalTracksIndexes = tracks.length - 1;
+		  let currentIndex = findIndex(state.currentTrack, tracks);
+		  if (currentIndex > 0) {
+		    indexToPlay = currentIndex - 1;
+		  } else {
+		    indexToPlay = totalTracksIndexes;
+			}
+
+			setState(prevState => ({
+				...prevState,
+				currentTrack: tracks[indexToPlay]
+			}))
+		}
 	};
 
 	const playNext = () => {
-		// if (state.isShuffled) {
-		//   playCurrentTrack(randomTrack());
-		// } else {
-		//   let indexToPlay;
-		//   let totalTracksIndexes = state.playedTracks.length - 1;
-		//   let currentIndex = findIndex(state.currentTrack);
+		const tracks = get(state.list, 'items', [])
+		if (state.isShuffled) {
+			getRandomTrack(tracks)
+			play();
+		} else {
+		  let indexToPlay: number;
+		  let totalTracksIndexes = tracks.length - 1;
+		  let currentIndex = findIndex(state.currentTrack, tracks);
 
-		//   if (currentIndex < totalTracksIndexes) {
-		//     indexToPlay = currentIndex + 1;
-		//   } else {
-		//     indexToPlay = 0;
-		//   }
+		  if (currentIndex < totalTracksIndexes) {
+		    indexToPlay = currentIndex + 1;
+		  } else {
+		    indexToPlay = 0;
+		  }
 
-		//   playCurrentTrack(state.playedTracks[indexToPlay]);
-		// }
-		console.log("playing next track");
-		playOrResume();
+			setState(prevState => ({
+				...prevState,
+				currentTrack: tracks[indexToPlay]
+			}))
+		}
 	};
 
-	const randomTrack = () => {
-		// return state.playedTracks[
-		// 	Math.floor(Math.random() * state.playedTracks.length)
-		// ];
+	const findIndex = (track: TrackInterface, trackList: TrackInterface[]): number => {
+		return trackList.findIndex(item => item.id === track.id);
+	}
+
+	const getRandomTrack = (tracks: TrackInterface[]) => {
+		const randomTrack =  tracks[
+			Math.floor(Math.random() * tracks.length)
+		];
+
+		setState(prevState => ({
+			...prevState,
+			currentTrack: randomTrack
+		}))
 	};
 
 	const formatTime = (seconds: number) => {
@@ -362,6 +381,13 @@ function Player(props: Props) {
 			return { ...prevState, repeat: newRepeatVal };
 		});
 	};
+
+	const toggleShuffle = () => {
+		setState(prevState => ({
+			...prevState,
+			isShuffled: !prevState.isShuffled
+		}));
+	}
 
 	// update playing when the store state changes  // componentDidUpdate
 	useEffect(() => {
@@ -444,13 +470,6 @@ function Player(props: Props) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.elapsed]);
 
-	// useEffect(() => {
-	// 	debounce(() => {
-	// 		syncState({ currentTime: state.currentTime });
-	// 	}, 1000)();
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [state.currentTime]);
-
 	useEffect(() => {
 		syncState({ duration: state.duration });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -494,10 +513,15 @@ function Player(props: Props) {
 				</div>
 				<div className={classes.controls}>
 					<div className={classes.buttons}>
-						<IconButton>
-							<Shuffle className={classes.icon} />
+						<IconButton onClick={toggleShuffle}>
+							{!state.isShuffled && <Shuffle className={classes.icon} />}
+							{state.isShuffled && (
+								<Shuffle className={classes.icon}
+									style={{ color: colors.primary }}
+								/>
+							)}
 						</IconButton>
-						<IconButton>
+						<IconButton onClick={playPrevious}>
 							<SkipPrevious className={classes.icon} />
 						</IconButton>
 						<IconButton
@@ -517,7 +541,7 @@ function Player(props: Props) {
 								/>
 							)}
 						</IconButton>
-						<IconButton>
+						<IconButton onClick={playNext}>
 							<SkipNext className={classes.icon} />
 						</IconButton>
 						<IconButton onClick={toggleRepeat}>

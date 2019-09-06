@@ -9,13 +9,17 @@ const styles = (theme: Theme) =>
 	createStyles({
 		logo: {
 			maxWidth: "100%",
-			width: "200px"
+			width: "200px",
+		},
+		logoLink: {
+			marginBottom: 20,
+			display: 'inline-block',
 		},
 		link: {
 			color: "white",
 			display: "flex",
 			textDecoration: "none",
-			marginBottom: 10,
+			marginBottom: 15,
 			fontWeight: "bold"
 		},
 		linkIcon: {
@@ -24,20 +28,24 @@ const styles = (theme: Theme) =>
 		},
 		linkText: {
 			fontSize: 15
-		}
+		},
+		mainMenu: {
+			marginBottom: 30
+		},
+		yourLibary: {},
 	});
 
-const menu = [
-	{
-		name: "Home",
-		icon: <Home />,
-		to: Routes.home
-	},
-	{
-		name: "Browse",
-		icon: <ViewQuilt />,
-		to: Routes.browse
-	}
+const mainMenu = [
+	{ name: "Home", icon: <Home />, to: Routes.home },
+	{ name: "Browse", icon: <ViewQuilt />, to: Routes.browse }
+];
+
+const libraryMenu = [
+	{ name: "Liked Tracks", to: Routes.favorites },
+	{ name: "Albums", to: Routes.favoriteAlbums },
+	{ name: "Artists", to: Routes.favoriteArtists },
+	{ name: "Podcasts", to: Routes.favoritePodcasts },
+	{ name: "Shows", to: Routes.favoriteShows },
 ];
 
 interface Props extends WithStyles<typeof styles> {}
@@ -45,21 +53,29 @@ interface Props extends WithStyles<typeof styles> {}
 const Left = ({ classes }: Props) => {
 	return (
 		<>
-			<Link to="/">
+			<Link to="/" className={classes.logoLink}>
 				<img
 					className={classes.logo}
 					src="/assets/images/logo-trans-red-white.png"
 					alt="MP3 Pam logo"
 				/>
 			</Link>
-			<p>
-				{menu.map((menuItem, index) => (
+			<div className={classes.mainMenu}>
+				{mainMenu.map((menuItem, index) => (
 					<Link key={index} to={menuItem.to} className={classes.link}>
 						<span className={classes.linkIcon}>{menuItem.icon}</span>
 						<span className={classes.linkText}>{menuItem.name}</span>
 					</Link>
 				))}
-			</p>
+			</div>
+			<div className={classes.yourLibary}>
+				<h5>Your Library</h5>
+				{libraryMenu.map((menuItem, index) => (
+					<Link key={index} to={menuItem.to} className={classes.link}>
+						<span className={classes.linkText}>{menuItem.name}</span>
+					</Link>
+				))}
+			</div>
 		</>
 	);
 };

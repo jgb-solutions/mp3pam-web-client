@@ -1,6 +1,5 @@
 import React from "react";
 import {
-	VolumeUpOutlined,
 	PlayCircleOutline,
 	PauseCircleOutline
 } from "@material-ui/icons";
@@ -46,9 +45,6 @@ const useStyles = makeStyles(theme => ({
 			opacity: 1
 		}
 	},
-	// playPauseButton: {
-	//   opacity: 0,
-	// },
 	title: {
 		margin: 0,
 		fontSize: 14,

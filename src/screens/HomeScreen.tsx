@@ -5,7 +5,7 @@ import ScrollingList from "../components/ScrollingList";
 const data = [
 	{
 		id: "43534",
-		image: "https://images.mp3pam.com/demo/artist9.jpg",
+		image: "https://images-na.ssl-images-amazon.com/images/I/71v6WN02N1L.png",
 		name: "Breakfast",
 		author: "jill111",
 		type: "album"
@@ -33,16 +33,16 @@ const data = [
 	},
 	{
 		id: "23423423",
-		image: "https://images.mp3pam.com/demo/artist5.jpg",
-		name: "Hats",
-		author: "Hans",
-		type: "album"
+		image: "https://i1.sndcdn.com/artworks-000157680374-y69r9w-t500x500.jpg",
+		name: "Stereo Hearts",
+		author: "Adam Levine",
+		type: "track"
 	},
 	{
 		id: "32424234",
-		image: "https://images.mp3pam.com/demo/artist4.jpg",
-		name: "Honey",
-		author: "fancycravel",
+		image: "https://www.reggaeville.com/fileadmin/user_upload/daville.jpg",
+		name: "Always On My Mind",
+		author: "Da'Ville",
 		type: "album"
 	},
 	{
@@ -75,9 +75,9 @@ const data = [
 	},
 	{
 		id: "3243",
-		image: "https://images.mp3pam.com/demo/artist9.jpg",
-		name: "Sea star",
-		author: "821292",
+		image: "https://images-na.ssl-images-amazon.com/images/I/71v6WN02N1L.png",
+		name: "It Girl",
+		author: "Jason Derulo",
 		type: "album"
 	},
 	{

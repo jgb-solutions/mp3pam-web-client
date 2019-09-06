@@ -138,7 +138,7 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 								to={Routes.goToAuthorDetail("authorId")}
 								className={styles.listAuthor}
 							>
-								Konpa Kreyòl
+								{list.author}
 							</Link>
 						</p>
 						<div>
