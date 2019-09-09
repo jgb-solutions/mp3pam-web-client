@@ -2,10 +2,8 @@ import {
 	Repeat,
 	Shuffle,
 	SkipNext,
-	Favorite,
 	RepeatOne,
 	SkipPrevious,
-	FavoriteBorder,
 	VolumeUpOutlined,
 	PlayCircleOutline,
 	VolumeDownOutlined,
@@ -13,27 +11,28 @@ import {
 	VolumeMuteOutlined,
 	PlaylistPlayOutlined
 } from "@material-ui/icons";
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import * as playerActions from "../store/actions/playerActions";
-import IconButton from "@material-ui/core/IconButton";
+import { get } from "lodash-es";
 import {
+	Theme,
+	WithStyles,
 	withStyles,
 	createStyles,
-	Theme,
-	WithStyles
 } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import React, { useState, useEffect } from "react";
+import IconButton from "@material-ui/core/IconButton";
 
 // import Routes from '../routes';
-import colors from "../utils/colors";
-import { ALL, ONE, NONE } from '../utils/constants';
+import Heart from "./Heart";
 import Slider from "./Slider";
-import { RESUME, PAUSE, PLAY } from "../store/actions/actions";
-import PlayerInterface from "../interfaces/PlayerInterface";
-import AppStateInterface from "../interfaces/AppStateInterface";
+import colors from "../utils/colors";
 import { debounce } from "../utils/helpers";
-import { get } from "lodash-es";
+import { ALL, ONE, NONE } from '../utils/constants';
 import TrackInterface from "../interfaces/TrackInterface";
+import PlayerInterface from "../interfaces/PlayerInterface";
+import * as playerActions from "../store/actions/playerActions";
+import { RESUME, PAUSE, PLAY } from "../store/actions/actions";
+import AppStateInterface from "../interfaces/AppStateInterface";
 
 const styles = (theme: Theme) =>
 	createStyles({
@@ -504,14 +503,7 @@ function Player(props: Props) {
 					<div className={classes.titleArtist}>
 						<span className={classes.title}>
 							{state.currentTrack.title}
-							<IconButton>
-								{state.currentTrack.favorite && (
-									<Favorite className={classes.icon} />
-								)}
-								{!state.currentTrack.favorite && (
-									<FavoriteBorder className={classes.icon} />
-								)}
-							</IconButton>
+							<Heart />
 						</span>
 						<span className={classes.artist}>
 							{state.currentTrack.artist.name}

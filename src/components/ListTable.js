@@ -1,29 +1,36 @@
 import React from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import colors from '../utils/colors';
+import Heart from './Heart';
+import More from './More';
+import PlayPause from './PlayPause';
+
+const useStyles = makeStyles(theme => ({
+  table: {
+    width: '100%',
+    marginTop: theme.spacing(3),
+    overflowX: 'auto',
+  },
+}));
 
 const StyledTableCell = withStyles(theme => ({
   head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    color: colors.grey,
+    textTransform: 'uppercase',
   },
   body: {
     fontSize: 14,
+    color: colors.white,
+    border: 'none',
+    paddingLeft: 1,
+    paddingRight: 1,
   },
 }))(TableCell);
-
-const StyledTableRow = withStyles(theme => ({
-  root: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.background.default,
-    },
-  },
-}))(TableRow);
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -37,46 +44,37 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing(3),
-    overflowX: 'auto',
-  },
-  table: {
-    minWidth: 700,
-  },
-}));
-
-export default function CustomizedTables() {
+export default function SimpleTable() {
   const classes = useStyles();
 
   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+    <Table className={classes.table} size="small">
+      <TableHead>
+        <TableRow>
+          <StyledTableCell>&nbsp;</StyledTableCell>
+          <StyledTableCell>Title</StyledTableCell>
+          <StyledTableCell>Artist</StyledTableCell>
+          <StyledTableCell>Album</StyledTableCell>
+          <StyledTableCell>&nbsp;</StyledTableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {rows.map((row, index) => (
+          <TableRow key={row.name} style={{
+            borderBottom: rows.length - 1 === index ? '' : '1px solid white'
+            }}>
+            <StyledTableCell>
+              <PlayPause /><Heart />
+            </StyledTableCell>
+            <StyledTableCell>{row.calories}</StyledTableCell>
+            <StyledTableCell>{row.fat}</StyledTableCell>
+            <StyledTableCell>{row.carbs}</StyledTableCell>
+            <StyledTableCell>
+              <More />
+            </StyledTableCell>
           </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map(row => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
+        ))}
+      </TableBody>
+    </Table>
   );
 }

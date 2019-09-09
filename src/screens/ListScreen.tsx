@@ -15,6 +15,8 @@ import ListTable from '../components/ListTable';
 import ListInterface from "../interfaces/ListInterface";
 import * as playerActions from "../store/actions/playerActions";
 import AppStateInterface from "../interfaces/AppStateInterface";
+import More from "../components/More";
+import Heart from "../components/Heart";
 
 const useStyles = makeStyles(() => ({
 	row: {
@@ -64,14 +66,6 @@ const useStyles = makeStyles(() => ({
 		fontSize: 48,
 		fontWeight: "bold"
 	},
-	iconBtn: {},
-	icon: {
-		color: colors.white,
-		fontSize: 30,
-		padding: 5,
-		border: "1px solid white",
-		borderRadius: "50%"
-	}
 }));
 
 interface Props {
@@ -89,16 +83,7 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 	const styles = useStyles();
 	const listId = props.match.params.listId
 	const listParam = get(props.location.state, 'listParam')
-	const [anchorEl, listAnchorEl] = useState(null);
 	const [list, isLoading, error] = useList(listId, listParam);
-
-	function handleClick(event: any) {
-		listAnchorEl(event.currentTarget);
-	}
-
-	function handleClose() {
-		listAnchorEl(null);
-	}
 
 	const togglePlay = (list: ListInterface) => {
 		if (props.isPlaying &&  props.playingListId === list.id) {
@@ -148,30 +133,12 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 								{(!props.isPlaying && props.playingListId === list.id) && "Resume"}
 								{/* todo // using props.currentTime > 0  to display rsesume or replay */}
 							</Button>
-							<IconButton className={styles.iconBtn}>
-								<FavoriteBorderRounded className={styles.icon} />
-							</IconButton>
-							<IconButton
-								aria-controls="simple-menu"
-								aria-haspopup="true"
-								onClick={handleClick}
-							>
-								<MoreHorizOutlined className={styles.icon} />
-							</IconButton>
-							<Menu
-								id="simple-menu"
-								anchorEl={anchorEl}
-								keepMounted
-								open={Boolean(anchorEl)}
-								onClose={handleClose}
-							>
-								<MenuItem onClick={handleClose}>Profile</MenuItem>
-								<MenuItem onClick={handleClose}>My account</MenuItem>
-								<MenuItem onClick={handleClose}>Logout</MenuItem>
-							</Menu>
+							<Heart border />
+							<More border />
 						</div>
 					</div>
 				</div>
+				<br />
 				<ListTable />
 			</>
 		) : null;
