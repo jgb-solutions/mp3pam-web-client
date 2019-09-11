@@ -22,6 +22,8 @@ const StyledTableCell = withStyles(theme => ({
   head: {
     color: colors.grey,
     textTransform: 'uppercase',
+    textAlign: 'left',
+    paddingLeft: 0
   },
   body: {
     fontSize: 14,
@@ -29,6 +31,7 @@ const StyledTableCell = withStyles(theme => ({
     border: 'none',
     paddingLeft: 1,
     paddingRight: 1,
+    textOverflow: 'ellipsis'
   },
 }))(TableCell);
 
@@ -63,12 +66,12 @@ export default function SimpleTable() {
           <TableRow key={row.name} style={{
             borderBottom: rows.length - 1 === index ? '' : '1px solid white'
             }}>
-            <StyledTableCell>
+            <StyledTableCell style={{ width: '15%' }}>
               <PlayPause /><Heart />
             </StyledTableCell>
-            <StyledTableCell>{row.calories}</StyledTableCell>
-            <StyledTableCell>{row.fat}</StyledTableCell>
-            <StyledTableCell>{row.carbs}</StyledTableCell>
+            <StyledTableCell style={{ width: '30%' }}>{row.name}</StyledTableCell>
+            <StyledTableCell style={{ width: '30%' }}>{row.name}</StyledTableCell>
+            <StyledTableCell style={{ width: '20%' }}>{row.name}</StyledTableCell>
             <StyledTableCell>
               <More />
             </StyledTableCell>

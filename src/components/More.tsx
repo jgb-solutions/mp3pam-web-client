@@ -30,6 +30,11 @@ const styles = (theme: Theme) =>
       borderRadius: "50%",
       marginLeft: 15
     },
+    menuItem: {
+      '&:hover': {
+        backgroundColor: colors.black, color: colors.white
+      }
+    }
   });
 
 interface Props extends WithStyles<typeof styles> {
@@ -40,7 +45,7 @@ function Heart(props: Props) {
   const { classes } = props;
   const [anchorEl, listAnchorEl] = useState(null);
 
-  const handleClick = (event: any) => {
+  const handleMenu = (event: any) => {
 		listAnchorEl(event.currentTarget);
 	}
 
@@ -48,24 +53,50 @@ function Heart(props: Props) {
 		listAnchorEl(null);
   }
 
+  const menuItems = [
+    {name: 'Add To Queue', method: () => {}},
+    {name: 'Play Next', method: () => {}},
+    {name: 'Go To Artist', method: () => {}},
+    {name: 'Go To Album', method: () => {}},
+    {name: 'Remove from your Liked Tracks', method: () => {}},
+    {name: 'Add To Playlist', method: () => {}},
+    {name: 'Share', method: () => {}},
+  ]
+
+  const handleClick = (method: () => void) => {
+    handleClose();
+    method()
+  }
+
   return (
     <>
       <IconButton
-        aria-controls="simple-menu"
+        aria-controls="context-menu"
         aria-haspopup="true"
-        onClick={handleClick} className={props.border ? classes.border : ''}>
+        onClick={handleMenu} className={props.border ? classes.border : ''}>
         <MoreHorizOutlined className={classes.icon} />
       </IconButton>
       <Menu
-        id="simple-menu"
+        id="context-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
+        PaperProps={{
+          style: {
+            backgroundColor: colors.darkGrey,
+            color: 'white',
+          },
+        }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        {menuItems.map((menuItem, index) =>
+          <MenuItem
+            key={index}
+            onClick={() => handleClick(menuItem.method)}
+            className={classes.menuItem}>
+            {menuItem.name}
+          </MenuItem>
+        )}
       </Menu>
     </>
   )
