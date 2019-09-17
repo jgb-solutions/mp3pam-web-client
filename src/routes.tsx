@@ -5,13 +5,14 @@ const Routes = {
 	about: `/about`,
 	queue: `/queue`,
 	upload: `/upload`,
+	users: `/users`,
 	list: `/list/:listId`,
 	favorites: `/favorites`,
 	favoriteAlbums: `/favorite/albums`,
 	favoriteArtists: `/favorite/artists`,
 	favoritePodcasts: `/favorite/podcats`,
 	favoriteShows: `/favorite/shows`,
-	goToListDetail: (setID: string) => `/list/${setID}`,
+	goToListDetail: (listId: string) => `/list/${listId}`,
 	goToAuthorDetail: (authorID: string) => `/author/${authorID}`
 };
 

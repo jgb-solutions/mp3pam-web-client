@@ -45,6 +45,7 @@ const libraryMenu = [
 	{ name: "Albums", to: Routes.favoriteAlbums },
 	{ name: "Artists", to: Routes.favoriteArtists },
 	{ name: "Podcasts", to: Routes.favoritePodcasts },
+	{ name: "Users", to: Routes.users },
 ];
 
 interface Props extends WithStyles<typeof styles> {}

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { shuffle } from "lodash-es";
 import ScrollingList from "../components/ScrollingList";
+import useHome from "../hooks/useHome";
 
 const data = [
 	{
@@ -98,6 +99,14 @@ const categories: string[] = [
 	"Roots"
 ];
 export default function Home() {
+	const { loading, error, data: homeData } = useHome();
+	// fetch home data
+	useEffect(() => {
+		console.log(homeData);
+	}, [homeData])
+
+	if (loading) return <p>Loading ...</p>;
+
 	return (
 		<>
 			<h1>Home</h1>
