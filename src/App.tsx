@@ -4,6 +4,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
+// import { ApolloClient, ApolloLink, InMemoryCache, HttpLink } from 'apollo-boost';
 
 // Main screens
 import HomeScreen from './screens/HomeScreen';
@@ -26,11 +27,28 @@ import './App.css';
 
 const { store, persistor } = persistedStore();
 
+const API_URL: string = process.env.NODE_ENV === 'development'
+  ? `http://api.mp3pam.loc/graphql`
+  : `https://api.mp3pam.com/graphql`;
+
 // Apollo Client
 const client = new ApolloClient({
-  uri: `http://api.mp3pam.loc/graphql`
+  uri: API_URL,
+  request: operation => {
+    const token: string | null = store.getState().user.token
+    console.log()
+    operation.setContext({
+      headers: {
+        authorization: token ? `Bearer ${token}` : ``
+      }
+    })
+  },
+  onError: ({ networkError }) => {
+    console.log(networkError)
+    // if (networkError.statusCode === 401) {
+    // }
+  }
 });
-
 
 export default function App() {
   return (

@@ -1,12 +1,11 @@
+import { useEffect } from 'react';
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 
 export const FETCH_HOME = gql`
-  query homeMusics($take: Int) {
-    musics(take: $take) {
-      paginatorInfo {
-        perPage
-      }
+  query homeMusics {
+    # 10 latest tracks
+    tracks(take: 10) {
       data {
         hash
         title
@@ -17,5 +16,11 @@ export const FETCH_HOME = gql`
 `
 
 export default function useHome() {
-  return useQuery(FETCH_HOME)
+  const { loading, error, data } = useQuery(FETCH_HOME)
+
+  useEffect(() => {
+    console.log(error);
+  }, [error])
+
+  return [loading, error, data]
 };

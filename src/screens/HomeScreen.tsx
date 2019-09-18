@@ -99,7 +99,7 @@ const categories: string[] = [
 	"Roots"
 ];
 export default function Home() {
-	const { loading, error, data: homeData } = useHome();
+	const [loading, error, homeData] = useHome();
 	// fetch home data
 	useEffect(() => {
 		console.log(homeData);
