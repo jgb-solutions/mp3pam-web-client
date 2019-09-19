@@ -16,7 +16,7 @@ export default function (
       const { token, ...data } = payload.data;
       return { data, token }
     case LOG_OUT:
-      payload.client.clearStore();
+      alert('need to log out');
       return userState;
     default:
       return userState;

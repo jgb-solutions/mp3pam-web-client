@@ -204,13 +204,13 @@ function Player(props: Props) {
 		const totalTracksIndexes = items.length - 1;
 
 		if (
-			items.length > 1 && repeat  === ALL
-			) {
+			items.length > 1 && repeat === ALL
+		) {
 			playNext();
 		}
 
 		if (
-			items.length > 1 && repeat  === NONE &&
+			items.length > 1 && repeat === NONE &&
 			currentTrackIndex < totalTracksIndexes
 		) {
 			playNext();
@@ -234,6 +234,8 @@ function Player(props: Props) {
 	};
 
 	const play = () => {
+		if (!state.currentTrack) return;
+
 		setState(prevState => ({
 			...prevState,
 			isPlaying: true
@@ -279,9 +281,9 @@ function Player(props: Props) {
 
 	const playPrevious = () => {
 		const tracks = get(state.list, 'items', [])
-			if (state.isShuffled) {
-				getRandomTrack(tracks)
-				play();
+		if (state.isShuffled) {
+			getRandomTrack(tracks)
+			play();
 		} else {
 			if (tracks.length > 1) {
 				let indexToPlay: number;
@@ -335,7 +337,7 @@ function Player(props: Props) {
 	}
 
 	const getRandomTrack = (tracks: TrackInterface[]) => {
-		const randomTrack =  tracks[
+		const randomTrack = tracks[
 			Math.floor(Math.random() * tracks.length)
 		];
 

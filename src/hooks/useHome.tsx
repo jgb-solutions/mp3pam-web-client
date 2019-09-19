@@ -13,7 +13,7 @@ export const FETCH_HOME = gql`
       }
     }
   }
-`
+`;
 
 export default function useHome() {
   const { loading, error, data } = useQuery(FETCH_HOME)

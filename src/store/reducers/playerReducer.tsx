@@ -60,7 +60,7 @@ const INITIAL_PLAYER_STATE = {
 	}
 };
 
-export default function(
+export default function (
 	playerState: PlayerInterface = INITIAL_PLAYER_STATE,
 	playerAction: { type: string; payload: { updatedState?: Object } }
 ) {

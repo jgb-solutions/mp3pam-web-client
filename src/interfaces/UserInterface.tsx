@@ -1,7 +1,7 @@
 import ListInterface from "./ListInterface";
 import TrackInterface from "./TrackInterface";
 
-interface UserData {
+export interface UserData {
   id: string;
   name: string;
   email: string;

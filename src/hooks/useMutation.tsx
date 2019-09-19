@@ -1,7 +1,6 @@
 import gql from 'graphql-tag'
 import { useState } from 'react'
 import { useMutation, useApolloClient } from '@apollo/react-hooks'
-import { ApolloError } from 'apollo-boost'
 
 export const FETCH_HOME = gql`
   mutation SignUp($input: RegisterInput!) {
