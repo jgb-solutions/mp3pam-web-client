@@ -3,6 +3,7 @@ import ArtistInterface from "./ArtistInterface";
 
 export default interface TrackInterface {
 	id: string,
+	hash: number,
 	url: string;
 	title: string;
 	image: string;

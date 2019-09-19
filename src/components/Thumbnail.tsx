@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import colors from "../utils/colors";
 import Routes from "../routes";
 import ListInterface from "../interfaces/ListInterface";
+import { get } from "lodash-es";
 
 const useStyles = makeStyles(theme => ({
 	imgContainer: {
@@ -69,9 +70,9 @@ const Thumbnail = (
 	const styles: any = useStyles();
 
 	const { list, listId, isPlaying } = props;
-
 	const goToDetailPage = (list: ListInterface) => {
-		props.history.push(Routes.goToListDetail(list.id), { listParam: list });
+		const route = get(Routes, list.type).detailPage(list)
+		props.history.push(route, { listParam: list });
 	};
 
 	return (

@@ -44,21 +44,21 @@ const data = [
 		image: "https://www.reggaeville.com/fileadmin/user_upload/daville.jpg",
 		name: "Always On My Mind",
 		author: "Da'Ville",
-		type: "album"
+		type: "artist"
 	},
 	{
 		id: "2342343",
 		image: "https://images.mp3pam.com/demo/artist3.jpg",
 		name: "Vegetables",
 		author: "jill111",
-		type: "album"
+		type: "podcast"
 	},
 	{
 		id: "afasdfsdfsad",
 		image: "https://images.mp3pam.com/demo/artist2.jpg",
 		name: "Water plant",
 		author: "BkrmadtyaKarki",
-		type: "album"
+		type: "track"
 	},
 	{
 		id: "as234234",
@@ -72,21 +72,21 @@ const data = [
 		image: "https://images.mp3pam.com/demo/artist10.jpg",
 		name: "Olive oil",
 		author: "congerdesign",
-		type: "album"
+		type: "artist"
 	},
 	{
 		id: "3243",
 		image: "https://images-na.ssl-images-amazon.com/images/I/71v6WN02N1L.png",
 		name: "It Girl",
 		author: "Jason Derulo",
-		type: "album"
+		type: "track"
 	},
 	{
 		id: "3453453",
 		image: "https://images.mp3pam.com/demo/artist11.jpg",
 		name: "Bike",
 		author: "danfador",
-		type: "album"
+		type: "podcast"
 	}
 ];
 

@@ -36,19 +36,19 @@ const styles = (theme: Theme) =>
 	});
 
 const mainMenu = [
-	{ name: "Home", icon: <Home />, to: Routes.home },
-	{ name: "Browse", icon: <ViewQuilt />, to: Routes.browse }
+	{ name: "Home", icon: <Home />, to: Routes.pages.home },
+	{ name: "Browse", icon: <ViewQuilt />, to: Routes.pages.browse }
 ];
 
 const libraryMenu = [
-	{ name: "Liked Tracks", to: Routes.favorites },
-	{ name: "Albums", to: Routes.favoriteAlbums },
-	{ name: "Artists", to: Routes.favoriteArtists },
-	{ name: "Podcasts", to: Routes.favoritePodcasts },
-	{ name: "Users", to: Routes.users },
+	{ name: "Liked Tracks", to: Routes.user.favorites },
+	{ name: "Albums", to: Routes.user.favoriteAlbums },
+	{ name: "Artists", to: Routes.user.favoriteArtists },
+	{ name: "Podcasts", to: Routes.user.favoritePodcasts },
+	{ name: "Users", to: Routes.user.users },
 ];
 
-interface Props extends WithStyles<typeof styles> {}
+interface Props extends WithStyles<typeof styles> { }
 
 const Left = ({ classes }: Props) => {
 	return (

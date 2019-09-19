@@ -77,7 +77,7 @@ interface Props {
 	currentTime: number;
 }
 
-interface RouteParams {listId: string, listParam: ListInterface}
+interface RouteParams { listId: string, listParam: ListInterface }
 
 const ListScreen = (props: Props & RouteComponentProps<any>) => {
 	const styles = useStyles();
@@ -86,7 +86,7 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 	const [list, isLoading, error] = useList(listId, listParam);
 
 	const togglePlay = (list: ListInterface) => {
-		if (props.isPlaying &&  props.playingListId === list.id) {
+		if (props.isPlaying && props.playingListId === list.id) {
 			props.pauseList();
 		}
 
@@ -109,39 +109,39 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 	}
 
 	return list ? (
-			<>
-				<div className={styles.row}>
-					<div className={styles.listCover}>
-						<img src={list.image} alt={list.name} />
-					</div>
-					<div className={styles.listDetails}>
-						<h5 className={styles.listType}>{list.type}</h5>
-						<h1 className={styles.listName}>{list.name}</h1>
-						<p className={styles.listByAuthor}>
-							<span className={styles.listBy}>By </span>
-							<Link
-								to={Routes.goToAuthorDetail("authorId")}
-								className={styles.listAuthor}
-							>
-								{list.author}
-							</Link>
-						</p>
-						<div>
-							<Button onClick={() => { togglePlay(list) }}>
-								{(props.playingListId !== list.id) && "Play"}
-								{(props.isPlaying && props.playingListId === list.id) && "Pause"}
-								{(!props.isPlaying && props.playingListId === list.id) && "Resume"}
-								{/* todo // using props.currentTime > 0  to display rsesume or replay */}
-							</Button>
-							<Heart border />
-							<More border />
-						</div>
+		<>
+			<div className={styles.row}>
+				<div className={styles.listCover}>
+					<img src={list.image} alt={list.name} />
+				</div>
+				<div className={styles.listDetails}>
+					<h5 className={styles.listType}>{list.type}</h5>
+					<h1 className={styles.listName}>{list.name}</h1>
+					<p className={styles.listByAuthor}>
+						<span className={styles.listBy}>By </span>
+						<Link
+							to={Routes.podcast.goToAuthorDetail("authorId")}
+							className={styles.listAuthor}
+						>
+							{list.author}
+						</Link>
+					</p>
+					<div>
+						<Button onClick={() => { togglePlay(list) }}>
+							{(props.playingListId !== list.id) && "Play"}
+							{(props.isPlaying && props.playingListId === list.id) && "Pause"}
+							{(!props.isPlaying && props.playingListId === list.id) && "Resume"}
+							{/* todo // using props.currentTime > 0  to display rsesume or replay */}
+						</Button>
+						<Heart border />
+						<More border />
 					</div>
 				</div>
-				<br />
-				<ListTable />
-			</>
-		) : null;
+			</div>
+			<br />
+			<ListTable />
+		</>
+	) : null;
 }
 
 export default connect(

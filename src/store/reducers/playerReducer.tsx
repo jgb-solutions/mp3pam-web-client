@@ -31,6 +31,7 @@ const INITIAL_PLAYER_STATE = {
 	action: PAUSE,
 	currentTrack: {
 		id: '42139505',
+		hash: 42139505,
 		title: "Bad News",
 		detail:
 			"Cat, 'if you don't explain it is right?' 'In my youth,' Father William replied to his ear. Alice considered a little, and then said 'The fourth.' 'Two days wrong!' sighed the Lory, as soon as she.",

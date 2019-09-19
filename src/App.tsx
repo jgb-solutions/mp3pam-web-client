@@ -106,12 +106,15 @@ export default function App() {
           <Router>
             <MainScreen>
               <Switch>
-                <Route path={Routes.home} exact component={HomeScreen} />
-                <Route path={Routes.search} exact component={SearchScreen} />
-                <Route path={Routes.about} component={AboutScreen} />
-                <Route path={Routes.upload} component={UploadScreen} />
-                <Route path={Routes.list} component={ListScreen} />
-                <Route path={Routes.users} component={UsersScreen} />
+                <Route path={Routes.pages.home} exact component={HomeScreen} />
+                <Route path={Routes.pages.search} exact component={SearchScreen} />
+                <Route path={Routes.pages.about} component={AboutScreen} />
+                <Route path={Routes.pages.upload} component={UploadScreen} />
+                <Route path={Routes.album.show} component={ListScreen} />
+                <Route path={Routes.artist.show} component={ListScreen} />
+                <Route path={Routes.track.show} component={ListScreen} />
+                <Route path={Routes.podcast.show} component={ListScreen} />
+                <Route path={Routes.pages.users} component={UsersScreen} />
                 <Route component={FourOFourScreen} />
               </Switch>
             </MainScreen>
