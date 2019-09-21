@@ -44,7 +44,9 @@ const styles = (theme: Theme) =>
 			right: 0,
 			height: 86,
 			backgroundColor: colors.darkGrey,
-			color: "white"
+			color: "white",
+			paddingLeft: 24,
+			paddingRight: 24
 		},
 		player: {
 			flex: 1,
@@ -200,7 +202,9 @@ function Player(props: Props) {
 		const items = get(state.list, 'items', [])
 		const { repeat } = state;
 
-		const currentTrackIndex = findIndex(state.currentTrack, items)
+		const currentTrack = state.currentTrack
+		if (!currentTrack) return;
+		const currentTrackIndex = findIndex(currentTrack, items)
 		const totalTracksIndexes = items.length - 1;
 
 		if (
@@ -257,6 +261,7 @@ function Player(props: Props) {
 	};
 
 	const prepareAudio = () => {
+		if (!state.currentTrack) return;
 		audio.src = state.currentTrack.play_url;
 		audio.load();
 	};
@@ -288,6 +293,8 @@ function Player(props: Props) {
 			if (tracks.length > 1) {
 				let indexToPlay: number;
 				let totalTracksIndexes = tracks.length - 1;
+
+				if (!state.currentTrack) return;
 				let currentIndex = findIndex(state.currentTrack, tracks);
 				if (currentIndex > 0) {
 					indexToPlay = currentIndex - 1;
@@ -314,6 +321,8 @@ function Player(props: Props) {
 			if (tracks.length > 1) {
 				let indexToPlay: number;
 				let totalTracksIndexes = tracks.length - 1;
+
+				if (!state.currentTrack) return;
 				let currentIndex = findIndex(state.currentTrack, tracks);
 
 				if (currentIndex < totalTracksIndexes) {
@@ -452,7 +461,7 @@ function Player(props: Props) {
 
 	// play current track after it has been updated
 	useEffect(() => {
-		if (storePlayerData.currentTrack.id !== state.currentTrack.id) {
+		if (get(storePlayerData, 'currentTrack.id') !== get(state, 'currentTrack.id')) {
 			syncState({ currentTrack: state.currentTrack });
 			play();
 		}
@@ -498,17 +507,17 @@ function Player(props: Props) {
 			<div className={classes.player}>
 				<div className={classes.posterTitle}>
 					<img
-						src={state.currentTrack.image}
+						src={state.currentTrack ? state.currentTrack.image : '/assets/images/loader.svg'}
 						className={classes.image}
-						alt={state.currentTrack.title}
+						alt={state.currentTrack && state.currentTrack.title}
 					/>
 					<div className={classes.titleArtist}>
 						<span className={classes.title}>
-							{state.currentTrack.title}
+							{state.currentTrack && state.currentTrack.title}
 							<Heart />
 						</span>
 						<span className={classes.artist}>
-							{state.currentTrack.artist.name}
+							{state.currentTrack && state.currentTrack.artist.name}
 						</span>
 					</div>
 				</div>

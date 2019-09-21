@@ -12,6 +12,6 @@ export default interface PlayerInterface {
 	duration: string;
 	currentTime: number;
 	updateHack: string,
-	currentTrack: TrackInterface;
+	currentTrack?: TrackInterface;
 	list: ListInterface;
 }

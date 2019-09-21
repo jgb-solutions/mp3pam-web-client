@@ -14,7 +14,8 @@ export const syncState = (updatedState: Object) => ({
 
 export const playList = (list: ListInterface) => {
 	// fetch List to play from the network
-	const listWithItems = { ...list,
+	const listWithItems = {
+		...list,
 		items: [
 			{
 				id: '421495238',
@@ -23,10 +24,10 @@ export const playList = (list: ListInterface) => {
 				lyrics: " minute or two, they began ether you're a.",
 				url: "/api/v1/musics/42139505",
 				play_count: 0,
-				play_url: "https://cs1.mp3.pm/listen/4374092/WWs1cDhWMVJlRXNlVzdmOVZNc1lzWTRiWDRDSTFQSGNRd3FHV0pOQzY3REJBWFZHa0NiQThBdEFuc2lDMXZjRlpIYzRuTUlVdkpFVUZrZDFybjAyTmxZUFFTWjVWc3hiTThxdTVZakdaWnBhOTFsdWQzVU1rK1BWcWRpZjZZUTg/Daville_-_Mirrors_(mp3.pm).mp3",
+				play_url: "https://audios.mp3pam.com/Daville_-_Mirrors_(mp3.pm).mp3",
 				download_count: 0,
 				download_url: "/t/42139505",
-				image: "https://www.reggaeville.com/fileadmin/user_upload/daville.jpg",
+				image: "https://images.mp3pam.com/demo/daville.jpg",
 				favorite: true,
 				category: {
 					name: "Konpa",
@@ -50,10 +51,10 @@ export const playList = (list: ListInterface) => {
 				lyrics: " minute or two, they began ether you're a.",
 				url: "/api/v1/musics/42139505",
 				play_count: 0,
-				play_url: "https://a.tumblr.com/tumblr_l6l329X69I1qa5l4oo1.mp3",
+				play_url: "https://audios.mp3pam.com/tumblr_l6l329X69I1qa5l4oo1.mp3",
 				download_count: 0,
 				download_url: "/t/42139505",
-				image: "https://www.reggaeville.com/fileadmin/user_upload/daville.jpg",
+				image: "https://images.mp3pam.com/demo/daville.jpg",
 				favorite: true,
 				category: {
 					name: "Konpa",
@@ -77,10 +78,10 @@ export const playList = (list: ListInterface) => {
 				lyrics: " minute or two, they began ether you're a.",
 				url: "/api/v1/musics/42139505",
 				play_count: 0,
-				play_url: "http://9092.ultratv100.com:9090/music/1.-Top100/Jason%20Derulo%20-%20It%20Girl.mp3",
+				play_url: "https://audios.mp3pam.com/Jason%20Derulo%20-%20It%20Girl.mp3",
 				download_count: 0,
 				download_url: "/t/42139505",
-				image: "https://images-na.ssl-images-amazon.com/images/I/71v6WN02N1L.png",
+				image: "https://images.mp3pam.com/demo/71v6WN02N1L.png",
 				favorite: true,
 				category: {
 					name: "Konpa",
@@ -88,7 +89,7 @@ export const playList = (list: ListInterface) => {
 					url: "/api/v1/categories/konpa"
 				},
 				artist: {
-					avatar: "https://images-na.ssl-images-amazon.com/images/I/71v6WN02N1L.png",
+					avatar: "https://images.mp3pam.com/demo/I/71v6WN02N1L.png",
 					bio: null,
 					musics: "/api/v1/artists/77868635/musics",
 					name: "Jason Derulo",
@@ -104,10 +105,10 @@ export const playList = (list: ListInterface) => {
 				lyrics: " minute or two, they began ether you're a.",
 				url: "/api/v1/musics/42139505",
 				play_count: 0,
-				play_url: "http://9092.ultratv100.com:9090/music/1.-Top100/Gym%20Class%20Heroes%20ft.%20Adam%20Levine%20-%20Stereo%20Hearts.mp3",
+				play_url: "https://audios.mp3pam.com/Gym%20Class%20Heroes%20ft.%20Adam%20Levine%20-%20Stereo%20Hearts.mp3",
 				download_count: 0,
 				download_url: "/t/42139505",
-				image: "https://i1.sndcdn.com/artworks-000157680374-y69r9w-t500x500.jpg",
+				image: "https://images.mp3pam.com/demo/artworks-000157680374-y69r9w-t500x500.jpg",
 				favorite: true,
 				category: {
 					name: "Konpa",
@@ -115,7 +116,7 @@ export const playList = (list: ListInterface) => {
 					url: "/api/v1/categories/konpa"
 				},
 				artist: {
-					avatar: "https://i1.sndcdn.com/artworks-000157680374-y69r9w-t500x500.jpg",
+					avatar: "https://images.mp3pam.com/demo/artworks-000157680374-y69r9w-t500x500.jpg",
 					bio: null,
 					musics: "/api/v1/artists/77868635/musics",
 					name: "Adam Levine",
