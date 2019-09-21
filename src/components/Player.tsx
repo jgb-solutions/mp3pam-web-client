@@ -12,19 +12,15 @@ import {
 	PlaylistPlayOutlined
 } from "@material-ui/icons";
 import { get } from "lodash-es";
-import {
-	Theme,
-	WithStyles,
-	withStyles,
-	createStyles,
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import React, { useState, useEffect } from "react";
 import IconButton from "@material-ui/core/IconButton";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
-// import Routes from '../routes';
 import Heart from "./Heart";
 import Slider from "./Slider";
+import Routes from '../routes';
 import colors from "../utils/colors";
 import { debounce } from "../utils/helpers";
 import { ALL, ONE, NONE } from '../utils/constants';
@@ -34,118 +30,118 @@ import * as playerActions from "../store/actions/playerActions";
 import { RESUME, PAUSE, PLAY } from "../store/actions/actions";
 import AppStateInterface from "../interfaces/AppStateInterface";
 
-const styles = (theme: Theme) =>
-	createStyles({
-		container: {
-			display: "flex",
-			position: "fixed",
-			bottom: 0,
-			left: 0,
-			right: 0,
-			height: 86,
-			backgroundColor: colors.darkGrey,
-			color: "white",
-			paddingLeft: 24,
-			paddingRight: 24
-		},
-		player: {
-			flex: 1,
-			maxWidth: 1216,
-			marginLeft: "auto",
-			marginRight: "auto",
-			display: "flex",
-			justifyContent: "space-between"
-		},
-		posterTitle: {
-			flex: 1,
-			display: "flex",
-			alignItems: "center"
-		},
-		image: {
-			width: 55,
-			height: 55
-		},
-		titleArtist: {
-			paddingLeft: 10
-		},
-		title: {
-			fontSize: 11,
-			fontWeight: "bold",
-			display: "block",
-			marginBottom: -10
-		},
-		artist: {
-			fontSize: 9,
-			display: "block"
-		},
-		playlistVolume: {
-			flex: 1,
-			display: "flex",
-			justifyContent: "flex-end",
-			alignItems: "center"
-		},
-		controls: {
-			flex: 2,
-			display: "flex",
-			flexDirection: "column"
-		},
-		buttons: {
-			width: "37%",
-			display: "flex",
-			justifyContent: "space-between",
-			alignItems: "center",
-			alignSelf: "center"
-		},
-		sliderTime: {
-			display: "flex",
-			width: "90%",
-			alignSelf: "center",
-			position: "relative"
-		},
-		slider: {
-			flex: 1,
-			marginLeft: 40,
-			marginRight: 40,
-			marginTop: -9
-		},
-		startTime: {
-			fontSize: 10,
-			position: "absolute",
-			top: -4
-		},
-		endTime: {
-			fontSize: 10,
-			position: "absolute",
-			top: -4,
-			right: 0
-		},
-		icon: {
-			fontSize: 18,
-			color: colors.grey
-		},
-		playIcon: {
-			fontSize: 48
-		},
-		volumeSliderContainer: {
-			width: 70,
-			marginLeft: 7
-		},
-		volumeIcons: {
-			marginLeft: 15
-		}
-	});
+const useStyles = makeStyles(theme => ({
+	container: {
+		display: "flex",
+		position: "fixed",
+		bottom: 0,
+		left: 0,
+		right: 0,
+		height: 86,
+		backgroundColor: colors.darkGrey,
+		color: "white",
+		paddingLeft: 24,
+		paddingRight: 24
+	},
+	player: {
+		flex: 1,
+		maxWidth: 1216,
+		marginLeft: "auto",
+		marginRight: "auto",
+		display: "flex",
+		justifyContent: "space-between"
+	},
+	posterTitle: {
+		flex: 1,
+		display: "flex",
+		alignItems: "center"
+	},
+	image: {
+		width: 55,
+		height: 55
+	},
+	titleArtist: {
+		paddingLeft: 10
+	},
+	title: {
+		fontSize: 11,
+		fontWeight: "bold",
+		display: "block",
+		marginBottom: -10
+	},
+	artist: {
+		fontSize: 9,
+		display: "block"
+	},
+	playlistVolume: {
+		flex: 1,
+		display: "flex",
+		justifyContent: "flex-end",
+		alignItems: "center"
+	},
+	controls: {
+		flex: 2,
+		display: "flex",
+		flexDirection: "column"
+	},
+	buttons: {
+		width: "37%",
+		display: "flex",
+		justifyContent: "space-between",
+		alignItems: "center",
+		alignSelf: "center"
+	},
+	sliderTime: {
+		display: "flex",
+		width: "90%",
+		alignSelf: "center",
+		position: "relative"
+	},
+	slider: {
+		flex: 1,
+		marginLeft: 40,
+		marginRight: 40,
+		marginTop: -9
+	},
+	startTime: {
+		fontSize: 10,
+		position: "absolute",
+		top: -4
+	},
+	endTime: {
+		fontSize: 10,
+		position: "absolute",
+		top: -4,
+		right: 0
+	},
+	icon: {
+		fontSize: 18,
+		color: colors.grey
+	},
+	playIcon: {
+		fontSize: 48
+	},
+	volumeSliderContainer: {
+		width: 70,
+		marginLeft: 7
+	},
+	volumeIcons: {
+		marginLeft: 15
+	}
+}));
 
 // Setup Audio
 const audio = new Audio();
 let syncStateTimeoutId: number;
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
 	syncState(state: any): void;
 	storePlayerData: PlayerInterface;
 }
 
-function Player(props: Props) {
-	const { classes, storePlayerData, syncState } = props;
+function Player(props: Props & RouteComponentProps) {
+	const { storePlayerData, syncState } = props;
+	const classes = useStyles();
 	const [state, setState] = useState<PlayerInterface>({
 		...storePlayerData,
 		isPlaying: false,
@@ -383,7 +379,7 @@ function Player(props: Props) {
 	};
 
 	const handleQueue = () => {
-		console.log("go to queue");
+		props.history.push(Routes.pages.queue);
 	};
 
 	const toggleRepeat = () => {
@@ -583,10 +579,11 @@ function Player(props: Props) {
 					</div>
 				</div>
 				<div className={classes.playlistVolume}>
-					<PlaylistPlayOutlined
-						className={classes.icon}
-						onClick={handleQueue}
-					/>
+					<IconButton onClick={handleQueue}>
+						<PlaylistPlayOutlined
+							className={classes.icon}
+						/>
+					</IconButton>
 					<div className={classes.volumeIcons}>
 						{state.volume === 0 && (
 							<VolumeMuteOutlined className={classes.icon} />
@@ -618,4 +615,4 @@ export default connect(
 	{
 		syncState: playerActions.syncState
 	}
-)(withStyles(styles)(Player));
+)(withRouter(Player));

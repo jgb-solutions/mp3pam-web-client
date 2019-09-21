@@ -11,11 +11,12 @@ import { setContext } from 'apollo-link-context';
 import { ApolloProvider } from '@apollo/react-hooks';
 
 // Main screens
-import HomeScreen from './screens/HomeScreen';
-import UploadScreen from './screens/UploadScreen';
-import UsersScreen from './screens/UsersScreen'
 import ListScreen from './screens/ListScreen';
+import HomeScreen from './screens/HomeScreen';
+import UsersScreen from './screens/UsersScreen'
+import QueueScreen from './screens/QueueScreen'
 import AboutScreen from './screens/AboutScreen';
+import UploadScreen from './screens/UploadScreen';
 import SearchScreen from './screens/SearchScreen';
 import FourOFourScreen from './screens/FourOFourScreen';
 import MainScreen from './components/layouts/MainScreen';
@@ -115,6 +116,7 @@ export default function App() {
                 <Route path={Routes.track.show} component={ListScreen} />
                 <Route path={Routes.podcast.show} component={ListScreen} />
                 <Route path={Routes.pages.users} component={UsersScreen} />
+                <Route path={Routes.pages.queue} component={QueueScreen} />
                 <Route component={FourOFourScreen} />
               </Switch>
             </MainScreen>
