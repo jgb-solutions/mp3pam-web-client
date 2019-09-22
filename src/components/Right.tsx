@@ -12,20 +12,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Right = (props: any) => {
+type Props = {
+
+};
+
+const Right = (props: Props) => {
   const classes = useStyles();
 
   return (
     <div className={classes.container}>
-      <div className={classes.logo}>
-        <img className={classes.loaderSvg} alt='svg' src="/assets/images/loader.svg" />
-      </div>
-      <div className={classes.logo}>
-        <img className={classes.loaderSvg} alt='svg' src="/assets/images/loader.svg" />
-      </div>
-      <div className={classes.logo}>
-        <img className={classes.loaderSvg} alt='svg' src="/assets/images/loader.svg" />
-      </div>
       <div className={classes.logo}>
         <img className={classes.loaderSvg} alt='svg' src="/assets/images/loader.svg" />
       </div>

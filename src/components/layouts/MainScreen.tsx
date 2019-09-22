@@ -11,12 +11,12 @@ import Header from '../Header';
 
 import colors from "../../utils/colors";
 
-const SCREEN_SIZE = 768;
-
 const useStyles = makeStyles(theme => ({
   container: {
     marginBottom: 50,
-    backgroundColor: colors.black
+    backgroundColor: colors.black,
+    maxWidth: 1200,
+    margin: '0 auto',
   },
   col: {
     paddingLeft: 10,
@@ -35,9 +35,6 @@ const useStyles = makeStyles(theme => ({
   rightGrid: {
     paddingTop: 10,
     backgroundColor: colors.black
-    // [theme.breakpoints.down(SCREEN_SIZE)]: {
-    //   display: 'none',
-    // },
   }
 }));
 
@@ -47,25 +44,25 @@ const MainScreen = (props: { style?: Object, children: ReactNode }) => {
   return (
     <>
       <CssBaseline />
-      <Container maxWidth="lg" className={classes.container}>
-        <Grid container>
-          <Hidden xsDown>
-            <Grid item md={2} sm={3} xs={12} className={`${classes.col} ${classes.leftGrid}`}>
-              <Left />
-            </Grid>
-          </Hidden>
-          <Grid item md={8} sm={9} xs={12} className={`${classes.col} ${classes.mainGrid}`}>
-            <Header />
-            <Content className={classes.col}>{props.children}</Content>
+      {/* <Container maxWidth="lg" className={classes.container}> */}
+      <Grid container className={classes.container}>
+        <Hidden xsDown>
+          <Grid item md={2} sm={3} xs={12} className={`${classes.col} ${classes.leftGrid}`}>
+            <Left />
           </Grid>
-
-          <Hidden smDown>
-            <Grid item md={2} sm={2} xs={12} className={`${classes.col} ${classes.rightGrid}`}>
-              <Right />
-            </Grid>
-          </Hidden>
+        </Hidden>
+        <Grid item md={8} sm={9} xs={12} className={`${classes.col} ${classes.mainGrid}`}>
+          <Header />
+          <Content className={classes.col}>{props.children}</Content>
         </Grid>
-      </Container>
+
+        <Hidden smDown>
+          <Grid item md={2} sm={2} xs={12} className={`${classes.col} ${classes.rightGrid}`}>
+            <Right />
+          </Grid>
+        </Hidden>
+      </Grid>
+      {/* </Container> */}
       <Player />
     </>
   );

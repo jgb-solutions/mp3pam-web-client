@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 import colors from "../utils/colors";
-const SCREEN_SIZE = 768;
+import { SMALL_SCREEN_SIZE } from "../utils/constants";
 
 export default makeStyles(theme => ({
   container: {
@@ -28,7 +28,7 @@ export default makeStyles(theme => ({
     flex: 1,
     display: "flex",
     alignItems: "center",
-    [theme.breakpoints.down(SCREEN_SIZE)]: {
+    [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
       display: 'none',
     },
   },
@@ -54,7 +54,7 @@ export default makeStyles(theme => ({
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
-    [theme.breakpoints.down(SCREEN_SIZE)]: {
+    [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
       display: 'none',
     },
   },
@@ -68,7 +68,10 @@ export default makeStyles(theme => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    alignSelf: "center"
+    alignSelf: "center",
+    [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
+      width: '100%',
+    },
   },
   sliderTime: {
     display: "flex",

@@ -12,6 +12,7 @@ import colors from "../utils/colors";
 import Routes from "../routes";
 import ListInterface from "../interfaces/ListInterface";
 import { get } from "lodash-es";
+import { SMALL_SCREEN_SIZE } from "../utils/constants";
 
 const useStyles = makeStyles(theme => ({
 	imgContainer: {
@@ -23,7 +24,11 @@ const useStyles = makeStyles(theme => ({
 		marginBottom: 10,
 		display: "flex",
 		alignItems: "center",
-		justifyContent: "center"
+		justifyContent: "center",
+		[theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
+			width: 100,
+			height: 100,
+		},
 	},
 	transparentBackground: {
 		opacity: 0,

@@ -14,8 +14,9 @@ import ListTable from '../components/ListTable';
 import ListInterface from "../interfaces/ListInterface";
 import * as playerActions from "../store/actions/playerActions";
 import AppStateInterface from "../interfaces/AppStateInterface";
+import { Grid } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
 	row: {
 		display: "flex",
 		flexDirection: "row"
@@ -26,7 +27,12 @@ const useStyles = makeStyles(() => ({
 		marginRight: 20,
 		"& img": {
 			maxWidth: "100%"
-		}
+		},
+		[theme.breakpoints.down('xs')]: {
+			marginLeft: 'auto',
+			marginRight: 'auto',
+			marginBottom: 10,
+		},
 	},
 	listByAuthor: {
 		fontSize: 12
@@ -52,7 +58,10 @@ const useStyles = makeStyles(() => ({
 		"& > *": {
 			padding: 0,
 			margin: 0
-		}
+		},
+		[theme.breakpoints.down('xs')]: {
+			textAlign: 'center',
+		},
 	},
 	listType: {
 		fontSize: 12,
@@ -61,8 +70,14 @@ const useStyles = makeStyles(() => ({
 	},
 	listName: {
 		fontSize: 48,
-		fontWeight: "bold"
+		fontWeight: "bold",
+		[theme.breakpoints.down('xs')]: {
+			fontSize: 32,
+		},
 	},
+	ctaButtons: {
+		marginTop: 10,
+	}
 }));
 
 interface Props {
@@ -107,7 +122,39 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 
 	return list ? (
 		<>
-			<div className={styles.row}>
+			<Grid container>
+				<Grid item sm={6} xs={12}>
+					<div className={styles.listCover}>
+						<img src={list.image} alt={list.name} />
+					</div>
+				</Grid>
+				<Grid item sm={6} xs={12}>
+					<div className={styles.listDetails}>
+						<h5 className={styles.listType}>{list.type}</h5>
+						<h1 className={styles.listName}>{list.name}</h1>
+						<p className={styles.listByAuthor}>
+							<span className={styles.listBy}>By </span>
+							<Link
+								to={Routes.podcast.goToAuthorDetail("authorId")}
+								className={styles.listAuthor}
+							>
+								{list.author}
+							</Link>
+						</p>
+						<div className={styles.ctaButtons}>
+							<Button onClick={() => { togglePlay(list) }}>
+								{(props.playingListId !== list.id) && "Play"}
+								{(props.isPlaying && props.playingListId === list.id) && "Pause"}
+								{(!props.isPlaying && props.playingListId === list.id) && "Resume"}
+								{/* todo // using props.currentTime > 0  to display rsesume or replay */}
+							</Button>
+							<Heart border />
+							<More border />
+						</div>
+					</div>
+				</Grid>
+			</Grid>
+			{/* <div className={styles.row}>
 				<div className={styles.listCover}>
 					<img src={list.image} alt={list.name} />
 				</div>
@@ -128,13 +175,12 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 							{(props.playingListId !== list.id) && "Play"}
 							{(props.isPlaying && props.playingListId === list.id) && "Pause"}
 							{(!props.isPlaying && props.playingListId === list.id) && "Resume"}
-							{/* todo // using props.currentTime > 0  to display rsesume or replay */}
 						</Button>
 						<Heart border />
 						<More border />
 					</div>
 				</div>
-			</div>
+			</div> */}
 			<br />
 			{list.tracks && <ListTable list={list} />}
 		</>

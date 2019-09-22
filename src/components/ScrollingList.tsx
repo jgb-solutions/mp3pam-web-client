@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 import Thumbnail from "./Thumbnail";
 import ListInterface from "../interfaces/ListInterface";
+import { SMALL_SCREEN_SIZE } from "../utils/constants";
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -17,7 +18,11 @@ const useStyles = makeStyles(theme => ({
 	},
 	thumbnail: {
 		width: 175,
-		marginRight: 21
+		marginRight: 21,
+		[theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
+			width: 100,
+			marginRight: 10,
+		},
 	},
 	link: { color: "#fff", textDecoration: "none" },
 	listHeader: {
