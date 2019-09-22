@@ -12,7 +12,6 @@ import {
 	PlaylistPlayOutlined
 } from "@material-ui/icons";
 import { get } from "lodash-es";
-import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import React, { useState, useEffect } from "react";
 import IconButton from "@material-ui/core/IconButton";
@@ -21,114 +20,15 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import Heart from "./Heart";
 import Slider from "./Slider";
 import Routes from '../routes';
-import colors from "../utils/colors";
 import { debounce } from "../utils/helpers";
 import { ALL, ONE, NONE } from '../utils/constants';
 import TrackInterface from "../interfaces/TrackInterface";
 import PlayerInterface from "../interfaces/PlayerInterface";
 import * as playerActions from "../store/actions/playerActions";
-import { RESUME, PAUSE, PLAY } from "../store/actions/actions";
+import { RESUME, PAUSE, PLAY, PLAY_TRACK, PAUSE_TRACK, RESUME_TRACK } from "../store/actions/actions";
 import AppStateInterface from "../interfaces/AppStateInterface";
-
-const useStyles = makeStyles(theme => ({
-	container: {
-		display: "flex",
-		position: "fixed",
-		bottom: 0,
-		left: 0,
-		right: 0,
-		height: 86,
-		backgroundColor: colors.darkGrey,
-		color: "white",
-		paddingLeft: 24,
-		paddingRight: 24
-	},
-	player: {
-		flex: 1,
-		maxWidth: 1216,
-		marginLeft: "auto",
-		marginRight: "auto",
-		display: "flex",
-		justifyContent: "space-between"
-	},
-	posterTitle: {
-		flex: 1,
-		display: "flex",
-		alignItems: "center"
-	},
-	image: {
-		width: 55,
-		height: 55
-	},
-	titleArtist: {
-		paddingLeft: 10
-	},
-	title: {
-		fontSize: 11,
-		fontWeight: "bold",
-		display: "block",
-		marginBottom: -10
-	},
-	artist: {
-		fontSize: 9,
-		display: "block"
-	},
-	playlistVolume: {
-		flex: 1,
-		display: "flex",
-		justifyContent: "flex-end",
-		alignItems: "center"
-	},
-	controls: {
-		flex: 2,
-		display: "flex",
-		flexDirection: "column"
-	},
-	buttons: {
-		width: "37%",
-		display: "flex",
-		justifyContent: "space-between",
-		alignItems: "center",
-		alignSelf: "center"
-	},
-	sliderTime: {
-		display: "flex",
-		width: "90%",
-		alignSelf: "center",
-		position: "relative"
-	},
-	slider: {
-		flex: 1,
-		marginLeft: 40,
-		marginRight: 40,
-		marginTop: -9
-	},
-	startTime: {
-		fontSize: 10,
-		position: "absolute",
-		top: -4
-	},
-	endTime: {
-		fontSize: 10,
-		position: "absolute",
-		top: -4,
-		right: 0
-	},
-	icon: {
-		fontSize: 18,
-		color: colors.grey
-	},
-	playIcon: {
-		fontSize: 48
-	},
-	volumeSliderContainer: {
-		width: 70,
-		marginLeft: 7
-	},
-	volumeIcons: {
-		marginLeft: 15
-	}
-}));
+import PlayerStyle from "./PlayerStyle";
+import colors from "../utils/colors";
 
 // Setup Audio
 const audio = new Audio();
@@ -141,7 +41,7 @@ interface Props {
 
 function Player(props: Props & RouteComponentProps) {
 	const { storePlayerData, syncState } = props;
-	const classes = useStyles();
+	const classes = PlayerStyle();
 	const [state, setState] = useState<PlayerInterface>({
 		...storePlayerData,
 		isPlaying: false,
@@ -195,22 +95,22 @@ function Player(props: Props & RouteComponentProps) {
 	};
 
 	const onEnded = () => {
-		const items = get(state.list, 'items', [])
+		const tracks = get(state.list, 'tracks', [])
 		const { repeat } = state;
 
 		const currentTrack = state.currentTrack
 		if (!currentTrack) return;
-		const currentTrackIndex = findIndex(currentTrack, items)
-		const totalTracksIndexes = items.length - 1;
+		const currentTrackIndex = findIndex(currentTrack, tracks)
+		const totalTracksIndexes = tracks.length - 1;
 
 		if (
-			items.length > 1 && repeat === ALL
+			tracks.length > 1 && repeat === ALL
 		) {
 			playNext();
 		}
 
 		if (
-			items.length > 1 && repeat === NONE &&
+			tracks.length > 1 && repeat === NONE &&
 			currentTrackIndex < totalTracksIndexes
 		) {
 			playNext();
@@ -281,7 +181,7 @@ function Player(props: Props & RouteComponentProps) {
 	};
 
 	const playPrevious = () => {
-		const tracks = get(state.list, 'items', [])
+		const tracks = get(state.list, 'tracks', [])
 		if (state.isShuffled) {
 			getRandomTrack(tracks)
 			play();
@@ -309,7 +209,7 @@ function Player(props: Props & RouteComponentProps) {
 	};
 
 	const playNext = () => {
-		const tracks = get(state.list, 'items', [])
+		const tracks = get(state.list, 'tracks', [])
 		if (state.isShuffled) {
 			getRandomTrack(tracks)
 			play();
@@ -409,14 +309,14 @@ function Player(props: Props & RouteComponentProps) {
 		}));
 	}
 
-	// update playing when the store state changes  // componentDidUpdate
+	// update playing when the store state changes
 	useEffect(() => {
 		// play new set
 		if (
 			state.list.id !== storePlayerData.list.id &&
 			storePlayerData.action === PLAY
 		) {
-			const currentTrack = get(storePlayerData, 'list.items')[0]
+			const currentTrack = get(storePlayerData, 'list.tracks')[0]
 
 			setState(prevState => ({
 				...prevState,
@@ -448,6 +348,34 @@ function Player(props: Props & RouteComponentProps) {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [storePlayerData.list, storePlayerData.action, storePlayerData.updateHack]);
+
+	// Play, Pause and resume track
+	useEffect(() => {
+		switch (storePlayerData.action) {
+			case PLAY_TRACK:
+				setState(prevState => ({
+					...prevState,
+					action: PLAY_TRACK,
+					currentTrack: get(storePlayerData, 'track')
+				}));
+				break;
+			case PAUSE_TRACK:
+				pause();
+				setState(prevState => ({
+					...prevState,
+					action: PAUSE_TRACK,
+				}));
+				break;
+			case RESUME_TRACK:
+				resume();
+				setState(prevState => ({
+					...prevState,
+					action: RESUME_TRACK,
+				}));
+				break;
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [storePlayerData.action, storePlayerData.updateHack]);
 
 	// update the store state when some local states change
 	useEffect(() => {

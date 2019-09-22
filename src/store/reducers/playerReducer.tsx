@@ -4,7 +4,7 @@ import {
 	PAUSE_PLAYER,
 	SYNC_PLAYER_STATE
 } from "../actions/types";
-import { PAUSE } from "../actions/actions";
+import { PAUSE, PAUSE_TRACK, RESUME_TRACK, PLAY_TRACK } from "../actions/actions";
 import PlayerInterface from "../../interfaces/PlayerInterface";
 import { NONE } from "../../utils/constants";
 
@@ -66,6 +66,7 @@ export default function (
 	playerAction: { type: string; payload: { updatedState?: Object } }
 ) {
 	const { type, payload } = playerAction;
+	const time = Date.now().toString()
 
 	switch (type) {
 		case SYNC_PLAYER_STATE:
@@ -76,10 +77,19 @@ export default function (
 			return { ...playerState, ...payload };
 		case RESUME_LIST:
 			// console.log("resume called", `playerState`, playerState, payload);
-			return { ...playerState, ...payload, set: { ...playerState.list }, updateHack: Date.now().toString() };
+			return { ...playerState, ...payload, updateHack: time };
 		case PAUSE_PLAYER:
 			// console.log("pause called", `playerState`, playerState, payload);
 			return { ...playerState, ...payload };
+		case PAUSE_TRACK:
+			console.log("pause called", `playerState`, playerState, payload);
+			return { ...playerState, ...payload };
+		case RESUME_TRACK:
+			console.log("pause called", `playerState`, playerState, payload);
+			return { ...playerState, ...payload };
+		case PLAY_TRACK:
+			console.log("play track called", `playerState`, playerState, payload);
+			return { ...playerState, ...payload, updateHack: time };
 		default:
 			return playerState;
 	}

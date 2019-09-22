@@ -1,41 +1,18 @@
-import React, { useState, useEffect } from "react";
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
-import { UserData } from "../interfaces/UserInterface";
+import React from "react";
+import { useSelector } from "react-redux";
 
-export const FETCH_USERS = gql`
-  query allUsers {
-    # 10 latest users
-    users {
-      paginatorInfo {
-        count
-        currentPage
-        firstItem
-        hasMorePages
-      }
-      data {
-        name
-        email
-        id
-      }
-    }
-  }
-`;
+import ListTable from '../components/ListTable';
+import AppStateInterface from "../interfaces/AppStateInterface";
 
-export default function QueueScreen() {
-  const { loading, error, data } = useQuery(FETCH_USERS);
-
-  if (loading) return <h1>Loading...</h1>;
-  if (error) return <h1>Error: {JSON.stringify}</h1>
+function QueueScreen() {
+  const list = useSelector(({ player }: AppStateInterface) => player.list);
 
   return (
     <>
-      <h1>Queue Screen</h1>
-      <ul>
-        {data && data.users.data.map((user: UserData, index: number) => (
-          <li key={index}>{user.name}</li>
-        ))}
-      </ul>
+      <h1>Queue</h1>
+      <ListTable list={list} />
     </>
   );
 }
+
+export default QueueScreen;

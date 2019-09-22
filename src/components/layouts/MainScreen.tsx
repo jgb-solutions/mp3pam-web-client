@@ -1,44 +1,69 @@
 import React, { ReactNode, CSSProperties } from 'react';
 import { CssBaseline, Grid, Container } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core/styles";
+import Hidden from '@material-ui/core/Hidden';
+
 import Player from '../Player';
 import Left from '../Left';
 import Right from '../Right';
 import Content from '../Content';
 import Header from '../Header';
 
-const styles = {
+import colors from "../../utils/colors";
+
+const SCREEN_SIZE = 768;
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    marginBottom: 50,
+    backgroundColor: colors.black
+  },
   col: {
     paddingLeft: 10,
     paddingRight: 10,
     height: window.innerHeight - 86,
     overflowY: 'scroll'
+  },
+  mainGrid: {
+    backgroundColor: colors.contentGrey,
+    position: 'relative'
+  },
+  leftGrid: {
+    paddingTop: 10,
+    backgroundColor: colors.black,
+  },
+  rightGrid: {
+    paddingTop: 10,
+    backgroundColor: colors.black
+    // [theme.breakpoints.down(SCREEN_SIZE)]: {
+    //   display: 'none',
+    // },
   }
-};
-
-const leftGridStyle = { ...styles.col, paddingTop: 10 } as CSSProperties;
-const mainGridStyle = {
-  ...styles.col,
-  backgroundColor: '#181818',
-  position: 'relative'
-} as CSSProperties;
-const rightGridStyle = { ...styles.col, paddingTop: 10 } as CSSProperties;
+}));
 
 const MainScreen = (props: { style?: Object, children: ReactNode }) => {
+  const classes = useStyles();
+
   return (
     <>
       <CssBaseline />
-      <Container maxWidth="lg" style={{ marginBottom: 50 }}>
+      <Container maxWidth="lg" className={classes.container}>
         <Grid container>
-          <Grid item sm={2} xs={12} style={leftGridStyle}>
-            <Left />
-          </Grid>
-          <Grid item sm={8} xs={12} style={mainGridStyle}>
+          <Hidden xsDown>
+            <Grid item md={2} sm={3} xs={12} className={`${classes.col} ${classes.leftGrid}`}>
+              <Left />
+            </Grid>
+          </Hidden>
+          <Grid item md={8} sm={9} xs={12} className={`${classes.col} ${classes.mainGrid}`}>
             <Header />
-            <Content style={styles.col}>{props.children}</Content>
+            <Content className={classes.col}>{props.children}</Content>
           </Grid>
-          <Grid item sm={2} xs={12} style={rightGridStyle}>
-            <Right />
-          </Grid>
+
+          <Hidden smDown>
+            <Grid item md={2} sm={2} xs={12} className={`${classes.col} ${classes.rightGrid}`}>
+              <Right />
+            </Grid>
+          </Hidden>
         </Grid>
       </Container>
       <Player />

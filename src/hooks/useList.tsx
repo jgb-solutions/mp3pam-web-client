@@ -1,10 +1,32 @@
 import { useState, useEffect } from 'react';
-import ListInterface from '../interfaces/ListInterface';
+import gql from 'graphql-tag'
+import { useQuery } from '@apollo/react-hooks'
 import APIService from '../services/api';
-import { AxiosResponse } from 'axios';
 
+import ListInterface from '../interfaces/ListInterface';
 
-function useList(listId: string, listParam: ListInterface | undefined = undefined): [ListInterface | null, boolean, {} | null] {
+export const FETCH_LIST_TRACKS = gql`
+  query listTracks($type: String!, $hash: Int!) {
+    list(hash: $hash, type: $type) {
+      hash
+      title
+      image
+      tracks(take: 10) {
+        data {
+          hash
+          title
+          created_at
+        }
+      }
+    }
+  }
+`;
+
+function useList(
+  listId: string,
+  listParam: ListInterface | undefined = undefined
+): [ListInterface | null, boolean, {} | null] {
+  // const { loading, error, data } = useQuery(FETCH_LIST_TRACKS);
   const [list, setList] = useState<ListInterface | null>(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +54,7 @@ function useList(listId: string, listParam: ListInterface | undefined = undefine
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return [ list, isLoading, error ];
+  return [list, isLoading, error];
 }
 
 export default useList;

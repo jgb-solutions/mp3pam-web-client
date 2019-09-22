@@ -5,10 +5,15 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+
 import colors from '../utils/colors';
 import Heart from './Heart';
 import More from './More';
 import PlayPause from './PlayPause';
+import TrackInterface from '../interfaces/TrackInterface';
+import { useSelector } from 'react-redux';
+import AppStateInterface from '../interfaces/AppStateInterface';
+import ListInterface from '../interfaces/ListInterface';
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -35,20 +40,14 @@ const StyledTableCell = withStyles(theme => ({
   },
 }))(TableCell);
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+type Props = {
+  list: ListInterface
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
-export default function SimpleTable() {
+export default function ListTable(props: Props) {
   const classes = useStyles();
+  const tracks = props.list.tracks;
+  const currentTrack = useSelector(({ player }: AppStateInterface) => player.currentTrack);
 
   return (
     <Table className={classes.table} size="small">
@@ -62,21 +61,28 @@ export default function SimpleTable() {
         </TableRow>
       </TableHead>
       <TableBody>
-        {rows.map((row, index) => (
-          <TableRow key={row.name} style={{
-            borderBottom: rows.length - 1 === index ? '' : '1px solid white'
+        {tracks && tracks.map((track: TrackInterface, index: number) => {
+          const color = currentTrack
+            && track.hash === currentTrack.hash ? colors.primary
+            : undefined;
+
+          return (
+            <TableRow key={track.hash} style={{
+              borderBottom: tracks.length - 1 === index ? '' : '1px solid white',
             }}>
-            <StyledTableCell style={{ width: '15%' }}>
-              <PlayPause /><Heart />
-            </StyledTableCell>
-            <StyledTableCell style={{ width: '30%' }}>{row.name}</StyledTableCell>
-            <StyledTableCell style={{ width: '30%' }}>{row.name}</StyledTableCell>
-            <StyledTableCell style={{ width: '20%' }}>{row.name}</StyledTableCell>
-            <StyledTableCell>
-              <More />
-            </StyledTableCell>
-          </TableRow>
-        ))}
+              <StyledTableCell style={{ width: '15%', minWidth: '80px' }}>
+                <PlayPause track={track} list={props.list} />
+                <Heart />
+              </StyledTableCell>
+              <StyledTableCell style={{ width: '30%', color }}>{track.title}</StyledTableCell>
+              <StyledTableCell style={{ width: '30%', color }}>{track.artist.name}</StyledTableCell>
+              <StyledTableCell style={{ width: '20%', color }}>{track.title}</StyledTableCell>
+              <StyledTableCell>
+                <More />
+              </StyledTableCell>
+            </TableRow>
+          )
+        })}
       </TableBody>
     </Table>
   );

@@ -1,22 +1,19 @@
 import { connect } from "react-redux";
-import React, { useState } from "react";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import IconButton from "@material-ui/core/IconButton";
+import React from "react";
 import { darken, makeStyles } from "@material-ui/core/styles";
 import { withRouter, Link, RouteComponentProps } from "react-router-dom";
-import { FavoriteBorderRounded, MoreHorizOutlined } from "@material-ui/icons";
 import { get } from 'lodash';
+
 import Routes from "../routes";
 import colors from "../utils/colors";
+import More from "../components/More";
 import useList from '../hooks/useList';
+import Heart from "../components/Heart";
 import Button from "../components/Button";
 import ListTable from '../components/ListTable';
 import ListInterface from "../interfaces/ListInterface";
 import * as playerActions from "../store/actions/playerActions";
 import AppStateInterface from "../interfaces/AppStateInterface";
-import More from "../components/More";
-import Heart from "../components/Heart";
 
 const useStyles = makeStyles(() => ({
 	row: {
@@ -139,7 +136,7 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 				</div>
 			</div>
 			<br />
-			<ListTable />
+			{list.tracks && <ListTable list={list} />}
 		</>
 	) : null;
 }

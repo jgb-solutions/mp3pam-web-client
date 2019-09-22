@@ -4,8 +4,9 @@ import {
 	PAUSE_PLAYER,
 	SYNC_PLAYER_STATE,
 } from "./types";
-import { PAUSE, PLAY, RESUME } from "./actions";
+import { PAUSE, PLAY, RESUME, PAUSE_TRACK, RESUME_TRACK, PLAY_TRACK } from "./actions";
 import ListInterface from "../../interfaces/ListInterface";
+import TrackInterface from "../../interfaces/TrackInterface";
 
 export const syncState = (updatedState: Object) => ({
 	type: SYNC_PLAYER_STATE,
@@ -16,10 +17,11 @@ export const playList = (list: ListInterface) => {
 	// fetch List to play from the network
 	const listWithItems = {
 		...list,
-		items: [
+		tracks: [
 			{
 				id: '421495238',
 				title: "Mirrors",
+				hash: 23423423,
 				detail: "Some new detailr",
 				lyrics: " minute or two, they began ether you're a.",
 				url: "/api/v1/musics/42139505",
@@ -46,6 +48,7 @@ export const playList = (list: ListInterface) => {
 			},
 			{
 				id: '421495sdf38',
+				hash: 233242,
 				title: "Alway On My Mind",
 				detail: "Some new detailr",
 				lyrics: " minute or two, they began ether you're a.",
@@ -73,6 +76,7 @@ export const playList = (list: ListInterface) => {
 			},
 			{
 				id: '4214asd5238',
+				hash: 3232342,
 				title: "It Girl",
 				detail: "Some new detailr",
 				lyrics: " minute or two, they began ether you're a.",
@@ -100,6 +104,7 @@ export const playList = (list: ListInterface) => {
 			},
 			{
 				id: '421s3sd5238',
+				hash: 534343,
 				title: "Stereo Hearts",
 				detail: "Some new detailr",
 				lyrics: " minute or two, they began ether you're a.",
@@ -126,11 +131,11 @@ export const playList = (list: ListInterface) => {
 				}
 			},
 		]
-	}
+	};
 	return {
 		type: PLAY_LIST,
 		payload: { list: listWithItems, action: PLAY }
-	}
+	};
 };
 
 export const pauseList = () => ({
@@ -141,4 +146,19 @@ export const pauseList = () => ({
 export const resumeList = () => ({
 	type: RESUME_LIST,
 	payload: { action: RESUME }
+});
+
+export const pauseTrack = () => ({
+	type: PAUSE_TRACK,
+	payload: { action: PAUSE_TRACK }
+});
+
+export const resumeTrack = () => ({
+	type: RESUME_TRACK,
+	payload: { action: RESUME_TRACK }
+});
+
+export const playTrack = (track: TrackInterface) => ({
+	type: PLAY_TRACK,
+	payload: { action: PLAY_TRACK, track }
 });

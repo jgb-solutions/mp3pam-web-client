@@ -6,7 +6,7 @@ import useHome from "../hooks/useHome";
 const data = [
 	{
 		id: "43534",
-		image: "https://images-na.ssl-images-amazon.com/images/I/71v6WN02N1L.png",
+		image: "https://images.mp3pam.com/demo/71v6WN02N1L.png",
 		name: "Breakfast",
 		author: "jill111",
 		type: "album"
@@ -76,7 +76,7 @@ const data = [
 	},
 	{
 		id: "3243",
-		image: "https://images-na.ssl-images-amazon.com/images/I/71v6WN02N1L.png",
+		image: "https://images.mp3pam.com/demo/71v6WN02N1L.png",
 		name: "It Girl",
 		author: "Jason Derulo",
 		type: "track"
@@ -106,6 +106,7 @@ export default function Home() {
 	}, [homeData])
 
 	if (loading) return <p>Loading ...</p>;
+	if (error) return <p>Error Loading new data. Please refresh the page.</p>;
 
 	return (
 		<>
