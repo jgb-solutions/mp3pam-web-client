@@ -11,6 +11,7 @@ import {
 	VolumeMuteOutlined,
 	PlaylistPlayOutlined
 } from "@material-ui/icons";
+import MoreIcon from '@material-ui/icons/MoreVert';
 import { get } from "lodash-es";
 import { connect } from "react-redux";
 import React, { useState, useEffect } from "react";
@@ -29,6 +30,7 @@ import { RESUME, PAUSE, PLAY, PLAY_TRACK, PAUSE_TRACK, RESUME_TRACK } from "../s
 import AppStateInterface from "../interfaces/AppStateInterface";
 import PlayerStyle from "./PlayerStyle";
 import colors from "../utils/colors";
+import { Drawer } from "@material-ui/core";
 
 // Setup Audio
 const audio = new Audio();
@@ -40,6 +42,7 @@ interface Props {
 }
 
 function Player(props: Props & RouteComponentProps) {
+	const [drawerOPen, setDrawerOpen] = useState(false);
 	const { storePlayerData, syncState } = props;
 	const classes = PlayerStyle();
 	const [state, setState] = useState<PlayerInterface>({
@@ -532,6 +535,19 @@ function Player(props: Props & RouteComponentProps) {
 					</div>
 				</div>
 			</div>
+			{/* Bottom Drawer */}
+			<IconButton
+				aria-label="Open left menu"
+				onClick={() => setDrawerOpen(true)}
+				color="inherit"
+				className={classes.bottomMenuIcon}>
+				<MoreIcon />
+			</IconButton>
+			<Drawer anchor='bottom' open={drawerOPen} onClose={() => setDrawerOpen(false)}>
+				<div className={classes.bottomDrawer}>
+					bottom content
+				</div>
+			</Drawer>
 		</div>
 	);
 }

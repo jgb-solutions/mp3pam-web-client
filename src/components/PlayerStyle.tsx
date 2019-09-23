@@ -70,7 +70,7 @@ export default makeStyles(theme => ({
     alignItems: "center",
     alignSelf: "center",
     [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
-      width: '100%',
+      width: '70%',
     },
   },
   sliderTime: {
@@ -110,4 +110,16 @@ export default makeStyles(theme => ({
   volumeIcons: {
     marginLeft: 15
   },
+  bottomDrawer: {
+    height: 100,
+    backgroundColor: colors.darkGrey
+  },
+  bottomMenuIcon: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    [theme.breakpoints.up(SMALL_SCREEN_SIZE)]: {
+      display: 'none'
+    },
+  }
 }));

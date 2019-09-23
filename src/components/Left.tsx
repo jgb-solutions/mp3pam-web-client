@@ -3,37 +3,36 @@ import { Link } from "react-router-dom";
 import { Home, ViewQuilt } from "@material-ui/icons";
 import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Routes from "../routes";
-import { WithStyles } from "@material-ui/styles";
+import { WithStyles, makeStyles } from "@material-ui/styles";
 
-const styles = (theme: Theme) =>
-	createStyles({
-		logo: {
-			maxWidth: "100%",
-			width: "200px",
-		},
-		logoLink: {
-			marginBottom: 20,
-			display: 'inline-block',
-		},
-		link: {
-			color: "white",
-			display: "flex",
-			textDecoration: "none",
-			marginBottom: 15,
-			fontWeight: "bold"
-		},
-		linkIcon: {
-			fontSize: 15,
-			marginRight: 15
-		},
-		linkText: {
-			fontSize: 15
-		},
-		mainMenu: {
-			marginBottom: 30
-		},
-		yourLibary: {},
-	});
+const useStyles = makeStyles({
+	logo: {
+		maxWidth: "100%",
+		width: "200px",
+	},
+	logoLink: {
+		marginBottom: 20,
+		display: 'inline-block',
+	},
+	link: {
+		color: "white",
+		display: "flex",
+		textDecoration: "none",
+		marginBottom: 15,
+		fontWeight: "bold"
+	},
+	linkIcon: {
+		fontSize: 15,
+		marginRight: 15
+	},
+	linkText: {
+		fontSize: 15
+	},
+	mainMenu: {
+		marginBottom: 30
+	},
+	yourLibary: {},
+});
 
 const mainMenu = [
 	{ name: "Home", icon: <Home />, to: Routes.pages.home },
@@ -48,9 +47,18 @@ const libraryMenu = [
 	{ name: "Queue", to: Routes.pages.queue },
 ];
 
-interface Props extends WithStyles<typeof styles> { }
+type Props = {
+	setDrawerOpen?: (bool: boolean) => void,
+};
 
-const Left = ({ classes }: Props) => {
+const Left = (props: Props) => {
+	const classes = useStyles();
+	const closeDrawer = () => {
+		if (props.setDrawerOpen) {
+			props.setDrawerOpen(false)
+		}
+	}
+
 	return (
 		<>
 			<Link to="/" className={classes.logoLink}>
@@ -62,7 +70,11 @@ const Left = ({ classes }: Props) => {
 			</Link>
 			<div className={classes.mainMenu}>
 				{mainMenu.map((menuItem, index) => (
-					<Link key={index} to={menuItem.to} className={classes.link}>
+					<Link
+						key={index}
+						to={menuItem.to}
+						className={classes.link}
+						onClick={closeDrawer}>
 						<span className={classes.linkIcon}>{menuItem.icon}</span>
 						<span className={classes.linkText}>{menuItem.name}</span>
 					</Link>
@@ -71,7 +83,11 @@ const Left = ({ classes }: Props) => {
 			<div className={classes.yourLibary}>
 				<h5>Your Library</h5>
 				{libraryMenu.map((menuItem, index) => (
-					<Link key={index} to={menuItem.to} className={classes.link}>
+					<Link
+						key={index}
+						to={menuItem.to}
+						className={classes.link}
+						onClick={closeDrawer}>
 						<span className={classes.linkText}>{menuItem.name}</span>
 					</Link>
 				))}
@@ -80,4 +96,4 @@ const Left = ({ classes }: Props) => {
 	);
 };
 
-export default withStyles(styles)(Left);
+export default Left;
