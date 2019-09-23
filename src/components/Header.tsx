@@ -18,17 +18,18 @@ import { SMALL_SCREEN_SIZE } from '../utils/constants';
 
 const useStyles = makeStyles(theme => ({
   grow: {
-    flexGrow: 1,
+    flex: 1,
     backgroundColor: colors.black,
-    width: '100%',
     [theme.breakpoints.up(SMALL_SCREEN_SIZE)]: {
       position: 'relative',
-      marginRight: -30,
+      marginRight: -10,
       marginLeft: -10,
     }
   },
   appBar: {
     width: '100%',
+    paddingLeft: 0,
+    paddingRight: 0,
     backgroundColor: colors.black,
     position: "absolute",
   },

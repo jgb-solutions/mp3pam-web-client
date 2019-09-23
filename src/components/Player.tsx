@@ -430,7 +430,7 @@ function Player(props: Props & RouteComponentProps) {
 	}, [state.isShuffled]);
 
 	return (
-		<div className={classes.container}>
+		<div className={classes.container} style={{ display: !state.currentTrack ? 'none' : '' }}>
 			<div className={classes.player}>
 				<div className={classes.posterTitle}>
 					<img

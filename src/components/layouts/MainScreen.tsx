@@ -13,15 +13,15 @@ import colors from "../../utils/colors";
 
 const useStyles = makeStyles(theme => ({
   container: {
-    marginBottom: 50,
     backgroundColor: colors.black,
     maxWidth: 1200,
     margin: '0 auto',
   },
   col: {
+    // paddingBottom: 50,
     paddingLeft: 10,
     paddingRight: 10,
-    height: window.innerHeight - 86,
+    height: '100vh',
     overflowY: 'scroll'
   },
   mainGrid: {
@@ -44,7 +44,6 @@ const MainScreen = (props: { style?: Object, children: ReactNode }) => {
   return (
     <>
       <CssBaseline />
-      {/* <Container maxWidth="lg" className={classes.container}> */}
       <Grid container className={classes.container}>
         <Hidden xsDown>
           <Grid item md={2} sm={3} xs={12} className={`${classes.col} ${classes.leftGrid}`}>
@@ -62,7 +61,6 @@ const MainScreen = (props: { style?: Object, children: ReactNode }) => {
           </Grid>
         </Hidden>
       </Grid>
-      {/* </Container> */}
       <Player />
     </>
   );

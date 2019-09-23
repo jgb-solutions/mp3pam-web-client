@@ -21,18 +21,13 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexDirection: "row"
 	},
-	listCover: {
-		width: 220,
-		height: 220,
-		marginRight: 20,
-		"& img": {
-			maxWidth: "100%"
-		},
-		[theme.breakpoints.down('xs')]: {
-			marginLeft: 'auto',
-			marginRight: 'auto',
-			marginBottom: 10,
-		},
+	imageContainer: {
+		textAlign: 'center',
+	},
+	image: {
+		width: 250,
+		height: 'auto',
+		maxWidth: "100%",
 	},
 	listByAuthor: {
 		fontSize: 12
@@ -52,9 +47,9 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	listDetails: {
-		display: "flex",
-		flexDirection: "column",
-		justifyContent: "flex-end",
+		// display: "flex",
+		// flexDirection: "column",
+		// justifyContent: "flex-end",
 		"& > *": {
 			padding: 0,
 			margin: 0
@@ -77,6 +72,12 @@ const useStyles = makeStyles(theme => ({
 	},
 	ctaButtons: {
 		marginTop: 10,
+	},
+	hearMore: {
+		alignSelf: 'flex-start',
+		[theme.breakpoints.down('xs')]: {
+			marginTop: 10,
+		},
 	}
 }));
 
@@ -122,13 +123,11 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 
 	return list ? (
 		<>
-			<Grid container>
-				<Grid item sm={6} xs={12}>
-					<div className={styles.listCover}>
-						<img src={list.image} alt={list.name} />
-					</div>
+			<Grid container spacing={2}>
+				<Grid item sm={4} xs={12} className={styles.imageContainer}>
+					<img src={list.image} alt={list.name} className={styles.image} />
 				</Grid>
-				<Grid item sm={6} xs={12}>
+				<Grid item sm={8} xs={12}>
 					<div className={styles.listDetails}>
 						<h5 className={styles.listType}>{list.type}</h5>
 						<h1 className={styles.listName}>{list.name}</h1>
@@ -141,16 +140,21 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 								{list.author}
 							</Link>
 						</p>
-						<div className={styles.ctaButtons}>
-							<Button onClick={() => { togglePlay(list) }}>
-								{(props.playingListId !== list.id) && "Play"}
-								{(props.isPlaying && props.playingListId === list.id) && "Pause"}
-								{(!props.isPlaying && props.playingListId === list.id) && "Resume"}
-								{/* todo // using props.currentTime > 0  to display rsesume or replay */}
-							</Button>
-							<Heart border />
-							<More border />
-						</div>
+						<Grid className={styles.ctaButtons} container>
+							<Grid item sm={4} xs={12}>
+								<Button onClick={() => { togglePlay(list) }}>
+									{(props.playingListId !== list.id) && "Play"}
+									{(props.isPlaying && props.playingListId === list.id) && "Pause"}
+									{(!props.isPlaying && props.playingListId === list.id) && "Resume"}
+									{/* todo // using props.currentTime > 0  to display rsesume or replay */}
+								</Button>
+							</Grid>
+							<Grid item sm={8} xs={12} className={styles.hearMore}>
+								<Heart border />
+								&nbsp; &nbsp;
+								<More border />
+							</Grid>
+						</Grid>
 					</div>
 				</Grid>
 			</Grid>

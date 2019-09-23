@@ -15,9 +15,7 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: fade(theme.palette.common.white, 0.99)
 		},
 		color: fade(theme.palette.common.black, 0.8),
-		// marginRight: theme.spacing(2),
 		marginLeft: 0
-		// width: '100%'
 	},
 	searchIcon: {
 		width: theme.spacing(7),
@@ -29,15 +27,11 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: "center"
 	},
 	inputRoot: {
-		color: "inherit"
+		color: "inherit",
 	},
 	inputInput: {
 		padding: theme.spacing(1, 1, 1, 7),
-		transition: theme.transitions.create("width"),
-		width: "100%",
-		// [theme.breakpoints.up("md")]: {
-		// 	width: 200
-		// }
+		width: 200
 	}
 }));
 

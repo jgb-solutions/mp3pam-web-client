@@ -22,7 +22,7 @@ const Right = (props: Props) => {
   return (
     <div className={classes.container}>
       <div className={classes.logo}>
-        <img className={classes.loaderSvg} alt='svg' src="/assets/images/loader.svg" />
+        {/* <img className={classes.loaderSvg} alt='svg' src="/assets/images/loader.svg" /> */}
       </div>
     </div>
   );

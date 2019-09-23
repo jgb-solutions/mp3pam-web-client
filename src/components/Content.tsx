@@ -6,6 +6,7 @@ const Content = (props: { style?: Object, children: ReactNode, className?: strin
       className={props.className}
       style={{
         paddingTop: 75,
+        paddingBottom: 50,
         ...props.style
       }}
     >
