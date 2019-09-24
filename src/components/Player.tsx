@@ -316,8 +316,8 @@ function Player(props: Props & RouteComponentProps) {
 	useEffect(() => {
 		// play new set
 		if (
-			state.list.id !== storePlayerData.list.id &&
-			storePlayerData.action === PLAY
+			get(storePlayerData, 'list.id') !== get(state, 'list.id')
+			&& storePlayerData.action === PLAY
 		) {
 			const currentTrack = get(storePlayerData, 'list.tracks')[0]
 
@@ -340,7 +340,7 @@ function Player(props: Props & RouteComponentProps) {
 
 		// Resume player
 		if (
-			storePlayerData.list.id === state.list.id
+			get(storePlayerData, 'list.id') === get(state, 'list.id')
 			&& storePlayerData.action === RESUME
 		) {
 			audio.play();

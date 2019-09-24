@@ -5,10 +5,10 @@
   flex-direction: column;
   min-height: 100vh;
 }
-*::-webkit-scrollbar {
-  width: 0.5em;
-  height: 0.5rem;
-}
+/* *::-webkit-scrollbar {
+  width: 0.35em;
+  height: 0.35em;
+} */
 
 *::-webkit-scrollbar-thumb {
   background-color: rgba(205, 27, 84, 0.2);

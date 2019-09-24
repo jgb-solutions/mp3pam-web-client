@@ -2,17 +2,17 @@ import {
   PlayCircleOutline,
   PauseCircleOutline,
 } from "@material-ui/icons";
-import React, { useState } from 'react';
+import React from 'react';
 import IconButton from "@material-ui/core/IconButton";
 import { connect } from 'react-redux';
 import { makeStyles } from "@material-ui/styles";
+import { get } from "lodash-es";
 
 import colors from "../utils/colors";
 import * as playerActions from "../store/actions/playerActions";
 import AppStateInterface from "../interfaces/AppStateInterface";
 import ListInterface from "../interfaces/ListInterface";
 import TrackInterface from "../interfaces/TrackInterface";
-import { get } from "lodash-es";
 
 const useStyles = makeStyles({
   icon: {
@@ -114,7 +114,7 @@ function PlayPause({
 
 export default connect(
   ({ player }: AppStateInterface) => ({
-    playingListId: player.list.id,
+    playingListId: get(player, 'list.id'),
     isPlaying: player.isPlaying,
     currentTrack: player.currentTrack
   }),

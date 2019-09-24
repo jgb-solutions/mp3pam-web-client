@@ -1,8 +1,9 @@
 import PlayerInterface from './PlayerInterface';
 import UserInterface from './UserInterface';
+import SearchInterface from './SearchInterface';
 
 export default interface AppStateInterface {
   player: PlayerInterface,
-  user: UserInterface,
-  // search:
+  currentUser: UserInterface,
+  search: SearchInterface
 }

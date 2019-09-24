@@ -9,8 +9,11 @@ function QueueScreen() {
 
   return (
     <>
-      <h1>Queue</h1>
-      <ListTable list={list} />
+      <h1>Your Current Queue</h1>
+
+      {!list && <h3>Your queue is empty!</h3>}
+
+      {list && <ListTable list={list} />}
     </>
   );
 }

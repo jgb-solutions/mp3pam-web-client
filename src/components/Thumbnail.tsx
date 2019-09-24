@@ -110,6 +110,6 @@ const Thumbnail = (
 };
 
 export default connect(({ player }: any) => ({
-	listId: player.list.id,
+	listId: get(player, 'list.id'),
 	isPlaying: player.isPlaying
 }))(withRouter(Thumbnail));

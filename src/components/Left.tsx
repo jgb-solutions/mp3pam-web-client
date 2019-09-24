@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Home, ViewQuilt } from "@material-ui/icons";
-import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
+
 import Routes from "../routes";
-import { WithStyles, makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles({
 	logo: {
@@ -48,14 +48,14 @@ const libraryMenu = [
 ];
 
 type Props = {
-	setDrawerOpen?: (bool: boolean) => void,
+	closeDrawerLeft?: (bool: boolean) => void,
 };
 
 const Left = (props: Props) => {
 	const classes = useStyles();
 	const closeDrawer = () => {
-		if (props.setDrawerOpen) {
-			props.setDrawerOpen(false)
+		if (props.closeDrawerLeft) {
+			props.closeDrawerLeft(false)
 		}
 	}
 
@@ -81,7 +81,7 @@ const Left = (props: Props) => {
 				))}
 			</div>
 			<div className={classes.yourLibary}>
-				<h5>Your Library</h5>
+				<h4>Your Library</h4>
 				{libraryMenu.map((menuItem, index) => (
 					<Link
 						key={index}

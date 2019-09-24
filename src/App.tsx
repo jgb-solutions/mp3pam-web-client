@@ -4,7 +4,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink, createHttpLink } from 'apollo-link-http';
+import { createHttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
@@ -15,6 +15,7 @@ import ListScreen from './screens/ListScreen';
 import HomeScreen from './screens/HomeScreen';
 import UsersScreen from './screens/UsersScreen'
 import QueueScreen from './screens/QueueScreen'
+import LoginScreen from './screens/LoginScreen'
 import AboutScreen from './screens/AboutScreen';
 import UploadScreen from './screens/UploadScreen';
 import SearchScreen from './screens/SearchScreen';
@@ -44,7 +45,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
-  const token: string | null = store.getState().user.token
+  const token: string | null = store.getState().currentUser.token
   // return the headers to the context so httpLink can read them
   return {
     headers: {
@@ -71,6 +72,7 @@ const client = new ApolloClient({
             client.clearStore();
             store.dispatch({ type: LOG_OUT });
           }
+          // eslint-disable-next-line
         });
 
         // client.mutate({
@@ -117,6 +119,7 @@ export default function App() {
                 <Route path={Routes.podcast.show} component={ListScreen} />
                 <Route path={Routes.pages.users} component={UsersScreen} />
                 <Route path={Routes.pages.queue} component={QueueScreen} />
+                <Route path={Routes.pages.login} component={LoginScreen} />
                 <Route component={FourOFourScreen} />
               </Switch>
             </MainScreen>

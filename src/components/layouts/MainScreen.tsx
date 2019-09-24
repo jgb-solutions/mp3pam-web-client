@@ -1,5 +1,5 @@
-import React, { ReactNode, CSSProperties } from 'react';
-import { CssBaseline, Grid, Container } from '@material-ui/core';
+import React, { ReactNode } from 'react';
+import { CssBaseline, Grid } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import Hidden from '@material-ui/core/Hidden';
 
@@ -18,9 +18,6 @@ const useStyles = makeStyles(theme => ({
     margin: '0 auto',
   },
   col: {
-    // paddingBottom: 50,
-    paddingLeft: 10,
-    paddingRight: 10,
     height: '100vh',
     overflowY: 'scroll'
   },
@@ -30,10 +27,14 @@ const useStyles = makeStyles(theme => ({
   },
   leftGrid: {
     paddingTop: 10,
+    paddingLeft: 24,
+    paddingRight: 24,
     backgroundColor: colors.black,
   },
   rightGrid: {
     paddingTop: 10,
+    paddingLeft: 24,
+    paddingRight: 24,
     backgroundColor: colors.black
   }
 }));

@@ -193,7 +193,7 @@ const ListScreen = (props: Props & RouteComponentProps<any>) => {
 
 export default connect(
 	({ player }: AppStateInterface) => ({
-		playingListId: player.list.id,
+		playingListId: get(player, 'list.id'),
 		isPlaying: player.isPlaying,
 		currentTime: player.currentTime
 	}),

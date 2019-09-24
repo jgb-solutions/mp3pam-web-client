@@ -1,5 +1,4 @@
-import ListInterface from "./ListInterface";
-import TrackInterface from "./TrackInterface";
+// import TrackInterface from "./TrackInterface";
 
 export interface UserData {
   id: string;
@@ -7,7 +6,7 @@ export interface UserData {
   email: string;
   avatar: string;
   active: boolean;
-  tracks?: TrackInterface[];
+  // tracks?: TrackInterface[];
   telephone: string;
   created_at: Date;
 
@@ -15,5 +14,6 @@ export interface UserData {
 
 export default interface UserInterface {
   data?: UserData;
-  token: string | null
+  loggedIn: boolean;
+  token: string | null;
 }

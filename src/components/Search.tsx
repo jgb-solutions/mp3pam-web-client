@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 		marginLeft: 0
 	},
 	searchIcon: {
-		width: theme.spacing(7),
+		width: theme.spacing(5),
 		height: "100%",
 		position: "absolute",
 		pointerEvents: "none",
@@ -30,8 +30,8 @@ const useStyles = makeStyles(theme => ({
 		color: "inherit",
 	},
 	inputInput: {
-		padding: theme.spacing(1, 1, 1, 7),
-		width: 200
+		padding: theme.spacing(1, 1, 1, 5),
+		width: 120
 	}
 }));
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
+// import { useQuery } from '@apollo/react-hooks'
 import APIService from '../services/api';
 
 import ListInterface from '../interfaces/ListInterface';

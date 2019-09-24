@@ -10,6 +10,7 @@ const Routes = {
 		queue: `/queue`,
 		upload: `/upload`,
 		users: `/users`,
+		login: `/login`,
 	},
 	album: {
 		show: `/album/:hash`,

@@ -3,6 +3,7 @@ import UserInterface from "../../interfaces/UserInterface";
 
 const INITIAL_USER_STATE = {
   token: null,
+  loggedIn: false
 };
 
 export default function (
@@ -13,8 +14,8 @@ export default function (
 
   switch (type) {
     case LOG_IN:
-      const { token, ...data } = payload.data;
-      return { data, token }
+      // const { token, ...data } = payload.data;
+      return { ...userState, ...payload.data }
     case LOG_OUT:
       alert('need to log out');
       return userState;

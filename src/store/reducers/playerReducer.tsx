@@ -20,14 +20,14 @@ const INITIAL_PLAYER_STATE = {
 	isShuffled: false,
 	// Should be temporary
 	updateHack: '',
-	list: {
-		id: "2342423",
-		items: [],
-		image: "https://images.mp3pam.com/demo/artist9.jpg",
-		name: "Breakfast",
-		author: "jill111",
-		type: "album"
-	},
+	// list: {
+	// id: "2342423",
+	// items: [],
+	// image: "https://images.mp3pam.com/demo/artist9.jpg",
+	// name: "Breakfast",
+	// author: "jill111",
+	// type: "album"
+	// },
 	action: PAUSE,
 	// currentTrack: {
 	// 	id: '42139505',
