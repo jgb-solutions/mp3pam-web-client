@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
-import Drawer from '@material-ui/core/Drawer';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import { Link } from 'react-router-dom';
 
 import Left from './Left';
@@ -72,6 +72,7 @@ const Header = (props: Props) => {
   const [drawerLeftOPen, setDrawerLeftOpen] = useState(false);
   const [drawerRightOPen, setDrawerRightOpen] = useState(false);
   const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
+  const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   return (
     <div className={classes.grow}>
@@ -114,17 +115,31 @@ const Header = (props: Props) => {
         </Toolbar>
       </AppBar>
       {/* Left Drawer */}
-      <Drawer open={drawerLeftOPen} onClose={() => setDrawerLeftOpen(false)}>
+      <SwipeableDrawer
+        onOpen={() => setDrawerLeftOpen(true)}
+        open={drawerLeftOPen}
+        onClose={() => setDrawerLeftOpen(false)}
+        disableBackdropTransition={!iOS}
+        disableDiscovery={iOS}
+      >
         <div className={classes.drawer}>
           <Left closeDrawerLeft={setDrawerLeftOpen} />
         </div>
-      </Drawer>
-      <Drawer anchor='right' open={drawerRightOPen} onClose={() => setDrawerRightOpen(false)}>
-        <div className={classes.drawer}>
-          {/* <Right closeDrawerRight={setDrawerRightOpen} /> */}
-          Login menu
-        </div>
-      </Drawer>
+      </SwipeableDrawer>
+      {currentUser.loggedIn && (
+        <SwipeableDrawer
+          onOpen={() => setDrawerRightOpen(true)}
+          anchor='right' open={drawerRightOPen}
+          onClose={() => setDrawerRightOpen(false)}
+          disableBackdropTransition={!iOS}
+          disableDiscovery={iOS}
+        >
+          <div className={classes.drawer}>
+            {/* <Right closeDrawerRight={setDrawerRightOpen} /> */}
+            Login menu
+          </div>
+        </SwipeableDrawer>
+      )}
     </div >
   );
 };

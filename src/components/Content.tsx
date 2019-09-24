@@ -1,6 +1,9 @@
 import React, { ReactNode } from 'react';
+import { useSelector } from 'react-redux';
+import AppStateInterface from '../interfaces/AppStateInterface';
 
 const Content = (props: { style?: Object, children: ReactNode, className?: string }) => {
+  const currentTrack = useSelector(({ player }: AppStateInterface) => player.currentTrack);
   return (
     <main
       className={props.className}
@@ -8,7 +11,7 @@ const Content = (props: { style?: Object, children: ReactNode, className?: strin
         paddingTop: 65,
         paddingLeft: 15,
         paddingRight: 15,
-        paddingBottom: 86,
+        paddingBottom: currentTrack ? 86 : undefined,
         ...props.style
       }}
     >

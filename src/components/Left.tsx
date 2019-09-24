@@ -4,6 +4,7 @@ import { Home, ViewQuilt } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 
 import Routes from "../routes";
+import colors from "../utils/colors";
 
 const useStyles = makeStyles({
 	logo: {
@@ -18,8 +19,10 @@ const useStyles = makeStyles({
 		color: "white",
 		display: "flex",
 		textDecoration: "none",
-		marginBottom: 15,
 		fontWeight: "bold"
+	},
+	libraryLink: {
+		marginBottom: 15,
 	},
 	linkIcon: {
 		fontSize: 15,
@@ -31,7 +34,9 @@ const useStyles = makeStyles({
 	mainMenu: {
 		marginBottom: 30
 	},
-	yourLibary: {},
+	yourLibary: {
+		color: colors.white
+	},
 });
 
 const mainMenu = [
@@ -81,12 +86,12 @@ const Left = (props: Props) => {
 				))}
 			</div>
 			<div className={classes.yourLibary}>
-				<h4>Your Library</h4>
+				<p>Your Library</p>
 				{libraryMenu.map((menuItem, index) => (
 					<Link
 						key={index}
 						to={menuItem.to}
-						className={classes.link}
+						className={`${classes.link} ${classes.libraryLink}`}
 						onClick={closeDrawer}>
 						<span className={classes.linkText}>{menuItem.name}</span>
 					</Link>

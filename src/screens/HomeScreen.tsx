@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { shuffle } from "lodash-es";
 import ScrollingList from "../components/ScrollingList";
+import Spinner from '../components/Spinner';
 import useHome from "../hooks/useHome";
 
 const data = [
@@ -105,7 +106,8 @@ export default function Home() {
 		console.log(homeData);
 	}, [homeData])
 
-	if (loading) return <p>Loading ...</p>;
+	if (loading) return <Spinner.Full />;
+
 	if (error) return <p>Error Loading new data. Please refresh the page.</p>;
 
 	return (

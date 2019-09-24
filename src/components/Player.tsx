@@ -30,7 +30,7 @@ import { RESUME, PAUSE, PLAY, PLAY_TRACK, PAUSE_TRACK, RESUME_TRACK } from "../s
 import AppStateInterface from "../interfaces/AppStateInterface";
 import PlayerStyle from "./PlayerStyle";
 import colors from "../utils/colors";
-import { Drawer } from "@material-ui/core";
+import { Drawer, Collapse, Slide } from "@material-ui/core";
 
 // Setup Audio
 const audio = new Audio();
@@ -429,126 +429,129 @@ function Player(props: Props & RouteComponentProps) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.isShuffled]);
 
+	const showPlayer = !!state.currentTrack;
 	return (
-		<div className={classes.container} style={{ display: !state.currentTrack ? 'none' : '' }}>
-			<div className={classes.player}>
-				<div className={classes.posterTitle}>
-					<img
-						src={state.currentTrack ? state.currentTrack.image : '/assets/images/loader.svg'}
-						className={classes.image}
-						alt={state.currentTrack && state.currentTrack.title}
-					/>
-					<div className={classes.titleArtist}>
-						<span className={classes.title}>
-							{state.currentTrack && state.currentTrack.title}
-							<Heart />
-						</span>
-						<span className={classes.artist}>
-							{state.currentTrack && state.currentTrack.artist.name}
-						</span>
+		<Slide direction="up" timeout={500} in={showPlayer} mountOnEnter unmountOnExit>
+			<div className={classes.container}>
+				<div className={classes.player}>
+					<div className={classes.posterTitle}>
+						<img
+							src={state.currentTrack ? state.currentTrack.image : '/assets/images/loader.svg'}
+							className={classes.image}
+							alt={state.currentTrack && state.currentTrack.title}
+						/>
+						<div className={classes.titleArtist}>
+							<span className={classes.title}>
+								{state.currentTrack && state.currentTrack.title}
+								<Heart />
+							</span>
+							<span className={classes.artist}>
+								{state.currentTrack && state.currentTrack.artist.name}
+							</span>
+						</div>
 					</div>
-				</div>
-				<div className={classes.controls}>
-					<div className={classes.buttons}>
-						<IconButton onClick={toggleShuffle}>
-							{!state.isShuffled && <Shuffle className={classes.icon} />}
-							{state.isShuffled && (
-								<Shuffle className={classes.icon}
-									style={{ color: colors.primary }}
+					<div className={classes.controls}>
+						<div className={classes.buttons}>
+							<IconButton onClick={toggleShuffle}>
+								{!state.isShuffled && <Shuffle className={classes.icon} />}
+								{state.isShuffled && (
+									<Shuffle className={classes.icon}
+										style={{ color: colors.primary }}
+									/>
+								)}
+							</IconButton>
+							<IconButton onClick={playPrevious}>
+								<SkipPrevious className={classes.icon} />
+							</IconButton>
+							<IconButton
+								// className={classes.playPause}
+								onClick={togglePlay}
+							>
+								{state.isPlaying && (
+									<PauseCircleOutline
+										className={classes.icon}
+										style={{ fontSize: 42 }}
+									/>
+								)}
+								{!state.isPlaying && (
+									<PlayCircleOutline
+										className={classes.icon}
+										style={{ fontSize: 42 }}
+									/>
+								)}
+							</IconButton>
+							<IconButton onClick={playNext}>
+								<SkipNext className={classes.icon} />
+							</IconButton>
+							<IconButton onClick={toggleRepeat}>
+								{state.repeat === NONE && <Repeat className={classes.icon} />}
+								{state.repeat === ALL && (
+									<Repeat
+										className={classes.icon}
+										style={{ color: colors.primary }}
+									/>
+								)}
+								{state.repeat === ONE && (
+									<RepeatOne
+										className={classes.icon}
+										style={{ color: colors.primary }}
+									/>
+								)}
+							</IconButton>
+						</div>
+						<div className={classes.sliderTime}>
+							<div className={classes.startTime}>{state.elapsed}</div>
+							<div className={classes.slider}>
+								<Slider
+									value={state.position}
+									onChange={handleSeekChange}
+									aria-labelledby="continuous-slider"
 								/>
-							)}
-						</IconButton>
-						<IconButton onClick={playPrevious}>
-							<SkipPrevious className={classes.icon} />
-						</IconButton>
-						<IconButton
-							// className={classes.playPause}
-							onClick={togglePlay}
-						>
-							{state.isPlaying && (
-								<PauseCircleOutline
-									className={classes.icon}
-									style={{ fontSize: 42 }}
-								/>
-							)}
-							{!state.isPlaying && (
-								<PlayCircleOutline
-									className={classes.icon}
-									style={{ fontSize: 42 }}
-								/>
-							)}
-						</IconButton>
-						<IconButton onClick={playNext}>
-							<SkipNext className={classes.icon} />
-						</IconButton>
-						<IconButton onClick={toggleRepeat}>
-							{state.repeat === NONE && <Repeat className={classes.icon} />}
-							{state.repeat === ALL && (
-								<Repeat
-									className={classes.icon}
-									style={{ color: colors.primary }}
-								/>
-							)}
-							{state.repeat === ONE && (
-								<RepeatOne
-									className={classes.icon}
-									style={{ color: colors.primary }}
-								/>
-							)}
-						</IconButton>
+							</div>
+							<div className={classes.endTime}>{state.duration}</div>
+						</div>
 					</div>
-					<div className={classes.sliderTime}>
-						<div className={classes.startTime}>{state.elapsed}</div>
-						<div className={classes.slider}>
+					<div className={classes.playlistVolume}>
+						<IconButton onClick={handleQueue}>
+							<PlaylistPlayOutlined
+								className={classes.icon}
+							/>
+						</IconButton>
+						<div className={classes.volumeIcons}>
+							{state.volume === 0 && (
+								<VolumeMuteOutlined className={classes.icon} />
+							)}
+							{state.volume > 0 && state.volume <= 70 && (
+								<VolumeDownOutlined className={classes.icon} />
+							)}
+							{state.volume > 0 && state.volume > 70 && (
+								<VolumeUpOutlined className={classes.icon} />
+							)}
+						</div>
+						<div className={classes.volumeSliderContainer}>
 							<Slider
-								value={state.position}
-								onChange={handleSeekChange}
+								value={state.volume}
+								onChange={handleVolumeChange}
 								aria-labelledby="continuous-slider"
 							/>
 						</div>
-						<div className={classes.endTime}>{state.duration}</div>
 					</div>
 				</div>
-				<div className={classes.playlistVolume}>
-					<IconButton onClick={handleQueue}>
-						<PlaylistPlayOutlined
-							className={classes.icon}
-						/>
-					</IconButton>
-					<div className={classes.volumeIcons}>
-						{state.volume === 0 && (
-							<VolumeMuteOutlined className={classes.icon} />
-						)}
-						{state.volume > 0 && state.volume <= 70 && (
-							<VolumeDownOutlined className={classes.icon} />
-						)}
-						{state.volume > 0 && state.volume > 70 && (
-							<VolumeUpOutlined className={classes.icon} />
-						)}
-					</div>
-					<div className={classes.volumeSliderContainer}>
-						<Slider
-							value={state.volume}
-							onChange={handleVolumeChange}
-							aria-labelledby="continuous-slider"
-						/>
-					</div>
+				{/* Bottom Drawer */}
+				<IconButton
+					aria-label="Open left menu"
+					onClick={() => setDrawerOpen(true)}
+					color="inherit"
+					className={classes.bottomMenuIcon}>
+					<MoreIcon />
+				</IconButton>
+				<Drawer anchor='bottom' open={drawerOPen} onClose={() => setDrawerOpen(false)}>
+					<div className={classes.bottomDrawer}>
+						bottom content
 				</div>
+				</Drawer>
 			</div>
-			{/* Bottom Drawer */}
-			<IconButton
-				aria-label="Open left menu"
-				onClick={() => setDrawerOpen(true)}
-				color="inherit"
-				className={classes.bottomMenuIcon}>
-				<MoreIcon />
-			</IconButton>
-			<Drawer anchor='bottom' open={drawerOPen} onClose={() => setDrawerOpen(false)}>
-				<div className={classes.bottomDrawer}>
-					bottom content
-				</div>
-			</Drawer>
-		</div>
+		</Slide>
 	);
 }
 
