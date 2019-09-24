@@ -1,5 +1,5 @@
 import React from 'react';
 
 export default function FourOFour() {
-  return <h1>Page Not Found</h1>;
+  return <h1>OOP! Are You Lost?</h1>;
 }
