@@ -3,24 +3,48 @@ import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 
 export const FETCH_HOME = gql`
-  query homeMusics {
+  query homeMusics($page: Int) {
     # 10 latest tracks
-    tracks(take: 10) {
+    tracks(page: $page) {
+      paginatorInfo {
+        currentPage
+        hasMorePages
+      }
       data {
-        hash
         title
-        created_at
       }
     }
   }
 `;
 
 export default function useHome() {
-  const { loading, error, data } = useQuery(FETCH_HOME)
+  const { loading, error, data, fetchMore } = useQuery(FETCH_HOME)
 
   useEffect(() => {
     console.log(error);
   }, [error])
 
-  return [loading, error, data]
+  const loadMoreTracks = () => {
+    const { hasMorePages, currentPage } = data.tracks.paginatorInfo;
+
+    if (!hasMorePages) return;
+
+    fetchMore({
+      variables: {
+        page: currentPage + 1
+      },
+      updateQuery: (previousResult, { fetchMoreResult }) => {
+        const { tracks: { data: oldTracks } } = previousResult;
+        const { tracks: { data: newTracks, ...newInfo } } = fetchMoreResult;
+        return {
+          tracks: {
+            ...newInfo,
+            data: [...oldTracks, ...newTracks]
+          }
+        };
+      }
+    });
+  }
+
+  return { loading, error, homeData: data, loadMoreTracks };
 };

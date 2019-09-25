@@ -100,7 +100,7 @@ const categories: string[] = [
 	"Roots"
 ];
 export default function Home() {
-	const [loading, error, homeData] = useHome();
+	const { loading, error, homeData, loadMoreTracks } = useHome();
 	// fetch home data
 	useEffect(() => {
 		console.log(homeData);
@@ -112,6 +112,7 @@ export default function Home() {
 
 	return (
 		<>
+			{/* <button onClick={loadMoreTracks}>Load more</button> */}
 			<h1>Home</h1>
 			{categories.map(category => (
 				<ScrollingList
