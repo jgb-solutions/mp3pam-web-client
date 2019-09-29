@@ -1,26 +1,26 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import { withStyles, darken } from "@material-ui/core/styles";
+import gql from 'graphql-tag'
+import { useApolloClient } from '@apollo/react-hooks'
+import { get } from "lodash-es";
 
-import colors from "../utils/colors";
+import ProgressBar from "../components/ProgressBar";
 
-const ProgressBar = withStyles({
-	root: {
-		height: 10,
-		backgroundColor: darken(colors.primary, 0.5)
-	},
-	bar: {
-		borderRadius: 20,
-		backgroundColor: colors.primary
-	}
-})(LinearProgress);
+export const UPLOAD_URL = gql`
+  query getUploadUrl($name: String!, $type: String!) {
+    uploadUrl(name: $name, type: $type) {
+     signedUrl
+		 fileUrl
+    }
+  }
+`;
 
 export default function Upload() {
+	const client = useApolloClient();
 	const [completed, setCompleted] = useState(0);
 	const [isUploaded, setIsUploaded] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [url, setUrl] = useState("");
+	const [fileUrl, setFileUrl] = useState("");
 
 	useEffect(() => {
 		if (completed === 100) setCompleted(0);
@@ -35,43 +35,56 @@ export default function Upload() {
 		setCompleted(percentCompleted);
 	};
 
-	const handleFileUpload = (event: any) => {
+	const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, type: string) => {
 		setIsLoading(true);
 		console.log(event);
-		const file = event.target.files[0];
+		const file = get(event.target, 'files[0]');
 		console.log("file", file);
 
-		const url = `/wasabi-url?filename=${file.name}&filetype=${file.type}`;
-		axios
-			.get(url)
-			.then(response => {
-				// response from App server
-				console.log(response);
-				const { signed_url: signedUrl, url } = response.data;
-				console.log(signedUrl, url);
-				setUrl(url);
+		try {
+			const { data: { uploadUrl: { signedUrl, fileUrl } } } = await client.query({
+				query: UPLOAD_URL,
+				variables: { name: file.name, type }
+			});
 
-				const options = {
-					headers: {
-						"Content-Type": file.type
-						// 'Content-Disposition': 'attachment'
-					},
-					onUploadProgress: handleProgressEvent
-				};
+			setFileUrl(fileUrl);
 
-				return axios.put(signedUrl, file, options);
-			})
-			.then(response => {
+			const options = {
+				headers: {
+					"Content-Type": file.type,
+					"x-amz-acl": 'public-read'
+					// 'Content-Disposition': 'attachment'
+				},
+				onUploadProgress: handleProgressEvent
+			};
+
+			try {
+				const response = await axios.put(signedUrl, file, options);
 				// Success
 				setIsUploaded(true);
 				setIsLoading(false);
 				// response from DO Spaces servers
 				console.log(response);
-			})
-			.catch(error => {
+			} catch (error) {
 				console.log(error);
 				setIsLoading(false);
-			});
+			}
+		} catch (error) {
+			console.log(error);
+			setIsLoading(false);
+		}
+	};
+
+	const handleImageUpload = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		handleFileUpload(event, 'images');
+	};
+
+	const handleAudioUpload = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		handleFileUpload(event, 'audios');
 	};
 
 	return (
@@ -79,9 +92,19 @@ export default function Upload() {
 			<h1>Upload Page {completed}%</h1>
 			<input
 				type="file"
-				placeholder="Choose a file"
-				onChange={handleFileUpload}
+				accept="image/*, .mp3, audio/mp3"
+				placeholder="Choose an image"
+				onChange={handleImageUpload}
 			/>
+
+			<input
+				type="file"
+				accept=".mp3, audio/mp3"
+				placeholder="Choose an audio"
+				onChange={handleAudioUpload}
+			/>
+
+
 			{completed > 0 && (
 				<ProgressBar
 					variant="determinate"
@@ -92,8 +115,8 @@ export default function Upload() {
 			{!isLoading && isUploaded && (
 				<p>
 					The file link is{" "}
-					<a target="_blank" rel="noopener noreferrer" href={url}>
-						{url}
+					<a target="_blank" rel="noopener noreferrer" href={fileUrl}>
+						{fileUrl}
 					</a>
 				</p>
 			)}

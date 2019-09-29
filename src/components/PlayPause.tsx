@@ -63,7 +63,7 @@ function PlayPause({
   pauseTrack,
 }: Props
 ) {
-  const classes = useStyles();
+  const styles = useStyles();
 
   const togglePlay = () => {
     if (currentTrack && list.id === playingListId) {
@@ -96,15 +96,15 @@ function PlayPause({
   };
 
   return currentTrack ? (
-    <IconButton onClick={togglePlay} className={classes.button}>
+    <IconButton onClick={togglePlay} className={styles.button}>
       {track.hash === currentTrack.hash && isPlaying ? (
         <PauseCircleOutline
-          className={classes.icon}
+          className={styles.icon}
           style={{ fontSize: 35 }}
         />
       ) : (
           <PlayCircleOutline
-            className={classes.icon}
+            className={styles.icon}
             style={{ fontSize: 35 }}
           />
         )}

@@ -40,24 +40,24 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MainScreen = (props: { style?: Object, children: ReactNode }) => {
-  const classes = useStyles();
+  const styles = useStyles();
 
   return (
     <>
       <CssBaseline />
-      <Grid container className={classes.container}>
+      <Grid container className={styles.container}>
         <Hidden xsDown>
-          <Grid item md={2} sm={3} xs={12} className={`${classes.col} ${classes.leftGrid}`}>
+          <Grid item md={2} sm={3} xs={12} className={`${styles.col} ${styles.leftGrid}`}>
             <Left />
           </Grid>
         </Hidden>
-        <Grid item md={8} sm={9} xs={12} className={`${classes.col} ${classes.mainGrid}`}>
+        <Grid item md={8} sm={9} xs={12} className={`${styles.col} ${styles.mainGrid}`}>
           <Header />
-          <Content className={classes.col}>{props.children}</Content>
+          <Content className={styles.col}>{props.children}</Content>
         </Grid>
 
         <Hidden smDown>
-          <Grid item md={2} sm={2} xs={12} className={`${classes.col} ${classes.rightGrid}`}>
+          <Grid item md={2} sm={2} xs={12} className={`${styles.col} ${styles.rightGrid}`}>
             <Right />
           </Grid>
         </Hidden>

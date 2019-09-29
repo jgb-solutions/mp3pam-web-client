@@ -45,12 +45,12 @@ type Props = {
 }
 
 export default function ListTable(props: Props) {
-  const classes = useStyles();
+  const styles = useStyles();
   const tracks = props.list.tracks;
   const currentTrack = useSelector(({ player }: AppStateInterface) => player.currentTrack);
 
   return (
-    <Table className={classes.table} size="small">
+    <Table className={styles.table} size="small">
       <TableHead>
         <TableRow>
           <StyledTableCell>&nbsp;</StyledTableCell>

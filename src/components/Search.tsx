@@ -4,7 +4,7 @@ import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import { connect } from "react-redux";
 import * as searchActions from "../store/actions/searchActions";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
 	search: {
@@ -35,14 +35,15 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const Search = (
-	props: {
-		search(term: string): void;
-		term: string;
-	} & RouteComponentProps
-) => {
-	const { history, search, term } = props;
-	const classes = useStyles();
+type Props = {
+	search(term: string): void;
+	term: string;
+};
+
+const Search = (props: Props) => {
+	const { search, term } = props;
+	const history = useHistory()
+	const styles = useStyles();
 	const [searchTerm, setSearchTerm] = useState(term);
 
 	useEffect(() => {
@@ -70,15 +71,15 @@ const Search = (
 	};
 
 	return (
-		<div className={classes.search}>
-			<div className={classes.searchIcon}>
+		<div className={styles.search}>
+			<div className={styles.searchIcon}>
 				<SearchIcon />
 			</div>
 			<InputBase
 				placeholder="Search…"
 				classes={{
-					root: classes.inputRoot,
-					input: classes.inputInput
+					root: styles.inputRoot,
+					input: styles.inputInput
 				}}
 				inputProps={{ "aria-label": "Search" }}
 				onClick={() => updateSearchUrl(true)}
@@ -96,4 +97,4 @@ export default connect(
 	{
 		search: searchActions.search
 	}
-)(withRouter(Search));
+)(Search);

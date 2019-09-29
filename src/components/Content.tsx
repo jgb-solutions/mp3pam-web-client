@@ -8,7 +8,7 @@ const Content = (props: { style?: Object, children: ReactNode, className?: strin
     <main
       className={props.className}
       style={{
-        paddingTop: 65,
+        paddingTop: 70,
         paddingLeft: 15,
         paddingRight: 15,
         paddingBottom: currentTrack ? 86 : undefined,

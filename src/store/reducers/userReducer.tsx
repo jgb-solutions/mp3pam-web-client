@@ -3,7 +3,7 @@ import UserInterface from "../../interfaces/UserInterface";
 
 const INITIAL_USER_STATE = {
   token: null,
-  loggedIn: false
+  loggedIn: true
 };
 
 export default function (

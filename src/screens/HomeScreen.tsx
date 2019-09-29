@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { shuffle } from "lodash-es";
+import { shuffle, debounce } from "lodash-es";
+
 import ScrollingList from "../components/ScrollingList";
 import Spinner from '../components/Spinner';
 import useHome from "../hooks/useHome";
@@ -100,11 +101,30 @@ const categories: string[] = [
 	"Roots"
 ];
 export default function Home() {
-	const { loading, error, homeData, loadMoreTracks } = useHome();
+	const { loading, error, homeData, loadMoreTracks, hasMore } = useHome();
 	// fetch home data
 	useEffect(() => {
 		console.log(homeData);
 	}, [homeData])
+
+	useEffect(() => {
+		window.onscroll = debounce(() => {
+
+			// Bails early if:
+			// * there's an error
+			// * it's already loading
+			// * there's nothing left to load
+			// if (error || loading || !hasMore) return;
+
+			// Checks that the page has scrolled to the bottom
+			if (
+				window.innerHeight + document.documentElement.scrollTop
+				=== document.documentElement.offsetHeight
+			) {
+				alert('bottom');
+			}
+		}, 100);
+	}, []);
 
 	if (loading) return <Spinner.Full />;
 

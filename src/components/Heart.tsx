@@ -4,47 +4,43 @@ import {
 } from "@material-ui/icons";
 import React from 'react';
 import IconButton from "@material-ui/core/IconButton";
-import {
-  Theme,
-  WithStyles,
-  withStyles,
-  createStyles,
-} from "@material-ui/core/styles";
 
 import colors from "../utils/colors";
+import { makeStyles } from "@material-ui/styles";
 
-const styles = (theme: Theme) =>
-  createStyles({
-    icon: {
-      fontSize: 18,
-      color: colors.grey
-    },
-    border: {
-      color: colors.white,
-      padding: 5,
-      border: "1px solid white",
-      borderRadius: "50%",
-    },
-  });
+const useStyles = makeStyles({
+  icon: {
+    fontSize: 18,
+    color: colors.grey
+  },
+  border: {
+    color: colors.white,
+    padding: 5,
+    border: "1px solid white",
+    borderRadius: "50%",
+  },
+});
 
-interface Props extends WithStyles<typeof styles> {
+type Props = {
   toggleFavorite?: () => void,
   isFavorite?: boolean,
   border?: boolean,
-}
+};
 
 function Heart(props: Props) {
-  const { classes, toggleFavorite, isFavorite } = props;
+  const { toggleFavorite, isFavorite } = props;
+  const styles = useStyles();
+
   return (
-    <IconButton onClick={toggleFavorite} className={props.border ? classes.border : ''}>
+    <IconButton onClick={toggleFavorite} className={props.border ? styles.border : ''}>
       {isFavorite && (
-        <Favorite className={classes.icon} />
+        <Favorite className={styles.icon} />
       )}
       {!isFavorite && (
-        <FavoriteBorder className={classes.icon} />
+        <FavoriteBorder className={styles.icon} />
       )}
     </IconButton>
   )
 }
 
-export default withStyles(styles)(Heart)
+export default Heart;

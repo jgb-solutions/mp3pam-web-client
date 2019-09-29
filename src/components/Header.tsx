@@ -68,44 +68,44 @@ const useStyles = makeStyles(theme => ({
 type Props = {};
 
 const Header = (props: Props) => {
-  const classes = useStyles();
+  const styles = useStyles();
   const [drawerLeftOPen, setDrawerLeftOpen] = useState(false);
   const [drawerRightOPen, setDrawerRightOpen] = useState(false);
   const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
   const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   return (
-    <div className={classes.grow}>
-      <AppBar className={classes.appBar}>
-        <Toolbar className={classes.toolbar}>
+    <div className={styles.grow}>
+      <AppBar className={styles.appBar}>
+        <Toolbar className={styles.toolbar}>
           <IconButton
             aria-label="Open left menu"
             onClick={() => setDrawerLeftOpen(true)}
             color="inherit"
-            className={classes.leftMenuIcon}>
+            className={styles.leftMenuIcon}>
             <MenuIcon />
           </IconButton>
           <Search />
-          <div className={classes.grow} />
-          <div className={classes.accountButton}>
+          <div className={styles.grow} />
+          <div className={styles.accountButton}>
             {
               currentUser.loggedIn ? (
                 <IconButton
                   aria-label="Account"
                   onClick={() => setDrawerRightOpen(true)}
                   color="inherit"
-                  className={classes.moreIcon}>
+                  className={styles.moreIcon}>
                   <AccountCircle />
                 </IconButton>
 
               ) : (
                   <Link to={Routes.pages.login}
-                    className={classes.loginButton}
+                    className={styles.loginButton}
                   >
                     <IconButton
                       aria-label="Login"
                       color="inherit"
-                      className={classes.moreIcon}>
+                      className={styles.moreIcon}>
                       <AccountCircle />
                     </IconButton>
                   </Link>
@@ -122,7 +122,7 @@ const Header = (props: Props) => {
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
       >
-        <div className={classes.drawer}>
+        <div className={styles.drawer}>
           <Left closeDrawerLeft={setDrawerLeftOpen} />
         </div>
       </SwipeableDrawer>
@@ -134,7 +134,7 @@ const Header = (props: Props) => {
           disableBackdropTransition={!iOS}
           disableDiscovery={iOS}
         >
-          <div className={classes.drawer}>
+          <div className={styles.drawer}>
             {/* <Right closeDrawerRight={setDrawerRightOpen} /> */}
             Login menu
           </div>

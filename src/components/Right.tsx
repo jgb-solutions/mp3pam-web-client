@@ -17,12 +17,12 @@ type Props = {
 };
 
 const Right = (props: Props) => {
-  const classes = useStyles();
+  const styles = useStyles();
 
   return (
-    <div className={classes.container}>
-      <div className={classes.logo}>
-        {/* <img className={classes.loaderSvg} alt='svg' src="/assets/images/loader.svg" /> */}
+    <div className={styles.container}>
+      <div className={styles.logo}>
+        {/* <img className={styles.loaderSvg} alt='svg' src="/assets/images/loader.svg" /> */}
       </div>
     </div>
   );

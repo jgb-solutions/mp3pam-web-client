@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import React from "react";
 import { darken, makeStyles } from "@material-ui/core/styles";
-import { withRouter, Link, RouteComponentProps } from "react-router-dom";
+import { useHistory, Link, useRouteMatch, useLocation } from "react-router-dom";
 import { get } from 'lodash';
 
 import Routes from "../routes";
@@ -81,21 +81,21 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-interface Props {
+type Props = {
 	playList(list: ListInterface): void;
 	pauseList(): void;
 	resumeList(): void;
 	isPlaying: boolean;
 	playingListId: string;
 	currentTime: number;
-}
+};
 
-interface RouteParams { listId: string, listParam: ListInterface }
-
-const ListScreen = (props: Props & RouteComponentProps<any>) => {
+const ListScreen = (props: Props) => {
 	const styles = useStyles();
-	const listId = props.match.params.listId
-	const listParam = get(props.location.state, 'listParam')
+	const match = useRouteMatch();
+	const location = useLocation();
+	const listId = get(match, 'params.listId')
+	const listParam = get(location.state, 'listParam')
 	const [list, isLoading, error] = useList(listId, listParam);
 
 	const togglePlay = (list: ListInterface) => {
@@ -202,4 +202,4 @@ export default connect(
 		pauseList: playerActions.pauseList,
 		resumeList: playerActions.resumeList
 	}
-)(withRouter(ListScreen));
+)(ListScreen);

@@ -3,7 +3,7 @@ import {
 	PlayCircleOutline,
 	PauseCircleOutline
 } from "@material-ui/icons";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { useHistory } from "react-router";
 import { connect } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
@@ -64,20 +64,21 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const Thumbnail = (
-	props: RouteComponentProps & {
-		list: ListInterface;
-		className: string;
-		isPlaying: boolean;
-		listId: string
-	}
-) => {
+type Props = {
+	list: ListInterface;
+	className: string;
+	isPlaying: boolean;
+	listId: string
+};
+
+const Thumbnail = (props: Props) => {
 	const styles: any = useStyles();
+	const history = useHistory();
 
 	const { list, listId, isPlaying } = props;
 	const goToDetailPage = (list: ListInterface) => {
 		const route = get(Routes, list.type).detailPage(list)
-		props.history.push(route, { listParam: list });
+		history.push(route, { listParam: list });
 	};
 
 	return (
@@ -109,7 +110,9 @@ const Thumbnail = (
 	);
 };
 
-export default connect(({ player }: any) => ({
-	listId: get(player, 'list.id'),
-	isPlaying: player.isPlaying
-}))(withRouter(Thumbnail));
+export default connect(
+	({ player }: any) => ({
+		listId: get(player, 'list.id'),
+		isPlaying: player.isPlaying
+	})
+)(Thumbnail);

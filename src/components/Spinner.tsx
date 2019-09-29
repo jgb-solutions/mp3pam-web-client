@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 
 type Props = {
   size?: number,
@@ -36,7 +36,7 @@ function Spinner({ size = 100, className }: Props) {
 }
 
 export const SpinnerFull = ({ size, className }: { size?: number, className?: string }) => (
-  <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>
+  <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', paddingTop: 70 }}>
     <Spinner size={size} className={className} />
   </div>
 );

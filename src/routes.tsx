@@ -7,10 +7,10 @@ const Routes = {
 		browse: `/browse`,
 		search: `/search`,
 		about: `/about`,
-		queue: `/queue`,
 		upload: `/upload`,
 		users: `/users`,
 		login: `/login`,
+		library: `/library`,
 	},
 	album: {
 		show: `/album/:hash`,
@@ -32,12 +32,30 @@ const Routes = {
 	user: {
 		detailPage: (user: UserData) => `/user/${user.id}`,
 		users: `/users`,
-		favorites: `/favorites`,
-		favoriteAlbums: `/favorite/albums`,
-		favoriteArtists: `/favorite/artists`,
-		favoritePodcasts: `/favorite/podcats`,
-		favoriteShows: `/favorite/shows`,
+		tracks: `/library/tracks`,
+		albums: `/library/albums`,
+		artists: `/library/artists`,
+		podcasts: `/library/podcats`,
+		shows: `/library/shows`,
+		queue: `/library/queue`,
+
 	},
+	browse: {
+		detailPage: (user: UserData) => `/user/${user.id}`,
+		users: `/users`,
+		tracks: `/browse/tracks`,
+		albums: `/browse/albums`,
+		artists: `/browse/artists`,
+		podcasts: `/browse/podcasts`,
+		shows: `/browse/shows`,
+	},
+	// liked: {
+	// 	likedTracks: `liked/tracks`,
+	// 	likedAlbums: `/liked/albums`,
+	// 	likedArtists: `/liked/artists`,
+	// 	likedPodcasts: `/liked/podcats`,
+	// 	likedShows: `/liked/shows`,
+	// },
 };
 
 export default Routes;

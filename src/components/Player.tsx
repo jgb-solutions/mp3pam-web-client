@@ -16,7 +16,8 @@ import { get } from "lodash-es";
 import { connect } from "react-redux";
 import React, { useState, useEffect } from "react";
 import IconButton from "@material-ui/core/IconButton";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { Drawer, Slide } from "@material-ui/core";
 
 import Heart from "./Heart";
 import Slider from "./Slider";
@@ -26,25 +27,27 @@ import { ALL, ONE, NONE } from '../utils/constants';
 import TrackInterface from "../interfaces/TrackInterface";
 import PlayerInterface from "../interfaces/PlayerInterface";
 import * as playerActions from "../store/actions/playerActions";
-import { RESUME, PAUSE, PLAY, PLAY_TRACK, PAUSE_TRACK, RESUME_TRACK } from "../store/actions/actions";
+import {
+	RESUME, PAUSE, PLAY, PLAY_TRACK, PAUSE_TRACK, RESUME_TRACK
+} from "../store/actions/actions";
 import AppStateInterface from "../interfaces/AppStateInterface";
 import PlayerStyle from "./PlayerStyle";
 import colors from "../utils/colors";
-import { Drawer, Collapse, Slide } from "@material-ui/core";
 
 // Setup Audio
 const audio = new Audio();
 let syncStateTimeoutId: number;
 
-interface Props {
+type Props = {
 	syncState(state: any): void;
 	storePlayerData: PlayerInterface;
-}
+};
 
-function Player(props: Props & RouteComponentProps) {
+function Player(props: Props) {
+	const history = useHistory();
 	const [drawerOPen, setDrawerOpen] = useState(false);
 	const { storePlayerData, syncState } = props;
-	const classes = PlayerStyle();
+	const styles = PlayerStyle();
 	const [state, setState] = useState<PlayerInterface>({
 		...storePlayerData,
 		isPlaying: false,
@@ -282,7 +285,7 @@ function Player(props: Props & RouteComponentProps) {
 	};
 
 	const handleQueue = () => {
-		props.history.push(Routes.pages.queue);
+		history.push(Routes.user.queue);
 	};
 
 	const toggleRepeat = () => {
@@ -432,103 +435,103 @@ function Player(props: Props & RouteComponentProps) {
 	const showPlayer = !!state.currentTrack;
 	return (
 		<Slide direction="up" timeout={500} in={showPlayer} mountOnEnter unmountOnExit>
-			<div className={classes.container}>
-				<div className={classes.player}>
-					<div className={classes.posterTitle}>
+			<div className={styles.container}>
+				<div className={styles.player}>
+					<div className={styles.posterTitle}>
 						<img
 							src={state.currentTrack ? state.currentTrack.image : '/assets/images/loader.svg'}
-							className={classes.image}
+							className={styles.image}
 							alt={state.currentTrack && state.currentTrack.title}
 						/>
-						<div className={classes.titleArtist}>
-							<span className={classes.title}>
+						<div className={styles.titleArtist}>
+							<span className={styles.title}>
 								{state.currentTrack && state.currentTrack.title}
 								<Heart />
 							</span>
-							<span className={classes.artist}>
+							<span className={styles.artist}>
 								{state.currentTrack && state.currentTrack.artist.name}
 							</span>
 						</div>
 					</div>
-					<div className={classes.controls}>
-						<div className={classes.buttons}>
+					<div className={styles.controls}>
+						<div className={styles.buttons}>
 							<IconButton onClick={toggleShuffle}>
-								{!state.isShuffled && <Shuffle className={classes.icon} />}
+								{!state.isShuffled && <Shuffle className={styles.icon} />}
 								{state.isShuffled && (
-									<Shuffle className={classes.icon}
+									<Shuffle className={styles.icon}
 										style={{ color: colors.primary }}
 									/>
 								)}
 							</IconButton>
 							<IconButton onClick={playPrevious}>
-								<SkipPrevious className={classes.icon} />
+								<SkipPrevious className={styles.icon} />
 							</IconButton>
 							<IconButton
-								// className={classes.playPause}
+								// className={styles.playPause}
 								onClick={togglePlay}
 							>
 								{state.isPlaying && (
 									<PauseCircleOutline
-										className={classes.icon}
+										className={styles.icon}
 										style={{ fontSize: 42 }}
 									/>
 								)}
 								{!state.isPlaying && (
 									<PlayCircleOutline
-										className={classes.icon}
+										className={styles.icon}
 										style={{ fontSize: 42 }}
 									/>
 								)}
 							</IconButton>
 							<IconButton onClick={playNext}>
-								<SkipNext className={classes.icon} />
+								<SkipNext className={styles.icon} />
 							</IconButton>
 							<IconButton onClick={toggleRepeat}>
-								{state.repeat === NONE && <Repeat className={classes.icon} />}
+								{state.repeat === NONE && <Repeat className={styles.icon} />}
 								{state.repeat === ALL && (
 									<Repeat
-										className={classes.icon}
+										className={styles.icon}
 										style={{ color: colors.primary }}
 									/>
 								)}
 								{state.repeat === ONE && (
 									<RepeatOne
-										className={classes.icon}
+										className={styles.icon}
 										style={{ color: colors.primary }}
 									/>
 								)}
 							</IconButton>
 						</div>
-						<div className={classes.sliderTime}>
-							<div className={classes.startTime}>{state.elapsed}</div>
-							<div className={classes.slider}>
+						<div className={styles.sliderTime}>
+							<div className={styles.startTime}>{state.elapsed}</div>
+							<div className={styles.slider}>
 								<Slider
 									value={state.position}
 									onChange={handleSeekChange}
 									aria-labelledby="continuous-slider"
 								/>
 							</div>
-							<div className={classes.endTime}>{state.duration}</div>
+							<div className={styles.endTime}>{state.duration}</div>
 						</div>
 					</div>
-					<div className={classes.playlistVolume}>
+					<div className={styles.playlistVolume}>
 						<IconButton onClick={handleQueue}>
 							<PlaylistPlayOutlined
-								className={classes.icon}
+								className={styles.icon}
 							/>
 						</IconButton>
-						<div className={classes.volumeIcons}>
+						<div className={styles.volumeIcons}>
 							{state.volume === 0 && (
-								<VolumeMuteOutlined className={classes.icon} />
+								<VolumeMuteOutlined className={styles.icon} />
 							)}
 							{state.volume > 0 && state.volume <= 70 && (
-								<VolumeDownOutlined className={classes.icon} />
+								<VolumeDownOutlined className={styles.icon} />
 							)}
 							{state.volume > 0 && state.volume > 70 && (
-								<VolumeUpOutlined className={classes.icon} />
+								<VolumeUpOutlined className={styles.icon} />
 							)}
 						</div>
-						<div className={classes.volumeSliderContainer}>
+						<div className={styles.volumeSliderContainer}>
 							<Slider
 								value={state.volume}
 								onChange={handleVolumeChange}
@@ -542,11 +545,11 @@ function Player(props: Props & RouteComponentProps) {
 					aria-label="Open left menu"
 					onClick={() => setDrawerOpen(true)}
 					color="inherit"
-					className={classes.bottomMenuIcon}>
+					className={styles.bottomMenuIcon}>
 					<MoreIcon />
 				</IconButton>
 				<Drawer anchor='bottom' open={drawerOPen} onClose={() => setDrawerOpen(false)}>
-					<div className={classes.bottomDrawer}>
+					<div className={styles.bottomDrawer}>
 						bottom content
 				</div>
 				</Drawer>
@@ -562,4 +565,4 @@ export default connect(
 	{
 		syncState: playerActions.syncState
 	}
-)(withRouter(Player));
+)(Player);

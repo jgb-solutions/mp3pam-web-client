@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 
@@ -18,7 +18,10 @@ export const FETCH_HOME = gql`
 `;
 
 export default function useHome() {
-  const { loading, error, data, fetchMore } = useQuery(FETCH_HOME)
+  const [hasMore, setHasMore] = useState(true);
+  const { loading, error, data, fetchMore } = useQuery(FETCH_HOME, {
+    notifyOnNetworkStatusChange: true,
+  })
 
   useEffect(() => {
     console.log(error);
@@ -27,7 +30,7 @@ export default function useHome() {
   const loadMoreTracks = () => {
     const { hasMorePages, currentPage } = data.tracks.paginatorInfo;
 
-    if (!hasMorePages) return;
+    setHasMore(hasMorePages)
 
     fetchMore({
       variables: {
@@ -46,5 +49,5 @@ export default function useHome() {
     });
   }
 
-  return { loading, error, homeData: data, loadMoreTracks };
+  return { loading, error, homeData: data, loadMoreTracks, hasMore };
 };

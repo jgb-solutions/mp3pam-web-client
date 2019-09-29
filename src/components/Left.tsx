@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 		display: 'inline-block',
 	},
 	link: {
-		color: "white",
+		color: colors.white,
 		display: "flex",
 		textDecoration: "none",
 		fontWeight: "bold"
@@ -34,9 +34,10 @@ const useStyles = makeStyles({
 	mainMenu: {
 		marginBottom: 30
 	},
-	yourLibary: {
+	yourLibraryLink: {
+		textDecoration: 'none',
 		color: colors.white
-	},
+	}
 });
 
 const mainMenu = [
@@ -45,11 +46,11 @@ const mainMenu = [
 ];
 
 const libraryMenu = [
-	{ name: "Liked Tracks", to: Routes.user.favorites },
-	{ name: "Albums", to: Routes.user.favoriteAlbums },
-	{ name: "Artists", to: Routes.user.favoriteArtists },
-	{ name: "Podcasts", to: Routes.user.favoritePodcasts },
-	{ name: "Queue", to: Routes.pages.queue },
+	{ name: "Tracks", to: Routes.user.tracks },
+	{ name: "Albums", to: Routes.user.albums },
+	{ name: "Artists", to: Routes.user.artists },
+	{ name: "Podcasts", to: Routes.user.podcasts },
+	{ name: "Queue", to: Routes.user.queue },
 ];
 
 type Props = {
@@ -57,7 +58,7 @@ type Props = {
 };
 
 const Left = (props: Props) => {
-	const classes = useStyles();
+	const styles = useStyles();
 	const closeDrawer = () => {
 		if (props.closeDrawerLeft) {
 			props.closeDrawerLeft(false)
@@ -66,34 +67,41 @@ const Left = (props: Props) => {
 
 	return (
 		<>
-			<Link to="/" className={classes.logoLink}>
+			<Link to="/" className={styles.logoLink}>
 				<img
-					className={classes.logo}
+					className={styles.logo}
 					src="/assets/images/logo-trans-red-white.png"
 					alt="MP3 Pam logo"
 				/>
 			</Link>
-			<div className={classes.mainMenu}>
+			<div className={styles.mainMenu}>
 				{mainMenu.map((menuItem, index) => (
 					<Link
 						key={index}
 						to={menuItem.to}
-						className={classes.link}
+						className={styles.link}
 						onClick={closeDrawer}>
-						<span className={classes.linkIcon}>{menuItem.icon}</span>
-						<span className={classes.linkText}>{menuItem.name}</span>
+						<span className={styles.linkIcon}>{menuItem.icon}</span>
+						<span className={styles.linkText}>{menuItem.name}</span>
 					</Link>
 				))}
 			</div>
-			<div className={classes.yourLibary}>
-				<p>Your Library</p>
+			<div>
+				<p>
+					<Link
+						to={Routes.pages.library}
+						className={styles.yourLibraryLink}
+						onClick={closeDrawer}>
+						Your Library
+					</Link>
+				</p>
 				{libraryMenu.map((menuItem, index) => (
 					<Link
 						key={index}
 						to={menuItem.to}
-						className={`${classes.link} ${classes.libraryLink}`}
+						className={`${styles.link} ${styles.libraryLink}`}
 						onClick={closeDrawer}>
-						<span className={classes.linkText}>{menuItem.name}</span>
+						<span className={styles.linkText}>{menuItem.name}</span>
 					</Link>
 				))}
 			</div>

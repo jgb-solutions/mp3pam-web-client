@@ -3,45 +3,39 @@ import {
 } from "@material-ui/icons";
 import React, { useState } from 'react';
 import IconButton from "@material-ui/core/IconButton";
-import {
-  Theme,
-  WithStyles,
-  withStyles,
-  createStyles,
-} from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
 import colors from "../utils/colors";
+import { makeStyles } from "@material-ui/styles";
 
-const styles = (theme: Theme) =>
-  createStyles({
-    icon: {
-      fontSize: 18,
-      color: colors.grey,
-      '&:hover': {
-        color: colors.white
-      }
-    },
-    border: {
-      color: colors.white,
-      padding: 5,
-      border: "1px solid white",
-      borderRadius: "50%",
-    },
-    menuItem: {
-      '&:hover': {
-        backgroundColor: colors.black, color: colors.white
-      }
+const useStyles = makeStyles({
+  icon: {
+    fontSize: 18,
+    color: colors.grey,
+    '&:hover': {
+      color: colors.white
     }
-  });
+  },
+  border: {
+    color: colors.white,
+    padding: 5,
+    border: "1px solid white",
+    borderRadius: "50%",
+  },
+  menuItem: {
+    '&:hover': {
+      backgroundColor: colors.black, color: colors.white
+    }
+  }
+});
 
-interface Props extends WithStyles<typeof styles> {
+type Props = {
   border?: boolean,
-}
+};
 
 function Heart(props: Props) {
-  const { classes } = props;
+  const styles = useStyles();
   const [anchorEl, listAnchorEl] = useState(null);
 
   const handleMenu = (event: any) => {
@@ -72,8 +66,8 @@ function Heart(props: Props) {
       <IconButton
         aria-controls="context-menu"
         aria-haspopup="true"
-        onClick={handleMenu} className={props.border ? classes.border : ''}>
-        <MoreHorizOutlined className={classes.icon} />
+        onClick={handleMenu} className={props.border ? styles.border : ''}>
+        <MoreHorizOutlined className={styles.icon} />
       </IconButton>
       <Menu
         id="context-menu"
@@ -92,7 +86,7 @@ function Heart(props: Props) {
           <MenuItem
             key={index}
             onClick={() => handleClick(menuItem.method)}
-            className={classes.menuItem}>
+            className={styles.menuItem}>
             {menuItem.name}
           </MenuItem>
         )}
@@ -101,4 +95,4 @@ function Heart(props: Props) {
   )
 }
 
-export default withStyles(styles)(Heart)
+export default Heart;
