@@ -39,6 +39,8 @@ export default function Upload() {
 		setIsLoading(true);
 		console.log(event);
 		const file = get(event.target, 'files[0]');
+		if (!file) return;
+
 		console.log("file", file);
 
 		try {
