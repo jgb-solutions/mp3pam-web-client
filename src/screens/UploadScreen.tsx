@@ -92,7 +92,7 @@ export default function Upload() {
 			<h1>Upload Page {completed}%</h1>
 			<input
 				type="file"
-				accept="image/*, .mp3, audio/mp3"
+				accept="image/*"
 				placeholder="Choose an image"
 				onChange={handleImageUpload}
 			/>
