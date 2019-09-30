@@ -3,8 +3,15 @@ import React, { useState, useEffect } from "react";
 import gql from 'graphql-tag'
 import { useApolloClient } from '@apollo/react-hooks'
 import { get } from "lodash-es";
+import { Form, Field } from 'react-final-form';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 
 import ProgressBar from "../components/ProgressBar";
+import TextField from "@material-ui/core/TextField";
+import Button from '../components/Button';
+import UploadButton from '../components/UploadButton';
 
 export const UPLOAD_URL = gql`
   query getUploadUrl($name: String!, $type: String!) {
@@ -46,7 +53,8 @@ export default function Upload() {
 		try {
 			const { data: { uploadUrl: { signedUrl, fileUrl } } } = await client.query({
 				query: UPLOAD_URL,
-				variables: { name: file.name, type }
+				variables: { name: file.name, type },
+				fetchPolicy: 'network-only'
 			});
 
 			setFileUrl(fileUrl);
@@ -89,31 +97,59 @@ export default function Upload() {
 		handleFileUpload(event, 'audios');
 	};
 
+	type Stooge = "larry" | "moe" | "curly";
+
+	type Values = {
+		firstName?: string;
+		lastName?: string;
+		employed: boolean;
+		favoriteColor?: string;
+		toppings?: string[];
+		sauces?: string[];
+		stooge: Stooge;
+		notes?: string;
+	};
+
+	const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+	const onSubmit = async (values: Values) => {
+		await sleep(300);
+		window.alert(JSON.stringify(values, undefined, 2));
+	};
+
 	return (
 		<>
-			<h1>Upload Page {completed}%</h1>
-			<input
-				type="file"
-				accept="image/*"
-				placeholder="Choose an image"
-				onChange={handleImageUpload}
-			/>
+			<h1>< CloudUploadIcon /> Upload Page {completed}%</h1>
 
-			<input
-				type="file"
-				accept=".mp3, audio/mp3"
-				placeholder="Choose an audio"
-				onChange={handleAudioUpload}
-			/>
+			<p>
+				<UploadButton accept="image/*" onChange={handleImageUpload}>
+					<PhotoCameraIcon style={{ fontSize: 36 }} />
+				</UploadButton>
+
+				{completed > 0 && (
+					<ProgressBar
+						variant="determinate"
+						color="secondary"
+						value={completed}
+					/>
+				)}
+			</p>
+
+			<p>
+				<UploadButton accept=".mp3, audio/mp3" onChange={handleAudioUpload}>
+					<PlayCircleFilledIcon style={{ fontSize: 36 }} />
+				</UploadButton>
+
+				{completed > 0 && (
+					<ProgressBar
+						variant="determinate"
+						color="secondary"
+						value={completed}
+					/>
+				)}
+			</p>
 
 
-			{completed > 0 && (
-				<ProgressBar
-					variant="determinate"
-					color="secondary"
-					value={completed}
-				/>
-			)}
 			{!isLoading && isUploaded && (
 				<p>
 					The file link is{" "}
@@ -122,6 +158,26 @@ export default function Upload() {
 					</a>
 				</p>
 			)}
+			<Form
+				onSubmit={onSubmit}
+				// validate={validate}
+				render={({ handleSubmit }) => (
+					<form onSubmit={handleSubmit}>
+						<h2>Render Function as Children</h2>
+						<Field name="phone">
+							{({ input, meta }) => (
+								<div>
+									<label>Phone</label>
+									<TextField type="text" {...input} placeholder="Phone" />
+									{meta.touched && meta.error && <span>{meta.error}</span>}
+								</div>
+							)}
+						</Field>
+
+						<Button type="submit">Submit</Button>
+					</form>
+				)}
+			/>
 		</>
 	);
 }
