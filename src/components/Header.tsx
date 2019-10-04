@@ -15,6 +15,7 @@ import { SMALL_SCREEN_SIZE } from '../utils/constants';
 import Routes from '../routes';
 import AppStateInterface from '../interfaces/AppStateInterface';
 import { useSelector } from 'react-redux';
+import Right from './Right';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -135,8 +136,7 @@ const Header = (props: Props) => {
           disableDiscovery={iOS}
         >
           <div className={styles.drawer}>
-            {/* <Right closeDrawerRight={setDrawerRightOpen} /> */}
-            Login menu
+            <Right closeDrawerRight={setDrawerRightOpen} />
           </div>
         </SwipeableDrawer>
       )}

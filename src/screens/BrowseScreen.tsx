@@ -9,7 +9,7 @@ function BrowseScreen() {
 
   return (
     <>
-      <h1>Your Library</h1>
+      <h1>Browse</h1>
 
       {/* {!list && <h3>Your queue is empty!</h3>} */}
 

@@ -1,38 +1,22 @@
-import React from 'react'
 import TextField from "@material-ui/core/TextField";
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
+import colors from "../utils/colors";
 
-
-
-const useStyles = makeStyles({
+export default withStyles({
   root: {
+    width: '100%',
+    '& input': {
+      color: colors.white,
+      borderBottom: '2px solid white',
+    },
+    '& label': {
+      color: colors.white
+    },
     '& label.Mui-focused': {
-      color: 'green',
+      color: colors.primary,
     },
     '& .MuiInput-underline:after': {
-      borderBottomColor: 'green',
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'red',
-      },
-      '&:hover fieldset': {
-        borderColor: 'yellow',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'green',
-      },
-    },
-  },
-});
-
-type Props = {
-
-};
-
-export default (props: any) => {
-  const { root } = useStyles();
-  return (
-    <TextField {...props} classes={root} />
-  )
-}
+      borderBottomColor: colors.primary,
+    }
+  }
+})(TextField)

@@ -8,7 +8,7 @@ import reducers from "./reducers";
 const persistConfig = {
 	key: "v000009",
 	storage,
-	whitelist: ["player", "search", "user"],
+	whitelist: ["player", "search", "currentUser"],
 	stateReconciler: autoMergeLevel2
 };
 
