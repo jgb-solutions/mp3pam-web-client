@@ -122,22 +122,6 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-type PrivateRouteGroupProps = {
-  children: React.ReactElement & RouteComponentProps<any>
-}
-
-function PrivateRouteGroup(props: any) {
-  const location = useLocation();
-  return get(store.getState(), `currentUser.loggedIn`) ? props.children : (
-    <Redirect
-      to={{
-        pathname: Routes.pages.login,
-        state: { from: location }
-      }}
-    />
-  )
-};
-
 export default function App() {
   return (
     <ApolloProvider client={client}>
@@ -206,11 +190,9 @@ export default function App() {
                 <Route path={Routes.user.podcasts}>
                   <LikedPodcastsScreen />
                 </Route>
-                <PrivateRouteGroup>
-                  <Route path={Routes.pages.upload}>
-                    <UploadScreen />
-                  </Route>
-                </PrivateRouteGroup>
+                <Route path={Routes.pages.upload}>
+                  <UploadScreen />
+                </Route>
                 <Route>
                   <FourOFourScreen />
                 </Route>

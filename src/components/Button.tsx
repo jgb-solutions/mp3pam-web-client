@@ -1,9 +1,9 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { makeStyles, lighten } from "@material-ui/core/styles";
 
 import colors from "../utils/colors";
 import { withStyles } from "@material-ui/styles";
-import { ButtonBase, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
 	primaryBtn: {
@@ -11,8 +11,8 @@ const useStyles = makeStyles({
 		color: colors.white,
 		paddingLeft: 40,
 		paddingRight: 40,
-		height: 30,
-		border: "none",
+		// height: 30,
+		// border: "none",
 		borderRadius: 20,
 		fontWeight: "bold",
 		fontSize: 12,
@@ -62,7 +62,7 @@ export default withStyles({
 		color: colors.white,
 		paddingLeft: 40,
 		paddingRight: 40,
-		height: 30,
+		// height: 30,
 		border: "none",
 		borderRadius: 20,
 		fontWeight: "bold",

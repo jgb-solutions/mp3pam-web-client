@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
 import gql from "graphql-tag";
 import { LOG_IN } from "../store/actions/types";
+import colors from "../utils/colors";
 
 export const LOG_USER_IN = gql`
   query logUserIn($input: LoginInput!) {
@@ -33,19 +34,18 @@ const useStyles = makeStyles({
   }
 });
 
+export interface Credentials {
+  email: string;
+  password: string;
+};
+
 function LoginScreen() {
   const client = useApolloClient();
   const dispatch = useDispatch()
   const styles = useStyles();
   const location = useLocation();
-  const [redirectToReferrer, setRedirectToReferrer] = useState(false);
   let { from } = location.state || { from: { pathname: "/" } };
   const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
-
-  type Credentials = {
-    email: string,
-    password: string,
-  }
 
   const login = async (credentials: Credentials) => {
     try {
@@ -61,13 +61,37 @@ function LoginScreen() {
   };
 
   if (currentUser.loggedIn) return <Redirect to={from} />;
-  if (redirectToReferrer) return <Redirect to={from} />;
-
   return (
-    <>
-      <h1>Log In</h1>
-
-      <p>You must log in to view the page at {from.pathname}</p>
+    <div style={{ maxWidth: 450, margin: '0 auto', paddingTop: 30, textAlign: 'center' }}>
+      <h1 style={{ fontSize: 12 }}>To continue, log in to MP3 Pam.</h1>
+      <Button style={{ backgroundColor: '#3b5998', marginTop: 15, marginBottom: 15 }} size='large'>Log In With Facebook</Button>
+      <div className="divider" style={{
+        fontSize: 16,
+        fontWeight: 400,
+        borderTop: '1px solid #d9dadc',
+        lineHeight: '1px',
+        marginTop: 30,
+        marginBottom: 30,
+        marginLeft: 0,
+        marginRight: 0,
+        position: 'relative',
+        textAlign: 'center',
+        height: 6,
+        border: 0,
+        background:
+          `linear-gradient(to right,#181818 0%,#cd1b54 55%,#cd1b54 55%,#181818 100%)`,
+      }}>
+        <strong className="divider-title" style={{
+          background: colors.contentGrey,
+          fontSize: 12,
+          letterSpacing: 1,
+          paddingTop: 0,
+          paddingRight: 20,
+          paddingBottom: 0,
+          paddingLeft: 20,
+          textTransform: 'uppercase',
+        }}>or</strong>
+      </div>
 
       <Form
         onSubmit={login}>
@@ -75,41 +99,61 @@ function LoginScreen() {
           <form onSubmit={handleSubmit} noValidate>
             <Grid>
               <Grid item>
-                <Field name="email">
+                <Field name="email" validate={value => { if (!value) return "Your email is required" }}>
                   {({ input, meta }) => (
                     <>
                       <TextField
                         {...input}
-                        id="name"
-                        label="Name"
+                        id="email"
+                        label="Email"
+                        type="email"
                         margin="normal"
+                        error={!!(meta.touched && meta.error)}
+                        helperText={!!(meta.touched && meta.error) && meta.error}
                       />
-                      {meta.touched && meta.error && <span>{meta.error}</span>}
                     </>
                   )}
                 </Field>
               </Grid>
               <Grid item>
-                <Field name="password">
+                <Field name="password" validate={value => { if (!value) return "Your password Required" }}>
                   {({ input, meta }) => (
                     <>
                       <TextField
                         {...input}
                         id="password"
-                        label="password"
+                        label="Password"
                         type="password"
                         margin="normal"
+                        error={!!(meta.touched && meta.error)}
+                        helperText={!!(meta.touched && meta.error) && meta.error}
                       />
-                      {meta.touched && meta.error && <span>{meta.error}</span>}
                     </>
                   )}
                 </Field>
               </Grid>
             </Grid>
-            <Button type="submit">Submit</Button>
+            <Button type="submit" size='large' style={{ marginTop: 15, marginBottom: 15 }}>Log In</Button>
           </form>
         )}</Form>
-    </>
+      <hr style={{
+        marginTop: 30,
+        marginBottom: 30,
+        height: 6,
+        border: 0,
+        background:
+          `linear-gradient(to right,#181818 0%,#cd1b54 55%,#cd1b54 55%,#181818 100%)`,
+      }} />
+      <h3>Don't have an account?</h3>
+      <Button
+        size='large'
+        style={{
+          marginTop: 15,
+          marginBottom: 15,
+          backgroundColor: colors.contentGrey,
+          border: `1px solid ${colors.primary}`
+          }}>Sign Up For MP3 Pam</Button>
+    </div>
   );
 }
 

@@ -12,6 +12,7 @@ import ProgressBar from "../components/ProgressBar";
 import TextField from "@material-ui/core/TextField";
 import Button from '../components/Button';
 import UploadButton from '../components/UploadButton';
+import CheckAuth from "../components/CheckAuth";
 
 export const UPLOAD_URL = gql`
   query getUploadUrl($name: String!, $type: String!) {
@@ -88,13 +89,13 @@ export default function Upload() {
 	const handleImageUpload = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		handleFileUpload(event, 'images');
+		handleFileUpload(event, 'img');
 	};
 
 	const handleAudioUpload = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		handleFileUpload(event, 'audios');
+		handleFileUpload(event, 'sound');
 	};
 
 	type Stooge = "larry" | "moe" | "curly";
@@ -117,8 +118,9 @@ export default function Upload() {
 		window.alert(JSON.stringify(values, undefined, 2));
 	};
 
+
 	return (
-		<>
+		<CheckAuth>
 			<h1>< CloudUploadIcon /> Upload Page {completed}%</h1>
 
 			<p>
@@ -178,6 +180,6 @@ export default function Upload() {
 					</form>
 				)}
 			/>
-		</>
+		</CheckAuth>
 	);
 }
