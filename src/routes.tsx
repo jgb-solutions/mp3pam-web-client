@@ -49,6 +49,9 @@ const Routes = {
 		podcasts: `/browse/podcasts`,
 		shows: `/browse/shows`,
 	},
+	auth: {
+		facebook: `/auth/facebook`
+	}
 	// liked: {
 	// 	likedTracks: `liked/tracks`,
 	// 	likedAlbums: `/liked/albums`,

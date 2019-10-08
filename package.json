@@ -27,6 +27,7 @@
     "graphql": "^14.5.5",
     "graphql-tag": "^2.10.1",
     "lodash-es": "^4.17.15",
+    "query-string": "^6.8.3",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-final-form": "^6.3.0",

@@ -26,7 +26,15 @@ export const LOG_USER_IN = gql`
       }
     }
   }
-`
+`;
+
+export const FACEBOOK_LOGIN_URL = gql`
+  query facebookLoginUrl {
+    facebookLoginUrl {
+      url
+    }
+  }
+`;
 
 const useStyles = makeStyles({
   textField: {
@@ -60,11 +68,22 @@ function LoginScreen() {
     };
   };
 
+  const loginWithFacebook = async () => {
+    try {
+      const { data: { facebookLoginUrl } } = await client.query({
+        query: FACEBOOK_LOGIN_URL,
+      });
+      window.location = facebookLoginUrl.url;
+    } catch (error) {
+      console.log(error);
+    };
+  };
+
   if (currentUser.loggedIn) return <Redirect to={from} />;
   return (
     <div style={{ maxWidth: 450, margin: '0 auto', paddingTop: 30, textAlign: 'center' }}>
       <h1 style={{ fontSize: 12 }}>To continue, log in to MP3 Pam.</h1>
-      <Button style={{ backgroundColor: '#3b5998', marginTop: 15, marginBottom: 15 }} size='large'>Log In With Facebook</Button>
+      <Button style={{ backgroundColor: '#3b5998', marginTop: 15, marginBottom: 15 }} size='large' onClick={loginWithFacebook}>Log In With Facebook</Button>
       <div className="divider" style={{
         fontSize: 16,
         fontWeight: 400,
@@ -152,7 +171,7 @@ function LoginScreen() {
           marginBottom: 15,
           backgroundColor: colors.contentGrey,
           border: `1px solid ${colors.primary}`
-          }}>Sign Up For MP3 Pam</Button>
+        }}>Sign Up For MP3 Pam</Button>
     </div>
   );
 }

@@ -42,6 +42,9 @@ import BrowseAlbumsScreen from './screens/BrowseAlbumsScreen';
 import BrowseArtistsScreen from './screens/BrowseArtistsScreen';
 import BrowsePodcastsScreen from './screens/BrowsePodcastsScreen';
 
+// Auth screens
+import FacebookAuth from './screens/auth/FacebookAuth';
+
 //  Routers
 import Routes from './routes';
 
@@ -189,6 +192,9 @@ export default function App() {
                 </Route>
                 <Route path={Routes.user.podcasts}>
                   <LikedPodcastsScreen />
+                </Route>
+                <Route path={Routes.auth.facebook}>
+                  <FacebookAuth />
                 </Route>
                 <Route path={Routes.pages.upload}>
                   <UploadScreen />
