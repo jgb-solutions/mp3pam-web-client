@@ -50,6 +50,9 @@ const useStyles = makeStyles(theme => ({
 		// display: "flex",
 		// flexDirection: "column",
 		// justifyContent: "flex-end",
+		[theme.breakpoints.up('xs')]: {
+			justifySelf: 'flex-end'
+		},
 		"& > *": {
 			padding: 0,
 			margin: 0

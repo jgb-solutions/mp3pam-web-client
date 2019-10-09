@@ -7,6 +7,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import { Link } from 'react-router-dom';
+import Avatar from '@material-ui/core/Avatar';
 
 import Left from './Left';
 import colors from '../utils/colors';
@@ -63,6 +64,9 @@ const useStyles = makeStyles(theme => ({
   },
   loginButton: {
     color: colors.white
+  },
+  avatar: {
+    cursor: 'pointer'
   }
 }));
 
@@ -90,14 +94,15 @@ const Header = (props: Props) => {
           <div className={styles.grow} />
           <div className={styles.accountButton}>
             {
-              currentUser.loggedIn ? (
-                <IconButton
-                  aria-label="Account"
-                  onClick={() => setDrawerRightOpen(true)}
-                  color="inherit"
-                  className={styles.moreIcon}>
-                  <AccountCircle />
-                </IconButton>
+              currentUser.loggedIn && currentUser.data ? (
+                <Avatar onClick={() => setDrawerRightOpen(true)} alt={currentUser.data.name} src={currentUser.data.avatar} className={styles.avatar} />
+                // <IconButton
+                //   aria-label="Account"
+                //   onClick={() => setDrawerRightOpen(true)}
+                //   color="inherit"
+                //   className={styles.moreIcon}>
+                //   <AccountCircle />
+                // </IconButton>
 
               ) : (
                   <Link to={Routes.pages.login}

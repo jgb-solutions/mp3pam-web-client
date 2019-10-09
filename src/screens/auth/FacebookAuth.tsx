@@ -5,9 +5,11 @@ import { get } from 'lodash-es';
 import queryString from 'query-string';
 import gql from 'graphql-tag';
 import { useApolloClient } from '@apollo/react-hooks';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LOG_IN } from '../../store/actions/types';
 import CheckAuth from '../../components/CheckAuth';
+import Routes from '../../routes';
+import AppStateInterface from '../../interfaces/AppStateInterface';
 
 const FACEOOK_LOGIN = gql`
   mutation facebookLogin($code: String!) {
@@ -27,6 +29,7 @@ const FACEOOK_LOGIN = gql`
 `;
 
 export default function FacebookAuth() {
+  const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
   const client = useApolloClient();
   const dispatch = useDispatch();
   const match = useRouteMatch();
@@ -35,6 +38,8 @@ export default function FacebookAuth() {
   console.log('location', location)
 
   useEffect(() => {
+    if (currentUser.loggedIn) history.push(Routes.pages.home);
+
     const { pathname, search } = location;
     const { code } = queryString.parse(search)
     // history.push({ pathname: location.pathname, search: location.search })
@@ -54,6 +59,7 @@ export default function FacebookAuth() {
       const { firstLogin, ...payload } = handleFacebookConnect;
       console.log(handleFacebookConnect);
       dispatch({ type: LOG_IN, payload });
+      history.push(Routes.pages.home)
     } catch (error) {
       console.log(error);
     };

@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 import { useLazyQuery } from "@apollo/react-hooks";
 
-import { Credentials } from "../screens/LoginScreen";
+import { Credentials } from "../screens/auth/LoginScreen";
 
 export const LOG_USER_IN = gql`
   query logUserIn($input: LoginInput!) {

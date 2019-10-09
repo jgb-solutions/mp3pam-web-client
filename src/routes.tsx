@@ -50,7 +50,7 @@ const Routes = {
 		shows: `/browse/shows`,
 	},
 	auth: {
-		facebook: `/auth/facebook`
+		facebook: `/login/facebook`
 	}
 	// liked: {
 	// 	likedTracks: `liked/tracks`,

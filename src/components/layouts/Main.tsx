@@ -11,7 +11,7 @@ import Header from '../Header';
 
 import colors from "../../utils/colors";
 
-const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles(theme => ({
   container: {
     backgroundColor: colors.black,
     maxWidth: 1200,
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
   col: {
     height: '100vh',
-    overflowY: 'scroll'
+    overflowY: 'auto'
   },
   mainGrid: {
     backgroundColor: colors.contentGrey,
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const MainScreen = (props: { style?: Object, children: ReactNode }) => {
+export default function Main({ children }: { children: ReactNode }) {
   const styles = useStyles();
 
   return (
@@ -51,9 +51,10 @@ const MainScreen = (props: { style?: Object, children: ReactNode }) => {
             <Left />
           </Grid>
         </Hidden>
+
         <Grid item md={8} sm={9} xs={12} className={`${styles.col} ${styles.mainGrid}`}>
           <Header />
-          <Content className={styles.col}>{props.children}</Content>
+          <Content className={styles.col}>{children}</Content>
         </Grid>
 
         <Hidden smDown>
@@ -66,5 +67,3 @@ const MainScreen = (props: { style?: Object, children: ReactNode }) => {
     </>
   );
 };
-
-export default MainScreen;

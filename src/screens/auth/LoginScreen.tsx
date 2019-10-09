@@ -4,14 +4,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { Form, Field } from 'react-final-form';
 import { useApolloClient } from '@apollo/react-hooks'
 
-import AppStateInterface from "../interfaces/AppStateInterface";
-import TextField from "../components/TextField";
-import Button from "../components/Button";
+import AppStateInterface from "../../interfaces/AppStateInterface";
+import TextField from "../../components/TextField";
+import Button from "../../components/Button";
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
 import gql from "graphql-tag";
-import { LOG_IN } from "../store/actions/types";
-import colors from "../utils/colors";
+import { LOG_IN } from "../../store/actions/types";
+import colors from "../../utils/colors";
+import { validateField, validateEmail, validateRequired } from "../../utils/validators";
 
 export const LOG_USER_IN = gql`
   query logUserIn($input: LoginInput!) {
@@ -52,6 +53,7 @@ function LoginScreen() {
   const dispatch = useDispatch()
   const styles = useStyles();
   const location = useLocation();
+  const [loginError, setLoginError] = useState(false)
   let { from } = location.state || { from: { pathname: "/" } };
   const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
 
@@ -75,6 +77,7 @@ function LoginScreen() {
       });
       window.location = facebookLoginUrl.url;
     } catch (error) {
+      setLoginError(true);
       console.log(error);
     };
   };
@@ -116,9 +119,13 @@ function LoginScreen() {
         onSubmit={login}>
         {({ handleSubmit }) => (
           <form onSubmit={handleSubmit} noValidate>
+            {loginError && <h3>Your email or password is not valid.</h3>}
             <Grid>
               <Grid item>
-                <Field name="email" validate={value => { if (!value) return "Your email is required" }}>
+                <Field name="email" validate={validateField(
+                  validateRequired("The email is required"),
+                  validateEmail(null))
+                }>
                   {({ input, meta }) => (
                     <>
                       <TextField
