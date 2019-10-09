@@ -56,6 +56,7 @@ import './App.css';
 
 import { LOG_OUT } from './store/actions/types';
 import Plain from './components/layouts/Plain';
+import Root from './components/layouts/Root';
 
 const { store, persistor } = persistedStore();
 
@@ -132,101 +133,103 @@ export default function App() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Router>
-            <Switch>
-              <Route path={Routes.pages.home} exact>
-                <Main>
-                  <HomeScreen />
-                </Main>
-              </Route>
-              <Route path={Routes.pages.browse} exact>
-                <Main>
-                  <BrowseScreen />
-                </Main>
-              </Route>
-              <Route path={Routes.browse.tracks}>
-                <Main>
-                  <BrowseTracksScreen />
-                </Main>
-              </Route>
-              <Route path={Routes.browse.albums}>
-                <BrowseAlbumsScreen />
-              </Route>
-              <Route path={Routes.browse.artists}>
-                <BrowseArtistsScreen />
-              </Route>
-              <Route path={Routes.browse.podcasts}>
-                <BrowsePodcastsScreen />
-              </Route>
-              <Route path={Routes.pages.search}>
-                <SearchScreen />
-              </Route>
-              <Route path={Routes.pages.about}>
-                <AboutScreen />
-              </Route>
-              <Route path={Routes.album.show}>
-                <Main>
-                  <ListScreen />
-                </Main>
-              </Route>
-              <Route path={Routes.artist.show}>
-                <Main>
-                  <ListScreen />
-                </Main>
-              </Route>
-              <Route path={Routes.track.show}>
-                <Main>
-                  <ListScreen />
-                </Main>
-              </Route>
-              <Route path={Routes.podcast.show}>
-                <Main>
-                  <ListScreen />
-                </Main>
-              </Route>
-              <Route path={Routes.pages.users}>
-                <UsersScreen />
-              </Route>
-              <Route path={Routes.user.queue}>
-                <QueueScreen />
-              </Route>
-              <Route path={Routes.pages.login} exact>
-                <Plain>
-                  <LoginScreen />
-                </Plain>
-              </Route>
-              <Route path={Routes.pages.library} exact>
-                <LibraryScreen />
-              </Route>
-              <Route path={Routes.user.tracks}>
-                <LikedTracksScreen />
-              </Route>
-              <Route path={Routes.user.albums}>
-                <LikedAlbumsScreen />
-              </Route>
-              <Route path={Routes.user.artists}>
-                <LikedArtistsScreen />
-              </Route>
-              <Route path={Routes.user.podcasts}>
-                <Main>
-                  <LikedPodcastsScreen />
-                </Main>
-              </Route>
-              <Route path={Routes.auth.facebook}>
-                <Plain>
-                  <FacebookAuth />
-                </Plain>
-              </Route>
-              <Route path={Routes.pages.upload}>
-                <Main>
-                  <UploadScreen />
-                </Main>
-              </Route>
-              <Route>
-                <Plain>
-                  <FourOFourScreen />
-                </Plain>
-              </Route>
-            </Switch>
+            <Root>
+              <Switch>
+                <Route path={Routes.pages.home} exact>
+                  <Main>
+                    <HomeScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.pages.browse} exact>
+                  <Main>
+                    <BrowseScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.browse.tracks}>
+                  <Main>
+                    <BrowseTracksScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.browse.albums}>
+                  <BrowseAlbumsScreen />
+                </Route>
+                <Route path={Routes.browse.artists}>
+                  <BrowseArtistsScreen />
+                </Route>
+                <Route path={Routes.browse.podcasts}>
+                  <BrowsePodcastsScreen />
+                </Route>
+                <Route path={Routes.pages.search}>
+                  <SearchScreen />
+                </Route>
+                <Route path={Routes.pages.about}>
+                  <AboutScreen />
+                </Route>
+                <Route path={Routes.album.show}>
+                  <Main>
+                    <ListScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.artist.show}>
+                  <Main>
+                    <ListScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.track.show}>
+                  <Main>
+                    <ListScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.podcast.show}>
+                  <Main>
+                    <ListScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.pages.users}>
+                  <UsersScreen />
+                </Route>
+                <Route path={Routes.user.queue}>
+                  <QueueScreen />
+                </Route>
+                <Route path={Routes.pages.login} exact>
+                  <Plain>
+                    <LoginScreen />
+                  </Plain>
+                </Route>
+                <Route path={Routes.pages.library} exact>
+                  <LibraryScreen />
+                </Route>
+                <Route path={Routes.user.tracks}>
+                  <LikedTracksScreen />
+                </Route>
+                <Route path={Routes.user.albums}>
+                  <LikedAlbumsScreen />
+                </Route>
+                <Route path={Routes.user.artists}>
+                  <LikedArtistsScreen />
+                </Route>
+                <Route path={Routes.user.podcasts}>
+                  <Main>
+                    <LikedPodcastsScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.auth.facebook}>
+                  <Plain>
+                    <FacebookAuth />
+                  </Plain>
+                </Route>
+                <Route path={Routes.pages.upload}>
+                  <Main>
+                    <UploadScreen />
+                  </Main>
+                </Route>
+                <Route>
+                  <Plain>
+                    <FourOFourScreen />
+                  </Plain>
+                </Route>
+              </Switch>
+            </Root>
           </Router>
         </PersistGate>
       </Provider>

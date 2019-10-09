@@ -13,6 +13,7 @@ import gql from "graphql-tag";
 import { LOG_IN } from "../../store/actions/types";
 import colors from "../../utils/colors";
 import { validateField, validateEmail, validateRequired } from "../../utils/validators";
+import Logo from "../../components/Logo";
 
 export const LOG_USER_IN = gql`
   query logUserIn($input: LoginInput!) {
@@ -84,7 +85,8 @@ function LoginScreen() {
 
   if (currentUser.loggedIn) return <Redirect to={from} />;
   return (
-    <div style={{ maxWidth: 450, margin: '0 auto', paddingTop: 30, textAlign: 'center' }}>
+    <div style={{ maxWidth: 450, margin: '0 auto', textAlign: 'center' }}>
+      <Logo size={300} />
       <h1 style={{ fontSize: 12 }}>To continue, log in to MP3 Pam.</h1>
       <Button style={{ backgroundColor: '#3b5998', marginTop: 15, marginBottom: 15 }} size='large' onClick={loginWithFacebook}>Log In With Facebook</Button>
       <div className="divider" style={{

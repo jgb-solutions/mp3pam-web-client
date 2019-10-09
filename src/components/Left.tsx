@@ -5,16 +5,9 @@ import { makeStyles } from "@material-ui/styles";
 
 import Routes from "../routes";
 import colors from "../utils/colors";
+import Logo from "./Logo";
 
 const useStyles = makeStyles({
-	logo: {
-		maxWidth: "100%",
-		width: "200px",
-	},
-	logoLink: {
-		marginBottom: 20,
-		display: 'inline-block',
-	},
 	link: {
 		color: colors.white,
 		display: "flex",
@@ -67,13 +60,7 @@ const Left = (props: Props) => {
 
 	return (
 		<>
-			<Link to="/" className={styles.logoLink}>
-				<img
-					className={styles.logo}
-					src="/assets/images/logo-trans-red-white.png"
-					alt="MP3 Pam logo"
-				/>
-			</Link>
+			<Logo />
 			<div className={styles.mainMenu}>
 				{mainMenu.map((menuItem, index) => (
 					<Link

@@ -15,6 +15,7 @@ import ListInterface from "../interfaces/ListInterface";
 import * as playerActions from "../store/actions/playerActions";
 import AppStateInterface from "../interfaces/AppStateInterface";
 import { Grid } from "@material-ui/core";
+import { SMALL_SCREEN_SIZE } from "../utils/constants";
 
 const useStyles = makeStyles(theme => ({
 	row: {
@@ -46,12 +47,18 @@ const useStyles = makeStyles(theme => ({
 			color: "white"
 		}
 	},
+	detailsWrapper: {
+		[theme.breakpoints.up(SMALL_SCREEN_SIZE)]: {
+			position: 'relative',
+		},
+	},
 	listDetails: {
 		// display: "flex",
 		// flexDirection: "column",
 		// justifyContent: "flex-end",
-		[theme.breakpoints.up('xs')]: {
-			justifySelf: 'flex-end'
+		[theme.breakpoints.up(SMALL_SCREEN_SIZE)]: {
+			position: 'absolute',
+			bottom: 0,
 		},
 		"& > *": {
 			padding: 0,
@@ -130,7 +137,7 @@ const ListScreen = (props: Props) => {
 				<Grid item sm={4} xs={12} className={styles.imageContainer}>
 					<img src={list.image} alt={list.name} className={styles.image} />
 				</Grid>
-				<Grid item sm={8} xs={12}>
+				<Grid item sm={8} xs={12} className={styles.detailsWrapper}>
 					<div className={styles.listDetails}>
 						<h5 className={styles.listType}>{list.type}</h5>
 						<h1 className={styles.listName}>{list.name}</h1>
@@ -161,33 +168,6 @@ const ListScreen = (props: Props) => {
 					</div>
 				</Grid>
 			</Grid>
-			{/* <div className={styles.row}>
-				<div className={styles.listCover}>
-					<img src={list.image} alt={list.name} />
-				</div>
-				<div className={styles.listDetails}>
-					<h5 className={styles.listType}>{list.type}</h5>
-					<h1 className={styles.listName}>{list.name}</h1>
-					<p className={styles.listByAuthor}>
-						<span className={styles.listBy}>By </span>
-						<Link
-							to={Routes.podcast.goToAuthorDetail("authorId")}
-							className={styles.listAuthor}
-						>
-							{list.author}
-						</Link>
-					</p>
-					<div>
-						<Button onClick={() => { togglePlay(list) }}>
-							{(props.playingListId !== list.id) && "Play"}
-							{(props.isPlaying && props.playingListId === list.id) && "Pause"}
-							{(!props.isPlaying && props.playingListId === list.id) && "Resume"}
-						</Button>
-						<Heart border />
-						<More border />
-					</div>
-				</div>
-			</div> */}
 			<br />
 			{list.tracks && <ListTable list={list} />}
 		</>

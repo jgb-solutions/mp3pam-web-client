@@ -1,9 +1,8 @@
 import React, { ReactNode } from 'react';
-import { CssBaseline, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import Hidden from '@material-ui/core/Hidden';
 
-import Player from '../Player';
 import Left from '../Left';
 import Right from '../Right';
 import Content from '../Content';
@@ -44,26 +43,22 @@ export default function Main({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <CssBaseline />
-      <Grid container className={styles.container}>
-        <Hidden xsDown>
-          <Grid item md={2} sm={3} xs={12} className={`${styles.col} ${styles.leftGrid}`}>
-            <Left />
-          </Grid>
-        </Hidden>
-
-        <Grid item md={8} sm={9} xs={12} className={`${styles.col} ${styles.mainGrid}`}>
-          <Header />
-          <Content className={styles.col}>{children}</Content>
+      <Hidden xsDown>
+        <Grid item md={2} sm={3} xs={12} className={`${styles.col} ${styles.leftGrid}`}>
+          <Left />
         </Grid>
+      </Hidden>
 
-        <Hidden smDown>
-          <Grid item md={2} sm={2} xs={12} className={`${styles.col} ${styles.rightGrid}`}>
-            <Right />
-          </Grid>
-        </Hidden>
+      <Grid item md={8} sm={9} xs={12} className={`${styles.col} ${styles.mainGrid}`}>
+        <Header />
+        <Content className={styles.col}>{children}</Content>
       </Grid>
-      <Player />
+
+      <Hidden smDown>
+        <Grid item md={2} sm={2} xs={12} className={`${styles.col} ${styles.rightGrid}`}>
+          <Right />
+        </Grid>
+      </Hidden>
     </>
   );
 };

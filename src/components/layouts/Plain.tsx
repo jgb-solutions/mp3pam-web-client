@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { CssBaseline, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
 
 import Content from '../Content';
@@ -13,11 +13,8 @@ export default function Plain({ children }: Props) {
 
   return (
     <>
-      <CssBaseline />
-      <Grid container className={styles.container}>
-        <Grid item sm={12} xs={12} className={`${styles.col} ${styles.mainGrid}`}>
-          <Content className={styles.col}>{children}</Content>
-        </Grid>
+      <Grid item sm={12} xs={12} className={`${styles.col} ${styles.mainGrid}`}>
+        <Content className={styles.col}>{children}</Content>
       </Grid>
     </>
   );
