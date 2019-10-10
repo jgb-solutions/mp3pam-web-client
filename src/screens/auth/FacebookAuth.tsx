@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-import Spinner from '../../components/Spinner';
-import { useRouteMatch, useLocation, useHistory } from 'react-router';
-import { get } from 'lodash-es';
-import queryString from 'query-string';
+import { useLocation, useHistory, Redirect } from 'react-router';
 import gql from 'graphql-tag';
+import queryString from 'query-string';
 import { useApolloClient } from '@apollo/react-hooks';
 import { useDispatch, useSelector } from 'react-redux';
+
+import Routes from '../../routes';
+import Spinner from '../../components/Spinner';
 import { LOG_IN } from '../../store/actions/types';
 import CheckAuth from '../../components/CheckAuth';
-import Routes from '../../routes';
 import AppStateInterface from '../../interfaces/AppStateInterface';
 
 const FACEOOK_LOGIN = gql`
@@ -29,20 +29,13 @@ const FACEOOK_LOGIN = gql`
 `;
 
 export default function FacebookAuth() {
-  const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
   const client = useApolloClient();
   const dispatch = useDispatch();
-  const match = useRouteMatch();
   const location = useLocation();
   const history = useHistory();
-  console.log('location', location)
+  const { code } = queryString.parse(location.search)
 
   useEffect(() => {
-    if (currentUser.loggedIn) history.push(Routes.pages.home);
-
-    const { pathname, search } = location;
-    const { code } = queryString.parse(search)
-    // history.push({ pathname: location.pathname, search: location.search })
     if (code) {
       login(String(code));
     }
@@ -65,10 +58,12 @@ export default function FacebookAuth() {
     };
   }
 
-  return (
-    <CheckAuth>
+  return code ? (
+    <>
       <h1>Logging you in with Facebook</h1>
       <Spinner />
-    </CheckAuth>
-  );
+    </>
+  ) : (
+      <Redirect to={Routes.pages.login} />
+    );
 };

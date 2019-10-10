@@ -189,7 +189,9 @@ export default function App() {
                   <UsersScreen />
                 </Route>
                 <Route path={Routes.user.queue}>
-                  <QueueScreen />
+                  <Main>
+                    <QueueScreen />
+                  </Main>
                 </Route>
                 <Route path={Routes.pages.login} exact>
                   <Plain>

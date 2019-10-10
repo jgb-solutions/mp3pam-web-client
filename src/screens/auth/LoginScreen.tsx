@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import { Redirect, useLocation } from "react-router-dom";
+import { Redirect, useLocation, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Form, Field } from 'react-final-form';
 import { useApolloClient } from '@apollo/react-hooks'
-
-import AppStateInterface from "../../interfaces/AppStateInterface";
-import TextField from "../../components/TextField";
-import Button from "../../components/Button";
-import { makeStyles } from "@material-ui/styles";
-import { Grid } from "@material-ui/core";
+import useForm from 'react-hook-form';
 import gql from "graphql-tag";
-import { LOG_IN } from "../../store/actions/types";
+import { Grid } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+
+import Routes from "../../routes";
 import colors from "../../utils/colors";
-import { validateField, validateEmail, validateRequired } from "../../utils/validators";
 import Logo from "../../components/Logo";
+import Button from "../../components/Button";
+import TextField from "../../components/TextField";
+import { LOG_IN } from "../../store/actions/types";
+import { emailRegex } from "../../utils/validators";
+import AppStateInterface from "../../interfaces/AppStateInterface";
 
 export const LOG_USER_IN = gql`
   query logUserIn($input: LoginInput!) {
@@ -54,31 +55,49 @@ function LoginScreen() {
   const dispatch = useDispatch()
   const styles = useStyles();
   const location = useLocation();
-  const [loginError, setLoginError] = useState(false)
+  const history = useHistory();
+  const { register, errors, handleSubmit, formState } = useForm<Credentials>({
+    mode: 'onBlur'
+  });
+  const [loginError, setLoginError] = useState("")
   let { from } = location.state || { from: { pathname: "/" } };
   const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
 
   const login = async (credentials: Credentials) => {
+    console.log(credentials)
     try {
-      const { data: { login: payload } } = await client.query({
+      const { data: { login: payload }, errors } = await client.query({
         query: LOG_USER_IN,
         variables: { input: credentials },
         fetchPolicy: 'network-only'
       });
-      dispatch({ type: LOG_IN, payload });
+      if (errors) {
+        console.log(errors);
+        setLoginError("Your email or password is not valid.");
+      }
+
+      if (payload) {
+        dispatch({ type: LOG_IN, payload });
+        history.push(Routes.pages.home);
+      }
     } catch (error) {
       console.log(error);
     };
   };
 
   const loginWithFacebook = async () => {
+    const fbMessage = "An error occurred with the Facebook login.";
     try {
-      const { data: { facebookLoginUrl } } = await client.query({
+      const { data: { facebookLoginUrl }, errors } = await client.query({
         query: FACEBOOK_LOGIN_URL,
       });
+      if (errors) {
+        console.log(errors);
+        setLoginError(fbMessage)
+      }
       window.location = facebookLoginUrl.url;
     } catch (error) {
-      setLoginError(true);
+      setLoginError(fbMessage);
       console.log(error);
     };
   };
@@ -117,53 +136,45 @@ function LoginScreen() {
         }}>or</strong>
       </div>
 
-      <Form
-        onSubmit={login}>
-        {({ handleSubmit }) => (
-          <form onSubmit={handleSubmit} noValidate>
-            {loginError && <h3>Your email or password is not valid.</h3>}
-            <Grid>
-              <Grid item>
-                <Field name="email" validate={validateField(
-                  validateRequired("The email is required"),
-                  validateEmail(null))
-                }>
-                  {({ input, meta }) => (
-                    <>
-                      <TextField
-                        {...input}
-                        id="email"
-                        label="Email"
-                        type="email"
-                        margin="normal"
-                        error={!!(meta.touched && meta.error)}
-                        helperText={!!(meta.touched && meta.error) && meta.error}
-                      />
-                    </>
-                  )}
-                </Field>
-              </Grid>
-              <Grid item>
-                <Field name="password" validate={value => { if (!value) return "Your password Required" }}>
-                  {({ input, meta }) => (
-                    <>
-                      <TextField
-                        {...input}
-                        id="password"
-                        label="Password"
-                        type="password"
-                        margin="normal"
-                        error={!!(meta.touched && meta.error)}
-                        helperText={!!(meta.touched && meta.error) && meta.error}
-                      />
-                    </>
-                  )}
-                </Field>
-              </Grid>
-            </Grid>
-            <Button type="submit" size='large' style={{ marginTop: 15, marginBottom: 15 }}>Log In</Button>
-          </form>
-        )}</Form>
+
+      <form onSubmit={handleSubmit(login)} noValidate>
+        {loginError && <h3>{loginError}</h3>}
+        <Grid>
+          <Grid item>
+            <TextField
+              inputRef={register({
+                required: "The email is required",
+                pattern: {
+                  value: emailRegex,
+                  message: "This email is not valid"
+                }
+              })}
+              name="email"
+              id="email"
+              label="Email"
+              type="email"
+              margin="normal"
+              error={!!errors.email}
+              helperText={errors.email && errors.email.message}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              inputRef={register({
+                required: "Your password Required"
+              })}
+              name="password"
+              id="password"
+              label="Password"
+              type="password"
+              margin="normal"
+              error={!!errors.password}
+              helperText={errors.password && errors.password.message}
+            />
+          </Grid>
+        </Grid>
+        <Button type="submit" size='large' style={{ marginTop: 15, marginBottom: 15 }}>Log In</Button>
+      </form>
       <hr style={{
         marginTop: 30,
         marginBottom: 30,

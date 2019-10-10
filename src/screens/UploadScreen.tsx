@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import gql from 'graphql-tag'
 import { useApolloClient } from '@apollo/react-hooks'
 import { get } from "lodash-es";
-import { Form, Field } from 'react-final-form';
+import useForm from 'react-hook-form';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
@@ -29,7 +29,7 @@ export default function Upload() {
 	const [isUploaded, setIsUploaded] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [fileUrl, setFileUrl] = useState("");
-
+	const { register, handleSubmit, errors } = useForm<Values>();
 	useEffect(() => {
 		if (completed === 100) setCompleted(0);
 	}, [completed]);
@@ -160,26 +160,14 @@ export default function Upload() {
 					</a>
 				</p>
 			)}
-			<Form
-				onSubmit={onSubmit}
-				// validate={validate}
-				render={({ handleSubmit }) => (
-					<form onSubmit={handleSubmit}>
-						<h2>Render Function as Children</h2>
-						<Field name="phone">
-							{({ input, meta }) => (
-								<div>
-									<label>Phone</label>
-									<TextField type="text" {...input} placeholder="Phone" />
-									{meta.touched && meta.error && <span>{meta.error}</span>}
-								</div>
-							)}
-						</Field>
-
-						<Button type="submit">Submit</Button>
-					</form>
-				)}
-			/>
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<h2>Render Function as Children</h2>
+				<div>
+					<label>Phone</label>
+					<TextField name="phone" inputRef={register({})} placeholder="Phone" />
+				</div>
+				<Button type="submit">Submit</Button>
+			</form>
 		</CheckAuth>
 	);
 }
