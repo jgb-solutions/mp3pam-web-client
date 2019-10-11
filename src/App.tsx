@@ -1,14 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-  RouteComponentProps,
-  useLocation
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
@@ -65,50 +58,16 @@ export const API_URL: string = process.env.NODE_ENV === 'development'
   : `https://api.mp3pam.com/graphql`;
 
 // Apollo Client
-const httpLink = createHttpLink({
-  uri: API_URL,
-});
-
-const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const token: string | null = get(store.getState(), `currentUser.token`)
-  // return the headers to the context so httpLink can read them
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : ``,
-    }
-  }
-});
-
-// const errorLink =
-// const link = errorLink.concat(authLink.concat(httpLink));
 const client = new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
-        console.log('graphql errors', graphQLErrors);
-        graphQLErrors.forEach(({ message, locations, path, debugMessage }: any) => {
-          console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-          )
-          if (
-            debugMessage === `Unauthenticated.` && !window.location.pathname.startsWith('/login')
-          ) {
+        graphQLErrors.forEach(({ message, extensions: { statusCode } }: any) => {
+          if (statusCode === 401 && !window.location.pathname.startsWith('/login')) {
             client.clearStore();
             store.dispatch({ type: LOG_OUT });
           }
-          // eslint-disable-next-line
         });
-
-        // client.mutate({
-        //   mutation: notificationAddMutation,
-        //   variables: {
-        //     text:
-        //       'You did not have rights to this operation. Maybe logged out?',
-        //   },
-        // });
-        // }
       }
 
       if (networkError) {
@@ -121,8 +80,22 @@ const client = new ApolloClient({
         // });
       }
     }),
-    authLink,
-    httpLink
+    // auth link
+    setContext((_, { headers }) => {
+      // get the authentication token from local storage if it exists
+      const token: string | null = get(store.getState(), `currentUser.token`)
+      // return the headers to the context so httpLink can read them
+      return {
+        headers: {
+          ...headers,
+          authorization: token ? `Bearer ${token}` : ``,
+        }
+      }
+    }),
+    // http link
+    createHttpLink({
+      uri: API_URL,
+    })
   ]),
   cache: new InMemoryCache(),
 });
@@ -160,7 +133,9 @@ export default function App() {
                   <BrowsePodcastsScreen />
                 </Route>
                 <Route path={Routes.pages.search}>
-                  <SearchScreen />
+                  <Main>
+                    <SearchScreen />
+                  </Main>
                 </Route>
                 <Route path={Routes.pages.about}>
                   <AboutScreen />

@@ -56,7 +56,7 @@ function LoginScreen() {
   const styles = useStyles();
   const location = useLocation();
   const history = useHistory();
-  const { register, errors, handleSubmit, formState } = useForm<Credentials>({
+  const { register, errors, handleSubmit } = useForm<Credentials>({
     mode: 'onBlur'
   });
   const [loginError, setLoginError] = useState("")
@@ -81,7 +81,12 @@ function LoginScreen() {
         history.push(Routes.pages.home);
       }
     } catch (error) {
-      console.log(error);
+      let errorMessages = '';
+      error.graphQLErrors.foreach(({ message }: { message: string }) => {
+        errorMessages += `${message}`;
+      })
+
+      setLoginError(errorMessages);
     };
   };
 
@@ -138,15 +143,15 @@ function LoginScreen() {
 
 
       <form onSubmit={handleSubmit(login)} noValidate>
-        {loginError && <h3>{loginError}</h3>}
+        {loginError && <h3 dangerouslySetInnerHTML={{ __html: loginError }} />}
         <Grid>
           <Grid item>
             <TextField
               inputRef={register({
-                required: "The email is required",
+                required: "The email is required.",
                 pattern: {
                   value: emailRegex,
-                  message: "This email is not valid"
+                  message: "This email is not valid."
                 }
               })}
               name="email"
@@ -161,7 +166,11 @@ function LoginScreen() {
           <Grid item>
             <TextField
               inputRef={register({
-                required: "Your password Required"
+                required: "Your password Required.",
+                minLength: {
+                  value: 6,
+                  message: "The password must be at least 6 characters."
+                }
               })}
               name="password"
               id="password"

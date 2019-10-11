@@ -1,7 +1,7 @@
-import { connect } from "react-redux";
 import React from "react";
+import { connect } from "react-redux";
 import { darken, makeStyles } from "@material-ui/core/styles";
-import { useHistory, Link, useRouteMatch, useLocation } from "react-router-dom";
+import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import { get } from 'lodash';
 
 import Routes from "../routes";

@@ -31,7 +31,7 @@ const Routes = {
 	},
 	user: {
 		detailPage: (user: UserData) => `/user/${user.id}`,
-		users: `/users`,
+		account: `/account`,
 		tracks: `/library/tracks`,
 		albums: `/library/albums`,
 		artists: `/library/artists`,

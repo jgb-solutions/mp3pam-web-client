@@ -4,7 +4,6 @@ import { Grid } from '@material-ui/core';
 
 import Content from '../Content';
 import { useStyles } from './Main';
-import colors from '../../utils/colors';
 
 type Props = { children: ReactNode };
 

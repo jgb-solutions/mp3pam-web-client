@@ -10,7 +10,7 @@ import Header from '../Header';
 
 import colors from "../../utils/colors";
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles({
   container: {
     backgroundColor: colors.black,
     maxWidth: 1200,
@@ -36,7 +36,7 @@ export const useStyles = makeStyles(theme => ({
     paddingRight: 24,
     backgroundColor: colors.black
   }
-}));
+});
 
 export default function Main({ children }: { children: ReactNode }) {
   const styles = useStyles();

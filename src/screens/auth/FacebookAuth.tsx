@@ -3,13 +3,11 @@ import { useLocation, useHistory, Redirect } from 'react-router';
 import gql from 'graphql-tag';
 import queryString from 'query-string';
 import { useApolloClient } from '@apollo/react-hooks';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Routes from '../../routes';
 import Spinner from '../../components/Spinner';
 import { LOG_IN } from '../../store/actions/types';
-import CheckAuth from '../../components/CheckAuth';
-import AppStateInterface from '../../interfaces/AppStateInterface';
 
 const FACEOOK_LOGIN = gql`
   mutation facebookLogin($code: String!) {
@@ -39,6 +37,7 @@ export default function FacebookAuth() {
     if (code) {
       login(String(code));
     }
+    // eslint-disable-next-line
   }, []);
 
   const login = async (code: string) => {
@@ -63,7 +62,5 @@ export default function FacebookAuth() {
       <h1>Logging you in with Facebook</h1>
       <Spinner />
     </>
-  ) : (
-      <Redirect to={Routes.pages.login} />
-    );
+  ) : <Redirect to={Routes.pages.login} />
 };

@@ -123,7 +123,7 @@ export default function Upload() {
 		<CheckAuth>
 			<h1>< CloudUploadIcon /> Upload Page {completed}%</h1>
 
-			<p>
+			<div>
 				<UploadButton accept="image/*" onChange={handleImageUpload}>
 					<PhotoCameraIcon style={{ fontSize: 36 }} />
 				</UploadButton>
@@ -135,7 +135,7 @@ export default function Upload() {
 						value={completed}
 					/>
 				)}
-			</p>
+			</div>
 
 			<p>
 				<UploadButton accept=".mp3, audio/mp3" onChange={handleAudioUpload}>

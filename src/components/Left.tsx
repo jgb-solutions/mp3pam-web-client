@@ -27,10 +27,6 @@ const useStyles = makeStyles({
 	mainMenu: {
 		marginBottom: 30
 	},
-	yourLibraryLink: {
-		textDecoration: 'none',
-		color: colors.white
-	}
 });
 
 const mainMenu = [
@@ -39,11 +35,10 @@ const mainMenu = [
 ];
 
 const libraryMenu = [
-	{ name: "Tracks", to: Routes.user.tracks },
-	{ name: "Albums", to: Routes.user.albums },
-	{ name: "Artists", to: Routes.user.artists },
-	{ name: "Podcasts", to: Routes.user.podcasts },
-	{ name: "Queue", to: Routes.user.queue },
+	{ name: "Tracks", to: Routes.browse.tracks },
+	{ name: "Albums", to: Routes.browse.albums },
+	{ name: "Artists", to: Routes.browse.artists },
+	{ name: "Podcasts", to: Routes.browse.podcasts },
 ];
 
 type Props = {
@@ -74,14 +69,6 @@ const Left = (props: Props) => {
 				))}
 			</div>
 			<div>
-				<p>
-					<Link
-						to={Routes.pages.library}
-						className={styles.yourLibraryLink}
-						onClick={closeDrawer}>
-						Your Library
-					</Link>
-				</p>
 				{libraryMenu.map((menuItem, index) => (
 					<Link
 						key={index}
