@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 		fontSize: 15
 	},
 	mainMenu: {
-		marginBottom: 30
+		marginBottom: 15
 	},
 });
 

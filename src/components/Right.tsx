@@ -23,14 +23,6 @@ const useStyles = makeStyles(theme => ({
   menuList: {
     height: '100%',
   },
-  avatar: {
-    cursor: 'pointer',
-    width: 100,
-    height: 100,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginBottom: 15,
-  },
   mainMenu: {
     marginBottom: 30
   },
@@ -61,7 +53,7 @@ const useStyles = makeStyles(theme => ({
 
 const mainMenu = [
   { name: "Account", icon: <AccountCircle />, to: Routes.user.account },
-  { name: "Upload", icon: <CloudUpload />, to: Routes.pages.browse }
+  { name: "Upload", icon: <CloudUpload />, to: Routes.pages.upload }
 ];
 
 const libraryMenu = [
@@ -96,7 +88,6 @@ const Right = (props: Props) => {
   return userData ? (
     <div className={styles.container}>
       <div className={styles.menuList}>
-        <Avatar onClick={closeDrawer} alt={userData.name} src={userData.avatar} className={styles.avatar} />
         <div className={styles.mainMenu}>
           {mainMenu.map((menuItem, index) => (
             <Link
@@ -129,7 +120,7 @@ const Right = (props: Props) => {
           ))}
         </div>
       </div>
-      <Button className={styles.logout} onClick={logout}>Log out</Button>
+      <Button fullWidth className={styles.logout} onClick={logout}>Log out</Button>
     </div>
   ) : null;
 };

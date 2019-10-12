@@ -16,7 +16,6 @@ import ListScreen from './screens/ListScreen';
 import HomeScreen from './screens/HomeScreen';
 import UsersScreen from './screens/UsersScreen';
 import QueueScreen from './screens/QueueScreen';
-import LoginScreen from './screens/auth/LoginScreen';
 import AboutScreen from './screens/AboutScreen';
 import UploadScreen from './screens/UploadScreen';
 import SearchScreen from './screens/SearchScreen';
@@ -37,6 +36,10 @@ import BrowsePodcastsScreen from './screens/BrowsePodcastsScreen';
 
 // Auth screens
 import FacebookAuth from './screens/auth/FacebookAuth';
+
+// Account Screens
+import AccountScreen from './screens/AccountScreen';
+import LoginScreen from './screens/auth/LoginScreen';
 
 //  Routers
 import Routes from './routes';
@@ -124,13 +127,19 @@ export default function App() {
                   </Main>
                 </Route>
                 <Route path={Routes.browse.albums}>
-                  <BrowseAlbumsScreen />
+                  <Main>
+                    <BrowseAlbumsScreen />
+                  </Main>
                 </Route>
                 <Route path={Routes.browse.artists}>
-                  <BrowseArtistsScreen />
+                  <Main>
+                    <BrowseArtistsScreen />
+                  </Main>
                 </Route>
                 <Route path={Routes.browse.podcasts}>
-                  <BrowsePodcastsScreen />
+                  <Main>
+                    <BrowsePodcastsScreen />
+                  </Main>
                 </Route>
                 <Route path={Routes.pages.search}>
                   <Main>
@@ -138,7 +147,9 @@ export default function App() {
                   </Main>
                 </Route>
                 <Route path={Routes.pages.about}>
-                  <AboutScreen />
+                  <Main>
+                    <AboutScreen />
+                  </Main>
                 </Route>
                 <Route path={Routes.album.show}>
                   <Main>
@@ -174,16 +185,24 @@ export default function App() {
                   </Plain>
                 </Route>
                 <Route path={Routes.pages.library} exact>
-                  <LibraryScreen />
+                  <Main>
+                    <LibraryScreen />
+                  </Main>
                 </Route>
                 <Route path={Routes.user.tracks}>
-                  <LikedTracksScreen />
+                  <Main>
+                    <LikedTracksScreen />
+                  </Main>
                 </Route>
                 <Route path={Routes.user.albums}>
-                  <LikedAlbumsScreen />
+                  <Main>
+                    <LikedAlbumsScreen />
+                  </Main>
                 </Route>
                 <Route path={Routes.user.artists}>
-                  <LikedArtistsScreen />
+                  <Main>
+                    <LikedArtistsScreen />
+                  </Main>
                 </Route>
                 <Route path={Routes.user.podcasts}>
                   <Main>
@@ -198,6 +217,11 @@ export default function App() {
                 <Route path={Routes.pages.upload}>
                   <Main>
                     <UploadScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.user.account}>
+                  <Main>
+                    <AccountScreen />
                   </Main>
                 </Route>
                 <Route>
