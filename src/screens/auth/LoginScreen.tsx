@@ -82,7 +82,7 @@ function LoginScreen() {
       }
     } catch (error) {
       let errorMessages = '';
-      error.graphQLErrors.foreach(({ message }: { message: string }) => {
+      error.graphQLErrors.forEach(({ message }: { message: string }) => {
         errorMessages += `${message}`;
       })
 
