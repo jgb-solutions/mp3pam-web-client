@@ -32,33 +32,46 @@ const Routes = {
 	user: {
 		detailPage: (user: UserData) => `/user/${user.id}`,
 		account: `/account`,
-		tracks: `/library/tracks`,
-		albums: `/library/albums`,
-		artists: `/library/artists`,
-		podcasts: `/library/podcats`,
-		shows: `/library/shows`,
-		queue: `/library/queue`,
-
+		library: {
+			tracks: `/your-tracks`,
+			albums: `/your-albums`,
+			artists: `/your-artists`,
+			podcasts: `/your-podcasts`,
+			playlists: `/your-playlists`,
+			shows: `/your-shows`,
+			queue: `/your-queue`,
+		},
+		manage: {
+			home: `/manage`,
+			tracks: `/manage-tracks`,
+			albums: `/manage-albums`,
+			artists: `/manage-artists`,
+			podcasts: `/manage-podcasts`,
+			playlists: `/manage-playlists`,
+			shows: `/manage-shows`,
+		},
+		create: {
+			track: `/add-track`,
+			album: `/create-album`,
+			artist: `/add-artist`,
+			podcast: `/add-podcast`,
+			playlist: `/create-playlist`,
+			shows: `/add-show`,
+		},
 	},
 	browse: {
 		detailPage: (user: UserData) => `/user/${user.id}`,
 		users: `/users`,
-		tracks: `/browse/tracks`,
-		albums: `/browse/albums`,
-		artists: `/browse/artists`,
-		podcasts: `/browse/podcasts`,
-		shows: `/browse/shows`,
+		tracks: `/browse-tracks`,
+		albums: `/browse-albums`,
+		artists: `/browse-artists`,
+		podcasts: `/browse-podcasts`,
+		playlists: `/browse-playlists`,
+		shows: `/browse-shows`,
 	},
 	auth: {
-		facebook: `/login/facebook`
+		facebook: `/login-facebook`
 	}
-	// liked: {
-	// 	likedTracks: `liked/tracks`,
-	// 	likedAlbums: `/liked/albums`,
-	// 	likedArtists: `/liked/artists`,
-	// 	likedPodcasts: `/liked/podcats`,
-	// 	likedShows: `/liked/shows`,
-	// },
 };
 
 export default Routes;

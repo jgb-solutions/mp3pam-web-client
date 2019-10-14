@@ -23,7 +23,7 @@ export const UPLOAD_URL = gql`
   }
 `;
 
-export default function Upload() {
+export default function AddTrackScreen() {
 	const client = useApolloClient();
 	const [completed, setCompleted] = useState(0);
 	const [isUploaded, setIsUploaded] = useState(false);

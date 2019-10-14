@@ -17,7 +17,7 @@ import HomeScreen from './screens/HomeScreen';
 import UsersScreen from './screens/UsersScreen';
 import QueueScreen from './screens/QueueScreen';
 import AboutScreen from './screens/AboutScreen';
-import UploadScreen from './screens/UploadScreen';
+import AddTrackScreen from './screens/AddTrackScreen';
 import SearchScreen from './screens/SearchScreen';
 import FourOFourScreen from './screens/FourOFourScreen';
 import Main from './components/layouts/Main';
@@ -33,6 +33,7 @@ import BrowseTracksScreen from './screens/BrowseTracksScreen';
 import BrowseAlbumsScreen from './screens/BrowseAlbumsScreen';
 import BrowseArtistsScreen from './screens/BrowseArtistsScreen';
 import BrowsePodcastsScreen from './screens/BrowsePodcastsScreen';
+import BrowsePlaylistsScreen from './screens/BrowsePlaylistsScreen';
 
 // Auth screens
 import FacebookAuth from './screens/auth/FacebookAuth';
@@ -86,7 +87,7 @@ const client = new ApolloClient({
     // auth link
     setContext((_, { headers }) => {
       // get the authentication token from local storage if it exists
-      const token: string | null = get(store.getState(), `currentUser.token`)
+      const token: string | null = get(store.getState(), `currentUser.library.token`)
       // return the headers to the context so httpLink can read them
       return {
         headers: {
@@ -141,6 +142,11 @@ export default function App() {
                     <BrowsePodcastsScreen />
                   </Main>
                 </Route>
+                <Route path={Routes.browse.playlists}>
+                  <Main>
+                    <BrowsePlaylistsScreen />
+                  </Main>
+                </Route>
                 <Route path={Routes.pages.search}>
                   <Main>
                     <SearchScreen />
@@ -174,7 +180,7 @@ export default function App() {
                 <Route path={Routes.pages.users}>
                   <UsersScreen />
                 </Route>
-                <Route path={Routes.user.queue}>
+                <Route path={Routes.user.library.queue}>
                   <Main>
                     <QueueScreen />
                   </Main>
@@ -189,22 +195,22 @@ export default function App() {
                     <LibraryScreen />
                   </Main>
                 </Route>
-                <Route path={Routes.user.tracks}>
+                <Route path={Routes.user.library.tracks}>
                   <Main>
                     <LikedTracksScreen />
                   </Main>
                 </Route>
-                <Route path={Routes.user.albums}>
+                <Route path={Routes.user.library.albums}>
                   <Main>
                     <LikedAlbumsScreen />
                   </Main>
                 </Route>
-                <Route path={Routes.user.artists}>
+                <Route path={Routes.user.library.artists}>
                   <Main>
                     <LikedArtistsScreen />
                   </Main>
                 </Route>
-                <Route path={Routes.user.podcasts}>
+                <Route path={Routes.user.library.podcasts}>
                   <Main>
                     <LikedPodcastsScreen />
                   </Main>
@@ -214,9 +220,9 @@ export default function App() {
                     <FacebookAuth />
                   </Plain>
                 </Route>
-                <Route path={Routes.pages.upload}>
+                <Route path={Routes.user.create.track}>
                   <Main>
-                    <UploadScreen />
+                    <AddTrackScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.user.account}>

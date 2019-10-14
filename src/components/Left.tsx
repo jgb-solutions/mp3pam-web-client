@@ -2,43 +2,29 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Home, ViewQuilt } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
+import AlbumIcon from '@material-ui/icons/Album';
+import MicIcon from '@material-ui/icons/Mic';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
+import InfoIcon from '@material-ui/icons/Info';
 
 import Routes from "../routes";
 import colors from "../utils/colors";
 import Logo from "./Logo";
-
-const useStyles = makeStyles({
-	link: {
-		color: colors.white,
-		display: "flex",
-		textDecoration: "none",
-		fontWeight: "bold"
-	},
-	libraryLink: {
-		marginBottom: 15,
-	},
-	linkIcon: {
-		fontSize: 15,
-		marginRight: 15
-	},
-	linkText: {
-		fontSize: 15
-	},
-	mainMenu: {
-		marginBottom: 15
-	},
-});
+import { menuStyles } from "./menuStyles";
 
 const mainMenu = [
-	{ name: "Home", icon: <Home />, to: Routes.pages.home },
-	{ name: "Browse", icon: <ViewQuilt />, to: Routes.pages.browse }
+	{ name: "Home", to: Routes.pages.home, icon: <Home /> },
+	{ name: "About", to: Routes.pages.about, icon: <InfoIcon />, }
 ];
 
-const libraryMenu = [
-	{ name: "Tracks", to: Routes.browse.tracks },
-	{ name: "Albums", to: Routes.browse.albums },
-	{ name: "Artists", to: Routes.browse.artists },
-	{ name: "Podcasts", to: Routes.browse.podcasts },
+const browsingMenu = [
+	{ name: "Tracks", to: Routes.browse.tracks, icon: <MusicNoteIcon /> },
+	{ name: "Albums", to: Routes.browse.albums, icon: <AlbumIcon /> },
+	{ name: "Artists", to: Routes.browse.artists, icon: <PersonPinCircleIcon /> },
+	{ name: "PlayLists", to: Routes.browse.playlists, icon: <PlaylistAddIcon /> },
+	{ name: "Podcasts", to: Routes.browse.podcasts, icon: <MicIcon /> },
 ];
 
 type Props = {
@@ -46,7 +32,7 @@ type Props = {
 };
 
 const Left = (props: Props) => {
-	const styles = useStyles();
+	const styles = menuStyles();
 	const closeDrawer = () => {
 		if (props.closeDrawerLeft) {
 			props.closeDrawerLeft(false)
@@ -61,7 +47,7 @@ const Left = (props: Props) => {
 					<Link
 						key={index}
 						to={menuItem.to}
-						className={styles.link}
+						className={`${styles.link} ${styles.mainMenuLink}`}
 						onClick={closeDrawer}>
 						<span className={styles.linkIcon}>{menuItem.icon}</span>
 						<span className={styles.linkText}>{menuItem.name}</span>
@@ -69,12 +55,21 @@ const Left = (props: Props) => {
 				))}
 			</div>
 			<div>
-				{libraryMenu.map((menuItem, index) => (
+				<p>
+					<Link
+						to={Routes.pages.browse}
+						className={styles.yourLibraryLink}
+						onClick={closeDrawer}>
+						Browse
+					</Link>
+				</p>
+				{browsingMenu.map((menuItem, index) => (
 					<Link
 						key={index}
 						to={menuItem.to}
 						className={`${styles.link} ${styles.libraryLink}`}
 						onClick={closeDrawer}>
+						<span className={styles.linkIcon}>{menuItem.icon}</span>
 						<span className={styles.linkText}>{menuItem.name}</span>
 					</Link>
 				))}

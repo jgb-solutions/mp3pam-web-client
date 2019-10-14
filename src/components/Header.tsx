@@ -8,6 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import { Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 import Left from './Left';
 import colors from '../utils/colors';
@@ -43,9 +44,6 @@ const useStyles = makeStyles(theme => ({
       display: 'block'
     }
   },
-  accountButton: {
-
-  },
   drawer: {
     backgroundColor: colors.black,
     height: '100vh',
@@ -59,14 +57,22 @@ const useStyles = makeStyles(theme => ({
       display: 'none'
     }
   },
-  moreIcon: {
-    paddingRight: 0,
+  accountButton: {
+    padding: 0,
+  },
+  accountIcon: {
+    fontSize: 35,
   },
   loginButton: {
     color: colors.white
   },
+  avatarWrapper: {
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+  },
   avatar: {
-    cursor: 'pointer'
+    marginRight: 5,
   }
 }));
 
@@ -92,27 +98,17 @@ const Header = (props: Props) => {
           </IconButton>
           <Search />
           <div className={styles.grow} />
-          <div className={styles.accountButton}>
+          <div>
             {
               currentUser.loggedIn && currentUser.data ? (
-                <Avatar onClick={() => setDrawerRightOpen(true)} alt={currentUser.data.name} src={currentUser.data.avatar} className={styles.avatar} />
-                // <IconButton
-                //   aria-label="Account"
-                //   onClick={() => setDrawerRightOpen(true)}
-                //   color="inherit"
-                //   className={styles.moreIcon}>
-                //   <AccountCircle />
-                // </IconButton>
-
+                <div className={styles.avatarWrapper} onClick={() => setDrawerRightOpen(true)}>
+                  <Avatar alt={currentUser.data.name} src={currentUser.data.avatar} className={styles.avatar} />
+                  <KeyboardArrowDownIcon />
+                </div>
               ) : (
-                  <Link to={Routes.pages.login}
-                    className={styles.loginButton}
-                  >
-                    <IconButton
-                      aria-label="Login"
-                      color="inherit"
-                      className={styles.moreIcon}>
-                      <AccountCircle />
+                  <Link to={Routes.pages.login} className={styles.loginButton}>
+                    <IconButton aria-label="Login" color="inherit" className={styles.accountButton}>
+                      <AccountCircle className={styles.accountIcon} />
                     </IconButton>
                   </Link>
                 )

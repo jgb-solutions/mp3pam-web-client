@@ -58,11 +58,11 @@ function Player(props: Props) {
 	useEffect(() => {
 		audio.volume = state.volume / 100;
 		audio.loop = state.repeat === ONE;
-		audio.onended = onEnded;
+		// audio.onended = onEnded;
 		audio.ontimeupdate = onTimeUpdate;
 		audio.onpause = onPause;
 		audio.onplay = onPlay;
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, []);
 
 	// set the last state of the audio player
@@ -71,7 +71,7 @@ function Player(props: Props) {
 			prepareAudio();
 			audio.currentTime = state.currentTime;
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, []);
 
 	const onPlay = () => {
@@ -285,7 +285,7 @@ function Player(props: Props) {
 	};
 
 	const handleQueue = () => {
-		history.push(Routes.user.queue);
+		history.push(Routes.user.library.queue);
 	};
 
 	const toggleRepeat = () => {
@@ -352,7 +352,7 @@ function Player(props: Props) {
 				action: RESUME
 			}));
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [storePlayerData.list, storePlayerData.action, storePlayerData.updateHack]);
 
 	// Play, Pause and resume track
@@ -380,13 +380,13 @@ function Player(props: Props) {
 				}));
 				break;
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [storePlayerData.action, storePlayerData.updateHack]);
 
 	// update the store state when some local states change
 	useEffect(() => {
 		syncState({ volume: state.volume });
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [state.volume]);
 
 	// play current track after it has been updated
@@ -395,41 +395,46 @@ function Player(props: Props) {
 			syncState({ currentTrack: state.currentTrack });
 			play();
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [state.currentTrack]);
 
 	useEffect(() => {
 		syncState({ isPlaying: state.isPlaying });
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [state.isPlaying]);
 
 	useEffect(() => {
 		const { repeat } = state;
 		audio.loop = repeat === ONE;
 		syncState({ repeat });
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [state.repeat]);
 
 	useEffect(() => {
 		debounce(() => {
 			syncState({ elapsed: state.elapsed, currentTime: state.currentTime });
 		}, 1000, syncStateTimeoutId);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+
+		if (state.elapsed === state.duration) {
+			onEnded();
+		}
+
+		// eslint-disable-next-line
 	}, [state.elapsed]);
 
 	useEffect(() => {
 		syncState({ duration: state.duration });
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [state.duration]);
 
 	useEffect(() => {
 		syncState({ repeat: state.repeat });
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [state.repeat]);
 
 	useEffect(() => {
 		syncState({ isShuffled: state.isShuffled });
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line
 	}, [state.isShuffled]);
 
 	const showPlayer = !!state.currentTrack;

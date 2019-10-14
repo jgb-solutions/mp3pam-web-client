@@ -3,65 +3,42 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from 'react-redux';
 import { CloudUpload, AccountCircle } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
+import AlbumIcon from '@material-ui/icons/Album';
+import MicIcon from '@material-ui/icons/Mic';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
+import QueueMusicIcon from '@material-ui/icons/QueueMusic';
+
 
 import AppStateInterface from '../interfaces/AppStateInterface';
 import colors from '../utils/colors';
 import Button from './Button';
 import { LOG_OUT } from '../store/actions/types';
 import { get } from 'lodash-es';
-import { Avatar } from '@material-ui/core';
 import Routes from '../routes';
-
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    color: colors.white,
-    height: '100%',
-    paddingBottom: 10,
-  },
-  menuList: {
-    height: '100%',
-  },
-  mainMenu: {
-    marginBottom: 30
-  },
-  yourLibraryLink: {
-    textDecoration: 'none',
-    color: colors.white
-  },
-  link: {
-    color: colors.white,
-    display: "flex",
-    textDecoration: "none",
-    fontWeight: "bold"
-  },
-  linkIcon: {
-    fontSize: 15,
-    marginRight: 15
-  },
-  linkText: {
-    fontSize: 15
-  },
-  libraryLink: {
-    marginBottom: 15,
-  },
-  logout: {
-    alignSelf: 'flex-end',
-  }
-}));
+import { menuStyles } from './menuStyles';
 
 const mainMenu = [
   { name: "Account", icon: <AccountCircle />, to: Routes.user.account },
-  { name: "Upload", icon: <CloudUpload />, to: Routes.pages.upload }
+  // { name: "Upload", icon: <CloudUpload />, to: Routes.pages.upload }
 ];
 
 const libraryMenu = [
-  { name: "Tracks", to: Routes.user.tracks },
-  { name: "Albums", to: Routes.user.albums },
-  { name: "Artists", to: Routes.user.artists },
-  { name: "Podcasts", to: Routes.user.podcasts },
-  { name: "Queue", to: Routes.user.queue },
+  { name: "Add Track", to: Routes.user.create.track, icon: <MusicNoteIcon /> },
+  { name: "Create Album", to: Routes.user.create.album, icon: <AlbumIcon /> },
+  { name: "Add Artist", to: Routes.user.create.artist, icon: <PersonPinCircleIcon /> },
+  { name: "Create PlayList", to: Routes.user.create.playlist, icon: <PlaylistAddIcon /> },
+  { name: "Add Podcast", to: Routes.user.create.podcast, icon: <MicIcon /> },
+];
+
+const favoriteMenu = [
+  { name: "Tracks", to: Routes.user.library.tracks, icon: <MusicNoteIcon /> },
+  { name: "Albums", to: Routes.user.library.albums, icon: <AlbumIcon /> },
+  { name: "Artists", to: Routes.user.library.artists, icon: <PersonPinCircleIcon /> },
+  { name: "PlayLists", to: Routes.user.library.playlists, icon: <PlaylistAddIcon /> },
+  { name: "Podcasts", to: Routes.user.library.podcasts, icon: <MicIcon /> },
+  { name: "Queue", to: Routes.user.library.queue, icon: <QueueMusicIcon /> },
 ];
 
 type Props = {
@@ -69,7 +46,7 @@ type Props = {
 };
 
 const Right = (props: Props) => {
-  const styles = useStyles();
+  const styles = menuStyles();
   const dispatch = useDispatch()
   const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
   const userData = get(currentUser, 'data');
@@ -93,7 +70,7 @@ const Right = (props: Props) => {
             <Link
               key={index}
               to={menuItem.to}
-              className={styles.link}
+              className={`${styles.link} ${styles.mainMenuLink}`}
               onClick={closeDrawer}>
               <span className={styles.linkIcon}>{menuItem.icon}</span>
               <span className={styles.linkText}>{menuItem.name}</span>
@@ -103,7 +80,7 @@ const Right = (props: Props) => {
         <div>
           <p>
             <Link
-              to={Routes.pages.library}
+              to={Routes.user.manage.home}
               className={styles.yourLibraryLink}
               onClick={closeDrawer}>
               Your Library
@@ -115,12 +92,38 @@ const Right = (props: Props) => {
               to={menuItem.to}
               className={`${styles.link} ${styles.libraryLink}`}
               onClick={closeDrawer}>
+              <span className={styles.linkIcon}>{menuItem.icon}</span>
+              <span className={styles.linkText}>{menuItem.name}</span>
+            </Link>
+          ))}
+        </div>
+
+        <br />
+
+        <div>
+          <p>
+            <Link
+              to={Routes.pages.library}
+              className={styles.yourLibraryLink}
+              onClick={closeDrawer}>
+              What You Like
+					</Link>
+          </p>
+          {favoriteMenu.map((menuItem, index) => (
+            <Link
+              key={index}
+              to={menuItem.to}
+              className={`${styles.link} ${styles.libraryLink}`}
+              onClick={closeDrawer}>
+              <span className={styles.linkIcon}>{menuItem.icon}</span>
               <span className={styles.linkText}>{menuItem.name}</span>
             </Link>
           ))}
         </div>
       </div>
-      <Button fullWidth className={styles.logout} onClick={logout}>Log out</Button>
+      <div className={styles.logoutContainer}>
+        <Button fullWidth onClick={logout}>Log out</Button>
+      </div>
     </div>
   ) : null;
 };

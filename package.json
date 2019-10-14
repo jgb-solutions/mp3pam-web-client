@@ -31,6 +31,7 @@
     "react-dom": "^16.9.0",
     "react-helmet": "^5.2.1",
     "react-hook-form": "^3.23.18",
+    "react-lazyload": "^2.6.2",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.1.1",
     "react-scripts": "3.2.0",
