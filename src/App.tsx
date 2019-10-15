@@ -87,7 +87,7 @@ const client = new ApolloClient({
     // auth link
     setContext((_, { headers }) => {
       // get the authentication token from local storage if it exists
-      const token: string | null = get(store.getState(), `currentUser.library.token`)
+      const token: string | null = get(store.getState(), `currentUser.token`)
       // return the headers to the context so httpLink can read them
       return {
         headers: {
