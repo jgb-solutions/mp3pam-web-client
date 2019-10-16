@@ -31,12 +31,12 @@ export default function Root({ children }: { children: ReactNode }) {
   const styles = useStyles();
 
   return (
-    <>
+    <div className="transition-container">
       <CssBaseline />
-      <Grid container className={`${styles.container} transition-container`}>
+      <Grid container className={`${styles.container} react-transition scale-in`}>
         {children}
       </Grid>
       <Player />
-    </>
+    </div>
   );
 };

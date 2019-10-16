@@ -35,8 +35,14 @@ import BrowseArtistsScreen from './screens/browse/BrowseArtistsScreen';
 import BrowsePodcastsScreen from './screens/browse/BrowsePodcastsScreen';
 import BrowsePlaylistsScreen from './screens/browse/BrowsePlaylistsScreen';
 
+
 // Manage Screens
+import ManageScreen from './screens/manage/ManageScreen';
 import AddPodcastScreen from './screens/manage/AddPodcastScreen';
+import CreateAlbumScreen from './screens/manage/CreateAlbumScreen';
+import AddArtistScreen from './screens/manage/AddArtistScreen';
+import CreatePlaylistScreen from './screens/manage/CreatePlaylistScreen';
+import YourPlaylistsScreen from './screens/library/YourPlaylistsScreen';
 // Auth screens
 import FacebookAuth from './screens/auth/FacebookAuth';
 
@@ -57,10 +63,6 @@ import './styles/react-transitions.css';
 import { LOG_OUT } from './store/actions/types';
 import Plain from './components/layouts/Plain';
 import Root from './components/layouts/Root';
-import CreateAlbumScreen from './screens/manage/CreateAlbumScreen';
-import AddArtistScreen from './screens/manage/AddArtistScreen';
-import CreatePlaylistScreen from './screens/manage/CreatePlaylistScreen';
-import YourPlaylistsScreen from './screens/library/YourPlaylistsScreen';
 
 const { store, persistor } = persistedStore();
 
@@ -231,6 +233,11 @@ export default function App() {
                   <Plain>
                     <FacebookAuth />
                   </Plain>
+                </Route>
+                <Route path={Routes.user.manage.home}>
+                  <Main>
+                    <ManageScreen />
+                  </Main>
                 </Route>
                 <Route path={Routes.user.create.track}>
                   <Main>

@@ -60,70 +60,74 @@ const Right = (props: Props) => {
     closeDrawer();
   }
 
-  return userData ? (
-    <div className={styles.container}>
-      <div className={styles.menuList}>
-        <div className={styles.mainMenu}>
-          {mainMenu.map((menuItem, index) => (
-            <Link
-              key={index}
-              to={menuItem.to}
-              className={`${styles.link} ${styles.mainMenuLink}`}
-              onClick={closeDrawer}>
-              <span className={styles.linkIcon}>{menuItem.icon}</span>
-              <span className={styles.linkText}>{menuItem.name}</span>
-            </Link>
-          ))}
-        </div>
-        <div>
-          <p>
-            <Link
-              to={Routes.user.manage.home}
-              className={styles.yourLibraryLink}
-              onClick={closeDrawer}>
-              Your Library
+  return (
+    <>
+      {userData ? (
+        <div className={styles.container}>
+          <div className={styles.menuList}>
+            <div className={styles.mainMenu}>
+              {mainMenu.map((menuItem, index) => (
+                <Link
+                  key={index}
+                  to={menuItem.to}
+                  className={`${styles.link} ${styles.mainMenuLink}`}
+                  onClick={closeDrawer}>
+                  <span className={styles.linkIcon}>{menuItem.icon}</span>
+                  <span className={styles.linkText}>{menuItem.name}</span>
+                </Link>
+              ))}
+            </div>
+            <div>
+              <p>
+                <Link
+                  to={Routes.user.manage.home}
+                  className={styles.yourLibraryLink}
+                  onClick={closeDrawer}>
+                  Your Library
 					</Link>
-          </p>
-          {libraryMenu.map((menuItem, index) => (
-            <Link
-              key={index}
-              to={menuItem.to}
-              className={`${styles.link} ${styles.libraryLink}`}
-              onClick={closeDrawer}>
-              <span className={styles.linkIcon}>{menuItem.icon}</span>
-              <span className={styles.linkText}>{menuItem.name}</span>
-            </Link>
-          ))}
-        </div>
+              </p>
+              {libraryMenu.map((menuItem, index) => (
+                <Link
+                  key={index}
+                  to={menuItem.to}
+                  className={`${styles.link} ${styles.libraryLink}`}
+                  onClick={closeDrawer}>
+                  <span className={styles.linkIcon}>{menuItem.icon}</span>
+                  <span className={styles.linkText}>{menuItem.name}</span>
+                </Link>
+              ))}
+            </div>
 
-        <br />
+            <br />
 
-        <div>
-          <p>
-            <Link
-              to={Routes.pages.library}
-              className={styles.yourLibraryLink}
-              onClick={closeDrawer}>
-              What You Like
+            <div>
+              <p>
+                <Link
+                  to={Routes.pages.library}
+                  className={styles.yourLibraryLink}
+                  onClick={closeDrawer}>
+                  What You Like
 					</Link>
-          </p>
-          {favoriteMenu.map((menuItem, index) => (
-            <Link
-              key={index}
-              to={menuItem.to}
-              className={`${styles.link} ${styles.libraryLink}`}
-              onClick={closeDrawer}>
-              <span className={styles.linkIcon}>{menuItem.icon}</span>
-              <span className={styles.linkText}>{menuItem.name}</span>
-            </Link>
-          ))}
+              </p>
+              {favoriteMenu.map((menuItem, index) => (
+                <Link
+                  key={index}
+                  to={menuItem.to}
+                  className={`${styles.link} ${styles.libraryLink}`}
+                  onClick={closeDrawer}>
+                  <span className={styles.linkIcon}>{menuItem.icon}</span>
+                  <span className={styles.linkText}>{menuItem.name}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div className={styles.logoutContainer}>
+            <Button fullWidth onClick={logout}>Log out</Button>
+          </div>
         </div>
-      </div>
-      <div className={styles.logoutContainer}>
-        <Button fullWidth onClick={logout}>Log out</Button>
-      </div>
-    </div>
-  ) : null;
+      ) : null}
+    </>
+  );
 };
 
 export default Right;
