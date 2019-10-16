@@ -15,31 +15,33 @@ import { get } from 'lodash-es';
 import ListScreen from './screens/ListScreen';
 import HomeScreen from './screens/HomeScreen';
 import UsersScreen from './screens/UsersScreen';
-import QueueScreen from './screens/QueueScreen';
+import QueueScreen from './screens/library/QueueScreen';
 import AboutScreen from './screens/AboutScreen';
-import AddTrackScreen from './screens/AddTrackScreen';
+import AddTrackScreen from './screens/manage/AddTrackScreen';
 import SearchScreen from './screens/SearchScreen';
 import FourOFourScreen from './screens/FourOFourScreen';
 import Main from './components/layouts/Main';
 // Library/Favorites Screens
-import LibraryScreen from './screens/LibraryScreen';
-import LikedTracksScreen from './screens/LikedTracksScreen';
-import LikedAlbumsScreen from './screens/LikedAlbumsScreen';
-import LikedArtistsScreen from './screens/LikedArtistsScreen';
-import LikedPodcastsScreen from './screens/LikedPodcastsScreen';
+import LibraryScreen from './screens/library/LibraryScreen';
+import YourTracksScreen from './screens/library/YourTracksScreen';
+import YourAlbumsScreen from './screens/library/YourAlbumsScreen';
+import YourArtistsScreen from './screens/library/YourArtistsScreen';
+import YourPodcastsScreen from './screens/library/YourPodcastsScreen';
 // Browse screens
-import BrowseScreen from './screens/BrowseScreen';
-import BrowseTracksScreen from './screens/BrowseTracksScreen';
-import BrowseAlbumsScreen from './screens/BrowseAlbumsScreen';
-import BrowseArtistsScreen from './screens/BrowseArtistsScreen';
-import BrowsePodcastsScreen from './screens/BrowsePodcastsScreen';
-import BrowsePlaylistsScreen from './screens/BrowsePlaylistsScreen';
+import BrowseScreen from './screens/browse/BrowseScreen';
+import BrowseTracksScreen from './screens/browse/BrowseTracksScreen';
+import BrowseAlbumsScreen from './screens/browse/BrowseAlbumsScreen';
+import BrowseArtistsScreen from './screens/browse/BrowseArtistsScreen';
+import BrowsePodcastsScreen from './screens/browse/BrowsePodcastsScreen';
+import BrowsePlaylistsScreen from './screens/browse/BrowsePlaylistsScreen';
 
+// Manage Screens
+import AddPodcastScreen from './screens/manage/AddPodcastScreen';
 // Auth screens
 import FacebookAuth from './screens/auth/FacebookAuth';
 
 // Account Screens
-import AccountScreen from './screens/AccountScreen';
+import AccountScreen from './screens/user/AccountScreen';
 import LoginScreen from './screens/auth/LoginScreen';
 
 //  Routers
@@ -54,6 +56,10 @@ import './App.css';
 import { LOG_OUT } from './store/actions/types';
 import Plain from './components/layouts/Plain';
 import Root from './components/layouts/Root';
+import CreateAlbumScreen from './screens/manage/CreateAlbumScreen';
+import AddArtistScreen from './screens/manage/AddArtistScreen';
+import CreatePlaylistScreen from './screens/manage/CreatePlaylistScreen';
+import YourPlaylistsScreen from './screens/library/YourPlaylistsScreen';
 
 const { store, persistor } = persistedStore();
 
@@ -197,22 +203,27 @@ export default function App() {
                 </Route>
                 <Route path={Routes.user.library.tracks}>
                   <Main>
-                    <LikedTracksScreen />
+                    <YourTracksScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.user.library.albums}>
                   <Main>
-                    <LikedAlbumsScreen />
+                    <YourAlbumsScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.user.library.artists}>
                   <Main>
-                    <LikedArtistsScreen />
+                    <YourArtistsScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.user.library.podcasts}>
                   <Main>
-                    <LikedPodcastsScreen />
+                    <YourPodcastsScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.user.library.playlists}>
+                  <Main>
+                    <YourPlaylistsScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.auth.facebook}>
@@ -225,6 +236,28 @@ export default function App() {
                     <AddTrackScreen />
                   </Main>
                 </Route>
+                <Route path={Routes.user.create.album}>
+                  <Main>
+                    <CreateAlbumScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.user.create.artist}>
+                  <Main>
+                    <AddArtistScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.user.create.playlist}>
+                  <Main>
+                    <CreatePlaylistScreen />
+                  </Main>
+                </Route>
+                {/* User Account */}
+                <Route path={Routes.user.create.podcast}>
+                  <Main>
+                    <AddPodcastScreen />
+                  </Main>
+                </Route>
+                {/* User Account */}
                 <Route path={Routes.user.account}>
                   <Main>
                     <AccountScreen />

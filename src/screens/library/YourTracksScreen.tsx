@@ -4,7 +4,7 @@ import React from "react";
 // import ListTable from '../components/ListTable';
 // import AppStateInterface from "../interfaces/AppStateInterface";
 
-function LikedTracksScreen() {
+function YourTracksScreen() {
   // const list = useSelector(({ player }: AppStateInterface) => player.list);
 
   return (
@@ -17,4 +17,4 @@ function LikedTracksScreen() {
   );
 }
 
-export default LikedTracksScreen;
+export default YourTracksScreen;

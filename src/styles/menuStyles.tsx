@@ -27,7 +27,13 @@ export const menuStyles = makeStyles(theme => ({
     color: colors.white,
     display: "flex",
     textDecoration: "none",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    "&:hover": {
+      opacity: 0.8,
+    },
+    "&:active": {
+      opacity: 0.5,
+    }
   },
   linkIcon: {
     fontSize: 15,

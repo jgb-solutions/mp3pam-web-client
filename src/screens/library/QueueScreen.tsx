@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import ListTable from '../components/ListTable';
-import AppStateInterface from "../interfaces/AppStateInterface";
+import ListTable from '../../components/ListTable';
+import AppStateInterface from "../../interfaces/AppStateInterface";
 
 function QueueScreen() {
   const list = useSelector(({ player }: AppStateInterface) => player.list);

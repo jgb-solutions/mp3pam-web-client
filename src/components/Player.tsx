@@ -31,7 +31,7 @@ import {
 	RESUME, PAUSE, PLAY, PLAY_TRACK, PAUSE_TRACK, RESUME_TRACK
 } from "../store/actions/actions";
 import AppStateInterface from "../interfaces/AppStateInterface";
-import PlayerStyle from "./PlayerStyle";
+import PlayerStyle from "../styles/PlayerStyle";
 import colors from "../utils/colors";
 
 // Setup Audio

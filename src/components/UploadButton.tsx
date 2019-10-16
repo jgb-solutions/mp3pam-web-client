@@ -2,10 +2,11 @@ import React, { ReactNode } from 'react';
 import { IconButton } from "@material-ui/core";
 import colors from '../utils/colors';
 import { makeStyles } from '@material-ui/styles';
+import Button from './Button';
 
 const useStyles = makeStyles({
   button: {
-    color: colors.primary
+    // color: colors.primary
   }
 });
 
@@ -30,9 +31,9 @@ const UploadButton = (props: Props) => {
 
   return (
     <>
-      <IconButton className={`${styles.button} ${props.buttonStyle}`} onClick={triggerInput} disableRipple>
+      <Button className={`${styles.button} ${props.buttonStyle}`} onClick={triggerInput}>
         {props.children}
-      </IconButton>
+      </Button>
       <input
         style={{ display: 'none' }}
         ref={inputRef => { input = inputRef }}

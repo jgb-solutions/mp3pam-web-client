@@ -1,7 +1,6 @@
 import React from 'react';
-import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from 'react-redux';
-import { CloudUpload, AccountCircle } from "@material-ui/icons";
+import { AccountCircle } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import AlbumIcon from '@material-ui/icons/Album';
@@ -9,15 +8,14 @@ import MicIcon from '@material-ui/icons/Mic';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 import QueueMusicIcon from '@material-ui/icons/QueueMusic';
-
-
-import AppStateInterface from '../interfaces/AppStateInterface';
-import colors from '../utils/colors';
-import Button from './Button';
-import { LOG_OUT } from '../store/actions/types';
 import { get } from 'lodash-es';
+
+
+import Button from './Button';
 import Routes from '../routes';
-import { menuStyles } from './menuStyles';
+import { LOG_OUT } from '../store/actions/types';
+import { menuStyles } from '../styles/menuStyles';
+import AppStateInterface from '../interfaces/AppStateInterface';
 
 const mainMenu = [
   { name: "Account", icon: <AccountCircle />, to: Routes.user.account },

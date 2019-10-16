@@ -12,7 +12,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import Routes from "../routes";
 import colors from "../utils/colors";
 import Logo from "./Logo";
-import { menuStyles } from "./menuStyles";
+import { menuStyles } from "../styles/menuStyles";
 
 const mainMenu = [
 	{ name: "Home", to: Routes.pages.home, icon: <Home /> },
