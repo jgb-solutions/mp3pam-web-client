@@ -131,7 +131,7 @@ export default function Home() {
 	if (error) return <p>Error Loading new data. Please refresh the page.</p>;
 
 	return (
-		<>
+		<div className='react-transition scale-in'>
 			{/* <button onClick={loadMoreTracks}>Load more</button> */}
 			<h1>Home</h1>
 			{categories.map(category => (
@@ -141,6 +141,6 @@ export default function Home() {
 					data={shuffle(data)}
 				/>
 			))}
-		</>
+		</div>
 	);
 }

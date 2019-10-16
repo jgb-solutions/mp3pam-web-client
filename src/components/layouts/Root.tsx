@@ -33,7 +33,7 @@ export default function Root({ children }: { children: ReactNode }) {
   return (
     <>
       <CssBaseline />
-      <Grid container className={styles.container}>
+      <Grid container className={`${styles.container} transition-container`}>
         {children}
       </Grid>
       <Player />

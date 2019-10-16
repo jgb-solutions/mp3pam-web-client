@@ -321,7 +321,7 @@ export default function AddTrackScreen() {
 	};
 
 	return (
-		<CheckAuth>
+		<CheckAuth className='react-transition swipe-down'>
 			<HeaderTitle icon={<MusicNoteIcon />} text={`Add a new track ${completed}%`} />
 
 			{!isLoading && isUploaded && (

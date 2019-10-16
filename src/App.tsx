@@ -52,6 +52,7 @@ import persistedStore from './store';
 
 // Global Style
 import './App.css';
+import './styles/react-transitions.css';
 
 import { LOG_OUT } from './store/actions/types';
 import Plain from './components/layouts/Plain';
