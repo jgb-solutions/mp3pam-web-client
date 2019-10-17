@@ -29,8 +29,8 @@ import Button from '../../components/Button';
 import UploadButton from '../../components/UploadButton';
 import CheckAuth from "../../components/CheckAuth";
 import HeaderTitle from "../../components/HeaderTitle";
-import { makeStyles } from "@material-ui/styles";
-import { Stepper, Step, StepLabel, StepContent, Typography, Paper } from "@material-ui/core";
+import { makeStyles, withStyles } from "@material-ui/styles";
+import { Stepper, Step, StepLabel, StepContent, Typography, Paper, NativeSelect } from "@material-ui/core";
 import colors from "../../utils/colors";
 
 export const UPLOAD_URL = gql`
@@ -55,8 +55,9 @@ export const FETCH_TRACK_UPLOAD_DATA = gql`
 
 const useStyles = makeStyles({
 	root: {
-		// backgroundColor: colors.contentGrey,
-		// color: colors.white
+		backgroundColor: colors.contentGrey,
+		color: colors.white,
+		padding: 0,
 	},
 	button: {
 		// marginTop: theme.spacing(1),
@@ -69,13 +70,27 @@ const useStyles = makeStyles({
 		padding: 3,
 	},
 	stepLabel: {
-		alternativeLabel: {
+		'label + &': {
 			color: colors.white,
 		}
 	},
 	formControl: {
 		margin: 1,
 		minWidth: 120,
+	},
+	selectGenre: {
+		marginTop: 2,
+		color: colors.white,
+		borderBottom: colors.primary,
+		'&:before': {
+			borderColor: colors.primary,
+		},
+		'&:after': {
+			borderColor: colors.primary,
+		},
+	},
+	selectGenreIcon: {
+		fill: colors.primary,
 	},
 });
 
@@ -102,15 +117,33 @@ const useColorlibStepIconStyles = makeStyles({
 	},
 });
 
-function ColorlibStepIcon(props: StepIconProps) {
+const StyledStepLabel = withStyles({
+	label: {
+		color: colors.white,
+		fontSize: 15,
+	},
+	completed: {
+		color: `${colors.white} !important`
+	},
+	active: {
+		color: `${colors.white} !important`
+	}
+})(StepLabel);
+
+const StyledFormHelperText = withStyles({
+	root: {
+		color: colors.white
+	}
+})(FormHelperText);
+
+function StyledStepIcon(props: StepIconProps) {
 	const styles = useColorlibStepIconStyles();
 	const { active, completed } = props;
 
 	const icons: { [index: string]: React.ReactElement } = {
 		1: <CreateIcon />,
-		2: <FolderIcon />,
-		3: <PhotoCameraIcon />,
-		4: <MusicNoteIcon />,
+		2: <PhotoCameraIcon />,
+		3: <MusicNoteIcon />,
 	};
 
 	return (
@@ -128,7 +161,6 @@ function ColorlibStepIcon(props: StepIconProps) {
 function getSteps() {
 	return [
 		"Basic Info",
-		"Category",
 		'Poster',
 		'Track'
 	];
@@ -141,7 +173,7 @@ export default function AddTrackScreen() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [fileUrl, setFileUrl] = useState("");
 	const [uploadError, setUploadError] = useState("")
-	const { register, setValue, handleSubmit, errors } = useForm<trackData>({ mode: 'onBlur' });
+	const { register, getValues, handleSubmit, errors } = useForm<trackData>({ mode: 'onBlur' });
 	const { loading, error, data, fetchMore } = useQuery(FETCH_TRACK_UPLOAD_DATA)
 
 	useEffect(() => {
@@ -221,10 +253,8 @@ export default function AddTrackScreen() {
 		lyrics: string;
 	};
 
-	const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 	const addTrack = async (values: trackData) => {
-		await sleep(300);
 		window.alert(JSON.stringify(values, undefined, 2));
 	};
 
@@ -232,42 +262,39 @@ export default function AddTrackScreen() {
 		switch (step) {
 			case 0:
 				return (
-					<TextField
-						inputRef={register({
-							required: "The title of the track is required.",
-						})}
-						name="title"
-						id="title"
-						label="What is the Track Title?"
-						type="title"
-						margin="normal"
-						error={!!errors.title}
-						helperText={errors.title && errors.title.message}
-					/>
+					<>
+						<TextField
+							inputRef={register({
+								required: "The title of the track is required.",
+							})}
+							name="title"
+							id="title"
+							label="What is the Track Title?"
+							type="title"
+							margin="normal"
+							error={!!errors.title}
+							helperText={errors.title && errors.title.message}
+							style={{ marginBottom: 20 }}
+						/>
+						{/* Select Genre */}
+						<FormControl className={styles.formControl} error={!!errors.genre}>
+							<NativeSelect
+								name='genre'
+								ref={register({
+									required: "You must choose a genre."
+								})}
+								className={styles.selectGenre}
+								classes={{ icon: styles.selectGenreIcon }}>
+								<option value="">Choose a Genre</option>
+								{get(data, 'categories.data') && data.categories.data.map(({ id, name }: { id: string, name: string }) => (
+									<option key={id} value={id}>{name}</option>
+								))}
+							</NativeSelect>
+							<StyledFormHelperText>{errors.genre && errors.genre.message}</StyledFormHelperText>
+						</FormControl>
+					</>
 				);
-
 			case 1:
-				return (
-					<FormControl className={styles.formControl}>
-						<InputLabel htmlFor="genre">Genre</InputLabel>
-						<Select
-							onChange={event => setValue('genre', get(event, 'target.value'))}
-							inputProps={{
-								name: 'genre',
-								id: 'genre',
-							}}
-						>
-							<MenuItem value="">
-								<em>None</em>
-							</MenuItem>
-							{get(data, 'categories.data') && data.categories.data.map(({ id, name }: { id: string, name: string }) => (
-								<MenuItem key={id} value={id}>{name}</MenuItem>
-							))}
-						</Select>
-						{/* <FormHelperText>Some important helper text</FormHelperText> */}
-					</FormControl>
-				);
-			case 2:
 				return (
 					<div>
 						<UploadButton accept="image/*" onChange={handleImageUpload}>
@@ -283,7 +310,7 @@ export default function AddTrackScreen() {
 						)}
 					</div>
 				);
-			case 3:
+			case 2:
 				return (
 					<div>
 						<UploadButton accept=".mp3, audio/mp3" onChange={handleAudioUpload}>
@@ -323,7 +350,7 @@ export default function AddTrackScreen() {
 	return (
 		<CheckAuth className='react-transition scale-in'>
 			<HeaderTitle icon={<MusicNoteIcon />} text={`Add a new track ${completed}%`} />
-
+			{JSON.stringify(getValues())}
 			{!isLoading && isUploaded && (
 				<p>
 					The file link is{" "}
@@ -337,7 +364,7 @@ export default function AddTrackScreen() {
 				<Stepper className={styles.root} activeStep={activeStep} orientation="vertical">
 					{steps.map((label, index) => (
 						<Step key={label}>
-							<StepLabel className={styles.stepLabel} StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+							<StyledStepLabel StepIconComponent={StyledStepIcon}>{label}</StyledStepLabel>
 							<StepContent>
 								{getStepContent(index)}
 							</StepContent>
