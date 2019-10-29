@@ -4,24 +4,13 @@ import gql from 'graphql-tag'
 import { useApolloClient, useQuery } from '@apollo/react-hooks'
 import { get } from "lodash-es";
 import useForm from 'react-hook-form';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import FolderIcon from '@material-ui/icons/Folder';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
-import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
-import SettingsIcon from '@material-ui/icons/Settings';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import VideoLabelIcon from '@material-ui/icons/VideoLabel';
 import { StepIconProps } from '@material-ui/core/StepIcon';
 import clsx from 'clsx';
-import AlbumIcon from '@material-ui/icons/Album';
 import CreateIcon from '@material-ui/icons/Create';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-
 
 import ProgressBar from "../../components/ProgressBar";
 import TextField from "../../components/TextField";

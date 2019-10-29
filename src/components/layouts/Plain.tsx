@@ -3,12 +3,13 @@ import { Grid } from '@material-ui/core';
 
 
 import Content from '../Content';
-import { useStyles } from './Main';
+
+import { plainLayoutStyles } from '../../styles/plainLayoutStyles';
 
 type Props = { children: ReactNode };
 
-export default function Plain({ children }: Props) {
-  const styles = useStyles();
+export default function PlainLayout({ children }: Props) {
+  const styles = plainLayoutStyles();
 
   return (
     <>

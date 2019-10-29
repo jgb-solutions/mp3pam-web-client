@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { shuffle, debounce } from "lodash-es";
+import Home from "@material-ui/icons/Home";
 
 import ScrollingList from "../components/ScrollingList";
 import Spinner from '../components/Spinner';
 import useHome from "../hooks/useHome";
+import HeaderTitle from "../components/HeaderTitle";
 
 const data = [
 	{
@@ -100,7 +102,7 @@ const categories: string[] = [
 	"Reggae",
 	"Roots"
 ];
-export default function Home() {
+export default function HomeScreen() {
 	const { loading, error, homeData, loadMoreTracks, hasMore } = useHome();
 	// fetch home data
 	useEffect(() => {
@@ -131,9 +133,8 @@ export default function Home() {
 	if (error) return <p>Error Loading new data. Please refresh the page.</p>;
 
 	return (
-		<div className='react-transition scale-in'>
-			{/* <button onClick={loadMoreTracks}>Load more</button> */}
-			<h1>Home</h1>
+		<>
+			<HeaderTitle icon={<Home />} text="Home" />
 			{categories.map(category => (
 				<ScrollingList
 					key={category}
@@ -141,6 +142,6 @@ export default function Home() {
 					data={shuffle(data)}
 				/>
 			))}
-		</div>
+		</>
 	);
 }

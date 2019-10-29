@@ -11,6 +11,7 @@ import Routes from "../../routes";
 import colors from "../../utils/colors";
 import Logo from "../../components/Logo";
 import Button from "../../components/Button";
+import Divider from '../../components/Divider';
 import TextField from "../../components/TextField";
 import { LOG_IN } from "../../store/actions/types";
 import { emailRegex } from "../../utils/validators";
@@ -40,8 +41,15 @@ export const FACEBOOK_LOGIN_URL = gql`
 `;
 
 const useStyles = makeStyles({
-  textField: {
-
+  facebookSignupButton: {
+    marginTop: 15,
+    marginBottom: 15,
+    backgroundColor: colors.contentGrey,
+    border: `1px solid ${colors.primary}`
+  },
+  facebookLoginButton: { backgroundColor: '#3b5998', marginTop: 15, marginBottom: 15 },
+  errorTitle: {
+    color: colors.error
   }
 });
 
@@ -64,15 +72,14 @@ function LoginScreen() {
   const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
 
   const login = async (credentials: Credentials) => {
-    console.log(credentials)
     try {
       const { data: { login: payload }, errors } = await client.query({
         query: LOG_USER_IN,
         variables: { input: credentials },
         fetchPolicy: 'network-only'
       });
+
       if (errors) {
-        console.log(errors);
         setLoginError("Your email or password is not valid.");
       }
 
@@ -81,12 +88,7 @@ function LoginScreen() {
         history.push(Routes.pages.home);
       }
     } catch (error) {
-      let errorMessages = '';
-      error.graphQLErrors.forEach(({ message }: { message: string }) => {
-        errorMessages += `${message}`;
-      })
-
-      setLoginError(errorMessages);
+      setLoginError(error.graphQLErrors[0].message);
     };
   };
 
@@ -108,42 +110,18 @@ function LoginScreen() {
   };
 
   if (currentUser.loggedIn) return <Redirect to={from} />;
+
   return (
     <div style={{ maxWidth: 450, margin: '0 auto', textAlign: 'center' }}>
       <Logo size={300} />
-      <h1 style={{ fontSize: 12 }}>To continue, log in to MP3 Pam.</h1>
-      <Button style={{ backgroundColor: '#3b5998', marginTop: 15, marginBottom: 15 }} size='large' onClick={loginWithFacebook}>Log In With Facebook</Button>
-      <div className="divider" style={{
-        fontSize: 16,
-        fontWeight: 400,
-        borderTop: '1px solid #d9dadc',
-        lineHeight: '1px',
-        marginTop: 30,
-        marginBottom: 30,
-        marginLeft: 0,
-        marginRight: 0,
-        position: 'relative',
-        textAlign: 'center',
-        height: 6,
-        border: 0,
-        background:
-          `linear-gradient(to right,#181818 0%,#cd1b54 55%,#cd1b54 55%,#181818 100%)`,
-      }}>
-        <strong className="divider-title" style={{
-          background: colors.contentGrey,
-          fontSize: 12,
-          letterSpacing: 1,
-          paddingTop: 0,
-          paddingRight: 20,
-          paddingBottom: 0,
-          paddingLeft: 20,
-          textTransform: 'uppercase',
-        }}>or</strong>
-      </div>
+      {/* <h1 style={{ fontSize: 12 }}>To continue, log in to MP3 Pam.</h1> */}
+      <Button className={styles.facebookLoginButton} size='large' onClick={loginWithFacebook}>Log In With Facebook</Button>
+
+      <Divider>or</Divider>
 
 
       <form onSubmit={handleSubmit(login)} noValidate>
-        {loginError && <h3 dangerouslySetInnerHTML={{ __html: loginError }} />}
+        {loginError && <h3 className={styles.errorTitle} dangerouslySetInnerHTML={{ __html: loginError }} />}
         <Grid>
           <Grid item>
             <TextField
@@ -182,25 +160,17 @@ function LoginScreen() {
             />
           </Grid>
         </Grid>
-        <Button type="submit" size='large' style={{ marginTop: 15, marginBottom: 15 }}>Log In</Button>
+        <Button type="submit" size='large' style={{ marginTop: 15, marginBottom: 15 }}>Log In With Email</Button>
       </form>
-      <hr style={{
-        marginTop: 30,
-        marginBottom: 30,
-        height: 6,
-        border: 0,
-        background:
-          `linear-gradient(to right,#181818 0%,#cd1b54 55%,#cd1b54 55%,#181818 100%)`,
-      }} />
+
+      <Divider.HR />
+
       <h3>Don't have an account?</h3>
+
       <Button
         size='large'
-        style={{
-          marginTop: 15,
-          marginBottom: 15,
-          backgroundColor: colors.contentGrey,
-          border: `1px solid ${colors.primary}`
-        }}>Sign Up For MP3 Pam</Button>
+        onClick={loginWithFacebook}
+        className={styles.facebookSignupButton}>Sign Up With Facebook</Button>
     </div>
   );
 }

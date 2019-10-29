@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { CssBaseline, Grid } from '@material-ui/core';
+import { CssBaseline, Grid, MuiThemeProvider, createMuiTheme } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 
 import Player from '../Player';
@@ -27,16 +27,24 @@ export const useStyles = makeStyles({
   },
 });
 
-export default function Root({ children }: { children: ReactNode }) {
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark',
+  },
+});
+
+export default function RootLayout({ children }: { children: ReactNode }) {
   const styles = useStyles();
 
   return (
     <div className="transition-container">
-      <CssBaseline />
-      <Grid container className={`${styles.container} react-transition scale-in`}>
-        {children}
-      </Grid>
-      <Player />
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <Grid container className={`${styles.container} react-transition scale-in`}>
+          {children}
+        </Grid>
+        <Player />
+      </MuiThemeProvider>
     </div>
   );
 };

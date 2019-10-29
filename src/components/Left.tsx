@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Home, ViewQuilt } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/styles";
+import HomeIcon from "@material-ui/icons/Home";
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import AlbumIcon from '@material-ui/icons/Album';
 import MicIcon from '@material-ui/icons/Mic';
@@ -10,12 +9,11 @@ import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 import InfoIcon from '@material-ui/icons/Info';
 
 import Routes from "../routes";
-import colors from "../utils/colors";
 import Logo from "./Logo";
 import { menuStyles } from "../styles/menuStyles";
 
 const mainMenu = [
-	{ name: "Home", to: Routes.pages.home, icon: <Home /> },
+	{ name: "Home", to: Routes.pages.home, icon: <HomeIcon /> },
 	{ name: "About", to: Routes.pages.about, icon: <InfoIcon />, }
 ];
 

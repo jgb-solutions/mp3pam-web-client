@@ -1,6 +1,4 @@
 import React, { ReactNode } from 'react';
-import { IconButton } from "@material-ui/core";
-import colors from '../utils/colors';
 import { makeStyles } from '@material-ui/styles';
 import Button from './Button';
 
