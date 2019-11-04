@@ -6,8 +6,6 @@ import { get } from "lodash-es";
 import useForm from 'react-hook-form';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
-import { StepIconProps } from '@material-ui/core/StepIcon';
-import clsx from 'clsx';
 import CreateIcon from '@material-ui/icons/Create';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
@@ -19,7 +17,7 @@ import UploadButton from '../../components/UploadButton';
 import CheckAuth from "../../components/CheckAuth";
 import HeaderTitle from "../../components/HeaderTitle";
 import { makeStyles, withStyles } from "@material-ui/styles";
-import { Stepper, Step, StepLabel, StepContent, Typography, Paper, NativeSelect } from "@material-ui/core";
+import { NativeSelect } from "@material-ui/core";
 import colors from "../../utils/colors";
 
 export const UPLOAD_URL = gql`
@@ -33,7 +31,7 @@ export const UPLOAD_URL = gql`
 
 export const FETCH_TRACK_UPLOAD_DATA = gql`
   query fetchTrackUploadData {
-    categories {
+    genres {
 			data {
 				id
 				name
@@ -82,78 +80,6 @@ const useStyles = makeStyles({
 		fill: colors.primary,
 	},
 });
-
-const useColorlibStepIconStyles = makeStyles({
-	root: {
-		backgroundColor: '#ccc',
-		// zIndex: 1,
-		color: '#fff',
-		width: 40,
-		height: 40,
-		display: 'flex',
-		borderRadius: '50%',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	active: {
-		backgroundImage:
-			'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-		boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
-	},
-	completed: {
-		backgroundImage:
-			'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-	},
-});
-
-const StyledStepLabel = withStyles({
-	label: {
-		color: colors.white,
-		fontSize: 15,
-	},
-	completed: {
-		color: `${colors.white} !important`
-	},
-	active: {
-		color: `${colors.white} !important`
-	}
-})(StepLabel);
-
-const StyledFormHelperText = withStyles({
-	root: {
-		color: colors.white
-	}
-})(FormHelperText);
-
-function StyledStepIcon(props: StepIconProps) {
-	const styles = useColorlibStepIconStyles();
-	const { active, completed } = props;
-
-	const icons: { [index: string]: React.ReactElement } = {
-		1: <CreateIcon />,
-		2: <PhotoCameraIcon />,
-		3: <MusicNoteIcon />,
-	};
-
-	return (
-		<div
-			className={clsx(styles.root, {
-				[styles.active]: active,
-				[styles.completed]: completed,
-			})}
-		>
-			{icons[String(props.icon)]}
-		</div>
-	);
-}
-
-function getSteps() {
-	return [
-		"Basic Info",
-		'Poster',
-		'Track'
-	];
-}
 
 export default function AddTrackScreen() {
 	const client = useApolloClient();
@@ -247,94 +173,7 @@ export default function AddTrackScreen() {
 		window.alert(JSON.stringify(values, undefined, 2));
 	};
 
-	const getStepContent = (step: number) => {
-		switch (step) {
-			case 0:
-				return (
-					<>
-						<TextField
-							inputRef={register({
-								required: "The title of the track is required.",
-							})}
-							name="title"
-							id="title"
-							label="What is the Track Title?"
-							type="title"
-							margin="normal"
-							error={!!errors.title}
-							helperText={errors.title && errors.title.message}
-							style={{ marginBottom: 20 }}
-						/>
-						{/* Select Genre */}
-						<FormControl className={styles.formControl} error={!!errors.genre}>
-							<NativeSelect
-								name='genre'
-								ref={register({
-									required: "You must choose a genre."
-								})}
-								className={styles.selectGenre}
-								classes={{ icon: styles.selectGenreIcon }}>
-								<option value="">Choose a Genre</option>
-								{get(data, 'categories.data') && data.categories.data.map(({ id, name }: { id: string, name: string }) => (
-									<option key={id} value={id}>{name}</option>
-								))}
-							</NativeSelect>
-							<StyledFormHelperText>{errors.genre && errors.genre.message}</StyledFormHelperText>
-						</FormControl>
-					</>
-				);
-			case 1:
-				return (
-					<div>
-						<UploadButton accept="image/*" onChange={handleImageUpload}>
-							Choose Poster
-						</UploadButton>
-
-						{completed > 0 && (
-							<ProgressBar
-								variant="determinate"
-								color="secondary"
-								value={completed}
-							/>
-						)}
-					</div>
-				);
-			case 2:
-				return (
-					<div>
-						<UploadButton accept=".mp3, audio/mp3" onChange={handleAudioUpload}>
-							Choose Track
-						</UploadButton>
-
-						{completed > 0 && (
-							<ProgressBar
-								variant="determinate"
-								color="secondary"
-								value={completed}
-							/>
-						)}
-					</div>
-				);
-			default:
-				return 'Unknown step';
-		}
-	}
-
 	const styles = useStyles();
-	const [activeStep, setActiveStep] = React.useState(0);
-	const steps = getSteps();
-
-	const handleNext = () => {
-		setActiveStep(prevActiveStep => prevActiveStep + 1);
-	};
-
-	const handleBack = () => {
-		setActiveStep(prevActiveStep => prevActiveStep - 1);
-	};
-
-	const handleReset = () => {
-		setActiveStep(0);
-	};
 
 	return (
 		<CheckAuth className='react-transition scale-in'>
@@ -350,44 +189,56 @@ export default function AddTrackScreen() {
 			)}
 			<form onSubmit={handleSubmit(addTrack)} noValidate>
 				{uploadError && <h3 dangerouslySetInnerHTML={{ __html: uploadError }} />}
-				<Stepper className={styles.root} activeStep={activeStep} orientation="vertical">
-					{steps.map((label, index) => (
-						<Step key={label}>
-							<StyledStepLabel StepIconComponent={StyledStepIcon}>{label}</StyledStepLabel>
-							<StepContent>
-								{getStepContent(index)}
-							</StepContent>
-						</Step>
-					))}
-				</Stepper>
-				{activeStep === steps.length && (
-					<Paper square elevation={0} className={styles.resetContainer}>
-						<Typography>All steps completed - you&apos;re finished</Typography>
-						<Button onClick={handleReset} className={styles.button}>
-							Reset
-          </Button>
-					</Paper>
-				)}
+				<TextField
+					inputRef={register({
+						required: "The title of the track is required.",
+					})}
+					name="title"
+					id="title"
+					label="What is the Track Title?"
+					type="title"
+					margin="normal"
+					error={!!errors.title}
+					helperText={errors.title && errors.title.message}
+					style={{ marginBottom: 20 }}
+				/>
+				{/* Select Genre */}
+				<FormControl className={styles.formControl} error={!!errors.genre}>
+					<NativeSelect
+						name='genre'
+						inputRef={register({
+							required: "You must choose a genre."
+						})}>
+						<option value="">Choose a Genre</option>
+						{get(data, 'genres.data') && data.genres.data.map(({ id, name }: { id: string, name: string }) => (
+							<option key={id} value={id}>{name}</option>
+						))}
+					</NativeSelect>
+					<FormHelperText>{errors.genre && errors.genre.message}</FormHelperText>
+
+					<UploadButton accept="image/*" onChange={handleImageUpload}>
+						Choose Poster
+						</UploadButton>
+
+					{completed > 0 && (
+						<ProgressBar
+							variant="determinate"
+							color="secondary"
+							value={completed}
+						/>)}
+					<UploadButton accept=".mp3, audio/mp3" onChange={handleAudioUpload}>
+						Choose Track
+						</UploadButton>
+
+					{completed > 0 && (
+						<ProgressBar
+							variant="determinate"
+							color="secondary"
+							value={completed}
+						/>
+					)}
+				</FormControl>
 			</form>
-			<div className={styles.actionsContainer}>
-				<div>
-					<Button
-						disabled={activeStep === 0}
-						onClick={handleBack}
-						className={styles.button}
-					>
-						Back
-                  </Button>
-					<Button
-						variant="contained"
-						color="primary"
-						onClick={handleNext}
-						className={styles.button}
-					>
-						{activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-					</Button>
-				</div>
-			</div>
 		</CheckAuth>
 	);
 }

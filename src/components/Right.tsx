@@ -77,16 +77,17 @@ const Right = (props: Props) => {
                 </Link>
               ))}
             </div>
+
             <div>
               <p>
                 <Link
-                  to={Routes.user.manage.home}
+                  to={Routes.pages.library}
                   className={styles.yourLibraryLink}
                   onClick={closeDrawer}>
-                  Your Library
-					</Link>
+                  What You Like
+					      </Link>
               </p>
-              {libraryMenu.map((menuItem, index) => (
+              {favoriteMenu.map((menuItem, index) => (
                 <Link
                   key={index}
                   to={menuItem.to}
@@ -103,13 +104,13 @@ const Right = (props: Props) => {
             <div>
               <p>
                 <Link
-                  to={Routes.pages.library}
+                  to={Routes.user.manage.home}
                   className={styles.yourLibraryLink}
                   onClick={closeDrawer}>
-                  What You Like
-					</Link>
+                  Your Library
+					      </Link>
               </p>
-              {favoriteMenu.map((menuItem, index) => (
+              {libraryMenu.map((menuItem, index) => (
                 <Link
                   key={index}
                   to={menuItem.to}
