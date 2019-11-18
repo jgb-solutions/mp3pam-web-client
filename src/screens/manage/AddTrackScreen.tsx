@@ -19,26 +19,8 @@ import HeaderTitle from "../../components/HeaderTitle";
 import { makeStyles, withStyles } from "@material-ui/styles";
 import { NativeSelect } from "@material-ui/core";
 import colors from "../../utils/colors";
-
-export const UPLOAD_URL = gql`
-  query getUploadUrl($name: String!, $type: String!) {
-    uploadUrl(name: $name, type: $type) {
-     signedUrl
-		 fileUrl
-    }
-  }
-`;
-
-export const FETCH_TRACK_UPLOAD_DATA = gql`
-  query fetchTrackUploadData {
-    genres {
-			data {
-				id
-				name
-			}
-  	}
-  }
-`;
+import { FETCH_TRACK_UPLOAD_DATA } from "../../graphql/queries";
+import useFileUpload from "../../hooks/useFileUpload";
 
 const useStyles = makeStyles({
 	root: {
@@ -79,85 +61,29 @@ const useStyles = makeStyles({
 	selectGenreIcon: {
 		fill: colors.primary,
 	},
+	uploadButton: {
+		marginTop: 24,
+	}
 });
 
 export default function AddTrackScreen() {
-	const client = useApolloClient();
-	const [completed, setCompleted] = useState(0);
-	const [isUploaded, setIsUploaded] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-	const [fileUrl, setFileUrl] = useState("");
 	const [uploadError, setUploadError] = useState("")
+	const [completed, setCompleted] = useState(0);
 	const { register, getValues, handleSubmit, errors } = useForm<trackData>({ mode: 'onBlur' });
 	const { loading, error, data, fetchMore } = useQuery(FETCH_TRACK_UPLOAD_DATA)
-
-	useEffect(() => {
-		if (completed === 100) setCompleted(0);
-	}, [completed]);
-
-	const handleProgressEvent = (progressEvent: ProgressEvent) => {
-		console.log(progressEvent);
-		const percentCompleted = Math.round(
-			(progressEvent.loaded * 100) / progressEvent.total
-		);
-		console.log(percentCompleted);
-		setCompleted(percentCompleted);
-	};
-
-	const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, type: string) => {
-		setIsLoading(true);
-		console.log(event);
-		const file = get(event.target, 'files[0]');
-		if (!file) return;
-
-		console.log("file", file);
-
-		try {
-			const { data: { uploadUrl: { signedUrl, fileUrl } } } = await client.query({
-				query: UPLOAD_URL,
-				variables: { name: file.name, type },
-				fetchPolicy: 'network-only'
-			});
-
-			setFileUrl(fileUrl);
-
-			const options = {
-				headers: {
-					"Content-Type": file.type,
-					"x-amz-acl": 'public-read'
-					// 'Content-Disposition': 'attachment'
-				},
-				onUploadProgress: handleProgressEvent
-			};
-
-			try {
-				const response = await axios.put(signedUrl, file, options);
-				// Success
-				setIsUploaded(true);
-				setIsLoading(false);
-				// response from DO Spaces servers
-				console.log(response);
-			} catch (error) {
-				console.log(error);
-				setIsLoading(false);
-			}
-		} catch (error) {
-			console.log(error);
-			setIsLoading(false);
-		}
-	};
+	const [imgUpload, imgFileUrl, imgloading, imgError, imgUploaded, imgPercentUploaded] = useFileUpload('img');
 
 	const handleImageUpload = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		handleFileUpload(event, 'img');
+		imgUpload(get(event.target, 'files[0]'));
 	};
 
-	const handleAudioUpload = (
-		event: React.ChangeEvent<HTMLInputElement>
-	) => {
-		handleFileUpload(event, 'sound');
-	};
+	// const handleAudioUpload = (
+	// 	event: React.ChangeEvent<HTMLInputElement>
+	// ) => {
+	// 	handleFileUpload(event, 'sound');
+	// };
 
 	type trackData = {
 		title?: string;
@@ -179,11 +105,11 @@ export default function AddTrackScreen() {
 		<CheckAuth className='react-transition scale-in'>
 			<HeaderTitle icon={<MusicNoteIcon />} text={`Add a new track ${completed}%`} />
 			{JSON.stringify(getValues())}
-			{!isLoading && isUploaded && (
+			{!imgloading && imgUploaded && (
 				<p>
 					The file link is{" "}
-					<a target="_blank" rel="noopener noreferrer" href={fileUrl}>
-						{fileUrl}
+					<a target="_blank" rel="noopener noreferrer" href={imgFileUrl}>
+						{imgFileUrl}
 					</a>
 				</p>
 			)}
@@ -195,49 +121,91 @@ export default function AddTrackScreen() {
 					})}
 					name="title"
 					id="title"
-					label="What is the Track Title?"
-					type="title"
+					label="What is the Track Title? *"
+					type="text"
 					margin="normal"
 					error={!!errors.title}
 					helperText={errors.title && errors.title.message}
 					style={{ marginBottom: 20 }}
 				/>
-				{/* Select Genre */}
-				<FormControl className={styles.formControl} error={!!errors.genre}>
-					<NativeSelect
-						name='genre'
-						inputRef={register({
-							required: "You must choose a genre."
-						})}>
-						<option value="">Choose a Genre</option>
-						{get(data, 'genres.data') && data.genres.data.map(({ id, name }: { id: string, name: string }) => (
-							<option key={id} value={id}>{name}</option>
-						))}
-					</NativeSelect>
-					<FormHelperText>{errors.genre && errors.genre.message}</FormHelperText>
 
-					<UploadButton accept="image/*" onChange={handleImageUpload}>
-						Choose Poster
-						</UploadButton>
+				<TextField
+					id="genre"
+					select
+					name='genre'
+					inputRef={register({
+						required: "You must choose a genre."
+					})}
+					SelectProps={{ native: true }}
+					error={!!errors.genre}
+					helperText={errors.genre && errors.genre.message}
+					margin="normal"
+				>
+					<option value="">Choose a Genre *</option>
+					{get(data, 'genres.data') && data.genres.data.map(({ id, name }: { id: string, name: string }) => (
+						<option key={id} value={id}>{name}</option>
+					))}
+				</TextField>
 
-					{completed > 0 && (
-						<ProgressBar
-							variant="determinate"
-							color="secondary"
-							value={completed}
-						/>)}
-					<UploadButton accept=".mp3, audio/mp3" onChange={handleAudioUpload}>
-						Choose Track
-						</UploadButton>
+				<UploadButton buttonSize='large' style={styles.uploadButton} accept="image/*" onChange={handleImageUpload}>
+					Choose Poster
+					</UploadButton>
 
-					{completed > 0 && (
-						<ProgressBar
-							variant="determinate"
-							color="secondary"
-							value={completed}
-						/>
-					)}
-				</FormControl>
+				{imgPercentUploaded > 0 && imgPercentUploaded < 100 && (
+					<ProgressBar
+						variant="determinate"
+						color="secondary"
+						value={imgPercentUploaded}
+					/>
+				)}
+
+				{/* <UploadButton buttonSize='large' style={styles.uploadButton} accept=".mp3, audio/mp3" onChange={handleAudioUpload}>
+					Choose Track
+							</UploadButton>
+
+				{completed > 0 && (
+					<ProgressBar
+						variant="determinate"
+						color="secondary"
+						value={completed}
+					/>
+				)} */}
+
+				<TextField
+					inputRef={register({
+						minLength: {
+							value: 20,
+							message: "The detail must be at least 20 characters."
+						}
+					})}
+					name="detail"
+					id="detail"
+					label="Track Detail"
+					multiline
+					rowsMax="4"
+					margin="normal"
+					error={!!errors.detail}
+					helperText={errors.detail && errors.detail.message}
+				/>
+
+				<TextField
+					inputRef={register({
+						minLength: {
+							value: 20,
+							message: "The lyrics must be at least 20 characters."
+						}
+					})}
+					name="lyrics"
+					id="lyrics"
+					label="Track Lyrics"
+					multiline
+					rowsMax="50"
+					margin="normal"
+					error={!!errors.lyrics}
+					helperText={errors.lyrics && errors.lyrics.message}
+				/>
+
+				<Button type="submit" size='large' style={{ marginTop: 15 }}>Add Track</Button>
 			</form>
 		</CheckAuth>
 	);

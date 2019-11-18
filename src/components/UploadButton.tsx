@@ -13,7 +13,9 @@ type Props = {
   buttonStyle?: string,
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
   multiple?: boolean,
-  children: ReactNode
+  children: ReactNode,
+  style?: string,
+  buttonSize?: 'small' | 'medium' | 'large'
 };
 
 const UploadButton = (props: Props) => {
@@ -28,8 +30,8 @@ const UploadButton = (props: Props) => {
   };
 
   return (
-    <>
-      <Button className={`${styles.button} ${props.buttonStyle}`} onClick={triggerInput}>
+    <div className={props.style}>
+      <Button className={`${styles.button} ${props.buttonStyle}`} onClick={triggerInput} size={props.buttonSize}>
         {props.children}
       </Button>
       <input
@@ -40,7 +42,7 @@ const UploadButton = (props: Props) => {
         type="file"
         multiple={props.multiple}
       />
-    </>
+    </div>
   );
 };
 
