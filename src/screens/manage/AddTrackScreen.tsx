@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useQuery } from '@apollo/react-hooks'
 import { get } from "lodash-es";
 import useForm from 'react-hook-form';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import ProgressBar from "../../components/ProgressBar";
 import TextField from "../../components/TextField";
@@ -10,74 +9,57 @@ import Button from '../../components/Button';
 import UploadButton from '../../components/UploadButton';
 import CheckAuth from "../../components/CheckAuth";
 import HeaderTitle from "../../components/HeaderTitle";
-import { makeStyles } from "@material-ui/styles";
-import colors from "../../utils/colors";
+import Box from '@material-ui/core/Box';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
 import { FETCH_TRACK_UPLOAD_DATA } from "../../graphql/queries";
 import useFileUpload from "../../hooks/useFileUpload";
+import TextIcon from "../../components/TextIcon";
+import { addTrackScreenStyles } from "../../styles/addTrackScreenStyles";
+import useAddTrack from '../../hooks/useAddTrack';
 
-const useStyles = makeStyles({
-	root: {
-		backgroundColor: colors.contentGrey,
-		color: colors.white,
-		padding: 0,
-	},
-	button: {
-		// marginTop: theme.spacing(1),
-		// marginRight: theme.spacing(1),
-	},
-	actionsContainer: {
-		// marginTop: 5,
-	},
-	resetContainer: {
-		padding: 3,
-	},
-	stepLabel: {
-		'label + &': {
-			color: colors.white,
-		}
-	},
-	formControl: {
-		margin: 1,
-		minWidth: 120,
-	},
-	selectGenre: {
-		marginTop: 2,
-		color: colors.white,
-		borderBottom: colors.primary,
-		'&:before': {
-			borderColor: colors.primary,
-		},
-		'&:after': {
-			borderColor: colors.primary,
-		},
-	},
-	selectGenreIcon: {
-		fill: colors.primary,
-	},
-	uploadButton: {
-		marginTop: 24,
-	}
-});
+export interface TrackData {
+	title: string
+	poster: string
+	audioName: string;
+	genre: string;
+	detail: string;
+	lyrics: string;
+};
 
 export default function AddTrackScreen() {
 	const [uploadError, setUploadError] = useState("")
-	const { register, getValues, handleSubmit, errors, setValue, setError } = useForm<trackData>({ mode: 'onBlur' });
-	const { data } = useQuery(FETCH_TRACK_UPLOAD_DATA)
-	const [imgUpload, imgFileUrl, imgloading, imgError, imgUploaded, imgPercentUploaded] = useFileUpload('img');
-	const [audioUpload, audioFileUrl, audioloading, audioError, audioUploaded, audioPercentUploaded] = useFileUpload('sound');
+	const { register, handleSubmit, errors, formState } = useForm<TrackData>({ mode: 'onBlur' });
+	const { data } = useQuery(FETCH_TRACK_UPLOAD_DATA);
+	const { addTrack, loading, error } = useAddTrack();
 
-	React.useEffect(() => {
-		register({ name: "poster" });
-		register({ name: "audioName" });
-	}, [register])
+	const [
+		imgUpload,
+		imgFileUrl,
+		imgloading,
+		imgError,
+		imgUploaded,
+		imgPercentUploaded,
+		imgValid,
+		imgErrorMessage
+	] = useFileUpload({
+		type: 'img',
+		message: "Please choose a poster.",
+	});
 
-	useEffect(() => {
-		if (imgFileUrl) {
-			setValue('poster', imgFileUrl)
-		} else {
-			setError('poster', 'required', 'Please choose a poster');
-		}
-	}, [imgUploaded])
+	const [
+		audioUpload,
+		audioFileUrl,
+		audioloading,
+		audioError,
+		audioUploaded,
+		audioPercentUploaded,
+		audioValid,
+		audioErrorMessage
+	] = useFileUpload({
+		type: 'sound',
+		message: "Please choose a track."
+	});
 
 	const getFile = (event: React.ChangeEvent<HTMLInputElement>) =>
 		get(event, 'target.files[0]')
@@ -94,26 +76,29 @@ export default function AddTrackScreen() {
 		audioUpload(getFile(event));
 	};
 
-	type trackData = {
-		title?: string;
-		poster?: string;
-		audioName: string;
-		genre?: string;
-		detail: string;
-		lyrics: string;
+	const handleAddTrack = async (values: TrackData) => {
+		if (!imgValid && !audioValid) return;
+
+		const track = {
+			...values,
+			poster: imgFileUrl,
+			audioName: audioFileUrl
+		};
+
+		window.alert(
+			JSON.stringify(track, undefined, 2)
+		);
+
+		addTrack(track);
 	};
 
-
-	const addTrack = async (values: trackData) => {
-		window.alert(JSON.stringify(values, undefined, 2));
-	};
-
-	const styles = useStyles();
+	const styles = addTrackScreenStyles();
 
 	return (
 		<CheckAuth className='react-transition scale-in'>
 			<HeaderTitle icon={<MusicNoteIcon />} text={`Add a new track`} />
-			{JSON.stringify(getValues())}
+			{/* {JSON.stringify(getValues())} <br /> */}
+			{/* {JSON.stringify(formState)} */}
 			{!imgloading && imgUploaded && (
 				<p>
 					The file link is{" "}
@@ -132,7 +117,7 @@ export default function AddTrackScreen() {
 				</p>
 			)}
 
-			<form onSubmit={handleSubmit(addTrack)} noValidate>
+			<form onSubmit={handleSubmit(handleAddTrack)} noValidate>
 				{uploadError && <h3 dangerouslySetInnerHTML={{ __html: uploadError }} />}
 				<TextField
 					inputRef={register({
@@ -166,13 +151,24 @@ export default function AddTrackScreen() {
 					))}
 				</TextField>
 
-				<UploadButton
-					buttonSize='large'
-					style={styles.uploadButton}
-					accept="image/*"
-					onChange={handleImageUpload}
-					title="Choose Poster"
-				/>
+				{!imgUploaded && (
+					<UploadButton
+						buttonSize='large'
+						style={styles.uploadButton}
+						accept="image/*"
+						onChange={handleImageUpload}
+						title="Choose Poster"
+					/>
+				)}
+
+				{imgUploaded && (
+					<TextIcon
+						icon={<CheckCircleIcon className={styles.successColor} />}
+						text="Poster uploaded"
+					/>
+				)}
+
+				{formState.isSubmitted && !imgValid && <Box color="error.main">{imgErrorMessage}</Box>}
 
 				{imgPercentUploaded > 0 && imgPercentUploaded < 100 && (
 					<ProgressBar
@@ -182,13 +178,24 @@ export default function AddTrackScreen() {
 					/>
 				)}
 
-				<UploadButton
-					buttonSize='large'
-					style={styles.uploadButton}
-					accept=".mp3, audio/mp3"
-					onChange={handleAudioUpload}
-					title="Choose Track"
-				/>
+				{!audioUploaded && (
+					<UploadButton
+						buttonSize='large'
+						style={styles.uploadButton}
+						accept=".mp3, audio/mp3"
+						onChange={handleAudioUpload}
+						title="Choose Track"
+					/>
+				)}
+
+				{audioUploaded && (
+					<TextIcon
+						icon={<CheckCircleIcon className={styles.successColor} />}
+						text="Track uploaded"
+					/>
+				)}
+
+				{formState.isSubmitted && !audioValid && <Box color="error.main">{audioErrorMessage}</Box>}
 
 				{audioPercentUploaded > 0 && audioPercentUploaded < 100 && (
 					<ProgressBar
@@ -218,8 +225,8 @@ export default function AddTrackScreen() {
 				<TextField
 					inputRef={register({
 						minLength: {
-							value: 20,
-							message: "The lyrics must be at least 20 characters."
+							value: 300,
+							message: "The lyrics must be at least 300 characters."
 						}
 					})}
 					name="lyrics"

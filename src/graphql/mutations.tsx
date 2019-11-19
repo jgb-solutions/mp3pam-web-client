@@ -1,13 +1,11 @@
 import gql from 'graphql-tag';
 
-
-export const PUT_TRACK_UPLOAD_DATA = gql`
-  query PUTTrackUploadData {
-    genres {
-			data {
-				id
-				name
-			}
-  	}
+export const ADD_TRACK = gql`
+  mutation addTrack($input: TrackInput!) {
+    addTrack(input: $input) {
+    	id
+		 	title
+		 	hash
+    }
   }
-`;
+`

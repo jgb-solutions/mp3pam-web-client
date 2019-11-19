@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from "axios";
 import { useApolloClient } from '@apollo/react-hooks'
 
@@ -10,17 +10,31 @@ type UploadFileType = [
   boolean,
   object | null,
   boolean,
-  number
+  number,
+  boolean,
+  string | undefined
 ];
 
-export default function useFileUpload(type: string, headers?: object): UploadFileType {
+type Params = { type: string, message?: string | undefined, headers?: object };
+
+export default function useFileUpload({ type, message, headers }: Params): UploadFileType {
   const client = useApolloClient();
 
+  const [valid, setValid] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null)
   const [fileUrl, setFileUrl] = useState(undefined)
   const [isUploaded, setIsUploaded] = useState(false)
   const [percentUploaded, setPercentUploaded] = useState(0)
+
+  useEffect(() => {
+    if (valid) {
+      setErrorMessage(undefined)
+    } else {
+      setErrorMessage(message || "Please choose a file.")
+    }
+  }, [valid]);
 
   const upload = async (file: File) => {
     setLoading(true);
@@ -52,13 +66,16 @@ export default function useFileUpload(type: string, headers?: object): UploadFil
       };
 
       try {
+        setValid(true);
         const response = await axios.put(signedUrl, file, options);
         // Success
         setIsUploaded(true);
         setLoading(false);
+        setValid(true);
       } catch (error) {
         setError(error)
         setLoading(false);
+        setValid(false);
       }
     } catch (error) {
       setError(error)
@@ -66,5 +83,14 @@ export default function useFileUpload(type: string, headers?: object): UploadFil
     }
   };
 
-  return [upload, fileUrl, loading, error, isUploaded, percentUploaded];
+  return [
+    upload,
+    fileUrl,
+    loading,
+    error,
+    isUploaded,
+    percentUploaded,
+    valid,
+    errorMessage
+  ];
 };
