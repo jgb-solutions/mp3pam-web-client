@@ -1,23 +1,16 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
-import gql from 'graphql-tag'
-import { useApolloClient, useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/react-hooks'
 import { get } from "lodash-es";
 import useForm from 'react-hook-form';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
-import CreateIcon from '@material-ui/icons/Create';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-
 import ProgressBar from "../../components/ProgressBar";
 import TextField from "../../components/TextField";
 import Button from '../../components/Button';
 import UploadButton from '../../components/UploadButton';
 import CheckAuth from "../../components/CheckAuth";
 import HeaderTitle from "../../components/HeaderTitle";
-import { makeStyles, withStyles } from "@material-ui/styles";
-import { NativeSelect } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import colors from "../../utils/colors";
 import { FETCH_TRACK_UPLOAD_DATA } from "../../graphql/queries";
 import useFileUpload from "../../hooks/useFileUpload";
@@ -68,27 +61,43 @@ const useStyles = makeStyles({
 
 export default function AddTrackScreen() {
 	const [uploadError, setUploadError] = useState("")
-	const [completed, setCompleted] = useState(0);
-	const { register, getValues, handleSubmit, errors } = useForm<trackData>({ mode: 'onBlur' });
-	const { loading, error, data, fetchMore } = useQuery(FETCH_TRACK_UPLOAD_DATA)
+	const { register, getValues, handleSubmit, errors, setValue, setError } = useForm<trackData>({ mode: 'onBlur' });
+	const { data } = useQuery(FETCH_TRACK_UPLOAD_DATA)
 	const [imgUpload, imgFileUrl, imgloading, imgError, imgUploaded, imgPercentUploaded] = useFileUpload('img');
+	const [audioUpload, audioFileUrl, audioloading, audioError, audioUploaded, audioPercentUploaded] = useFileUpload('sound');
+
+	React.useEffect(() => {
+		register({ name: "poster" });
+		register({ name: "audioName" });
+	}, [register])
+
+	useEffect(() => {
+		if (imgFileUrl) {
+			setValue('poster', imgFileUrl)
+		} else {
+			setError('poster', 'required', 'Please choose a poster');
+		}
+	}, [imgUploaded])
+
+	const getFile = (event: React.ChangeEvent<HTMLInputElement>) =>
+		get(event, 'target.files[0]')
 
 	const handleImageUpload = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		imgUpload(get(event.target, 'files[0]'));
+		imgUpload(getFile(event));
 	};
 
-	// const handleAudioUpload = (
-	// 	event: React.ChangeEvent<HTMLInputElement>
-	// ) => {
-	// 	handleFileUpload(event, 'sound');
-	// };
+	const handleAudioUpload = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		audioUpload(getFile(event));
+	};
 
 	type trackData = {
 		title?: string;
-		image?: string;
-		audio: string;
+		poster?: string;
+		audioName: string;
 		genre?: string;
 		detail: string;
 		lyrics: string;
@@ -103,7 +112,7 @@ export default function AddTrackScreen() {
 
 	return (
 		<CheckAuth className='react-transition scale-in'>
-			<HeaderTitle icon={<MusicNoteIcon />} text={`Add a new track ${completed}%`} />
+			<HeaderTitle icon={<MusicNoteIcon />} text={`Add a new track`} />
 			{JSON.stringify(getValues())}
 			{!imgloading && imgUploaded && (
 				<p>
@@ -113,6 +122,16 @@ export default function AddTrackScreen() {
 					</a>
 				</p>
 			)}
+
+			{!audioloading && audioUploaded && (
+				<p>
+					The file link is{" "}
+					<a target="_blank" rel="noopener noreferrer" href={audioFileUrl}>
+						{audioFileUrl}
+					</a>
+				</p>
+			)}
+
 			<form onSubmit={handleSubmit(addTrack)} noValidate>
 				{uploadError && <h3 dangerouslySetInnerHTML={{ __html: uploadError }} />}
 				<TextField
@@ -147,9 +166,13 @@ export default function AddTrackScreen() {
 					))}
 				</TextField>
 
-				<UploadButton buttonSize='large' style={styles.uploadButton} accept="image/*" onChange={handleImageUpload}>
-					Choose Poster
-					</UploadButton>
+				<UploadButton
+					buttonSize='large'
+					style={styles.uploadButton}
+					accept="image/*"
+					onChange={handleImageUpload}
+					title="Choose Poster"
+				/>
 
 				{imgPercentUploaded > 0 && imgPercentUploaded < 100 && (
 					<ProgressBar
@@ -159,17 +182,21 @@ export default function AddTrackScreen() {
 					/>
 				)}
 
-				{/* <UploadButton buttonSize='large' style={styles.uploadButton} accept=".mp3, audio/mp3" onChange={handleAudioUpload}>
-					Choose Track
-							</UploadButton>
+				<UploadButton
+					buttonSize='large'
+					style={styles.uploadButton}
+					accept=".mp3, audio/mp3"
+					onChange={handleAudioUpload}
+					title="Choose Track"
+				/>
 
-				{completed > 0 && (
+				{audioPercentUploaded > 0 && audioPercentUploaded < 100 && (
 					<ProgressBar
 						variant="determinate"
 						color="secondary"
-						value={completed}
+						value={audioPercentUploaded}
 					/>
-				)} */}
+				)}
 
 				<TextField
 					inputRef={register({

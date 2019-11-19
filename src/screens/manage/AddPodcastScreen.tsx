@@ -123,34 +123,33 @@ export default function AddTrackScreen() {
     <CheckAuth>
       <h1>< CloudUploadIcon /> Upload Page {completed}%</h1>
 
-      <div>
-        <UploadButton accept="image/*" onChange={handleImageUpload}>
-          <PhotoCameraIcon style={{ fontSize: 36 }} />
-        </UploadButton>
+      {/* <UploadButton
+        accept="image/*"
+        onChange={handleImageUpload}
+        icon={<PhotoCameraIcon style={{ fontSize: 36 }} />}
+      /> */}
 
-        {completed > 0 && (
-          <ProgressBar
-            variant="determinate"
-            color="secondary"
-            value={completed}
-          />
-        )}
-      </div>
+      {completed > 0 && (
+        <ProgressBar
+          variant="determinate"
+          color="secondary"
+          value={completed}
+        />
+      )}
 
-      <p>
-        <UploadButton accept=".mp3, audio/mp3" onChange={handleAudioUpload}>
-          <PlayCircleFilledIcon style={{ fontSize: 36 }} />
-        </UploadButton>
+      {/* <UploadButton
+        accept=".mp3, audio/mp3"
+        onChange={handleAudioUpload}
+        icon={<PlayCircleFilledIcon style={{ fontSize: 36 }} />}
+      /> */}
 
-        {completed > 0 && (
-          <ProgressBar
-            variant="determinate"
-            color="secondary"
-            value={completed}
-          />
-        )}
-      </p>
-
+      {completed > 0 && (
+        <ProgressBar
+          variant="determinate"
+          color="secondary"
+          value={completed}
+        />
+      )}
 
       {!isLoading && isUploaded && (
         <p>

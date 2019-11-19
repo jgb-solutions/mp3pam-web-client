@@ -124,9 +124,9 @@ export default function CreatePlaylistScreen() {
       <h1>< CloudUploadIcon /> Upload Page {completed}%</h1>
 
       <div>
-        <UploadButton accept="image/*" onChange={handleImageUpload}>
+        {/* <UploadButton accept="image/*" onChange={handleImageUpload}>
           <PhotoCameraIcon style={{ fontSize: 36 }} />
-        </UploadButton>
+        </UploadButton> */}
 
         {completed > 0 && (
           <ProgressBar
@@ -138,9 +138,9 @@ export default function CreatePlaylistScreen() {
       </div>
 
       <p>
-        <UploadButton accept=".mp3, audio/mp3" onChange={handleAudioUpload}>
+        {/* <UploadButton accept=".mp3, audio/mp3" onChange={handleAudioUpload}>
           <PlayCircleFilledIcon style={{ fontSize: 36 }} />
-        </UploadButton>
+        </UploadButton> */}
 
         {completed > 0 && (
           <ProgressBar
