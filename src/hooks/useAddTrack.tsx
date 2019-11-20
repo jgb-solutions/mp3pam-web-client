@@ -5,7 +5,7 @@ import { ADD_TRACK } from '../graphql/mutations';
 import { TrackData } from '../screens/manage/AddTrackScreen';
 
 type hookValues = {
-  addTrack: (track: TrackData & { poster: string, audioName: string }) => void,
+  addTrack: (track: TrackData) => void,
   loading: boolean,
   error: ApolloError | undefined,
   data: object

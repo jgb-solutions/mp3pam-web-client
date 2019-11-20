@@ -7,6 +7,7 @@ import { UPLOAD_URL } from '../graphql/queries';
 type UploadFileType = [
   (file: File) => void,
   string | undefined,
+  number,
   boolean,
   object | null,
   boolean,
@@ -20,13 +21,14 @@ type Params = { type: string, message?: string | undefined, headers?: object };
 export default function useFileUpload({ type, message, headers }: Params): UploadFileType {
   const client = useApolloClient();
 
-  const [valid, setValid] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
+  const [valid, setValid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null)
-  const [fileUrl, setFileUrl] = useState(undefined)
-  const [isUploaded, setIsUploaded] = useState(false)
-  const [percentUploaded, setPercentUploaded] = useState(0)
+  const [error, setError] = useState(null);
+  const [fileUrl, setFileUrl] = useState(undefined);
+  const [isUploaded, setIsUploaded] = useState(false);
+  const [percentUploaded, setPercentUploaded] = useState(0);
+  const [size, setSize] = useState(0);
 
   useEffect(() => {
     if (valid) {
@@ -40,6 +42,9 @@ export default function useFileUpload({ type, message, headers }: Params): Uploa
     setLoading(true);
 
     if (!file) return;
+
+    // file size
+    setSize(file.size);
 
     try {
       const { data: { uploadUrl: { signedUrl, fileUrl } } } = await client.query({
@@ -86,6 +91,7 @@ export default function useFileUpload({ type, message, headers }: Params): Uploa
   return [
     upload,
     fileUrl,
+    size,
     loading,
     error,
     isUploaded,

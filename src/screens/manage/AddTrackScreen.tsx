@@ -18,24 +18,39 @@ import TextIcon from "../../components/TextIcon";
 import { addTrackScreenStyles } from "../../styles/addTrackScreenStyles";
 import useAddTrack from '../../hooks/useAddTrack';
 
-export interface TrackData {
-	title: string
-	poster: string
-	audioName: string;
-	genre: string;
+export interface FormData {
+	title: string;
+	genreId: number;
 	detail: string;
 	lyrics: string;
+	artistId: number;
 };
+
+export interface TrackData extends FormData {
+	poster: string;
+	audioName: string;
+	audioFileSize: number
+}
 
 export default function AddTrackScreen() {
 	const [uploadError, setUploadError] = useState("")
-	const { register, handleSubmit, errors, formState } = useForm<TrackData>({ mode: 'onBlur' });
-	const { data } = useQuery(FETCH_TRACK_UPLOAD_DATA);
-	const { addTrack, loading, error } = useAddTrack();
+	const { register, handleSubmit, errors, formState } = useForm<FormData>({ mode: 'onBlur' });
+	const { data: trackUploadInfo } = useQuery(FETCH_TRACK_UPLOAD_DATA);
+	const { addTrack, loading, error, data: uploadedTrack } = useAddTrack();
+
+	useEffect(() => {
+		if (uploadedTrack) {
+			console.log(uploadedTrack);
+			window.alert(
+				JSON.stringify(uploadedTrack, undefined, 2)
+			);
+		}
+	}, [uploadedTrack])
 
 	const [
 		imgUpload,
 		imgFileUrl,
+		imgSize,
 		imgloading,
 		imgError,
 		imgUploaded,
@@ -50,6 +65,7 @@ export default function AddTrackScreen() {
 	const [
 		audioUpload,
 		audioFileUrl,
+		audioSize,
 		audioloading,
 		audioError,
 		audioUploaded,
@@ -76,18 +92,18 @@ export default function AddTrackScreen() {
 		audioUpload(getFile(event));
 	};
 
-	const handleAddTrack = async (values: TrackData) => {
+	const handleAddTrack = async (values: FormData) => {
 		if (!imgValid && !audioValid) return;
 
 		const track = {
 			...values,
-			poster: imgFileUrl,
-			audioName: audioFileUrl
+			poster: imgFileUrl || '',
+			audioName: audioFileUrl || '',
+			artistId: 23,
+			audioFileSize: audioSize
 		};
 
-		window.alert(
-			JSON.stringify(track, undefined, 2)
-		);
+		console.table(track);
 
 		addTrack(track);
 	};
@@ -136,7 +152,7 @@ export default function AddTrackScreen() {
 				<TextField
 					id="genre"
 					select
-					name='genre'
+					name='genreId'
 					inputRef={register({
 						required: "You must choose a genre."
 					})}
@@ -146,9 +162,12 @@ export default function AddTrackScreen() {
 					margin="normal"
 				>
 					<option value="">Choose a Genre *</option>
-					{get(data, 'genres.data') && data.genres.data.map(({ id, name }: { id: string, name: string }) => (
-						<option key={id} value={id}>{name}</option>
-					))}
+					{
+						get(trackUploadInfo, 'genres.data') &&
+						trackUploadInfo.genres.data.map(({ id, name }: { id: string, name: string }) => (
+							<option key={id} value={id}>{name}</option>
+						))
+					}
 				</TextField>
 
 				{!imgUploaded && (
@@ -239,7 +258,11 @@ export default function AddTrackScreen() {
 					helperText={errors.lyrics && errors.lyrics.message}
 				/>
 
-				<Button type="submit" size='large' style={{ marginTop: 15 }}>Add Track</Button>
+				<Button
+					type="submit"
+					size='large'
+					style={{ marginTop: 15 }}
+					disabled={imgloading || audioloading}>Add Track</Button>
 			</form>
 		</CheckAuth>
 	);
