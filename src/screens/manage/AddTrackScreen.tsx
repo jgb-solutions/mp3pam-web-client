@@ -9,8 +9,8 @@ import Button from '../../components/Button';
 import UploadButton from '../../components/UploadButton';
 import CheckAuth from "../../components/CheckAuth";
 import HeaderTitle from "../../components/HeaderTitle";
-import Box from '@material-ui/core/Box';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
 
 import { FETCH_TRACK_UPLOAD_DATA } from "../../graphql/queries";
 import useFileUpload from "../../hooks/useFileUpload";
@@ -36,46 +36,40 @@ export default function AddTrackScreen() {
 	const [uploadError, setUploadError] = useState("")
 	const { register, handleSubmit, errors, formState } = useForm<FormData>({ mode: 'onBlur' });
 	const { data: trackUploadInfo } = useQuery(FETCH_TRACK_UPLOAD_DATA);
-	const { addTrack, loading, error, data: uploadedTrack } = useAddTrack();
+	const { addTrack, loading: formWorking, error, data: uploadedTrack } = useAddTrack();
+	const {
+		upload: uploadImg,
+		fileUrl: imgFileUrl,
+		size: imgSize,
+		uploading: imgUploading,
+		error: imgError,
+		isUploaded: imgUploaded,
+		percentUploaded: imgPercentUploaded,
+		isValid: imgValid,
+		errorMessage: imgErrorMessage,
+		filename: poster
+	} = useFileUpload({ bucket: 'img', message: "Please choose a poster." });
+
+	const {
+		upload: uploadAudio,
+		fileUrl: audioFileUrl,
+		size: audioSize,
+		uploading: audioUploading,
+		error: audioError,
+		isUploaded: audioUploaded,
+		percentUploaded: audioPercentUploaded,
+		isValid: audioValid,
+		errorMessage: audioErrorMessage,
+		filename: audioName
+	} = useFileUpload({ bucket: 'sound', message: "Please choose a track." });
 
 	useEffect(() => {
 		if (uploadedTrack) {
-			console.log(uploadedTrack);
 			window.alert(
 				JSON.stringify(uploadedTrack, undefined, 2)
 			);
 		}
 	}, [uploadedTrack])
-
-	const [
-		imgUpload,
-		imgFileUrl,
-		imgSize,
-		imgloading,
-		imgError,
-		imgUploaded,
-		imgPercentUploaded,
-		imgValid,
-		imgErrorMessage
-	] = useFileUpload({
-		type: 'img',
-		message: "Please choose a poster.",
-	});
-
-	const [
-		audioUpload,
-		audioFileUrl,
-		audioSize,
-		audioloading,
-		audioError,
-		audioUploaded,
-		audioPercentUploaded,
-		audioValid,
-		audioErrorMessage
-	] = useFileUpload({
-		type: 'sound',
-		message: "Please choose a track."
-	});
 
 	const getFile = (event: React.ChangeEvent<HTMLInputElement>) =>
 		get(event, 'target.files[0]')
@@ -83,13 +77,13 @@ export default function AddTrackScreen() {
 	const handleImageUpload = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		imgUpload(getFile(event));
+		uploadImg(getFile(event));
 	};
 
 	const handleAudioUpload = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		audioUpload(getFile(event));
+		uploadAudio(getFile(event));
 	};
 
 	const handleAddTrack = async (values: FormData) => {
@@ -97,8 +91,8 @@ export default function AddTrackScreen() {
 
 		const track = {
 			...values,
-			poster: imgFileUrl || '',
-			audioName: audioFileUrl || '',
+			poster: poster || '',
+			audioName: audioName || '',
 			artistId: 23,
 			audioFileSize: audioSize
 		};
@@ -113,9 +107,7 @@ export default function AddTrackScreen() {
 	return (
 		<CheckAuth className='react-transition scale-in'>
 			<HeaderTitle icon={<MusicNoteIcon />} text={`Add a new track`} />
-			{/* {JSON.stringify(getValues())} <br /> */}
-			{/* {JSON.stringify(formState)} */}
-			{!imgloading && imgUploaded && (
+			{!imgUploading && imgUploaded && (
 				<p>
 					The file link is{" "}
 					<a target="_blank" rel="noopener noreferrer" href={imgFileUrl}>
@@ -124,7 +116,7 @@ export default function AddTrackScreen() {
 				</p>
 			)}
 
-			{!audioloading && audioUploaded && (
+			{!audioUploading && audioUploaded && (
 				<p>
 					The file link is{" "}
 					<a target="_blank" rel="noopener noreferrer" href={audioFileUrl}>
@@ -145,7 +137,12 @@ export default function AddTrackScreen() {
 					type="text"
 					margin="normal"
 					error={!!errors.title}
-					helperText={errors.title && errors.title.message}
+					helperText={errors.title && (
+						<TextIcon
+							icon={<ErrorIcon className={styles.errorColor} />}
+							text={<span className={styles.errorColor}>{errors.title.message}</span>}
+						/>
+					)}
 					style={{ marginBottom: 20 }}
 				/>
 
@@ -157,8 +154,13 @@ export default function AddTrackScreen() {
 						required: "You must choose a genre."
 					})}
 					SelectProps={{ native: true }}
-					error={!!errors.genre}
-					helperText={errors.genre && errors.genre.message}
+					error={!!errors.genreId}
+					helperText={errors.genreId && (
+						<TextIcon
+							icon={<ErrorIcon className={styles.errorColor} />}
+							text={<span className={styles.errorColor}>{errors.genreId.message}</span>}
+						/>
+					)}
 					margin="normal"
 				>
 					<option value="">Choose a Genre *</option>
@@ -169,8 +171,8 @@ export default function AddTrackScreen() {
 						))
 					}
 				</TextField>
-
-				{!imgUploaded && (
+				{console.log(imgUploaded, imgUploading)}
+				{(!imgUploaded || !imgUploading) && (
 					<UploadButton
 						buttonSize='large'
 						style={styles.uploadButton}
@@ -187,7 +189,12 @@ export default function AddTrackScreen() {
 					/>
 				)}
 
-				{formState.isSubmitted && !imgValid && <Box color="error.main">{imgErrorMessage}</Box>}
+				{formState.isSubmitted && !imgValid && (
+					<TextIcon
+						icon={<ErrorIcon className={styles.errorColor} />}
+						text={<span className={styles.errorColor}>{imgErrorMessage}</span>}
+					/>
+				)}
 
 				{imgPercentUploaded > 0 && imgPercentUploaded < 100 && (
 					<ProgressBar
@@ -196,8 +203,16 @@ export default function AddTrackScreen() {
 						value={imgPercentUploaded}
 					/>
 				)}
-
-				{!audioUploaded && (
+				{console.log(
+					audioFileUrl,
+					audioSize,
+					audioUploading,
+					audioError,
+					audioUploaded,
+					audioPercentUploaded,
+					audioValid,
+					audioErrorMessage)}
+				{(!audioUploaded || !audioUploading) && (
 					<UploadButton
 						buttonSize='large'
 						style={styles.uploadButton}
@@ -214,9 +229,14 @@ export default function AddTrackScreen() {
 					/>
 				)}
 
-				{formState.isSubmitted && !audioValid && <Box color="error.main">{audioErrorMessage}</Box>}
+				{formState.isSubmitted && !audioValid && (
+					<TextIcon
+						icon={<ErrorIcon className={styles.errorColor} />}
+						text={<span className={styles.errorColor}>{audioErrorMessage}</span>}
+					/>
+				)}
 
-				{audioPercentUploaded > 0 && audioPercentUploaded < 100 && (
+				{audioUploading && (
 					<ProgressBar
 						variant="determinate"
 						color="secondary"
@@ -238,7 +258,12 @@ export default function AddTrackScreen() {
 					rowsMax="4"
 					margin="normal"
 					error={!!errors.detail}
-					helperText={errors.detail && errors.detail.message}
+					helperText={errors.detail && (
+						<TextIcon
+							icon={<ErrorIcon className={styles.errorColor} />}
+							text={<span className={styles.errorColor}>{errors.detail.message}</span>}
+						/>
+					)}
 				/>
 
 				<TextField
@@ -255,14 +280,19 @@ export default function AddTrackScreen() {
 					rowsMax="50"
 					margin="normal"
 					error={!!errors.lyrics}
-					helperText={errors.lyrics && errors.lyrics.message}
+					helperText={errors.lyrics && (
+						<TextIcon
+							icon={<ErrorIcon className={styles.errorColor} />}
+							text={<span className={styles.errorColor}>{errors.lyrics.message}</span>}
+						/>
+					)}
 				/>
 
 				<Button
 					type="submit"
 					size='large'
 					style={{ marginTop: 15 }}
-					disabled={imgloading || audioloading}>Add Track</Button>
+					disabled={imgUploading || audioUploading || formWorking}>Add Track</Button>
 			</form>
 		</CheckAuth>
 	);

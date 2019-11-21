@@ -1,10 +1,11 @@
 import gql from 'graphql-tag'
 
 export const UPLOAD_URL = gql`
-  query getUploadUrl($name: String!, $type: String!) {
-    uploadUrl(name: $name, type: $type) {
+  query getUploadUrl($name: String!, $bucket: String!) {
+    uploadUrl(name: $name, bucket: $bucket) {
      signedUrl
 		 fileUrl
+     filename
     }
   }
 `;

@@ -44,5 +44,6 @@ export const addTrackScreenStyles = makeStyles({
     marginTop: 24,
     marginBottom: 5,
   },
-  successColor: { color: colors.green }
+  successColor: { color: colors.success },
+  errorColor: { color: colors.error },
 });

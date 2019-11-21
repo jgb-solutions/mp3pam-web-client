@@ -4,56 +4,64 @@ import { useApolloClient } from '@apollo/react-hooks'
 
 import { UPLOAD_URL } from '../graphql/queries';
 
-type UploadFileType = [
-  (file: File) => void,
-  string | undefined,
-  number,
-  boolean,
-  object | null,
-  boolean,
-  number,
-  boolean,
-  string | undefined
-];
+type UploadFileType = {
+  upload: (file: File) => void,
+  fileUrl: string | undefined,
+  filename: string | undefined,
+  size: number,
+  uploading: boolean,
+  error: object | null,
+  isUploaded: boolean,
+  percentUploaded: number,
+  isValid: boolean,
+  errorMessage: string | undefined
+};
 
-type Params = { type: string, message?: string | undefined, headers?: object };
+type Params = { bucket: string, message?: string | undefined, headers?: object };
 
-export default function useFileUpload({ type, message, headers }: Params): UploadFileType {
+export default function useFileUpload({ bucket, message, headers }: Params): UploadFileType {
   const client = useApolloClient();
 
-  const [valid, setValid] = useState(false);
+  const [isValid, setIsValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
-  const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
   const [fileUrl, setFileUrl] = useState(undefined);
+  const [filename, setFilename] = useState(undefined);
   const [isUploaded, setIsUploaded] = useState(false);
   const [percentUploaded, setPercentUploaded] = useState(0);
   const [size, setSize] = useState(0);
 
   useEffect(() => {
-    if (valid) {
+    if (isValid) {
       setErrorMessage(undefined)
     } else {
       setErrorMessage(message || "Please choose a file.")
     }
-  }, [valid]);
+  }, [isValid]);
+
+  useEffect(() => {
+    if (percentUploaded == 100) {
+      setIsUploaded(true);
+    }
+    setUploading(percentUploaded > 0 && percentUploaded < 100);
+  }, [percentUploaded]);
 
   const upload = async (file: File) => {
-    setLoading(true);
-
     if (!file) return;
 
     // file size
     setSize(file.size);
 
     try {
-      const { data: { uploadUrl: { signedUrl, fileUrl } } } = await client.query({
+      const { data: { uploadUrl: { signedUrl, fileUrl, filename } } } = await client.query({
         query: UPLOAD_URL,
-        variables: { name: file.name, type },
+        variables: { name: file.name, bucket },
         fetchPolicy: 'network-only'
       });
 
       setFileUrl(fileUrl);
+      setFilename(filename);
 
       const options = {
         headers: {
@@ -71,32 +79,27 @@ export default function useFileUpload({ type, message, headers }: Params): Uploa
       };
 
       try {
-        setValid(true);
+        setIsValid(true);
         const response = await axios.put(signedUrl, file, options);
-        // Success
-        setIsUploaded(true);
-        setLoading(false);
-        setValid(true);
       } catch (error) {
         setError(error)
-        setLoading(false);
-        setValid(false);
+        setIsValid(false);
       }
     } catch (error) {
       setError(error)
-      setLoading(false);
     }
   };
 
-  return [
+  return {
     upload,
     fileUrl,
     size,
-    loading,
+    uploading,
     error,
     isUploaded,
     percentUploaded,
-    valid,
-    errorMessage
-  ];
+    isValid,
+    errorMessage,
+    filename
+  };
 };
