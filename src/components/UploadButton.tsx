@@ -16,10 +16,21 @@ type Props = {
   icon?: ReactNode,
   title?: string,
   style?: string,
-  buttonSize?: 'small' | 'medium' | 'large'
+  buttonSize?: 'small' | 'medium' | 'large',
+  disabled?: boolean
 };
 
-const UploadButton = ({ style, buttonSize, buttonStyle, icon, title, accept, onChange, multiple }: Props) => {
+const UploadButton = ({
+  style,
+  buttonSize,
+  buttonStyle,
+  icon,
+  title,
+  accept,
+  onChange,
+  multiple,
+  disabled
+}: Props) => {
   const styles = useStyles();
 
   let input: HTMLInputElement | null;
@@ -32,7 +43,7 @@ const UploadButton = ({ style, buttonSize, buttonStyle, icon, title, accept, onC
 
   return (
     <div className={style}>
-      <Button className={`${styles.button} ${buttonStyle}`} onClick={triggerInput} size={buttonSize}>
+      <Button className={`${styles.button} ${buttonStyle}`} onClick={triggerInput} size={buttonSize} disabled={disabled}>
         {icon} {title}
       </Button>
       <input

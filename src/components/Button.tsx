@@ -8,12 +8,12 @@ export default withStyles({
 	root: {
 		backgroundColor: colors.primary,
 		color: colors.white,
-		paddingLeft: 40,
-		paddingRight: 40,
+		paddingLeft: 15,
+		paddingRight: 15,
 		border: "none",
 		borderRadius: 20,
 		fontWeight: "bold",
-		fontSize: 12,
+		fontSize: 11,
 		letterSpacing: 1,
 		transition: "all .1s ease-in-out",
 		"&:hover": {

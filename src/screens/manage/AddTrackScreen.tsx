@@ -11,12 +11,55 @@ import CheckAuth from "../../components/CheckAuth";
 import HeaderTitle from "../../components/HeaderTitle";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { useHistory } from "react-router-dom";
 
 import { FETCH_TRACK_UPLOAD_DATA } from "../../graphql/queries";
 import useFileUpload from "../../hooks/useFileUpload";
 import TextIcon from "../../components/TextIcon";
 import { addTrackScreenStyles } from "../../styles/addTrackScreenStyles";
 import useAddTrack from '../../hooks/useAddTrack';
+import Routes from "../../routes";
+
+type AlertDialogProps = { open: boolean, handleClickOpen: () => void, handleClose: () => void };
+
+export function AlertDialog({ open, handleClickOpen, handleClose }: AlertDialogProps) {
+	const styles = addTrackScreenStyles();
+	const history = useHistory();
+
+	const goToTracksLibrary = () => {
+		history.push(Routes.user.manage.tracks);
+	};
+
+	return (
+		<Dialog
+			open={open}
+			onClose={handleClose}
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+			maxWidth='xs'
+			disableBackdropClick
+		>
+			<DialogContent >
+				<DialogContentText id="alert-dialog-description" align='center'>
+					<p>
+						<CheckCircleIcon style={{ fontSize: 64 }} className={styles.successColor} />
+					</p>
+					<p>
+						Track successfully added!
+						</p>
+					<Button size='small' onClick={goToTracksLibrary} color="primary">
+						Go To Your Tracks
+          	</Button>
+				</DialogContentText>
+			</DialogContent>
+		</Dialog>
+	);
+}
 
 export interface FormData {
 	title: string;
@@ -62,12 +105,21 @@ export default function AddTrackScreen() {
 		errorMessage: audioErrorMessage,
 		filename: audioName
 	} = useFileUpload({ bucket: 'sound', message: "Please choose a track." });
+	const [openDialog, setOpenDialog] = React.useState(false);
+
+	const handleClickOpen = () => {
+		setOpenDialog(true);
+	};
+
+	const handleClose = () => {
+		setOpenDialog(false);
+	};
 
 	useEffect(() => {
 		if (uploadedTrack) {
-			window.alert(
-				JSON.stringify(uploadedTrack, undefined, 2)
-			);
+			// window.alert(
+			// 	JSON.stringify(uploadedTrack, undefined, 2)
+			// );
 		}
 	}, [uploadedTrack])
 
@@ -87,7 +139,7 @@ export default function AddTrackScreen() {
 	};
 
 	const handleAddTrack = async (values: FormData) => {
-		if (!imgValid && !audioValid) return;
+		if (!poster && !audioName) return;
 
 		const track = {
 			...values,
@@ -97,8 +149,9 @@ export default function AddTrackScreen() {
 			audioFileSize: audioSize
 		};
 
-		console.table(track);
 
+		console.table(track);
+		setOpenDialog(true)
 		addTrack(track);
 	};
 
@@ -106,8 +159,9 @@ export default function AddTrackScreen() {
 
 	return (
 		<CheckAuth className='react-transition scale-in'>
+			<AlertDialog open={openDialog} handleClose={handleClose} handleClickOpen={handleClickOpen} />
 			<HeaderTitle icon={<MusicNoteIcon />} text={`Add a new track`} />
-			{!imgUploading && imgUploaded && (
+			{/* {!imgUploading && imgUploaded && (
 				<p>
 					The file link is{" "}
 					<a target="_blank" rel="noopener noreferrer" href={imgFileUrl}>
@@ -123,7 +177,7 @@ export default function AddTrackScreen() {
 						{audioFileUrl}
 					</a>
 				</p>
-			)}
+			)} */}
 
 			<form onSubmit={handleSubmit(handleAddTrack)} noValidate>
 				{uploadError && <h3 dangerouslySetInnerHTML={{ __html: uploadError }} />}
@@ -133,7 +187,7 @@ export default function AddTrackScreen() {
 					})}
 					name="title"
 					id="title"
-					label="What is the Track Title? *"
+					label="Track Title *"
 					type="text"
 					margin="normal"
 					error={!!errors.title}
@@ -172,15 +226,14 @@ export default function AddTrackScreen() {
 					}
 				</TextField>
 				{console.log(imgUploaded, imgUploading)}
-				{(!imgUploaded || !imgUploading) && (
-					<UploadButton
-						buttonSize='large'
-						style={styles.uploadButton}
-						accept="image/*"
-						onChange={handleImageUpload}
-						title="Choose Poster"
-					/>
-				)}
+				<UploadButton
+					buttonSize='large'
+					style={styles.uploadButton}
+					accept="image/*"
+					onChange={handleImageUpload}
+					title="Choose Poster *"
+					disabled={imgUploaded}
+				/>
 
 				{imgUploaded && (
 					<TextIcon
@@ -212,15 +265,14 @@ export default function AddTrackScreen() {
 					audioPercentUploaded,
 					audioValid,
 					audioErrorMessage)}
-				{(!audioUploaded || !audioUploading) && (
-					<UploadButton
-						buttonSize='large'
-						style={styles.uploadButton}
-						accept=".mp3, audio/mp3"
-						onChange={handleAudioUpload}
-						title="Choose Track"
-					/>
-				)}
+				<UploadButton
+					buttonSize='large'
+					style={styles.uploadButton}
+					accept=".mp3, audio/mp3"
+					onChange={handleAudioUpload}
+					title="Choose Track *"
+					disabled={audioUploaded}
+				/>
 
 				{audioUploaded && (
 					<TextIcon
