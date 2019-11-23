@@ -4,6 +4,7 @@ import AppStateInterface from '../interfaces/AppStateInterface';
 
 const Content = (props: { style?: Object, children: ReactNode, className?: string }) => {
   const currentTrack = useSelector(({ player }: AppStateInterface) => player.currentTrack);
+
   return (
     <main
       className={props.className}
@@ -11,7 +12,7 @@ const Content = (props: { style?: Object, children: ReactNode, className?: strin
         paddingTop: 70,
         paddingLeft: 15,
         paddingRight: 15,
-        paddingBottom: currentTrack ? 86 : undefined,
+        paddingBottom: currentTrack ? 100 : undefined,
         ...props.style
       }}
     >

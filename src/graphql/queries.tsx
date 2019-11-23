@@ -18,5 +18,13 @@ export const FETCH_TRACK_UPLOAD_DATA = gql`
 				name
 			}
   	}
+    me {
+      artists(take: 50) {
+        data{
+          id
+          stage_name
+        }
+      }
+    }
   }
 `;

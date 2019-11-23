@@ -11,12 +11,9 @@ import CheckAuth from "../../components/CheckAuth";
 import HeaderTitle from "../../components/HeaderTitle";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import { useHistory } from "react-router-dom";
+import AddIcon from '@material-ui/icons/Add';
 
 import { FETCH_TRACK_UPLOAD_DATA } from "../../graphql/queries";
 import useFileUpload from "../../hooks/useFileUpload";
@@ -24,42 +21,8 @@ import TextIcon from "../../components/TextIcon";
 import { addTrackScreenStyles } from "../../styles/addTrackScreenStyles";
 import useAddTrack from '../../hooks/useAddTrack';
 import Routes from "../../routes";
-
-type AlertDialogProps = { open: boolean, handleClickOpen: () => void, handleClose: () => void };
-
-export function AlertDialog({ open, handleClickOpen, handleClose }: AlertDialogProps) {
-	const styles = addTrackScreenStyles();
-	const history = useHistory();
-
-	const goToTracksLibrary = () => {
-		history.push(Routes.user.manage.tracks);
-	};
-
-	return (
-		<Dialog
-			open={open}
-			onClose={handleClose}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
-			maxWidth='xs'
-			disableBackdropClick
-		>
-			<DialogContent >
-				<DialogContentText id="alert-dialog-description" align='center'>
-					<p>
-						<CheckCircleIcon style={{ fontSize: 64 }} className={styles.successColor} />
-					</p>
-					<p>
-						Track successfully added!
-						</p>
-					<Button size='small' onClick={goToTracksLibrary} color="primary">
-						Go To Your Tracks
-          	</Button>
-				</DialogContentText>
-			</DialogContent>
-		</Dialog>
-	);
-}
+import AlertDialog from "../../components/AlertDialog";
+import { Grid } from "@material-ui/core";
 
 export interface FormData {
 	title: string;
@@ -77,6 +40,7 @@ export interface TrackData extends FormData {
 
 export default function AddTrackScreen() {
 	const [uploadError, setUploadError] = useState("")
+	const history = useHistory();
 	const { register, handleSubmit, errors, formState } = useForm<FormData>({ mode: 'onBlur' });
 	const { data: trackUploadInfo } = useQuery(FETCH_TRACK_UPLOAD_DATA);
 	const { addTrack, loading: formWorking, error, data: uploadedTrack } = useAddTrack();
@@ -109,6 +73,10 @@ export default function AddTrackScreen() {
 
 	const handleClickOpen = () => {
 		setOpenDialog(true);
+	};
+
+	const goToTracksLibrary = () => {
+		history.push(Routes.user.manage.tracks);
 	};
 
 	const handleClose = () => {
@@ -145,7 +113,6 @@ export default function AddTrackScreen() {
 			...values,
 			poster: poster || '',
 			audioName: audioName || '',
-			artistId: 23,
 			audioFileSize: audioSize
 		};
 
@@ -159,7 +126,22 @@ export default function AddTrackScreen() {
 
 	return (
 		<CheckAuth className='react-transition scale-in'>
-			<AlertDialog open={openDialog} handleClose={handleClose} handleClickOpen={handleClickOpen} />
+			<AlertDialog
+				open={openDialog}
+				handleClose={handleClose}>
+				<DialogContentText id="alert-dialog-description" align='center'>
+					<p>
+						<CheckCircleIcon style={{ fontSize: 64 }} className={styles.successColor} />
+					</p>
+					<p>
+						Track successfully added!
+						</p>
+					<Button size='small' onClick={goToTracksLibrary} color="primary">
+						Go To Your Tracks
+          	</Button>
+				</DialogContentText>
+			</AlertDialog>
+
 			<HeaderTitle icon={<MusicNoteIcon />} text={`Add a new track`} />
 			{/* {!imgUploading && imgUploaded && (
 				<p>
@@ -199,102 +181,136 @@ export default function AddTrackScreen() {
 					)}
 					style={{ marginBottom: 20 }}
 				/>
+				<Grid container direction='row' spacing={2}>
+					<Grid item xs={12} sm>
+						<TextField
+							id="artist"
+							select
+							name='artistId'
+							inputRef={register({
+								required: "You must choose an artist."
+							})}
+							SelectProps={{ native: true }}
+							error={!!errors.artistId}
+							helperText={errors.artistId && (
+								<TextIcon
+									icon={<ErrorIcon className={styles.errorColor} />}
+									text={<span className={styles.errorColor}>{errors.artistId.message}</span>}
+								/>
+							)}
+							margin="normal"
+						>
+							<optgroup>
+								<option value="">Choose an Artist *</option>
+							</optgroup>
+							{
+								get(trackUploadInfo, 'me.artists.data') &&
+								<optgroup label="------">
+									{trackUploadInfo.me.artists.data.map(({ id, stage_name }: { id: string, stage_name: string }) => (
+										<option key={id} value={id}>{stage_name}</option>
+									))}
+								</optgroup>
+							}
+							<optgroup label="------">
+								<option value="">+ Add an Artist</option>
+							</optgroup>
+						</TextField>
+					</Grid>
+					<Grid item xs={12} sm>
+						<TextField
+							id="genre"
+							select
+							name='genreId'
+							inputRef={register({
+								required: "You must choose a genre."
+							})}
+							SelectProps={{ native: true }}
+							error={!!errors.genreId}
+							helperText={errors.genreId && (
+								<TextIcon
+									icon={<ErrorIcon className={styles.errorColor} />}
+									text={<span className={styles.errorColor}>{errors.genreId.message}</span>}
+								/>
+							)}
+							margin="normal"
+						>
+							<option value="">Choose a Genre *</option>
+							{
+								get(trackUploadInfo, 'genres.data') &&
+								trackUploadInfo.genres.data.map(({ id, name }: { id: string, name: string }) => (
+									<option key={id} value={id}>{name}</option>
+								))
+							}
+						</TextField>
+					</Grid>
+				</Grid>
 
-				<TextField
-					id="genre"
-					select
-					name='genreId'
-					inputRef={register({
-						required: "You must choose a genre."
-					})}
-					SelectProps={{ native: true }}
-					error={!!errors.genreId}
-					helperText={errors.genreId && (
-						<TextIcon
-							icon={<ErrorIcon className={styles.errorColor} />}
-							text={<span className={styles.errorColor}>{errors.genreId.message}</span>}
+				<Grid container direction='row' spacing={2}>
+					<Grid item xs={12} sm>
+						<UploadButton
+							buttonSize='large'
+							style={styles.uploadButton}
+							accept=".mp3, audio/mp3"
+							onChange={handleAudioUpload}
+							title="Choose the Track *"
+							disabled={audioUploaded}
 						/>
-					)}
-					margin="normal"
-				>
-					<option value="">Choose a Genre *</option>
-					{
-						get(trackUploadInfo, 'genres.data') &&
-						trackUploadInfo.genres.data.map(({ id, name }: { id: string, name: string }) => (
-							<option key={id} value={id}>{name}</option>
-						))
-					}
-				</TextField>
-				{console.log(imgUploaded, imgUploading)}
-				<UploadButton
-					buttonSize='large'
-					style={styles.uploadButton}
-					accept="image/*"
-					onChange={handleImageUpload}
-					title="Choose Poster *"
-					disabled={imgUploaded}
-				/>
 
-				{imgUploaded && (
-					<TextIcon
-						icon={<CheckCircleIcon className={styles.successColor} />}
-						text="Poster uploaded"
-					/>
-				)}
+						{audioUploaded && (
+							<TextIcon
+								icon={<CheckCircleIcon className={styles.successColor} />}
+								text="Track uploaded"
+							/>
+						)}
 
-				{formState.isSubmitted && !imgValid && (
-					<TextIcon
-						icon={<ErrorIcon className={styles.errorColor} />}
-						text={<span className={styles.errorColor}>{imgErrorMessage}</span>}
-					/>
-				)}
+						{formState.isSubmitted && !audioValid && (
+							<TextIcon
+								icon={<ErrorIcon className={styles.errorColor} />}
+								text={<span className={styles.errorColor}>{audioErrorMessage}</span>}
+							/>
+						)}
 
-				{imgPercentUploaded > 0 && imgPercentUploaded < 100 && (
-					<ProgressBar
-						variant="determinate"
-						color="secondary"
-						value={imgPercentUploaded}
-					/>
-				)}
-				{console.log(
-					audioFileUrl,
-					audioSize,
-					audioUploading,
-					audioError,
-					audioUploaded,
-					audioPercentUploaded,
-					audioValid,
-					audioErrorMessage)}
-				<UploadButton
-					buttonSize='large'
-					style={styles.uploadButton}
-					accept=".mp3, audio/mp3"
-					onChange={handleAudioUpload}
-					title="Choose Track *"
-					disabled={audioUploaded}
-				/>
+						{audioUploading && (
+							<ProgressBar
+								variant="determinate"
+								color="secondary"
+								value={audioPercentUploaded}
+							/>
+						)}
+					</Grid>
+					<Grid item xs={12} sm>
+						<UploadButton
+							buttonSize='large'
+							style={styles.uploadButton}
+							accept="image/*"
+							onChange={handleImageUpload}
+							title="Choose a Poster *"
+							disabled={imgUploaded}
+						/>
 
-				{audioUploaded && (
-					<TextIcon
-						icon={<CheckCircleIcon className={styles.successColor} />}
-						text="Track uploaded"
-					/>
-				)}
+						{imgUploaded && (
+							<TextIcon
+								icon={<CheckCircleIcon className={styles.successColor} />}
+								text="Poster uploaded"
+							/>
+						)}
 
-				{formState.isSubmitted && !audioValid && (
-					<TextIcon
-						icon={<ErrorIcon className={styles.errorColor} />}
-						text={<span className={styles.errorColor}>{audioErrorMessage}</span>}
-					/>
-				)}
+						{formState.isSubmitted && !imgValid && (
+							<TextIcon
+								icon={<ErrorIcon className={styles.errorColor} />}
+								text={<span className={styles.errorColor}>{imgErrorMessage}</span>}
+							/>
+						)}
 
-				{audioUploading && (
-					<ProgressBar
-						variant="determinate"
-						color="secondary"
-						value={audioPercentUploaded}
-					/>
-				)}
+						{imgPercentUploaded > 0 && imgPercentUploaded < 100 && (
+							<ProgressBar
+								variant="determinate"
+								color="secondary"
+								value={imgPercentUploaded}
+							/>
+						)}
+					</Grid>
+				</Grid>
 
 				<TextField
 					inputRef={register({
