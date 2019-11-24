@@ -17,7 +17,8 @@ type Props = {
   title?: string,
   style?: string,
   buttonSize?: 'small' | 'medium' | 'large',
-  disabled?: boolean
+  disabled?: boolean,
+  fullWidth?: boolean
 };
 
 const UploadButton = ({
@@ -29,7 +30,8 @@ const UploadButton = ({
   accept,
   onChange,
   multiple,
-  disabled
+  disabled,
+  fullWidth
 }: Props) => {
   const styles = useStyles();
 
@@ -43,7 +45,12 @@ const UploadButton = ({
 
   return (
     <div className={style}>
-      <Button className={`${styles.button} ${buttonStyle}`} onClick={triggerInput} size={buttonSize} disabled={disabled}>
+      <Button
+        className={`${styles.button} ${buttonStyle}`}
+        onClick={triggerInput}
+        size={buttonSize}
+        disabled={disabled}
+        fullWidth={fullWidth}>
         {icon} {title}
       </Button>
       <input

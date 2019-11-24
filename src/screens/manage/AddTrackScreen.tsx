@@ -3,18 +3,19 @@ import { useQuery } from '@apollo/react-hooks'
 import { get } from "lodash-es";
 import useForm from 'react-hook-form';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import { useHistory } from "react-router-dom";
+import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
+import { Grid } from "@material-ui/core";
+
 import ProgressBar from "../../components/ProgressBar";
 import TextField from "../../components/TextField";
 import Button from '../../components/Button';
 import UploadButton from '../../components/UploadButton';
 import CheckAuth from "../../components/CheckAuth";
 import HeaderTitle from "../../components/HeaderTitle";
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import { useHistory } from "react-router-dom";
-import AddIcon from '@material-ui/icons/Add';
-
 import { FETCH_TRACK_UPLOAD_DATA } from "../../graphql/queries";
 import useFileUpload from "../../hooks/useFileUpload";
 import TextIcon from "../../components/TextIcon";
@@ -22,7 +23,6 @@ import { addTrackScreenStyles } from "../../styles/addTrackScreenStyles";
 import useAddTrack from '../../hooks/useAddTrack';
 import Routes from "../../routes";
 import AlertDialog from "../../components/AlertDialog";
-import { Grid } from "@material-ui/core";
 
 export interface FormData {
 	title: string;
@@ -32,16 +32,87 @@ export interface FormData {
 	artistId: number;
 };
 
+export interface ArtistData {
+	id: number;
+	stage_name: string;
+};
+
 export interface TrackData extends FormData {
 	poster: string;
 	audioName: string;
 	audioFileSize: number
 }
 
+type AddArtistFormProps = { open: boolean, handleClose: () => void, onArtistCreated: (values: ArtistData) => void };
+type AddArtistFormData = { artistName: string, artistStageName: string };
+
+export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistFormProps) {
+	const { register, handleSubmit, errors, formState } = useForm<AddArtistFormData>({ mode: 'onBlur' });
+	const styles = addTrackScreenStyles();
+
+	const handleAddArtist = (artist: AddArtistFormData) => {
+		console.log(artist);
+		// TODO create artist
+		// onArtistCreated(artist);
+	};
+
+	return <AlertDialog
+		open={open}
+		handleClose={handleClose}
+		maxWidth='xs'>
+		<HeaderTitle style={{ margin: 0 }} icon={<PersonPinCircleIcon />} text={`Add a New Artist`} />
+
+		<form onSubmit={handleSubmit(handleAddArtist)} noValidate>
+			<TextField
+				style={{ marginTop: 0 }}
+				inputRef={register({
+					required: "The name of the artist is required.",
+				})}
+				name="artistName"
+				id="artistName"
+				label="Name *"
+				type="text"
+				margin="normal"
+				error={!!errors.artistName}
+				helperText={errors.artistName && (
+					<TextIcon
+						icon={<ErrorIcon className={styles.errorColor} />}
+						text={<span className={styles.errorColor}>{errors.artistName.message}</span>}
+					/>
+				)}
+			/>
+
+			<TextField
+				inputRef={register({
+					required: "The stage name of the artist is required.",
+				})}
+				name="artistStageName"
+				id="artistStageName"
+				label="Stage Name *"
+				type="text"
+				margin="normal"
+				error={!!errors.artistStageName}
+				helperText={errors.artistStageName && (
+					<TextIcon
+						icon={<ErrorIcon className={styles.errorColor} />}
+						text={<span className={styles.errorColor}>{errors.artistStageName.message}</span>}
+					/>
+				)}
+			/>
+
+			<Button
+				type="submit"
+				size='large'
+				style={{ marginTop: 15, marginBottom: 15 }}
+				disabled={formState.isSubmitting}>Add Artist</Button>
+		</form>
+	</AlertDialog>
+}
+
 export default function AddTrackScreen() {
 	const [uploadError, setUploadError] = useState("")
 	const history = useHistory();
-	const { register, handleSubmit, errors, formState } = useForm<FormData>({ mode: 'onBlur' });
+	const { register, handleSubmit, errors, formState, watch } = useForm<FormData>({ mode: 'onBlur' });
 	const { data: trackUploadInfo } = useQuery(FETCH_TRACK_UPLOAD_DATA);
 	const { addTrack, loading: formWorking, error, data: uploadedTrack } = useAddTrack();
 	const {
@@ -69,19 +140,35 @@ export default function AddTrackScreen() {
 		errorMessage: audioErrorMessage,
 		filename: audioName
 	} = useFileUpload({ bucket: 'sound', message: "Please choose a track." });
-	const [openDialog, setOpenDialog] = React.useState(false);
-
-	const handleClickOpen = () => {
-		setOpenDialog(true);
-	};
+	const [openTrackSuccessDialog, setOpenTrackSuccessDialog] = useState(false);
+	const [openAddArtistDialog, setOpenAddArtistDialog] = useState(false);
+	const [artistList, setArtistList] = useState<ArtistData[]>([]);
+	const watchArtistValue = watch('artistId');
 
 	const goToTracksLibrary = () => {
 		history.push(Routes.user.manage.tracks);
 	};
 
-	const handleClose = () => {
-		setOpenDialog(false);
+	const handleTrackSucessDialogClose = () => {
+		setOpenTrackSuccessDialog(false);
 	};
+
+	const handleAddArtistDialogClose = () => {
+		setOpenTrackSuccessDialog(false);
+	};
+
+	const handleOnArtistCreated = (artistData: ArtistData) => {
+		// setArtistList(artistList => [...artistList, artistData]);
+	}
+
+	useEffect(() => {
+		const artists = get(trackUploadInfo, 'me.artists.data');
+		if (artists) {
+			setArtistList(
+				artists.map(({ id, stage_name }: any) => ({ id: parseInt(id), stage_name }))
+			)
+		}
+	}, [get(trackUploadInfo, 'me.artists.data')]);
 
 	useEffect(() => {
 		if (uploadedTrack) {
@@ -91,8 +178,14 @@ export default function AddTrackScreen() {
 		}
 	}, [uploadedTrack])
 
+	useEffect(() => {
+		if (watchArtistValue === "add-artist") {
+			setOpenAddArtistDialog(true);
+		}
+	}, [watchArtistValue]);
+
 	const getFile = (event: React.ChangeEvent<HTMLInputElement>) =>
-		get(event, 'target.files[0]')
+		get(event, 'target.files[0]');
 
 	const handleImageUpload = (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -106,7 +199,7 @@ export default function AddTrackScreen() {
 		uploadAudio(getFile(event));
 	};
 
-	const handleAddTrack = async (values: FormData) => {
+	const handleAddTrack = (values: FormData) => {
 		if (!poster && !audioName) return;
 
 		const track = {
@@ -118,7 +211,7 @@ export default function AddTrackScreen() {
 
 
 		console.table(track);
-		setOpenDialog(true)
+		setOpenTrackSuccessDialog(true)
 		addTrack(track);
 	};
 
@@ -126,22 +219,6 @@ export default function AddTrackScreen() {
 
 	return (
 		<CheckAuth className='react-transition scale-in'>
-			<AlertDialog
-				open={openDialog}
-				handleClose={handleClose}>
-				<DialogContentText id="alert-dialog-description" align='center'>
-					<p>
-						<CheckCircleIcon style={{ fontSize: 64 }} className={styles.successColor} />
-					</p>
-					<p>
-						Track successfully added!
-						</p>
-					<Button size='small' onClick={goToTracksLibrary} color="primary">
-						Go To Your Tracks
-          	</Button>
-				</DialogContentText>
-			</AlertDialog>
-
 			<HeaderTitle icon={<MusicNoteIcon />} text={`Add a new track`} />
 			{/* {!imgUploading && imgUploaded && (
 				<p>
@@ -204,15 +281,15 @@ export default function AddTrackScreen() {
 								<option value="">Choose an Artist *</option>
 							</optgroup>
 							{
-								get(trackUploadInfo, 'me.artists.data') &&
+								artistList &&
 								<optgroup label="------">
-									{trackUploadInfo.me.artists.data.map(({ id, stage_name }: { id: string, stage_name: string }) => (
+									{artistList.map(({ id, stage_name }: ArtistData) => (
 										<option key={id} value={id}>{stage_name}</option>
 									))}
 								</optgroup>
 							}
 							<optgroup label="------">
-								<option value="">+ Add an Artist</option>
+								<option value="add-artist">+ Add an Artist</option>
 							</optgroup>
 						</TextField>
 					</Grid>
@@ -247,21 +324,24 @@ export default function AddTrackScreen() {
 
 				<Grid container direction='row' spacing={2}>
 					<Grid item xs={12} sm>
-						<UploadButton
-							buttonSize='large'
-							style={styles.uploadButton}
-							accept=".mp3, audio/mp3"
-							onChange={handleAudioUpload}
-							title="Choose the Track *"
-							disabled={audioUploaded}
-						/>
+						<Grid container direction='row' alignItems='center' spacing={1} className={styles.uploadButton}>
+							<Grid item xs={9}>
+								<UploadButton
+									buttonSize='large'
+									accept=".mp3, audio/mp3"
+									onChange={handleAudioUpload}
+									title="Choose the Track *"
+									disabled={audioUploaded}
+									fullWidth
+								/>
+							</Grid>
+							<Grid item xs={3}>
+								{audioUploaded && (
+									<CheckCircleIcon className={styles.successColor} />
+								)}
+							</Grid>
+						</Grid>
 
-						{audioUploaded && (
-							<TextIcon
-								icon={<CheckCircleIcon className={styles.successColor} />}
-								text="Track uploaded"
-							/>
-						)}
 
 						{formState.isSubmitted && !audioValid && (
 							<TextIcon
@@ -279,21 +359,21 @@ export default function AddTrackScreen() {
 						)}
 					</Grid>
 					<Grid item xs={12} sm>
-						<UploadButton
-							buttonSize='large'
-							style={styles.uploadButton}
-							accept="image/*"
-							onChange={handleImageUpload}
-							title="Choose a Poster *"
-							disabled={imgUploaded}
-						/>
-
-						{imgUploaded && (
-							<TextIcon
-								icon={<CheckCircleIcon className={styles.successColor} />}
-								text="Poster uploaded"
-							/>
-						)}
+						<Grid container direction='row' alignItems='center' spacing={1} className={styles.uploadButton}>
+							<Grid item xs={9}>
+								<UploadButton
+									buttonSize='large'
+									accept="image/*"
+									onChange={handleImageUpload}
+									title="Choose a Poster *"
+									disabled={imgUploaded}
+									fullWidth
+								/>
+							</Grid>
+							<Grid item xs={3}>
+								{imgUploaded && <CheckCircleIcon className={styles.successColor} />}
+							</Grid>
+						</Grid>
 
 						{formState.isSubmitted && !imgValid && (
 							<TextIcon
@@ -362,6 +442,31 @@ export default function AddTrackScreen() {
 					style={{ marginTop: 15 }}
 					disabled={imgUploading || audioUploading || formWorking}>Add Track</Button>
 			</form>
+
+			{/* Success Dialog */}
+			<AlertDialog
+				open={openTrackSuccessDialog}
+				handleClose={handleTrackSucessDialogClose}
+				disableBackdropClick>
+				<DialogContentText id="alert-dialog-description" align='center'>
+					<p>
+						<CheckCircleIcon style={{ fontSize: 64 }} className={styles.successColor} />
+					</p>
+					<p>
+						Track successfully added!
+						</p>
+					<Button size='small' onClick={goToTracksLibrary} color="primary">
+						Go To Your Tracks
+          	</Button>
+				</DialogContentText>
+			</AlertDialog>
+
+			{/* Add Artist Dialog */}
+			<AddArtistForm
+				open={openAddArtistDialog}
+				handleClose={handleAddArtistDialogClose}
+				onArtistCreated={handleOnArtistCreated}
+			/>
 		</CheckAuth>
 	);
 }

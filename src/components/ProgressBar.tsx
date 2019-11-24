@@ -6,11 +6,8 @@ import { LinearProgress } from '@material-ui/core';
 const ProgressBar = withStyles({
   root: {
     height: 10,
-    backgroundColor: darken(colors.primary, 0.5)
-  },
-  bar: {
+    backgroundColor: darken(colors.primary, 0.5),
     borderRadius: 20,
-    backgroundColor: colors.primary
   }
 })(LinearProgress);
 

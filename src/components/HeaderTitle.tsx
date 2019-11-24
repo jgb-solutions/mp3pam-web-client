@@ -18,13 +18,14 @@ const useStyles = makeStyles({
 type Props = {
   icon: React.ReactNode,
   text: string,
+  style?: object,
 };
 
 export default function HeaderTitle(props: Props) {
   const styles = useStyles();
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={props.style}>
       <div className={styles.icon}>{props.icon}</div>
       <h1 className={styles.text}>{props.text}</h1>
     </div>
