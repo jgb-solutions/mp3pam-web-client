@@ -84,6 +84,7 @@ function LoginScreen() {
       }
 
       if (payload) {
+        client.resetStore();
         dispatch({ type: LOG_IN, payload });
         history.push(Routes.pages.home);
       }

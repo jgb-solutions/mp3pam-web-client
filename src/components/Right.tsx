@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AccountCircle } from "@material-ui/icons";
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 import { get } from 'lodash-es';
+import { useMutation, useApolloClient } from '@apollo/react-hooks';
 
 
 import Button from './Button';
@@ -16,6 +17,7 @@ import Routes from '../routes';
 import { LOG_OUT } from '../store/actions/types';
 import { menuStyles } from '../styles/menuStyles';
 import AppStateInterface from '../interfaces/AppStateInterface';
+import { LOG_OUT_MUTATION } from '../graphql/mutations';
 
 const mainMenu = [
   { name: "Account", icon: <AccountCircle />, to: Routes.user.account },
@@ -45,7 +47,9 @@ type Props = {
 
 const Right = (props: Props) => {
   const styles = menuStyles();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const client = useApolloClient();
+  const [logOutMutation, { data: logged_out }] = useMutation(LOG_OUT_MUTATION)
   const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
   const userData = get(currentUser, 'data');
 
@@ -56,9 +60,16 @@ const Right = (props: Props) => {
   };
 
   const logout = () => {
-    dispatch({ type: LOG_OUT })
-    closeDrawer();
+    logOutMutation()
   }
+
+  useEffect(() => {
+    if (logged_out) {
+      client.resetStore();
+      dispatch({ type: LOG_OUT })
+      closeDrawer();
+    }
+  }, [logged_out])
 
   return (
     <>

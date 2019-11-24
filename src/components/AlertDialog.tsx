@@ -19,7 +19,8 @@ export default function AlertDialog({ open, children, handleClose, disableBackdr
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       disableBackdropClick={disableBackdropClick}
-      maxWidth={maxWidth}>
+      maxWidth={maxWidth}
+      onEscapeKeyDown={handleClose}>
       <DialogContent>
         {children}
       </DialogContent>

@@ -9,3 +9,11 @@ export const ADD_TRACK = gql`
     }
   }
 `
+
+export const LOG_OUT_MUTATION = gql`
+  mutation {
+  logout {
+    success
+  }
+}
+`

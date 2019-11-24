@@ -60,13 +60,13 @@ export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistF
 		open={open}
 		handleClose={handleClose}
 		maxWidth='xs'>
-		<HeaderTitle style={{ margin: 0 }} icon={<PersonPinCircleIcon />} text={`Add a New Artist`} />
+		<HeaderTitle style={{ margin: 0 }} textStyle={{ fontSize: 16 }} icon={<PersonPinCircleIcon />} text={`Add a New Artist`} />
 
 		<form onSubmit={handleSubmit(handleAddArtist)} noValidate>
 			<TextField
 				style={{ marginTop: 0 }}
 				inputRef={register({
-					required: "The name of the artist is required.",
+					required: "The name is required.",
 				})}
 				name="artistName"
 				id="artistName"
@@ -84,7 +84,7 @@ export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistF
 
 			<TextField
 				inputRef={register({
-					required: "The stage name of the artist is required.",
+					required: "The stage name is required.",
 				})}
 				name="artistStageName"
 				id="artistStageName"
@@ -280,14 +280,13 @@ export default function AddTrackScreen() {
 							<optgroup>
 								<option value="">Choose an Artist *</option>
 							</optgroup>
-							{
-								artistList &&
+							{artistList.length && (
 								<optgroup label="------">
 									{artistList.map(({ id, stage_name }: ArtistData) => (
 										<option key={id} value={id}>{stage_name}</option>
 									))}
 								</optgroup>
-							}
+							)}
 							<optgroup label="------">
 								<option value="add-artist">+ Add an Artist</option>
 							</optgroup>
