@@ -12,7 +12,7 @@ const Content = (props: { style?: Object, children: ReactNode, className?: strin
         paddingTop: 70,
         paddingLeft: 15,
         paddingRight: 15,
-        paddingBottom: currentTrack ? 100 : undefined,
+        paddingBottom: currentTrack ? 100 : 50,
         ...props.style
       }}
     >
