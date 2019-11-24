@@ -16,6 +16,9 @@ export const menuStyles = makeStyles(theme => ({
   mainMenu: {
     marginBottom: 30
   },
+  browseMenu: {
+    marginBottom: 30
+  },
   mainMenuLink: {
     marginBottom: 10,
   },

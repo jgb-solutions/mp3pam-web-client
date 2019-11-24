@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/react-hooks';
 import { ApolloError } from 'apollo-client';
 
-import { ADD_TRACK } from '../graphql/mutations';
+import { ADD_TRACK_MUTATION } from '../graphql/mutations';
 import { TrackData } from '../screens/manage/AddTrackScreen';
 
 type hookValues = {
@@ -12,7 +12,7 @@ type hookValues = {
 };
 
 export default function useAddTrack(): hookValues {
-  const [addTrackMutation, { loading, error, data }] = useMutation(ADD_TRACK)
+  const [addTrackMutation, { loading, error, data }] = useMutation(ADD_TRACK_MUTATION);
 
   const addTrack = (track: TrackData) => {
     addTrackMutation({ variables: { input: track } })

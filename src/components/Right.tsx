@@ -24,21 +24,20 @@ const mainMenu = [
   // { name: "Upload", icon: <CloudUpload />, to: Routes.pages.upload }
 ];
 
-const libraryMenu = [
+const CreateMenu = [
   { name: "Add Track", to: Routes.user.create.track, icon: <MusicNoteIcon /> },
   { name: "Create Album", to: Routes.user.create.album, icon: <AlbumIcon /> },
   { name: "Add Artist", to: Routes.user.create.artist, icon: <PersonPinCircleIcon /> },
-  { name: "Create PlayList", to: Routes.user.create.playlist, icon: <PlaylistAddIcon /> },
-  { name: "Add Podcast", to: Routes.user.create.podcast, icon: <MicIcon /> },
+  // { name: "Create PlayList", to: Routes.user.create.playlist, icon: <PlaylistAddIcon /> },
+  // { name: "Add Podcast", to: Routes.user.create.podcast, icon: <MicIcon /> },
 ];
 
-const favoriteMenu = [
-  { name: "Tracks", to: Routes.user.library.tracks, icon: <MusicNoteIcon /> },
-  { name: "Albums", to: Routes.user.library.albums, icon: <AlbumIcon /> },
-  { name: "Artists", to: Routes.user.library.artists, icon: <PersonPinCircleIcon /> },
-  { name: "PlayLists", to: Routes.user.library.playlists, icon: <PlaylistAddIcon /> },
-  { name: "Podcasts", to: Routes.user.library.podcasts, icon: <MicIcon /> },
-  { name: "Queue", to: Routes.user.library.queue, icon: <QueueMusicIcon /> },
+const libraryMenu = [
+  { name: "Tracks", to: Routes.user.manage.tracks, icon: <MusicNoteIcon /> },
+  { name: "Albums", to: Routes.user.manage.albums, icon: <AlbumIcon /> },
+  { name: "Artists", to: Routes.user.manage.artists, icon: <PersonPinCircleIcon /> },
+  // { name: "PlayLists", to: Routes.user.manage.playlists, icon: <PlaylistAddIcon /> },
+  // { name: "Podcasts", to: Routes.user.manage.podcasts, icon: <MicIcon /> },
 ];
 
 type Props = {
@@ -92,13 +91,13 @@ const Right = (props: Props) => {
             <div>
               <p>
                 <Link
-                  to={Routes.pages.library}
+                  to={Routes.user.manage.home}
                   className={styles.yourLibraryLink}
                   onClick={closeDrawer}>
-                  What You Like
+                  Manage Your Library
 					      </Link>
               </p>
-              {favoriteMenu.map((menuItem, index) => (
+              {libraryMenu.map((menuItem, index) => (
                 <Link
                   key={index}
                   to={menuItem.to}
@@ -108,20 +107,10 @@ const Right = (props: Props) => {
                   <span className={styles.linkText}>{menuItem.name}</span>
                 </Link>
               ))}
-            </div>
 
-            <br />
+              <br />
 
-            <div>
-              <p>
-                <Link
-                  to={Routes.user.manage.home}
-                  className={styles.yourLibraryLink}
-                  onClick={closeDrawer}>
-                  Your Library
-					      </Link>
-              </p>
-              {libraryMenu.map((menuItem, index) => (
+              {CreateMenu.map((menuItem, index) => (
                 <Link
                   key={index}
                   to={menuItem.to}

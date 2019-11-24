@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const UPLOAD_URL = gql`
+export const UPLOAD_URL_QUERY = gql`
   query getUploadUrl($name: String!, $bucket: String!) {
     uploadUrl(name: $name, bucket: $bucket) {
      signedUrl
@@ -10,7 +10,7 @@ export const UPLOAD_URL = gql`
   }
 `;
 
-export const FETCH_TRACK_UPLOAD_DATA = gql`
+export const TRACK_UPLOAD_DATA_QUERY = gql`
   query fetchTrackUploadData {
     genres {
 			data {

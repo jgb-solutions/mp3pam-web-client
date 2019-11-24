@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from "axios";
 import { useApolloClient } from '@apollo/react-hooks'
 
-import { UPLOAD_URL } from '../graphql/queries';
+import { UPLOAD_URL_QUERY } from '../graphql/queries';
 
 type UploadFileType = {
   upload: (file: File) => void,
@@ -55,7 +55,7 @@ export default function useFileUpload({ bucket, message, headers }: Params): Upl
 
     try {
       const { data: { uploadUrl: { signedUrl, fileUrl, filename } } } = await client.query({
-        query: UPLOAD_URL,
+        query: UPLOAD_URL_QUERY,
         variables: { name: file.name, bucket },
         fetchPolicy: 'network-only'
       });

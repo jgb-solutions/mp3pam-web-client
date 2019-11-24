@@ -9,6 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import { useHistory } from "react-router-dom";
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 import { Grid } from "@material-ui/core";
+import { useMutation } from '@apollo/react-hooks';
 
 import ProgressBar from "../../components/ProgressBar";
 import TextField from "../../components/TextField";
@@ -16,13 +17,14 @@ import Button from '../../components/Button';
 import UploadButton from '../../components/UploadButton';
 import CheckAuth from "../../components/CheckAuth";
 import HeaderTitle from "../../components/HeaderTitle";
-import { FETCH_TRACK_UPLOAD_DATA } from "../../graphql/queries";
+import { TRACK_UPLOAD_DATA_QUERY } from "../../graphql/queries";
 import useFileUpload from "../../hooks/useFileUpload";
 import TextIcon from "../../components/TextIcon";
 import { addTrackScreenStyles } from "../../styles/addTrackScreenStyles";
 import useAddTrack from '../../hooks/useAddTrack';
 import Routes from "../../routes";
 import AlertDialog from "../../components/AlertDialog";
+import { ADD_ARTIST_MUTATION } from "../../graphql/mutations";
 
 export interface FormData {
 	title: string;
@@ -44,17 +46,25 @@ export interface TrackData extends FormData {
 }
 
 type AddArtistFormProps = { open: boolean, handleClose: () => void, onArtistCreated: (values: ArtistData) => void };
-type AddArtistFormData = { artistName: string, artistStageName: string };
+type AddArtistFormData = { name: string, stage_name: string };
 
 export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistFormProps) {
 	const { register, handleSubmit, errors, formState } = useForm<AddArtistFormData>({ mode: 'onBlur' });
+	const [addArtistMutation, { loading, error, data }] = useMutation(ADD_ARTIST_MUTATION);
 	const styles = addTrackScreenStyles();
 
 	const handleAddArtist = (artist: AddArtistFormData) => {
 		console.log(artist);
-		// TODO create artist
-		// onArtistCreated(artist);
+		addArtistMutation({ variables: { input: artist } });
 	};
+
+	useEffect(() => {
+		if (data) {
+			console.log(data);
+			handleClose();
+			onArtistCreated(data.addArtist);
+		}
+	}, [data])
 
 	return <AlertDialog
 		open={open}
@@ -68,16 +78,16 @@ export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistF
 				inputRef={register({
 					required: "The name is required.",
 				})}
-				name="artistName"
-				id="artistName"
+				name="name"
+				id="name"
 				label="Name *"
 				type="text"
 				margin="normal"
-				error={!!errors.artistName}
-				helperText={errors.artistName && (
+				error={!!errors.name}
+				helperText={errors.name && (
 					<TextIcon
 						icon={<ErrorIcon className={styles.errorColor} />}
-						text={<span className={styles.errorColor}>{errors.artistName.message}</span>}
+						text={<span className={styles.errorColor}>{errors.name.message}</span>}
 					/>
 				)}
 			/>
@@ -86,16 +96,16 @@ export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistF
 				inputRef={register({
 					required: "The stage name is required.",
 				})}
-				name="artistStageName"
-				id="artistStageName"
+				name="stage_name"
+				id="stage_name"
 				label="Stage Name *"
 				type="text"
 				margin="normal"
-				error={!!errors.artistStageName}
-				helperText={errors.artistStageName && (
+				error={!!errors.stage_name}
+				helperText={errors.stage_name && (
 					<TextIcon
 						icon={<ErrorIcon className={styles.errorColor} />}
-						text={<span className={styles.errorColor}>{errors.artistStageName.message}</span>}
+						text={<span className={styles.errorColor}>{errors.stage_name.message}</span>}
 					/>
 				)}
 			/>
@@ -111,9 +121,10 @@ export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistF
 
 export default function AddTrackScreen() {
 	const [uploadError, setUploadError] = useState("")
+	const [chosenArtistId, setChosenArtistId] = useState<number | undefined>(undefined)
 	const history = useHistory();
 	const { register, handleSubmit, errors, formState, watch } = useForm<FormData>({ mode: 'onBlur' });
-	const { data: trackUploadInfo } = useQuery(FETCH_TRACK_UPLOAD_DATA);
+	const { data: trackUploadInfo } = useQuery(TRACK_UPLOAD_DATA_QUERY);
 	const { addTrack, loading: formWorking, error, data: uploadedTrack } = useAddTrack();
 	const {
 		upload: uploadImg,
@@ -154,11 +165,13 @@ export default function AddTrackScreen() {
 	};
 
 	const handleAddArtistDialogClose = () => {
-		setOpenTrackSuccessDialog(false);
+		setOpenAddArtistDialog(false);
 	};
 
 	const handleOnArtistCreated = (artistData: ArtistData) => {
-		// setArtistList(artistList => [...artistList, artistData]);
+		setArtistList(artistList => [artistData, ...artistList]);
+
+		setChosenArtistId(artistData.id);
 	}
 
 	useEffect(() => {
@@ -276,6 +289,7 @@ export default function AddTrackScreen() {
 								/>
 							)}
 							margin="normal"
+							value={chosenArtistId}
 						>
 							<optgroup>
 								<option value="">Choose an Artist *</option>

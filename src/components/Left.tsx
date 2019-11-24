@@ -7,6 +7,7 @@ import MicIcon from '@material-ui/icons/Mic';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 import InfoIcon from '@material-ui/icons/Info';
+import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 
 import Routes from "../routes";
 import Logo from "./Logo";
@@ -21,8 +22,17 @@ const browsingMenu = [
 	{ name: "Tracks", to: Routes.browse.tracks, icon: <MusicNoteIcon /> },
 	{ name: "Albums", to: Routes.browse.albums, icon: <AlbumIcon /> },
 	{ name: "Artists", to: Routes.browse.artists, icon: <PersonPinCircleIcon /> },
-	{ name: "PlayLists", to: Routes.browse.playlists, icon: <PlaylistAddIcon /> },
-	{ name: "Podcasts", to: Routes.browse.podcasts, icon: <MicIcon /> },
+	// { name: "PlayLists", to: Routes.browse.playlists, icon: <PlaylistAddIcon /> },
+	// { name: "Podcasts", to: Routes.browse.podcasts, icon: <MicIcon /> },
+];
+
+const favoriteMenu = [
+	{ name: "Tracks", to: Routes.user.library.tracks, icon: <MusicNoteIcon /> },
+	{ name: "Albums", to: Routes.user.library.albums, icon: <AlbumIcon /> },
+	{ name: "Artists", to: Routes.user.library.artists, icon: <PersonPinCircleIcon /> },
+	// { name: "PlayLists", to: Routes.user.library.playlists, icon: <PlaylistAddIcon /> },
+	// { name: "Podcasts", to: Routes.user.library.podcasts, icon: <MicIcon /> },
+	{ name: "Queue", to: Routes.user.library.queue, icon: <QueueMusicIcon /> },
 ];
 
 type Props = {
@@ -52,7 +62,9 @@ const Left = (props: Props) => {
 					</Link>
 				))}
 			</div>
-			<div>
+
+			{/* Browse Menu */}
+			<div className={styles.browseMenu}>
 				<p>
 					<Link
 						to={Routes.pages.browse}
@@ -62,6 +74,28 @@ const Left = (props: Props) => {
 					</Link>
 				</p>
 				{browsingMenu.map((menuItem, index) => (
+					<Link
+						key={index}
+						to={menuItem.to}
+						className={`${styles.link} ${styles.libraryLink}`}
+						onClick={closeDrawer}>
+						<span className={styles.linkIcon}>{menuItem.icon}</span>
+						<span className={styles.linkText}>{menuItem.name}</span>
+					</Link>
+				))}
+			</div>
+
+			{/* Favorite Menu */}
+			<div>
+				<p>
+					<Link
+						to={Routes.pages.library}
+						className={styles.yourLibraryLink}
+						onClick={closeDrawer}>
+						What You Like
+					      </Link>
+				</p>
+				{favoriteMenu.map((menuItem, index) => (
 					<Link
 						key={index}
 						to={menuItem.to}

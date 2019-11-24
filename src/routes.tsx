@@ -71,6 +71,9 @@ const Routes = {
 	},
 	auth: {
 		facebook: `/login-facebook`
+	},
+	links: {
+		jgbSolutions: 'https://jgb.solutions'
 	}
 };
 

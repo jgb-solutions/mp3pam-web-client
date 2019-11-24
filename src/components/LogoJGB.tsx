@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 
 import Routes from "../routes";
@@ -16,7 +15,7 @@ const useStyles = makeStyles({
 });
 
 
-export default function Logo({ style, size }: { style?: string, size?: number }) {
+export default function LOGOJGB({ style, size }: { style?: string, size?: number }) {
   const styles = useStyles();
 
   let sizes = undefined;
@@ -30,14 +29,14 @@ export default function Logo({ style, size }: { style?: string, size?: number })
 
   return (
     <>
-      <Link to={Routes.pages.home} className={styles.logoLink}>
+      <a href={Routes.links.jgbSolutions} className={styles.logoLink} target="_blank">
         <img
           style={sizes}
           className={`${styles.logo} ${style}`}
-          src="/assets/images/logo-trans-red-white.png"
-          alt="MP3 Pam logo"
+          src="/assets/images/Logo-JGB-Solutions-500x110.png"
+          alt="JGB Solutions logo"
         />
-      </Link>
+      </a>
     </>
   );
 };
