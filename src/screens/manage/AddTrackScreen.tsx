@@ -153,6 +153,7 @@ export default function AddTrackScreen() {
 	} = useFileUpload({ bucket: 'sound', message: "Please choose a track." });
 	const [openTrackSuccessDialog, setOpenTrackSuccessDialog] = useState(false);
 	const [openAddArtistDialog, setOpenAddArtistDialog] = useState(false);
+	const [openInvalidFileSize, setOpenInvalidFileSize] = useState('');
 	const [artistList, setArtistList] = useState<ArtistData[]>([]);
 	const watchArtistValue = watch('artistId');
 
@@ -160,13 +161,11 @@ export default function AddTrackScreen() {
 		history.push(Routes.user.manage.tracks);
 	};
 
-	const handleTrackSucessDialogClose = () => {
-		setOpenTrackSuccessDialog(false);
-	};
+	const handleTrackSucessDialogClose = () => setOpenTrackSuccessDialog(false);
 
-	const handleAddArtistDialogClose = () => {
-		setOpenAddArtistDialog(false);
-	};
+	const handleAddArtistDialogClose = () => setOpenAddArtistDialog(false);
+
+	const handleOpenInvalidFileSizeClose = () => setOpenInvalidFileSize('');
 
 	const handleOnArtistCreated = (artistData: ArtistData) => {
 		setArtistList(artistList => [artistData, ...artistList]);
@@ -212,6 +211,20 @@ export default function AddTrackScreen() {
 		uploadAudio(getFile(event));
 	};
 
+	const handleInvalidAudioSize = (filesize: number) => {
+		setOpenInvalidFileSize(`
+		The file size exceeds 128 MB. <br />
+		Choose another one or reduce the size to upload.
+	`)
+	};
+
+	const handleInvalidImageSize = (filesize: number) => {
+		setOpenInvalidFileSize(`
+		The file size exceeds 5 MB. <br />
+		Choose another one or reduce the size to upload.
+	`)
+	};
+
 	const handleAddTrack = (values: FormData) => {
 		if (!poster && !audioName) return;
 
@@ -233,23 +246,6 @@ export default function AddTrackScreen() {
 	return (
 		<CheckAuth className='react-transition scale-in'>
 			<HeaderTitle icon={<MusicNoteIcon />} text={`Add a new track`} />
-			{/* {!imgUploading && imgUploaded && (
-				<p>
-					The file link is{" "}
-					<a target="_blank" rel="noopener noreferrer" href={imgFileUrl}>
-						{imgFileUrl}
-					</a>
-				</p>
-			)}
-
-			{!audioUploading && audioUploaded && (
-				<p>
-					The file link is{" "}
-					<a target="_blank" rel="noopener noreferrer" href={audioFileUrl}>
-						{audioFileUrl}
-					</a>
-				</p>
-			)} */}
 
 			<form onSubmit={handleSubmit(handleAddTrack)} noValidate>
 				{uploadError && <h3 dangerouslySetInnerHTML={{ __html: uploadError }} />}
@@ -340,6 +336,8 @@ export default function AddTrackScreen() {
 						<Grid container direction='row' alignItems='center' spacing={1} className={styles.uploadButton}>
 							<Grid item xs={9}>
 								<UploadButton
+									allowedFileSize={128 * 1000 * 1024}
+									onFileSizeInvalid={handleInvalidAudioSize}
 									buttonSize='large'
 									accept=".mp3, audio/mp3"
 									onChange={handleAudioUpload}
@@ -375,6 +373,8 @@ export default function AddTrackScreen() {
 						<Grid container direction='row' alignItems='center' spacing={1} className={styles.uploadButton}>
 							<Grid item xs={9}>
 								<UploadButton
+									allowedFileSize={5 * 1000 * 1024}
+									onFileSizeInvalid={handleInvalidImageSize}
 									buttonSize='large'
 									accept="image/*"
 									onChange={handleImageUpload}
@@ -462,15 +462,14 @@ export default function AddTrackScreen() {
 				handleClose={handleTrackSucessDialogClose}
 				disableBackdropClick>
 				<DialogContentText id="alert-dialog-description" align='center'>
-					<p>
-						<CheckCircleIcon style={{ fontSize: 64 }} className={styles.successColor} />
-					</p>
-					<p>
-						Track successfully added!
-						</p>
+					<span><CheckCircleIcon style={{ fontSize: 64 }} className={styles.successColor} /></span>
+					<br />
+					<span>Track successfully added!</span>
+					<br />
+					<br />
 					<Button size='small' onClick={goToTracksLibrary} color="primary">
 						Go To Your Tracks
-          	</Button>
+          </Button>
 				</DialogContentText>
 			</AlertDialog>
 
@@ -480,6 +479,25 @@ export default function AddTrackScreen() {
 				handleClose={handleAddArtistDialogClose}
 				onArtistCreated={handleOnArtistCreated}
 			/>
+
+			{/* Handling invalid file sizes */}
+			{/* Success Dialog */}
+			<AlertDialog
+				open={!!openInvalidFileSize}
+				handleClose={handleOpenInvalidFileSizeClose}>
+				<DialogContentText id="alert-dialog-description" align='center'>
+					<span>
+						<ErrorIcon style={{ fontSize: 64 }} className={styles.errorColor} />
+					</span>
+					<br />
+					<span dangerouslySetInnerHTML={{ __html: openInvalidFileSize }} />
+					<br />
+					<br />
+					<Button size='small' onClick={handleOpenInvalidFileSizeClose} color="primary">
+						OK
+          </Button>
+				</DialogContentText>
+			</AlertDialog>
 		</CheckAuth>
 	);
 }

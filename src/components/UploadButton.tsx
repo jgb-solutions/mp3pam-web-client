@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 import { makeStyles } from '@material-ui/styles';
+import { get } from "lodash-es";
+
 import Button from './Button';
 
 const useStyles = makeStyles({
@@ -18,7 +20,9 @@ type Props = {
   style?: string,
   buttonSize?: 'small' | 'medium' | 'large',
   disabled?: boolean,
-  fullWidth?: boolean
+  fullWidth?: boolean,
+  allowedFileSize?: number,
+  onFileSizeInvalid?: (fileSize: number) => void
 };
 
 const UploadButton = ({
@@ -31,7 +35,9 @@ const UploadButton = ({
   onChange,
   multiple,
   disabled,
-  fullWidth
+  fullWidth,
+  allowedFileSize,
+  onFileSizeInvalid
 }: Props) => {
   const styles = useStyles();
 
@@ -41,6 +47,20 @@ const UploadButton = ({
     if (input) {
       input.click();
     }
+  };
+
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file: File = get(event, 'target.files[0]');
+
+    if (file && allowedFileSize && onFileSizeInvalid) {
+      if (file.size > allowedFileSize) {
+        onFileSizeInvalid(file.size);
+
+        return;
+      }
+    }
+
+    onChange(event);
   };
 
   return (
@@ -57,7 +77,7 @@ const UploadButton = ({
         style={{ display: 'none' }}
         ref={inputRef => { input = inputRef }}
         accept={accept}
-        onChange={onChange}
+        onChange={handleOnChange}
         type="file"
         multiple={multiple}
       />

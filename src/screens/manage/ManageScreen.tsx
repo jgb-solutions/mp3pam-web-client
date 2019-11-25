@@ -1,4 +1,7 @@
 import React from "react";
+import GroupWorkIcon from '@material-ui/icons/GroupWork';
+
+import HeaderTitle from "../../components/HeaderTitle";
 // import { useSelector } from "react-redux";
 
 // import ListTable from '../components/ListTable';
@@ -9,7 +12,7 @@ export default function ManageScreen() {
 
   return (
     <>
-      <h1>Your Library</h1>
+      <HeaderTitle icon={<GroupWorkIcon />} text="Your Library" />
 
       {/* {!list && <h3>Your queue is empty!</h3>} */}
 
