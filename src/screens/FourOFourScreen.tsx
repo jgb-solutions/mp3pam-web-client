@@ -15,8 +15,8 @@ export default function FourOFour() {
       <HeaderTitle icon={<FindReplaceIcon />} text="OOPS! Are You Lost?" />
       <h3>Go to the <Link style={{ color: 'white' }} to={Routes.pages.home}>home page</Link>{' '}
         or <span style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={goBack}>go back</span>.</h3>
-      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', paddingBottom: 160 }}>
-        <img src="/assets/images/lost.png" style={{ maxWidth: '100%' }} />
+      <div style={{ height: '100vh', display: 'flex', alignItems: 'flex-end', paddingBottom: 180 }}>
+        <img src="/assets/images/lost-386x999.png" style={{ maxHeight: '100%' }} />
       </div>
     </>
   );
