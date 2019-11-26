@@ -20,16 +20,16 @@ const mainMenu = [
 
 const browsingMenu = [
 	{ name: "Tracks", to: Routes.browse.tracks, icon: <MusicNoteIcon /> },
-	{ name: "Albums", to: Routes.browse.albums, icon: <AlbumIcon /> },
 	{ name: "Artists", to: Routes.browse.artists, icon: <PersonPinCircleIcon /> },
+	{ name: "Albums", to: Routes.browse.albums, icon: <AlbumIcon /> },
 	// { name: "PlayLists", to: Routes.browse.playlists, icon: <PlaylistAddIcon /> },
 	// { name: "Podcasts", to: Routes.browse.podcasts, icon: <MicIcon /> },
 ];
 
 const favoriteMenu = [
 	{ name: "Tracks", to: Routes.user.library.tracks, icon: <MusicNoteIcon /> },
-	{ name: "Albums", to: Routes.user.library.albums, icon: <AlbumIcon /> },
 	{ name: "Artists", to: Routes.user.library.artists, icon: <PersonPinCircleIcon /> },
+	{ name: "Albums", to: Routes.user.library.albums, icon: <AlbumIcon /> },
 	// { name: "PlayLists", to: Routes.user.library.playlists, icon: <PlaylistAddIcon /> },
 	// { name: "Podcasts", to: Routes.user.library.podcasts, icon: <MicIcon /> },
 	{ name: "Queue", to: Routes.user.library.queue, icon: <QueueMusicIcon /> },

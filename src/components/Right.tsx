@@ -26,16 +26,16 @@ const mainMenu = [
 
 const CreateMenu = [
   { name: "Add Track", to: Routes.user.create.track, icon: <MusicNoteIcon /> },
-  { name: "Create Album", to: Routes.user.create.album, icon: <AlbumIcon /> },
   { name: "Add Artist", to: Routes.user.create.artist, icon: <PersonPinCircleIcon /> },
+  { name: "Create Album", to: Routes.user.create.album, icon: <AlbumIcon /> },
   // { name: "Create PlayList", to: Routes.user.create.playlist, icon: <PlaylistAddIcon /> },
   // { name: "Add Podcast", to: Routes.user.create.podcast, icon: <MicIcon /> },
 ];
 
 const libraryMenu = [
   { name: "Tracks", to: Routes.user.manage.tracks, icon: <MusicNoteIcon /> },
-  { name: "Albums", to: Routes.user.manage.albums, icon: <AlbumIcon /> },
   { name: "Artists", to: Routes.user.manage.artists, icon: <PersonPinCircleIcon /> },
+  { name: "Albums", to: Routes.user.manage.albums, icon: <AlbumIcon /> },
   // { name: "PlayLists", to: Routes.user.manage.playlists, icon: <PlaylistAddIcon /> },
   // { name: "Podcasts", to: Routes.user.manage.podcasts, icon: <MicIcon /> },
 ];

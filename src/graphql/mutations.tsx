@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const ADD_TRACK_MUTATION = gql`
-  mutation addTrack($input: TrackInput!) {
+  mutation AddTrack($input: TrackInput!) {
     addTrack(input: $input) {
     	id
 		 	title
@@ -11,7 +11,7 @@ export const ADD_TRACK_MUTATION = gql`
 `
 
 export const ADD_ARTIST_MUTATION = gql`
-  mutation addTrack($input: ArtistInput!) {
+  mutation AddArtist($input: ArtistInput!) {
     addArtist(input: $input) {
      id
      stage_name
@@ -19,10 +19,19 @@ export const ADD_ARTIST_MUTATION = gql`
   }
 `
 
-export const LOG_OUT_MUTATION = gql`
-  mutation {
-  logout {
-    success
+export const ADD_GENRE_MUTATION = gql`
+  mutation AddGenre($input: GenreInput!) {
+    addGenre(input: $input) {
+     id
+     name
+   }
   }
-}
+`
+
+export const LOG_OUT_MUTATION = gql`
+  mutation LogOut{
+    logout {
+      success
+    }
+  }
 `

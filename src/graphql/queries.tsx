@@ -19,8 +19,8 @@ export const TRACK_UPLOAD_DATA_QUERY = gql`
 			}
   	}
     me {
-      artists(take: 50) {
-        data{
+      artists_by_stage_name_asc(take: 50) {
+        data {
           id
           stage_name
         }

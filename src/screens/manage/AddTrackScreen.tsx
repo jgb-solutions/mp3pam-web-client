@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from '@apollo/react-hooks'
-import { get } from "lodash-es";
+import { get, uniq } from "lodash-es";
 import useForm from 'react-hook-form';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -24,19 +24,24 @@ import { addTrackScreenStyles } from "../../styles/addTrackScreenStyles";
 import useAddTrack from '../../hooks/useAddTrack';
 import Routes from "../../routes";
 import AlertDialog from "../../components/AlertDialog";
-import { ADD_ARTIST_MUTATION } from "../../graphql/mutations";
+import { ADD_ARTIST_MUTATION, ADD_GENRE_MUTATION } from "../../graphql/mutations";
 
 export interface FormData {
 	title: string;
-	genreId: number;
+	genreId: number | string;
 	detail: string;
 	lyrics: string;
-	artistId: number;
+	artistId: number | string;
 };
 
 export interface ArtistData {
 	id: number;
 	stage_name: string;
+};
+
+export interface GenreData {
+	id: number;
+	name: string;
 };
 
 export interface TrackData extends FormData {
@@ -50,7 +55,7 @@ type AddArtistFormData = { name: string, stage_name: string };
 
 export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistFormProps) {
 	const { register, handleSubmit, errors, formState } = useForm<AddArtistFormData>({ mode: 'onBlur' });
-	const [addArtistMutation, { loading, error, data }] = useMutation(ADD_ARTIST_MUTATION);
+	const [addArtistMutation, { loading: artistLoading, error: artistError, data: artistData }] = useMutation(ADD_ARTIST_MUTATION);
 	const styles = addTrackScreenStyles();
 
 	const handleAddArtist = (artist: AddArtistFormData) => {
@@ -59,12 +64,12 @@ export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistF
 	};
 
 	useEffect(() => {
-		if (data) {
-			console.log(data);
+		if (artistData) {
+			console.log(artistData);
 			handleClose();
-			onArtistCreated(data.addArtist);
+			onArtistCreated(artistData.addArtist);
 		}
-	}, [data])
+	}, [artistData])
 
 	return <AlertDialog
 		open={open}
@@ -78,6 +83,7 @@ export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistF
 				inputRef={register({
 					required: "The name is required.",
 				})}
+				autoFocus
 				name="name"
 				id="name"
 				label="Name *"
@@ -119,11 +125,74 @@ export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistF
 	</AlertDialog>
 }
 
+type AddGenreFormProps = { open: boolean, handleClose: () => void, onGenreCreated: (values: GenreData) => void };
+type AddGenreFormData = { name: string };
+export function AddGenreForm({ open, handleClose, onGenreCreated }: AddGenreFormProps) {
+	const { register, handleSubmit, errors, formState } = useForm<AddGenreFormData>({ mode: 'onBlur' });
+	const [addGenreMutation, { loading: genreLoading, error: genreError, data: genreData }] = useMutation(ADD_GENRE_MUTATION);
+	const styles = addTrackScreenStyles();
+
+	const handleAddGenre = (genre: AddGenreFormData) => {
+		console.log(genre);
+		addGenreMutation({ variables: { input: genre } });
+	};
+
+	useEffect(() => {
+		if (genreData) {
+			console.log(genreData);
+			handleClose();
+			onGenreCreated(genreData.addGenre);
+		}
+	}, [genreData])
+
+	return <AlertDialog
+		open={open}
+		handleClose={handleClose}
+		maxWidth='xs'>
+		<HeaderTitle style={{ margin: 0 }} textStyle={{ fontSize: 16 }} icon={<PersonPinCircleIcon />} text={`Add a New Genre`} />
+
+		<form onSubmit={handleSubmit(handleAddGenre)} noValidate>
+			<TextField
+				style={{ marginTop: 0 }}
+				inputRef={register({
+					required: "The name is required.",
+				})}
+				autoFocus
+				name="name"
+				id="name"
+				label="Name *"
+				type="text"
+				margin="normal"
+				error={!!errors.name}
+				helperText={errors.name && (
+					<TextIcon
+						icon={<ErrorIcon className={styles.errorColor} />}
+						text={<span className={styles.errorColor}>{errors.name.message}</span>}
+					/>
+				)}
+			/>
+
+			<Button
+				type="submit"
+				size='large'
+				style={{ marginTop: 15, marginBottom: 15 }}
+				disabled={formState.isSubmitting}>Add Genre</Button>
+		</form>
+	</AlertDialog>
+}
+
 export default function AddTrackScreen() {
-	const [uploadError, setUploadError] = useState("")
-	const [chosenArtistId, setChosenArtistId] = useState<number | undefined>(undefined)
+	const [chosenArtistId, setChosenArtistId] = useState<number | undefined | string>(undefined)
+	const [chosenGenreId, setChosenGenreId] = useState<number | undefined | string>(undefined)
 	const history = useHistory();
-	const { register, handleSubmit, errors, formState, watch } = useForm<FormData>({ mode: 'onBlur' });
+	const { register,
+		handleSubmit,
+		errors,
+		formState,
+		watch,
+		setError,
+		clearError,
+		setValue } = useForm<FormData>({ mode: 'onBlur' });
 	const { data: trackUploadInfo } = useQuery(TRACK_UPLOAD_DATA_QUERY);
 	const { addTrack, loading: formWorking, error, data: uploadedTrack } = useAddTrack();
 	const {
@@ -137,7 +206,7 @@ export default function AddTrackScreen() {
 		isValid: imgValid,
 		errorMessage: imgErrorMessage,
 		filename: poster
-	} = useFileUpload({ bucket: 'img', message: "Please choose a poster." });
+	} = useFileUpload({ bucket: 'img', message: "You must choose a poster." });
 
 	const {
 		upload: uploadAudio,
@@ -150,12 +219,15 @@ export default function AddTrackScreen() {
 		isValid: audioValid,
 		errorMessage: audioErrorMessage,
 		filename: audioName
-	} = useFileUpload({ bucket: 'sound', message: "Please choose a track." });
+	} = useFileUpload({ bucket: 'sound', message: "You must choose a track." });
 	const [openTrackSuccessDialog, setOpenTrackSuccessDialog] = useState(false);
 	const [openAddArtistDialog, setOpenAddArtistDialog] = useState(false);
+	const [openAddGenreDialog, setOpenAddGenreDialog] = useState(false);
 	const [openInvalidFileSize, setOpenInvalidFileSize] = useState('');
 	const [artistList, setArtistList] = useState<ArtistData[]>([]);
+	const [genreList, setGenreList] = useState<GenreData[]>([]);
 	const watchArtistValue = watch('artistId');
+	const watchGenreValue = watch('genreId');
 
 	const goToTracksLibrary = () => {
 		history.push(Routes.user.manage.tracks);
@@ -163,38 +235,75 @@ export default function AddTrackScreen() {
 
 	const handleTrackSucessDialogClose = () => setOpenTrackSuccessDialog(false);
 
-	const handleAddArtistDialogClose = () => setOpenAddArtistDialog(false);
+	const handleAddArtistDialogClose = () => {
+		if (!chosenArtistId) {
+			setChosenArtistId(undefined)
+			setValue('artistId', "");
+			setError('artistId', 'required', "You must choose an artist.");
+		}
+
+		setOpenAddArtistDialog(false);
+	}
+
+	const handleAddGenreDialogClose = () => {
+		if (!chosenGenreId) {
+			setChosenGenreId(undefined)
+			setValue('genreId', "");
+			setError('genreId', 'required', "You must choose an genre.");
+		}
+
+		setOpenAddGenreDialog(false);
+	};
 
 	const handleOpenInvalidFileSizeClose = () => setOpenInvalidFileSize('');
 
-	const handleOnArtistCreated = (artistData: ArtistData) => {
-		setArtistList(artistList => [artistData, ...artistList]);
+	const handleOnArtistCreated = ({ id, stage_name }: ArtistData) => {
+		setArtistList(artistList => [{ id, stage_name }, ...artistList]);
 
-		setChosenArtistId(artistData.id);
-	}
+		setChosenArtistId(id);
+		clearError('artistId');
+	};
+
+	const handleOnGenreCreated = ({ id, name }: GenreData) => {
+		const genreExist = genreList.find(genre => genre.id == id);
+
+		if (!genreExist) {
+			setGenreList(genreList => [{ id, name }, ...genreList]);
+		}
+
+		setChosenGenreId(id);
+		clearError('genreId');
+	};
 
 	useEffect(() => {
-		const artists = get(trackUploadInfo, 'me.artists.data');
+		const artists = get(trackUploadInfo, 'me.artists_by_stage_name_asc.data');
 		if (artists) {
 			setArtistList(
 				artists.map(({ id, stage_name }: any) => ({ id: parseInt(id), stage_name }))
 			)
 		}
-	}, [get(trackUploadInfo, 'me.artists.data')]);
+	}, [get(trackUploadInfo, 'me.artists_by_stage_name_asc.data')]);
 
 	useEffect(() => {
-		if (uploadedTrack) {
-			// window.alert(
-			// 	JSON.stringify(uploadedTrack, undefined, 2)
-			// );
+		const genres = get(trackUploadInfo, 'genres.data');
+		if (genres) {
+			setGenreList(
+				genres.map(({ id, name }: any) => ({ id: parseInt(id), name }))
+			)
 		}
-	}, [uploadedTrack])
+	}, [get(trackUploadInfo, 'genres.data')]);
 
 	useEffect(() => {
 		if (watchArtistValue === "add-artist") {
 			setOpenAddArtistDialog(true);
 		}
 	}, [watchArtistValue]);
+
+	useEffect(() => {
+		if (watchGenreValue === "add-genre") {
+			setOpenAddGenreDialog(true);
+		}
+	}, [watchGenreValue]);
 
 	const getFile = (event: React.ChangeEvent<HTMLInputElement>) =>
 		get(event, 'target.files[0]');
@@ -248,7 +357,6 @@ export default function AddTrackScreen() {
 			<HeaderTitle icon={<MusicNoteIcon />} text={`Add a new track`} />
 
 			<form onSubmit={handleSubmit(handleAddTrack)} noValidate>
-				{uploadError && <h3 dangerouslySetInnerHTML={{ __html: uploadError }} />}
 				<TextField
 					inputRef={register({
 						required: "The title of the track is required.",
@@ -285,7 +393,7 @@ export default function AddTrackScreen() {
 								/>
 							)}
 							margin="normal"
-							value={chosenArtistId}
+							value={chosenArtistId ? chosenArtistId : undefined}
 						>
 							<optgroup>
 								<option value="">Choose an Artist *</option>
@@ -307,9 +415,7 @@ export default function AddTrackScreen() {
 							id="genre"
 							select
 							name='genreId'
-							inputRef={register({
-								required: "You must choose a genre."
-							})}
+							inputRef={register({ required: "You must choose an genre." })}
 							SelectProps={{ native: true }}
 							error={!!errors.genreId}
 							helperText={errors.genreId && (
@@ -319,14 +425,21 @@ export default function AddTrackScreen() {
 								/>
 							)}
 							margin="normal"
+							value={chosenGenreId ? chosenGenreId : undefined}
 						>
-							<option value="">Choose a Genre *</option>
-							{
-								get(trackUploadInfo, 'genres.data') &&
-								trackUploadInfo.genres.data.map(({ id, name }: { id: string, name: string }) => (
-									<option key={id} value={id}>{name}</option>
-								))
-							}
+							<optgroup>
+								<option value="">Choose an Genre *</option>
+							</optgroup>
+							{genreList.length && (
+								<optgroup label="------">
+									{genreList.map(({ id, name }: GenreData) => (
+										<option key={id} value={id}>{name}</option>
+									))}
+								</optgroup>
+							)}
+							<optgroup label="------">
+								<option value="add-genre">+ Add a Genre</option>
+							</optgroup>
 						</TextField>
 					</Grid>
 				</Grid>
@@ -478,6 +591,12 @@ export default function AddTrackScreen() {
 				open={openAddArtistDialog}
 				handleClose={handleAddArtistDialogClose}
 				onArtistCreated={handleOnArtistCreated}
+			/>
+			{/* Add Genre Dialog */}
+			<AddGenreForm
+				open={openAddGenreDialog}
+				handleClose={handleAddGenreDialogClose}
+				onGenreCreated={handleOnGenreCreated}
 			/>
 
 			{/* Handling invalid file sizes */}
