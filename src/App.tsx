@@ -38,10 +38,10 @@ import BrowsePlaylistsScreen from './screens/browse/BrowsePlaylistsScreen';
 
 // Manage Screens
 import ManageScreen from './screens/manage/ManageScreen';
-import AddPodcastScreen from './screens/manage/AddPodcastScreen';
+// import AddPodcastScreen from './screens/manage/AddPodcastScreen';
 import CreateAlbumScreen from './screens/manage/CreateAlbumScreen';
 import AddArtistScreen from './screens/manage/AddArtistScreen';
-import CreatePlaylistScreen from './screens/manage/CreatePlaylistScreen';
+// import CreatePlaylistScreen from './screens/manage/CreatePlaylistScreen';
 import YourPlaylistsScreen from './screens/library/YourPlaylistsScreen';
 // Auth screens
 import FacebookAuth from './screens/auth/FacebookAuth';
@@ -254,17 +254,17 @@ export default function App() {
                     <AddArtistScreen />
                   </Main>
                 </Route>
-                <Route path={Routes.user.create.playlist}>
+                {/* <Route path={Routes.user.create.playlist}>
                   <Main>
                     <CreatePlaylistScreen />
                   </Main>
-                </Route>
+                </Route> */}
                 {/* User Account */}
-                <Route path={Routes.user.create.podcast}>
+                {/* <Route path={Routes.user.create.podcast}>
                   <Main>
                     <AddPodcastScreen />
                   </Main>
-                </Route>
+                </Route> */}
                 {/* User Account */}
                 <Route path={Routes.user.account}>
                   <Main>

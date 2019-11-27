@@ -38,10 +38,11 @@ export default function useFileUpload({ bucket, message, headers }: Params): Upl
     } else {
       setErrorMessage(message || "Please choose a file.")
     }
+    // eslint-disable-next-line
   }, [isValid]);
 
   useEffect(() => {
-    if (percentUploaded == 100) {
+    if (percentUploaded === 100) {
       setIsUploaded(true);
     }
     setUploading(percentUploaded > 0 && percentUploaded < 100);
@@ -80,7 +81,7 @@ export default function useFileUpload({ bucket, message, headers }: Params): Upl
 
       try {
         setIsValid(true);
-        const response = await axios.put(signedUrl, file, options);
+        await axios.put(signedUrl, file, options);
       } catch (error) {
         setError(error)
         setIsValid(false);

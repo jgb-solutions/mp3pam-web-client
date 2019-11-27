@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/Home";
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import AlbumIcon from '@material-ui/icons/Album';
-import MicIcon from '@material-ui/icons/Mic';
-import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 import InfoIcon from '@material-ui/icons/Info';
 import QueueMusicIcon from '@material-ui/icons/QueueMusic';

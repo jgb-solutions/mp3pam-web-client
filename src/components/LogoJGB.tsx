@@ -29,7 +29,11 @@ export default function LOGOJGB({ style, size }: { style?: string, size?: number
 
   return (
     <>
-      <a href={Routes.links.jgbSolutions} className={styles.logoLink} target="_blank">
+      <a
+        target="_blank"
+        href={Routes.links.jgbSolutions}
+        className={styles.logoLink}
+        rel="noopener noreferrer">
         <img
           style={sizes}
           className={`${styles.logo} ${style}`}

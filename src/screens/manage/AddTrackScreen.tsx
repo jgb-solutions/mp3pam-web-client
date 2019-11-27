@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from '@apollo/react-hooks'
-import { get, uniq } from "lodash-es";
+import { get } from "lodash-es";
 import useForm from 'react-hook-form';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -28,19 +28,19 @@ import { ADD_ARTIST_MUTATION, ADD_GENRE_MUTATION } from "../../graphql/mutations
 
 export interface FormData {
 	title: string;
-	genreId: number | string;
+	genreId: string;
 	detail: string;
 	lyrics: string;
-	artistId: number | string;
+	artistId: string;
 };
 
 export interface ArtistData {
-	id: number;
+	id: string;
 	stage_name: string;
 };
 
 export interface GenreData {
-	id: number;
+	id: string;
 	name: string;
 };
 
@@ -50,25 +50,32 @@ export interface TrackData extends FormData {
 	audioFileSize: number
 }
 
-type AddArtistFormProps = { open: boolean, handleClose: () => void, onArtistCreated: (values: ArtistData) => void };
-type AddArtistFormData = { name: string, stage_name: string };
+type AddArtistFormProps = {
+	open: boolean,
+	handleClose: () => void,
+	onArtistCreated: (values: ArtistData) => void
+};
+
+type AddArtistFormData = {
+	name: string,
+	stage_name: string
+};
 
 export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistFormProps) {
 	const { register, handleSubmit, errors, formState } = useForm<AddArtistFormData>({ mode: 'onBlur' });
-	const [addArtistMutation, { loading: artistLoading, error: artistError, data: artistData }] = useMutation(ADD_ARTIST_MUTATION);
+	const [addArtistMutation, { data: artistData }] = useMutation(ADD_ARTIST_MUTATION);
 	const styles = addTrackScreenStyles();
 
 	const handleAddArtist = (artist: AddArtistFormData) => {
-		console.log(artist);
 		addArtistMutation({ variables: { input: artist } });
 	};
 
 	useEffect(() => {
 		if (artistData) {
-			console.log(artistData);
 			handleClose();
 			onArtistCreated(artistData.addArtist);
 		}
+		// eslint-disable-next-line
 	}, [artistData])
 
 	return <AlertDialog
@@ -129,20 +136,19 @@ type AddGenreFormProps = { open: boolean, handleClose: () => void, onGenreCreate
 type AddGenreFormData = { name: string };
 export function AddGenreForm({ open, handleClose, onGenreCreated }: AddGenreFormProps) {
 	const { register, handleSubmit, errors, formState } = useForm<AddGenreFormData>({ mode: 'onBlur' });
-	const [addGenreMutation, { loading: genreLoading, error: genreError, data: genreData }] = useMutation(ADD_GENRE_MUTATION);
+	const [addGenreMutation, { data: genreData }] = useMutation(ADD_GENRE_MUTATION);
 	const styles = addTrackScreenStyles();
 
 	const handleAddGenre = (genre: AddGenreFormData) => {
-		console.log(genre);
 		addGenreMutation({ variables: { input: genre } });
 	};
 
 	useEffect(() => {
 		if (genreData) {
-			console.log(genreData);
 			handleClose();
 			onGenreCreated(genreData.addGenre);
 		}
+		// eslint-disable-next-line
 	}, [genreData])
 
 	return <AlertDialog
@@ -182,8 +188,6 @@ export function AddGenreForm({ open, handleClose, onGenreCreated }: AddGenreForm
 }
 
 export default function AddTrackScreen() {
-	const [chosenArtistId, setChosenArtistId] = useState<number | undefined | string>(undefined)
-	const [chosenGenreId, setChosenGenreId] = useState<number | undefined | string>(undefined)
 	const history = useHistory();
 	const { register,
 		handleSubmit,
@@ -194,13 +198,10 @@ export default function AddTrackScreen() {
 		clearError,
 		setValue } = useForm<FormData>({ mode: 'onBlur' });
 	const { data: trackUploadInfo } = useQuery(TRACK_UPLOAD_DATA_QUERY);
-	const { addTrack, loading: formWorking, error, data: uploadedTrack } = useAddTrack();
+	const { addTrack, loading: formWorking, data: uploadedTrack } = useAddTrack();
 	const {
 		upload: uploadImg,
-		fileUrl: imgFileUrl,
-		size: imgSize,
 		uploading: imgUploading,
-		error: imgError,
 		isUploaded: imgUploaded,
 		percentUploaded: imgPercentUploaded,
 		isValid: imgValid,
@@ -210,10 +211,8 @@ export default function AddTrackScreen() {
 
 	const {
 		upload: uploadAudio,
-		fileUrl: audioFileUrl,
 		size: audioSize,
 		uploading: audioUploading,
-		error: audioError,
 		isUploaded: audioUploaded,
 		percentUploaded: audioPercentUploaded,
 		isValid: audioValid,
@@ -226,6 +225,8 @@ export default function AddTrackScreen() {
 	const [openInvalidFileSize, setOpenInvalidFileSize] = useState('');
 	const [artistList, setArtistList] = useState<ArtistData[]>([]);
 	const [genreList, setGenreList] = useState<GenreData[]>([]);
+	const [chosenArtistId, setChosenArtistId] = useState("")
+	const [chosenGenreId, setChosenGenreId] = useState("")
 	const watchArtistValue = watch('artistId');
 	const watchGenreValue = watch('genreId');
 
@@ -236,8 +237,7 @@ export default function AddTrackScreen() {
 	const handleTrackSucessDialogClose = () => setOpenTrackSuccessDialog(false);
 
 	const handleAddArtistDialogClose = () => {
-		if (!chosenArtistId) {
-			setChosenArtistId(undefined)
+		if (!watchArtistValue || watchArtistValue === "add-artist") {
 			setValue('artistId', "");
 			setError('artistId', 'required', "You must choose an artist.");
 		}
@@ -246,8 +246,7 @@ export default function AddTrackScreen() {
 	}
 
 	const handleAddGenreDialogClose = () => {
-		if (!chosenGenreId) {
-			setChosenGenreId(undefined)
+		if (!watchGenreValue || watchGenreValue === "add-genre") {
 			setValue('genreId', "");
 			setError('genreId', 'required', "You must choose an genre.");
 		}
@@ -258,40 +257,60 @@ export default function AddTrackScreen() {
 	const handleOpenInvalidFileSizeClose = () => setOpenInvalidFileSize('');
 
 	const handleOnArtistCreated = ({ id, stage_name }: ArtistData) => {
-		setArtistList(artistList => [{ id, stage_name }, ...artistList]);
+		const artistExist = artistList.find(artist => artist.id === id);
+
+		if (!artistExist) {
+			setArtistList(artistList => [{ id, stage_name }, ...artistList]);
+		}
 
 		setChosenArtistId(id);
-		clearError('artistId');
 	};
 
 	const handleOnGenreCreated = ({ id, name }: GenreData) => {
-		const genreExist = genreList.find(genre => genre.id == id);
+		const genreExist = genreList.find(genre => genre.id === id);
 
 		if (!genreExist) {
 			setGenreList(genreList => [{ id, name }, ...genreList]);
 		}
 
 		setChosenGenreId(id);
-		clearError('genreId');
 	};
 
 	useEffect(() => {
 		const artists = get(trackUploadInfo, 'me.artists_by_stage_name_asc.data');
 		if (artists) {
 			setArtistList(
-				artists.map(({ id, stage_name }: any) => ({ id: parseInt(id), stage_name }))
+				artists.map(({ id, stage_name }: ArtistData) => ({ id, stage_name }))
 			)
 		}
+		// eslint-disable-next-line
 	}, [get(trackUploadInfo, 'me.artists_by_stage_name_asc.data')]);
 
 	useEffect(() => {
 		const genres = get(trackUploadInfo, 'genres.data');
 		if (genres) {
 			setGenreList(
-				genres.map(({ id, name }: any) => ({ id: parseInt(id), name }))
+				genres.map(({ id, name }: GenreData) => ({ id, name }))
 			)
 		}
+		// eslint-disable-next-line
 	}, [get(trackUploadInfo, 'genres.data')]);
+
+	useEffect(() => {
+		if (chosenArtistId) {
+			setValue('artistId', chosenArtistId);
+			clearError('artistId');
+		}
+		// eslint-disable-next-line
+	}, [chosenArtistId])
+
+	useEffect(() => {
+		if (chosenGenreId) {
+			setValue('genreId', chosenGenreId);
+			clearError('genreId');
+		}
+		// eslint-disable-next-line
+	}, [chosenGenreId]);
 
 	useEffect(() => {
 		if (watchArtistValue === "add-artist") {
@@ -346,9 +365,14 @@ export default function AddTrackScreen() {
 
 
 		console.table(track);
-		setOpenTrackSuccessDialog(true)
 		addTrack(track);
 	};
+
+	useEffect(() => {
+		if (uploadedTrack) {
+			setOpenTrackSuccessDialog(true)
+		}
+	}, [uploadedTrack]);
 
 	const styles = addTrackScreenStyles();
 
@@ -393,7 +417,7 @@ export default function AddTrackScreen() {
 								/>
 							)}
 							margin="normal"
-							value={chosenArtistId ? chosenArtistId : undefined}
+							value={watchArtistValue}
 						>
 							<optgroup>
 								<option value="">Choose an Artist *</option>
@@ -425,7 +449,7 @@ export default function AddTrackScreen() {
 								/>
 							)}
 							margin="normal"
-							value={chosenGenreId ? chosenGenreId : undefined}
+							value={watchGenreValue}
 						>
 							<optgroup>
 								<option value="">Choose an Genre *</option>

@@ -4,10 +4,7 @@ import { AccountCircle } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import AlbumIcon from '@material-ui/icons/Album';
-import MicIcon from '@material-ui/icons/Mic';
-import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
-import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 import { get } from 'lodash-es';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 
@@ -68,6 +65,7 @@ const Right = (props: Props) => {
       dispatch({ type: LOG_OUT })
       closeDrawer();
     }
+    // eslint-disable-next-line
   }, [logged_out])
 
   return (

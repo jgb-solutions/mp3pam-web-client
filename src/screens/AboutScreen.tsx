@@ -17,7 +17,7 @@ export default class AboutScreen extends Component {
                 </p>
 
         <p>
-          <small>Licensed under <a style={{ color: 'white' }} href="https://opensource.org/licenses/MIT" target="_blank">MIT</a>.
+          <small>Licensed under <a style={{ color: 'white' }} href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a>.
           </small>
         </p>
 
