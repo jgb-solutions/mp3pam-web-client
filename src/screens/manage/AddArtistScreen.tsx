@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import useForm from 'react-hook-form';
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -6,6 +6,10 @@ import ErrorIcon from '@material-ui/icons/Error';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { useHistory } from "react-router-dom";
 import { Grid } from "@material-ui/core";
+import FacebookIcon from '@material-ui/icons/Facebook';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import YouTubeIcon from '@material-ui/icons/YouTube';
 
 import ProgressBar from "../../components/ProgressBar";
 import TextField from "../../components/TextField";
@@ -21,10 +25,33 @@ import Routes from "../../routes";
 import AlertDialog from "../../components/AlertDialog";
 import { getFile } from "../../utils/helpers";
 
+
+type IconFieldProps = {
+  icon: ReactNode,
+  field: ReactNode,
+  hasError: boolean,
+}
+export function IonField({ icon, field, hasError }: IconFieldProps) {
+  return (
+    <Grid container spacing={1} alignItems={hasError ? "center" : "flex-end"}>
+      <Grid item>
+        {icon}
+      </Grid>
+      <Grid item>
+        {field}
+      </Grid>
+    </Grid>
+  )
+}
+
 export interface FormData {
   name: string;
   stage_name: string;
   bio: string;
+  facebook?: string;
+  twitter?: string;
+  isntagram?: string;
+  youtube?: string;
 };
 
 export interface ArtistData extends FormData {
@@ -97,7 +124,7 @@ export default function AddArtistScreen() {
               })}
               name="name"
               id="name"
-              label="Artist Stage Name *"
+              label="Name *"
               type="text"
               margin="normal"
               error={!!errors.name}
@@ -116,7 +143,7 @@ export default function AddArtistScreen() {
               })}
               name="stage_name"
               id="stage_name"
-              label="Artist Stage Name *"
+              label="Stage Name *"
               type="text"
               margin="normal"
               error={!!errors.stage_name}
@@ -132,7 +159,7 @@ export default function AddArtistScreen() {
         </Grid>
 
         <Grid container direction='row' alignItems='center' spacing={1} className={styles.uploadButton}>
-          <Grid item xs={9}>
+          <Grid item>
             <UploadButton
               allowedFileSize={5 * 1000 * 1024}
               onFileSizeInvalid={handleInvalidImageSize}
@@ -143,7 +170,7 @@ export default function AddArtistScreen() {
               disabled={imgUploaded}
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item>
             {imgUploaded && <CheckCircleIcon className={styles.successColor} />}
           </Grid>
         </Grid>
@@ -163,6 +190,110 @@ export default function AddArtistScreen() {
           />
         )}
 
+        <IonField
+          icon={<FacebookIcon />}
+          field={(
+            <TextField
+              inputRef={register({
+                minLength: {
+                  value: 5,
+                  message: "The Facebook username must be at least 5 characters."
+                }
+              })}
+              name="facebook"
+              id="facebook"
+              label="Facebook Username"
+              margin="normal"
+              error={!!errors.facebook}
+              helperText={!!errors.facebook && (
+                <TextIcon
+                  icon={<ErrorIcon className={styles.errorColor} />}
+                  text={<span className={styles.errorColor}>{errors.facebook.message}</span>}
+                />
+              )}
+            />
+          )}
+          hasError={!!errors.facebook}
+        />
+
+        <IonField
+          icon={<TwitterIcon />}
+          field={(
+            <TextField
+              inputRef={register({
+                minLength: {
+                  value: 5,
+                  message: "The Twitter username must be at least 5 characters."
+                }
+              })}
+              name="twitter"
+              id="twitter"
+              label="Twitter Username"
+              margin="normal"
+              error={!!errors.twitter}
+              helperText={!!errors.twitter && (
+                <TextIcon
+                  icon={<ErrorIcon className={styles.errorColor} />}
+                  text={<span className={styles.errorColor}>{errors.twitter.message}</span>}
+                />
+              )}
+            />
+          )}
+          hasError={!!errors.twitter}
+        />
+
+        <IonField
+          icon={<InstagramIcon />}
+          field={(
+            <TextField
+              inputRef={register({
+                minLength: {
+                  value: 5,
+                  message: "The Instagram username must be at least 5 characters."
+                }
+              })}
+              name="instagram"
+              id="instagram"
+              label="Instagram Username"
+              margin="normal"
+              error={!!errors.instagram}
+              helperText={!!errors.instagram && (
+                <TextIcon
+                  icon={<ErrorIcon className={styles.errorColor} />}
+                  text={<span className={styles.errorColor}>{errors.instagram.message}</span>}
+                />
+              )}
+            />
+          )}
+          hasError={!!errors.instagram}
+        />
+
+        <IonField
+          icon={<YouTubeIcon />}
+          field={(
+            <TextField
+              inputRef={register({
+                minLength: {
+                  value: 5,
+                  message: "The YouTube username must be at least 5 characters."
+                }
+              })}
+              name="youtube"
+              id="youtube"
+              label="YouTube Username"
+              margin="normal"
+              error={!!errors.youtube}
+              helperText={!!errors.youtube && (
+                <TextIcon
+                  icon={<ErrorIcon className={styles.errorColor} />}
+                  text={<span className={styles.errorColor}>{errors.youtube.message}</span>}
+                />
+              )}
+            />
+          )}
+          hasError={!!errors.youtube}
+        />
+
         <TextField
           inputRef={register({
             minLength: {
@@ -172,7 +303,7 @@ export default function AddArtistScreen() {
           })}
           name="bio"
           id="bio"
-          label="Artist Biography"
+          label="Biography"
           multiline
           rowsMax="50"
           margin="normal"
