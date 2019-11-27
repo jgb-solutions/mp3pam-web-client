@@ -1,3 +1,4 @@
+import { get } from "lodash-es";
 
 export const debounce = (fn: () => void, delay: number, timeoutId: number): void => {
   clearTimeout(timeoutId);
@@ -6,3 +7,5 @@ export const debounce = (fn: () => void, delay: number, timeoutId: number): void
   }, delay);
 };
 
+export const getFile = (event: React.ChangeEvent<HTMLInputElement>) =>
+  get(event, 'target.files[0]');

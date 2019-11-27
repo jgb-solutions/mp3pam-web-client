@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/Home";
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import AlbumIcon from '@material-ui/icons/Album';
@@ -10,6 +10,7 @@ import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 import Routes from "../routes";
 import Logo from "./Logo";
 import { menuStyles } from "../styles/menuStyles";
+import colors from "../utils/colors";
 
 const mainMenu = [
 	{ name: "Home", to: Routes.pages.home, icon: <HomeIcon /> },
@@ -50,58 +51,68 @@ const Left = (props: Props) => {
 			<Logo />
 			<div className={styles.mainMenu}>
 				{mainMenu.map((menuItem, index) => (
-					<Link
+					<NavLink
+						activeClassName={styles.activeClassName}
+						exact
 						key={index}
 						to={menuItem.to}
 						className={`${styles.link} ${styles.mainMenuLink}`}
 						onClick={closeDrawer}>
 						<span className={styles.linkIcon}>{menuItem.icon}</span>
 						<span className={styles.linkText}>{menuItem.name}</span>
-					</Link>
+					</NavLink>
 				))}
 			</div>
 
 			{/* Browse Menu */}
 			<div className={styles.browseMenu}>
 				<p>
-					<Link
+					<NavLink
+						activeClassName={styles.activeClassName}
+						exact
 						to={Routes.pages.browse}
 						className={styles.yourLibraryLink}
 						onClick={closeDrawer}>
 						Browse
-					</Link>
+					</NavLink>
 				</p>
 				{browsingMenu.map((menuItem, index) => (
-					<Link
+					<NavLink
+						activeClassName={styles.activeClassName}
+						exact
 						key={index}
 						to={menuItem.to}
 						className={`${styles.link} ${styles.libraryLink}`}
 						onClick={closeDrawer}>
 						<span className={styles.linkIcon}>{menuItem.icon}</span>
 						<span className={styles.linkText}>{menuItem.name}</span>
-					</Link>
+					</NavLink>
 				))}
 			</div>
 
 			{/* Favorite Menu */}
 			<div>
 				<p>
-					<Link
+					<NavLink
+						activeClassName={styles.activeClassName}
+						exact
 						to={Routes.pages.library}
 						className={styles.yourLibraryLink}
 						onClick={closeDrawer}>
 						What You Like
-					      </Link>
+					</NavLink>
 				</p>
 				{favoriteMenu.map((menuItem, index) => (
-					<Link
+					<NavLink
+						activeClassName={styles.activeClassName}
+						exact
 						key={index}
 						to={menuItem.to}
 						className={`${styles.link} ${styles.libraryLink}`}
 						onClick={closeDrawer}>
 						<span className={styles.linkIcon}>{menuItem.icon}</span>
 						<span className={styles.linkText}>{menuItem.name}</span>
-					</Link>
+					</NavLink>
 				))}
 			</div>
 		</>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AccountCircle } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import AlbumIcon from '@material-ui/icons/Album';
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
@@ -75,48 +75,56 @@ const Right = (props: Props) => {
           <div className={styles.menuList}>
             <div className={styles.mainMenu}>
               {mainMenu.map((menuItem, index) => (
-                <Link
+                <NavLink
+                  activeClassName={styles.activeClassName}
+                  exact
                   key={index}
                   to={menuItem.to}
                   className={`${styles.link} ${styles.mainMenuLink}`}
                   onClick={closeDrawer}>
                   <span className={styles.linkIcon}>{menuItem.icon}</span>
                   <span className={styles.linkText}>{menuItem.name}</span>
-                </Link>
+                </NavLink>
               ))}
             </div>
 
             <div>
               <p>
-                <Link
+                <NavLink
+                  activeClassName={styles.activeClassName}
+                  exact
                   to={Routes.user.manage.home}
                   className={styles.yourLibraryLink}
                   onClick={closeDrawer}>
                   Manage Your Library
-					      </Link>
+					      </NavLink>
               </p>
               {libraryMenu.map((menuItem, index) => (
-                <Link
+                <NavLink
+                  activeClassName={styles.activeClassName}
+                  exact
                   key={index}
                   to={menuItem.to}
                   className={`${styles.link} ${styles.libraryLink}`}
                   onClick={closeDrawer}>
                   <span className={styles.linkIcon}>{menuItem.icon}</span>
                   <span className={styles.linkText}>{menuItem.name}</span>
-                </Link>
+                </NavLink>
               ))}
 
               <br />
 
               {CreateMenu.map((menuItem, index) => (
-                <Link
+                <NavLink
+                  activeClassName={styles.activeClassName}
+                  exact
                   key={index}
                   to={menuItem.to}
                   className={`${styles.link} ${styles.libraryLink}`}
                   onClick={closeDrawer}>
                   <span className={styles.linkIcon}>{menuItem.icon}</span>
                   <span className={styles.linkText}>{menuItem.name}</span>
-                </Link>
+                </NavLink>
               ))}
             </div>
           </div>

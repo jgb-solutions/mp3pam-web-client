@@ -50,5 +50,8 @@ export const menuStyles = makeStyles(theme => ({
   },
   logoutContainer: {
     height: 10
+  },
+  activeClassName: {
+    color: colors.primary
   }
 }));

@@ -10,6 +10,11 @@ const useStyles = makeStyles({
   }
 });
 
+export interface ImageDimensions {
+  width: number;
+  height: number;
+};
+
 type Props = {
   accept: string,
   buttonStyle?: string,
@@ -22,7 +27,9 @@ type Props = {
   disabled?: boolean,
   fullWidth?: boolean,
   allowedFileSize?: number,
-  onFileSizeInvalid?: (fileSize: number) => void
+  onFileSizeInvalid?: (fileSize: number) => void,
+  onDimensionsInvalid?: (dimensions: ImageDimensions) => void
+  validateImageDimensions?: (dimensions: ImageDimensions) => boolean
 };
 
 const UploadButton = ({
@@ -37,7 +44,10 @@ const UploadButton = ({
   disabled,
   fullWidth,
   allowedFileSize,
-  onFileSizeInvalid
+  onFileSizeInvalid,
+  onDimensionsInvalid,
+  validateImageDimensions
+
 }: Props) => {
   const styles = useStyles();
 
@@ -49,18 +59,55 @@ const UploadButton = ({
     }
   };
 
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file: File = get(event, 'target.files[0]');
 
-    if (file && allowedFileSize && onFileSizeInvalid) {
-      if (file.size > allowedFileSize) {
-        onFileSizeInvalid(file.size);
-
-        return;
+    if (file) {
+      if (allowedFileSize && onFileSizeInvalid) {
+        if (file.size > allowedFileSize) {
+          onFileSizeInvalid(file.size);
+          return;
+        }
       }
+
+      if (onDimensionsInvalid && validateImageDimensions) {
+        const dimensions = await getImageDimensions(file);
+
+        if (!validateImageDimensions(dimensions)) {
+          onDimensionsInvalid(dimensions);
+          return;
+        }
+      }
+
+      onChange(event);
     }
 
-    onChange(event);
+    return;
+  };
+
+  const getImageDimensions = (file: File): Promise<ImageDimensions> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = readerEvt => {
+        let image = new Image();
+
+        image.onload = imgEvt => {
+          const { width, height } = get(imgEvt, 'path[0]') || get(imgEvt, 'srcElement');
+          resolve({ width, height });
+        };
+
+        image.src = get(readerEvt, 'target.result');
+
+        reader.onerror = () => {
+          reader.abort();
+
+          reject(new DOMException("Problem parsing the file bitch."))
+        };
+      };
+
+      reader.readAsDataURL(file);
+    });
   };
 
   return (

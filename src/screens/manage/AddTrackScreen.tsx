@@ -397,7 +397,7 @@ export default function AddTrackScreen() {
 							text={<span className={styles.errorColor}>{errors.title.message}</span>}
 						/>
 					)}
-					style={{ marginBottom: 20 }}
+					style={{ marginBottom: 15 }}
 				/>
 				<Grid container direction='row' spacing={2}>
 					<Grid item xs={12} sm>
