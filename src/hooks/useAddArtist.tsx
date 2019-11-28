@@ -13,7 +13,7 @@ type hookValues = {
 
 export default function useAddArtist(): hookValues {
   const [addArtistMutation, { loading, error, data }] = useMutation(ADD_ARTIST_MUTATION, {
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'no-cache'
   });
 
   const addArtist = (artist: ArtistData) => {
