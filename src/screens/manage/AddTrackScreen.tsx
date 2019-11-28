@@ -216,7 +216,9 @@ export default function AddTrackScreen() {
 		setError,
 		clearError,
 		setValue } = useForm<FormData>({ mode: 'onBlur' });
-	const { data: trackUploadInfo } = useQuery(TRACK_UPLOAD_DATA_QUERY);
+	const { data: trackUploadInfo } = useQuery(TRACK_UPLOAD_DATA_QUERY, {
+		fetchPolicy: 'network-only'
+	});
 	const { addTrack, loading: formWorking, data: uploadedTrack } = useAddTrack();
 	const {
 		upload: uploadImg,
