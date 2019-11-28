@@ -4,7 +4,6 @@ export const UPLOAD_URL_QUERY = gql`
   query getUploadUrl($name: String!, $bucket: String!) {
     uploadUrl(name: $name, bucket: $bucket) {
      signedUrl
-		 fileUrl
      filename
     }
   }

@@ -66,7 +66,7 @@ import Root from './components/layouts/Root';
 
 const { store, persistor } = persistedStore();
 
-export const API_URL: string = process.env.NODE_ENV === 'development'
+export const API_URL = process.env.NODE_ENV === 'development'
   ? `http://api.mp3pam.loc/graphql`
   : `https://api.mp3pam.com/graphql`;
 

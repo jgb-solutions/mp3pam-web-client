@@ -24,6 +24,7 @@ import useAddArtist from '../../hooks/useAddArtist';
 import Routes from "../../routes";
 import AlertDialog from "../../components/AlertDialog";
 import { getFile } from "../../utils/helpers";
+import { IMG_BUCKET } from "../../utils/constants";
 
 
 type IconFieldProps = {
@@ -56,11 +57,12 @@ export interface FormData {
 
 export interface ArtistData extends FormData {
   poster: string;
+  img_bucket: string;
 }
 
 export default function AddArtistScreen() {
   const history = useHistory();
-  const { register, handleSubmit, errors, formState, watch } = useForm<FormData>({ mode: 'onBlur' });
+  const { register, handleSubmit, errors, formState } = useForm<FormData>({ mode: 'onBlur' });
   const { addArtist, loading: formWorking, data: uploadedArtist } = useAddArtist();
   const {
     upload: uploadImg,
@@ -70,7 +72,7 @@ export default function AddArtistScreen() {
     isValid: imgValid,
     errorMessage: imgErrorMessage,
     filename: poster
-  } = useFileUpload({ bucket: 'img', message: "You must choose a poster." });
+  } = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose a poster." });
 
   const [openArtistSuccessDialog, setOpenArtistSuccessDialog] = useState(false);
   const [openInvalidFileSize, setOpenInvalidFileSize] = useState('');
@@ -96,7 +98,11 @@ export default function AddArtistScreen() {
   const handleAddArtist = (values: FormData) => {
     if (!poster) return;
 
-    const artist = { ...values, poster: poster || '' };
+    const artist = {
+      ...values,
+      poster: poster || '',
+      img_bucket: IMG_BUCKET
+    };
 
 
     console.table(artist);

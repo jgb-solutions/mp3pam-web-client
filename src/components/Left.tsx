@@ -10,7 +10,6 @@ import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 import Routes from "../routes";
 import Logo from "./Logo";
 import { menuStyles } from "../styles/menuStyles";
-import colors from "../utils/colors";
 
 const mainMenu = [
 	{ name: "Home", to: Routes.pages.home, icon: <HomeIcon /> },

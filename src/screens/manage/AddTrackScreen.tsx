@@ -25,6 +25,7 @@ import useAddTrack from '../../hooks/useAddTrack';
 import Routes from "../../routes";
 import AlertDialog from "../../components/AlertDialog";
 import { ADD_ARTIST_MUTATION, ADD_GENRE_MUTATION } from "../../graphql/mutations";
+import { IMG_BUCKET, AUDIO_BUCKET } from "../../utils/constants";
 
 export interface FormData {
 	title: string;
@@ -47,7 +48,9 @@ export interface GenreData {
 export interface TrackData extends FormData {
 	poster: string;
 	audioName: string;
-	audioFileSize: number
+	audioFileSize: number,
+	img_bucket: string,
+	audio_bucket: string,
 }
 
 type AddArtistFormProps = {
@@ -207,7 +210,7 @@ export default function AddTrackScreen() {
 		isValid: imgValid,
 		errorMessage: imgErrorMessage,
 		filename: poster
-	} = useFileUpload({ bucket: 'img', message: "You must choose a poster." });
+	} = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose a poster." });
 
 	const {
 		upload: uploadAudio,
@@ -218,7 +221,7 @@ export default function AddTrackScreen() {
 		isValid: audioValid,
 		errorMessage: audioErrorMessage,
 		filename: audioName
-	} = useFileUpload({ bucket: 'sound', message: "You must choose a track." });
+	} = useFileUpload({ bucket: AUDIO_BUCKET, message: "You must choose a track." });
 	const [openTrackSuccessDialog, setOpenTrackSuccessDialog] = useState(false);
 	const [openAddArtistDialog, setOpenAddArtistDialog] = useState(false);
 	const [openAddGenreDialog, setOpenAddGenreDialog] = useState(false);
@@ -360,7 +363,9 @@ export default function AddTrackScreen() {
 			...values,
 			poster: poster || '',
 			audioName: audioName || '',
-			audioFileSize: audioSize
+			audioFileSize: audioSize,
+			img_bucket: IMG_BUCKET,
+			audio_bucket: AUDIO_BUCKET
 		};
 
 
