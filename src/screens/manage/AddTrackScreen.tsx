@@ -24,9 +24,10 @@ import { addTrackScreenStyles } from "../../styles/addTrackScreenStyles";
 import useAddTrack from '../../hooks/useAddTrack';
 import Routes from "../../routes";
 import AlertDialog from "../../components/AlertDialog";
-import { ADD_ARTIST_MUTATION, ADD_GENRE_MUTATION } from "../../graphql/mutations";
+import { ADD_GENRE_MUTATION } from "../../graphql/mutations";
 import { IMG_BUCKET, AUDIO_BUCKET } from "../../utils/constants";
 import { getFile } from "../../utils/helpers";
+import useAddArtist from "../../hooks/useAddArtist";
 
 export interface FormData {
 	title: string;
@@ -73,16 +74,17 @@ export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistF
 		errors,
 		formState
 	} = useForm<AddArtistFormData>({ mode: 'onBlur' });
-	const [addArtistMutation, { data: artistData }] = useMutation(ADD_ARTIST_MUTATION);
+	const { addArtist, data: artistData } = useAddArtist();
 	const styles = addTrackScreenStyles();
 
 	const handleAddArtist = (artist: AddArtistFormData) => {
-		addArtistMutation({ variables: { input: { ...artist, img_bucket: IMG_BUCKET } } });
+		addArtist({ ...artist, img_bucket: IMG_BUCKET });
 	};
 
 	useEffect(() => {
 		if (artistData) {
 			handleClose();
+			console.log(artistData)
 			onArtistCreated(artistData.addArtist);
 		}
 		// eslint-disable-next-line

@@ -48,7 +48,7 @@ export function IonField({ icon, field, hasError }: IconFieldProps) {
 export interface FormData {
   name: string;
   stage_name: string;
-  bio: string;
+  bio?: string;
   facebook?: string;
   twitter?: string;
   isntagram?: string;
@@ -56,7 +56,7 @@ export interface FormData {
 };
 
 export interface ArtistData extends FormData {
-  poster: string;
+  poster?: string;
   img_bucket: string;
 }
 

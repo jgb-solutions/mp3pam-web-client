@@ -8,7 +8,7 @@ type hookValues = {
   addArtist: (artist: ArtistData) => void,
   loading: boolean,
   error: ApolloError | undefined,
-  data: object
+  data: any
 };
 
 export default function useAddArtist(): hookValues {

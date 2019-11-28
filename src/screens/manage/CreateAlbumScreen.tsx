@@ -7,7 +7,6 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { useHistory } from "react-router-dom";
-import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 import { Grid } from "@material-ui/core";
 
 import ProgressBar from "../../components/ProgressBar";
@@ -23,7 +22,7 @@ import { createAlbumScreenStyles } from "../../styles/createAlbumScreenStyles";
 import useCreateAlbum from '../../hooks/useCreateAlbum';
 import Routes from "../../routes";
 import AlertDialog from "../../components/AlertDialog";
-import { IMG_BUCKET, AUDIO_BUCKET } from "../../utils/constants";
+import { IMG_BUCKET } from "../../utils/constants";
 import { AddArtistForm } from "./AddTrackScreen";
 import { getFile } from "../../utils/helpers";
 
@@ -54,7 +53,7 @@ export default function AddAlbumScreen() {
     setError,
     clearError,
     setValue } = useForm<FormData>({ mode: 'onBlur' });
-  const { data: trackUploadInfo } = useQuery(TRACK_UPLOAD_DATA_QUERY);
+  const { data: trackUploadInfo } = useQuery(TRACK_UPLOAD_DATA_QUERY, { fetchPolicy: 'network-only' });
   const { createAlbum, loading: formWorking, data: uploadedAlbum } = useCreateAlbum();
   const {
     upload: uploadImg,
