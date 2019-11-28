@@ -19,6 +19,15 @@ export const ADD_ARTIST_MUTATION = gql`
   }
 `
 
+export const CREATE_ALBUM_MUTATION = gql`
+  mutation CreateAlbum($input: AlbumInput!) {
+    createAlbum(input: $input) {
+     title
+     hash
+   }
+  }
+`
+
 export const ADD_GENRE_MUTATION = gql`
   mutation AddGenre($input: GenreInput!) {
     addGenre(input: $input) {

@@ -26,6 +26,7 @@ import Routes from "../../routes";
 import AlertDialog from "../../components/AlertDialog";
 import { ADD_ARTIST_MUTATION, ADD_GENRE_MUTATION } from "../../graphql/mutations";
 import { IMG_BUCKET, AUDIO_BUCKET } from "../../utils/constants";
+import { getFile } from "../../utils/helpers";
 
 export interface FormData {
 	title: string;
@@ -49,8 +50,8 @@ export interface TrackData extends FormData {
 	poster: string;
 	audioName: string;
 	audioFileSize: number,
-	img_bucket: string,
-	audio_bucket: string,
+	img_bucket: string;
+	audio_bucket: string;
 }
 
 type AddArtistFormProps = {
@@ -61,16 +62,22 @@ type AddArtistFormProps = {
 
 type AddArtistFormData = {
 	name: string,
-	stage_name: string
+	stage_name: string,
+	img_bucket: string
 };
 
 export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistFormProps) {
-	const { register, handleSubmit, errors, formState } = useForm<AddArtistFormData>({ mode: 'onBlur' });
+	const {
+		register,
+		handleSubmit,
+		errors,
+		formState
+	} = useForm<AddArtistFormData>({ mode: 'onBlur' });
 	const [addArtistMutation, { data: artistData }] = useMutation(ADD_ARTIST_MUTATION);
 	const styles = addTrackScreenStyles();
 
 	const handleAddArtist = (artist: AddArtistFormData) => {
-		addArtistMutation({ variables: { input: artist } });
+		addArtistMutation({ variables: { input: { ...artist, img_bucket: IMG_BUCKET } } });
 	};
 
 	useEffect(() => {
@@ -85,7 +92,12 @@ export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistF
 		open={open}
 		handleClose={handleClose}
 		maxWidth='xs'>
-		<HeaderTitle style={{ margin: 0 }} textStyle={{ fontSize: 16 }} icon={<PersonPinCircleIcon />} text={`Add a New Artist`} />
+		<HeaderTitle
+			style={{ margin: 0 }}
+			textStyle={{ fontSize: 16 }}
+			icon={<PersonPinCircleIcon />}
+			text={`Add a New Artist`}
+		/>
 
 		<form onSubmit={handleSubmit(handleAddArtist)} noValidate>
 			<TextField
@@ -138,7 +150,11 @@ export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistF
 type AddGenreFormProps = { open: boolean, handleClose: () => void, onGenreCreated: (values: GenreData) => void };
 type AddGenreFormData = { name: string };
 export function AddGenreForm({ open, handleClose, onGenreCreated }: AddGenreFormProps) {
-	const { register, handleSubmit, errors, formState } = useForm<AddGenreFormData>({ mode: 'onBlur' });
+	const { register,
+		handleSubmit,
+		errors,
+		formState
+	} = useForm<AddGenreFormData>({ mode: 'onBlur' });
 	const [addGenreMutation, { data: genreData }] = useMutation(ADD_GENRE_MUTATION);
 	const styles = addTrackScreenStyles();
 
@@ -327,20 +343,13 @@ export default function AddTrackScreen() {
 		}
 	}, [watchGenreValue]);
 
-	const getFile = (event: React.ChangeEvent<HTMLInputElement>) =>
-		get(event, 'target.files[0]');
-
 	const handleImageUpload = (
 		event: React.ChangeEvent<HTMLInputElement>
-	) => {
-		uploadImg(getFile(event));
-	};
+	) => { uploadImg(getFile(event)); };
 
 	const handleAudioUpload = (
 		event: React.ChangeEvent<HTMLInputElement>
-	) => {
-		uploadAudio(getFile(event));
-	};
+	) => { uploadAudio(getFile(event)); };
 
 	const handleInvalidAudioSize = (filesize: number) => {
 		setOpenInvalidFileSize(`
@@ -392,7 +401,7 @@ export default function AddTrackScreen() {
 					})}
 					name="title"
 					id="title"
-					label="Track Title *"
+					label="Title *"
 					type="text"
 					margin="normal"
 					error={!!errors.title}
@@ -556,7 +565,7 @@ export default function AddTrackScreen() {
 					})}
 					name="detail"
 					id="detail"
-					label="Track Detail"
+					label="Detail"
 					multiline
 					rowsMax="4"
 					margin="normal"
@@ -578,7 +587,7 @@ export default function AddTrackScreen() {
 					})}
 					name="lyrics"
 					id="lyrics"
-					label="Track Lyrics"
+					label="Lyrics"
 					multiline
 					rowsMax="50"
 					margin="normal"

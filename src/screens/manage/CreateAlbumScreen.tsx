@@ -1,170 +1,355 @@
-import React from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
-import Button from '../../components/Button';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import SettingsIcon from '@material-ui/icons/Settings';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import VideoLabelIcon from '@material-ui/icons/VideoLabel';
-import { StepIconProps } from '@material-ui/core/StepIcon';
-import clsx from 'clsx';
+import React, { useState, useEffect } from "react";
+import { useQuery } from '@apollo/react-hooks'
+import { get } from "lodash-es";
+import useForm from 'react-hook-form';
 import AlbumIcon from '@material-ui/icons/Album';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import { useHistory } from "react-router-dom";
+import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
+import { Grid } from "@material-ui/core";
 
-import colors from '../../utils/colors';
-import HeaderTitle from '../../components/HeaderTitle';
+import ProgressBar from "../../components/ProgressBar";
+import TextField from "../../components/TextField";
+import Button from '../../components/Button';
+import UploadButton from '../../components/UploadButton';
+import CheckAuth from "../../components/CheckAuth";
+import HeaderTitle from "../../components/HeaderTitle";
+import { TRACK_UPLOAD_DATA_QUERY } from "../../graphql/queries";
+import useFileUpload from "../../hooks/useFileUpload";
+import TextIcon from "../../components/TextIcon";
+import { createAlbumScreenStyles } from "../../styles/createAlbumScreenStyles";
+import useCreateAlbum from '../../hooks/useCreateAlbum';
+import Routes from "../../routes";
+import AlertDialog from "../../components/AlertDialog";
+import { IMG_BUCKET, AUDIO_BUCKET } from "../../utils/constants";
+import { AddArtistForm } from "./AddTrackScreen";
+import { getFile } from "../../utils/helpers";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      backgroundColor: colors.contentGrey,
-      color: colors.white
-    },
-    button: {
-      marginTop: theme.spacing(1),
-      marginRight: theme.spacing(1),
-    },
-    actionsContainer: {
-      marginBottom: theme.spacing(2),
-    },
-    resetContainer: {
-      padding: theme.spacing(3),
-    },
-    stepLabel: {
-      alternativeLabel: {
-        color: colors.white,
-      }
-    }
-  }),
-);
+export interface FormData {
+  title: string;
+  release_year: string;
+  artist_id: string;
+  detail: string;
+};
 
-const useColorlibStepIconStyles = makeStyles({
-  root: {
-    backgroundColor: '#ccc',
-    zIndex: 1,
-    color: '#fff',
-    width: 40,
-    height: 40,
-    display: 'flex',
-    borderRadius: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  active: {
-    backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
-  },
-  completed: {
-    backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-  },
-});
+export interface ArtistData {
+  id: string;
+  stage_name: string;
+};
 
-function ColorlibStepIcon(props: StepIconProps) {
-  const styles = useColorlibStepIconStyles();
-  const { active, completed } = props;
+export interface AlbumData extends FormData {
+  cover: string;
+  img_bucket: string,
+}
 
-  const icons: { [index: string]: React.ReactElement } = {
-    1: <SettingsIcon />,
-    2: <GroupAddIcon />,
-    3: <VideoLabelIcon />,
+export default function AddAlbumScreen() {
+  const history = useHistory();
+  const { register,
+    handleSubmit,
+    errors,
+    formState,
+    watch,
+    setError,
+    clearError,
+    setValue } = useForm<FormData>({ mode: 'onBlur' });
+  const { data: trackUploadInfo } = useQuery(TRACK_UPLOAD_DATA_QUERY);
+  const { createAlbum, loading: formWorking, data: uploadedAlbum } = useCreateAlbum();
+  const {
+    upload: uploadImg,
+    uploading: imgUploading,
+    isUploaded: imgUploaded,
+    percentUploaded: imgPercentUploaded,
+    isValid: imgValid,
+    errorMessage: imgErrorMessage,
+    filename: cover
+  } = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose a cover." });
+
+  const [openAlbumSuccessDialog, setOpenAlbumSuccessDialog] = useState(false);
+  const [openAddArtistDialog, setOpenAddArtistDialog] = useState(false);
+  const [openInvalidFileSize, setOpenInvalidFileSize] = useState('');
+  const [artistList, setArtistList] = useState<ArtistData[]>([]);
+  const [chosenArtistId, setChosenArtistId] = useState("")
+  const watchArtistValue = watch('artist_id');
+
+  const goToAlbumsLibrary = () => {
+    history.push(Routes.user.manage.albums);
   };
 
-  return (
-    <div
-      className={clsx(styles.root, {
-        [styles.active]: active,
-        [styles.completed]: completed,
-      })}
-    >
-      {icons[String(props.icon)]}
-    </div>
-  );
-}
+  const handleAlbumSucessDialogClose = () => setOpenAlbumSuccessDialog(false);
 
-function getSteps() {
-  return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
-}
-
-export default function CreateAlbumScreen() {
-  const getStepContent = (step: number) => {
-    switch (step) {
-      case 0:
-        return `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`;
-      case 1:
-        return 'An ad group contains one or more ads which target a shared set of keywords.';
-      case 2:
-        return `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`;
-      default:
-        return 'Unknown step';
+  const handleAddArtistDialogClose = () => {
+    if (!watchArtistValue || watchArtistValue === "add-artist") {
+      setValue('artist_id', "");
+      setError('artist_id', 'required', "You must choose an artist.");
     }
+
+    setOpenAddArtistDialog(false);
   }
 
-  const styles = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
-  const steps = getSteps();
+  const handleOpenInvalidFileSizeClose = () => setOpenInvalidFileSize('');
 
-  const handleNext = () => {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
+  const handleOnArtistCreated = ({ id, stage_name }: ArtistData) => {
+    const artistExist = artistList.find(artist => artist.id === id);
+
+    if (!artistExist) {
+      setArtistList(artistList => [{ id, stage_name }, ...artistList]);
+    }
+
+    setChosenArtistId(id);
   };
 
-  const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
+  useEffect(() => {
+    const artists = get(trackUploadInfo, 'me.artists_by_stage_name_asc.data');
+    if (artists) {
+      setArtistList(
+        artists.map(({ id, stage_name }: ArtistData) => ({ id, stage_name }))
+      )
+    }
+    // eslint-disable-next-line
+  }, [get(trackUploadInfo, 'me.artists_by_stage_name_asc.data')]);
+
+  useEffect(() => {
+    if (chosenArtistId) {
+      setValue('artist_id', chosenArtistId);
+      clearError('artist_id');
+    }
+    // eslint-disable-next-line
+  }, [chosenArtistId])
+
+  useEffect(() => {
+    if (watchArtistValue === "add-artist") {
+      setOpenAddArtistDialog(true);
+    }
+  }, [watchArtistValue]);
+
+  const handleImageUpload = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => { uploadImg(getFile(event)); };
+
+  const handleInvalidImageSize = (filesize: number) => {
+    setOpenInvalidFileSize(`
+		The file size exceeds 5 MB. <br />
+		Choose another one or reduce the size to upload.
+	`)
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
+  const handleCreateAlbum = (values: FormData) => {
+    if (!cover) return;
+
+    const album = {
+      ...values,
+      cover: cover || '',
+      img_bucket: IMG_BUCKET,
+    };
+
+
+    console.table(album);
+    createAlbum(album);
   };
+
+  useEffect(() => {
+    if (uploadedAlbum) {
+      setOpenAlbumSuccessDialog(true)
+    }
+  }, [uploadedAlbum]);
+
+  const styles = createAlbumScreenStyles();
 
   return (
-    <>
-      <HeaderTitle icon={<AlbumIcon />} text="Create an album" />
-      <Stepper className={styles.root} activeStep={activeStep} orientation="vertical">
-        {steps.map((label, index) => (
-          <Step key={label}>
-            <StepLabel className={styles.stepLabel} StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-            <StepContent>
-              <Typography>{getStepContent(index)}</Typography>
-              <div className={styles.actionsContainer}>
-                <div>
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    className={styles.button}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={styles.button}
-                  >
-                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                  </Button>
-                </div>
-              </div>
-            </StepContent>
-          </Step>
-        ))}
-      </Stepper>
-      {activeStep === steps.length && (
-        <Paper square elevation={0} className={styles.resetContainer}>
-          <Typography>All steps completed - you&apos;re finished</Typography>
-          <Button onClick={handleReset} className={styles.button}>
-            Reset
+    <CheckAuth className='react-transition scale-in'>
+      <HeaderTitle icon={<AlbumIcon />} text={`Create a new Album`} />
+
+      <form onSubmit={handleSubmit(handleCreateAlbum)} noValidate>
+        <Grid container direction='row' spacing={2}>
+          <Grid item xs={12} sm>
+            <TextField
+              inputRef={register({
+                required: "The title of the album is required.",
+              })}
+              name="title"
+              id="title"
+              label="Title *"
+              type="text"
+              margin="normal"
+              error={!!errors.title}
+              helperText={errors.title && (
+                <TextIcon
+                  icon={<ErrorIcon className={styles.errorColor} />}
+                  text={<span className={styles.errorColor}>{errors.title.message}</span>}
+                />
+              )}
+              style={{ marginBottom: 15 }}
+            />
+          </Grid>
+          <Grid item xs={12} sm>
+            <TextField
+              inputRef={register({
+                required: "The release year of the album is required.",
+                validate: {
+                  length: value => value.length === 4 || 'The release year is not valid.',
+                  currentYear: value => value <= (new Date().getFullYear()) || `The release year must be ${new Date().getFullYear()} or less.`,
+                }
+              })}
+              name="release_year"
+              id="release_year"
+              label="Release Year *"
+              type="number"
+              margin="normal"
+              error={!!errors.release_year}
+              helperText={errors.release_year && (
+                <TextIcon
+                  icon={<ErrorIcon className={styles.errorColor} />}
+                  text={<span className={styles.errorColor}>{errors.release_year.message}</span>}
+                />
+              )}
+              style={{ marginBottom: 15 }}
+            />
+          </Grid>
+        </Grid>
+        <Grid container direction='row' spacing={2}>
+          <Grid item xs={12} sm>
+            <TextField
+              id="artist"
+              select
+              name='artist_id'
+              inputRef={register({
+                required: "You must choose an artist."
+              })}
+              SelectProps={{ native: true }}
+              error={!!errors.artist_id}
+              helperText={errors.artist_id && (
+                <TextIcon
+                  icon={<ErrorIcon className={styles.errorColor} />}
+                  text={<span className={styles.errorColor}>{errors.artist_id.message}</span>}
+                />
+              )}
+              margin="normal"
+              value={watchArtistValue}
+            >
+              <optgroup>
+                <option value="">Choose an Artist *</option>
+              </optgroup>
+              {artistList.length && (
+                <optgroup label="------">
+                  {artistList.map(({ id, stage_name }: ArtistData) => (
+                    <option key={id} value={id}>{stage_name}</option>
+                  ))}
+                </optgroup>
+              )}
+              <optgroup label="------">
+                <option value="add-artist">+ Add an Artist</option>
+              </optgroup>
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm>
+            <Grid container direction='row' alignItems='center' spacing={1} className={styles.uploadButton}>
+              <Grid item xs={9}>
+                <UploadButton
+                  allowedFileSize={5 * 1000 * 1024}
+                  onFileSizeInvalid={handleInvalidImageSize}
+                  buttonSize='large'
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  title="Choose a Cover *"
+                  disabled={imgUploaded}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={3}>
+                {imgUploaded && <CheckCircleIcon className={styles.successColor} />}
+              </Grid>
+            </Grid>
+
+            {formState.isSubmitted && !imgValid && (
+              <TextIcon
+                icon={<ErrorIcon className={styles.errorColor} />}
+                text={<span className={styles.errorColor}>{imgErrorMessage}</span>}
+              />
+            )}
+
+            {imgPercentUploaded > 0 && imgPercentUploaded < 100 && (
+              <ProgressBar
+                variant="determinate"
+                color="secondary"
+                value={imgPercentUploaded}
+              />
+            )}
+          </Grid>
+        </Grid>
+
+        <TextField
+          inputRef={register({
+            minLength: {
+              value: 20,
+              message: "The detail must be at least 20 characters."
+            }
+          })}
+          name="detail"
+          id="detail"
+          label="Detail"
+          multiline
+          rowsMax="4"
+          margin="normal"
+          error={!!errors.detail}
+          helperText={errors.detail && (
+            <TextIcon
+              icon={<ErrorIcon className={styles.errorColor} />}
+              text={<span className={styles.errorColor}>{errors.detail.message}</span>}
+            />
+          )}
+        />
+
+        <Button
+          type="submit"
+          size='large'
+          style={{ marginTop: 15 }}
+          disabled={imgUploading || formWorking}>Add Album</Button>
+      </form>
+
+      {/* Success Dialog */}
+      <AlertDialog
+        open={openAlbumSuccessDialog}
+        handleClose={handleAlbumSucessDialogClose}
+        disableBackdropClick>
+        <DialogContentText id="alert-dialog-description" align='center'>
+          <span><CheckCircleIcon style={{ fontSize: 64 }} className={styles.successColor} /></span>
+          <br />
+          <span>Album successfully createed!</span>
+          <br />
+          <br />
+          <Button size='small' onClick={goToAlbumsLibrary} color="primary">
+            Go To Your Albums
           </Button>
-        </Paper>
-      )}
-    </>
+        </DialogContentText>
+      </AlertDialog>
+
+      {/* Add Album Dialog */}
+      <AddArtistForm
+        open={openAddArtistDialog}
+        handleClose={handleAddArtistDialogClose}
+        onArtistCreated={handleOnArtistCreated}
+      />
+
+      {/* Handling invalid file sizes */}
+      {/* Success Dialog */}
+      <AlertDialog
+        open={!!openInvalidFileSize}
+        handleClose={handleOpenInvalidFileSizeClose}>
+        <DialogContentText id="alert-dialog-description" align='center'>
+          <span>
+            <ErrorIcon style={{ fontSize: 64 }} className={styles.errorColor} />
+          </span>
+          <br />
+          <span dangerouslySetInnerHTML={{ __html: openInvalidFileSize }} />
+          <br />
+          <br />
+          <Button size='small' onClick={handleOpenInvalidFileSizeClose} color="primary">
+            OK
+          </Button>
+        </DialogContentText>
+      </AlertDialog>
+    </CheckAuth >
   );
 }
