@@ -12,7 +12,9 @@ type hookValues = {
 };
 
 export default function useCreateAlbum(): hookValues {
-  const [createAlbumMutation, { loading, error, data }] = useMutation(CREATE_ALBUM_MUTATION);
+  const [createAlbumMutation, { loading, error, data }] = useMutation(CREATE_ALBUM_MUTATION, {
+    fetchPolicy: 'network-only'
+  });
 
   const createAlbum = (track: AlbumData) => {
     createAlbumMutation({ variables: { input: track } })

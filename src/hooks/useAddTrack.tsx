@@ -12,7 +12,9 @@ type hookValues = {
 };
 
 export default function useAddTrack(): hookValues {
-  const [addTrackMutation, { loading, error, data }] = useMutation(ADD_TRACK_MUTATION);
+  const [addTrackMutation, { loading, error, data }] = useMutation(ADD_TRACK_MUTATION, {
+    fetchPolicy: 'network-only'
+  });
 
   const addTrack = (track: TrackData) => {
     addTrackMutation({ variables: { input: track } })
