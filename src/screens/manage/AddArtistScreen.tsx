@@ -24,7 +24,7 @@ import useAddArtist from '../../hooks/useAddArtist';
 import Routes from "../../routes";
 import AlertDialog from "../../components/AlertDialog";
 import { getFile } from "../../utils/helpers";
-import { IMG_BUCKET } from "../../utils/constants";
+import { IMG_BUCKET, MAX_IMG_FILE_SIZE, MIN_SOCIAL_MEDIA_USERNAME_LENGTH, MIN_ARTIST_BIO_LENGTH } from "../../utils/constants";
 
 
 type IconFieldProps = {
@@ -32,7 +32,7 @@ type IconFieldProps = {
   field: ReactNode,
   hasError: boolean,
 }
-export function IonField({ icon, field, hasError }: IconFieldProps) {
+export function IconField({ icon, field, hasError }: IconFieldProps) {
   return (
     <Grid container spacing={1} alignItems={hasError ? "center" : "flex-end"}>
       <Grid item xs={1}>
@@ -167,7 +167,7 @@ export default function AddArtistScreen() {
         <Grid container direction='row' alignItems='center' spacing={1} className={styles.uploadButton}>
           <Grid item>
             <UploadButton
-              allowedFileSize={5 * 1000 * 1024}
+              allowedFileSize={MAX_IMG_FILE_SIZE()}
               onFileSizeInvalid={handleInvalidImageSize}
               buttonSize='large'
               accept="image/*"
@@ -197,19 +197,16 @@ export default function AddArtistScreen() {
         )}
         <Grid container direction='row' spacing={2}>
           <Grid item xs={12} sm={6}>
-            <IonField
+            <IconField
               icon={<FacebookIcon className={!!errors.facebook ? styles.errorColor : ''} />}
               field={(
                 <TextField
+                  onChange={e => e.target.value = e.target.value.trim()}
                   inputRef={register({
                     minLength: {
-                      value: 5,
-                      message: "username or link must be at least 5 characters.",
+                      value: MIN_SOCIAL_MEDIA_USERNAME_LENGTH,
+                      message: `Username or link must be at least ${MIN_SOCIAL_MEDIA_USERNAME_LENGTH} characters."`
                     },
-                    pattern: {
-                      value: /^\S*$/,
-                      message: "Remove any space from the username or link."
-                    }
                   })}
                   name="facebook"
                   id="facebook"
@@ -228,19 +225,16 @@ export default function AddArtistScreen() {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <IonField
+            <IconField
               icon={<TwitterIcon className={!!errors.twitter ? styles.errorColor : ''} />}
               field={(
                 <TextField
+                  onChange={e => e.target.value = e.target.value.trim()}
                   inputRef={register({
                     minLength: {
-                      value: 5,
-                      message: "username or link must be at least 5 characters."
+                      value: MIN_SOCIAL_MEDIA_USERNAME_LENGTH,
+                      message: `Username or link must be at least ${MIN_SOCIAL_MEDIA_USERNAME_LENGTH} characters.`
                     },
-                    pattern: {
-                      value: /^\S*$/,
-                      message: "Remove any space from the username or link."
-                    }
                   })}
                   name="twitter"
                   id="twitter"
@@ -259,19 +253,16 @@ export default function AddArtistScreen() {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <IonField
+            <IconField
               icon={<InstagramIcon className={!!errors.instagram ? styles.errorColor : ''} />}
               field={(
                 <TextField
+                  onChange={e => e.target.value = e.target.value.trim()}
                   inputRef={register({
                     minLength: {
-                      value: 5,
-                      message: "username or link must be at least 5 characters."
+                      value: MIN_SOCIAL_MEDIA_USERNAME_LENGTH,
+                      message: `Username or link must be at least ${MIN_SOCIAL_MEDIA_USERNAME_LENGTH} characters.`
                     },
-                    pattern: {
-                      value: /^\S*$/,
-                      message: "Remove any space from the username or link."
-                    }
                   })}
                   name="instagram"
                   id="instagram"
@@ -290,19 +281,16 @@ export default function AddArtistScreen() {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <IonField
+            <IconField
               icon={<YouTubeIcon className={!!errors.youtube ? styles.errorColor : ''} />}
               field={(
                 <TextField
+                  onChange={e => e.target.value = e.target.value.trim()}
                   inputRef={register({
                     minLength: {
-                      value: 5,
-                      message: "username or link must be at least 5 characters."
+                      value: MIN_SOCIAL_MEDIA_USERNAME_LENGTH,
+                      message: `Username or link must be at least ${MIN_SOCIAL_MEDIA_USERNAME_LENGTH} characters.`
                     },
-                    pattern: {
-                      value: /^\S*$/,
-                      message: "Remove any space from the username or link."
-                    }
                   })}
                   name="youtube"
                   id="youtube"
@@ -325,8 +313,8 @@ export default function AddArtistScreen() {
         <TextField
           inputRef={register({
             minLength: {
-              value: 300,
-              message: "The bio must be at least 300 characters."
+              value: MIN_ARTIST_BIO_LENGTH,
+              message: `The bio must be at least ${MIN_ARTIST_BIO_LENGTH} characters.`
             }
           })}
           name="bio"

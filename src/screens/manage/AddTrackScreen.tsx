@@ -25,7 +25,7 @@ import useAddTrack from '../../hooks/useAddTrack';
 import Routes from "../../routes";
 import AlertDialog from "../../components/AlertDialog";
 import { ADD_GENRE_MUTATION } from "../../graphql/mutations";
-import { IMG_BUCKET, AUDIO_BUCKET } from "../../utils/constants";
+import { IMG_BUCKET, AUDIO_BUCKET, MAX_AUDIO_FILE_SIZE, MAX_IMG_FILE_SIZE, MIN_TRACK_LYRICS_LENGTH, MIN_TRACK_DETAIL_LENGTH } from "../../utils/constants";
 import { getFile } from "../../utils/helpers";
 import useAddArtist from "../../hooks/useAddArtist";
 
@@ -491,7 +491,7 @@ export default function AddTrackScreen() {
 						<Grid container direction='row' alignItems='center' spacing={1} className={styles.uploadButton}>
 							<Grid item xs={9}>
 								<UploadButton
-									allowedFileSize={128 * 1000 * 1024}
+									allowedFileSize={MAX_AUDIO_FILE_SIZE()}
 									onFileSizeInvalid={handleInvalidAudioSize}
 									buttonSize='large'
 									accept=".mp3, audio/mp3"
@@ -528,7 +528,7 @@ export default function AddTrackScreen() {
 						<Grid container direction='row' alignItems='center' spacing={1} className={styles.uploadButton}>
 							<Grid item xs={9}>
 								<UploadButton
-									allowedFileSize={5 * 1000 * 1024}
+									allowedFileSize={MAX_IMG_FILE_SIZE()}
 									onFileSizeInvalid={handleInvalidImageSize}
 									buttonSize='large'
 									accept="image/*"
@@ -563,8 +563,8 @@ export default function AddTrackScreen() {
 				<TextField
 					inputRef={register({
 						minLength: {
-							value: 20,
-							message: "The detail must be at least 20 characters."
+							value: MIN_TRACK_DETAIL_LENGTH,
+							message: `The detail must be at least ${MIN_TRACK_DETAIL_LENGTH} characters.`
 						}
 					})}
 					name="detail"
@@ -585,8 +585,8 @@ export default function AddTrackScreen() {
 				<TextField
 					inputRef={register({
 						minLength: {
-							value: 300,
-							message: "The lyrics must be at least 300 characters."
+							value: MIN_TRACK_LYRICS_LENGTH,
+							message: `The lyrics must be at least ${MIN_TRACK_LYRICS_LENGTH} characters.`
 						}
 					})}
 					name="lyrics"

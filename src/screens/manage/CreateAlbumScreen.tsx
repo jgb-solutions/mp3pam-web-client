@@ -22,7 +22,7 @@ import { createAlbumScreenStyles } from "../../styles/createAlbumScreenStyles";
 import useCreateAlbum from '../../hooks/useCreateAlbum';
 import Routes from "../../routes";
 import AlertDialog from "../../components/AlertDialog";
-import { IMG_BUCKET } from "../../utils/constants";
+import { IMG_BUCKET, MAX_IMG_FILE_SIZE, CURRENT_YEAR } from "../../utils/constants";
 import { AddArtistForm } from "./AddTrackScreen";
 import { getFile } from "../../utils/helpers";
 
@@ -52,7 +52,7 @@ export default function AddAlbumScreen() {
     watch,
     setError,
     clearError,
-    setValue } = useForm<FormData>({ mode: 'onBlur' });
+    setValue } = useForm<FormData>({ mode: 'onBlur', defaultValues: { release_year: `${CURRENT_YEAR}` } });
   const { data: trackUploadInfo } = useQuery(TRACK_UPLOAD_DATA_QUERY, { fetchPolicy: 'network-only' });
   const { createAlbum, loading: formWorking, data: uploadedAlbum } = useCreateAlbum();
   const {
@@ -187,8 +187,8 @@ export default function AddAlbumScreen() {
               inputRef={register({
                 required: "The release year of the album is required.",
                 validate: {
-                  length: value => value.length === 4 || 'The release year is not valid.',
-                  currentYear: value => value <= (new Date().getFullYear()) || `The release year must be ${new Date().getFullYear()} or less.`,
+                  length: value => value.length === 4 || 'The release year must be exactly 4 characters long.',
+                  release_year: value => value <= CURRENT_YEAR || `The release year must be ${CURRENT_YEAR} or less.`,
                 }
               })}
               name="release_year"
@@ -246,7 +246,7 @@ export default function AddAlbumScreen() {
             <Grid container direction='row' alignItems='center' spacing={1} className={styles.uploadButton}>
               <Grid item xs={9}>
                 <UploadButton
-                  allowedFileSize={5 * 1000 * 1024}
+                  allowedFileSize={MAX_IMG_FILE_SIZE()}
                   onFileSizeInvalid={handleInvalidImageSize}
                   buttonSize='large'
                   accept="image/*"
