@@ -35,10 +35,10 @@ type IconFieldProps = {
 export function IonField({ icon, field, hasError }: IconFieldProps) {
   return (
     <Grid container spacing={1} alignItems={hasError ? "center" : "flex-end"}>
-      <Grid item>
+      <Grid item xs={1}>
         {icon}
       </Grid>
-      <Grid item>
+      <Grid item xs={10}>
         {field}
       </Grid>
     </Grid>
@@ -195,110 +195,132 @@ export default function AddArtistScreen() {
             value={imgPercentUploaded}
           />
         )}
-
-        <IonField
-          icon={<FacebookIcon />}
-          field={(
-            <TextField
-              inputRef={register({
-                minLength: {
-                  value: 5,
-                  message: "The Facebook username must be at least 5 characters."
-                }
-              })}
-              name="facebook"
-              id="facebook"
-              label="Facebook Username"
-              margin="normal"
-              error={!!errors.facebook}
-              helperText={!!errors.facebook && (
-                <TextIcon
-                  icon={<ErrorIcon className={styles.errorColor} />}
-                  text={<span className={styles.errorColor}>{errors.facebook.message}</span>}
+        <Grid container direction='row' spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <IonField
+              icon={<FacebookIcon className={!!errors.facebook ? styles.errorColor : ''} />}
+              field={(
+                <TextField
+                  inputRef={register({
+                    minLength: {
+                      value: 5,
+                      message: "username or link must be at least 5 characters.",
+                    },
+                    pattern: {
+                      value: /^\S*$/,
+                      message: "Remove any space from the username or link."
+                    }
+                  })}
+                  name="facebook"
+                  id="facebook"
+                  label="Facebook Username or Profile Link"
+                  margin="normal"
+                  error={!!errors.facebook}
+                  helperText={!!errors.facebook && (
+                    <TextIcon
+                      icon={<ErrorIcon className={styles.errorColor} />}
+                      text={<span className={styles.errorColor}>{errors.facebook.message}</span>}
+                    />
+                  )}
                 />
               )}
+              hasError={!!errors.facebook}
             />
-          )}
-          hasError={!!errors.facebook}
-        />
-
-        <IonField
-          icon={<TwitterIcon />}
-          field={(
-            <TextField
-              inputRef={register({
-                minLength: {
-                  value: 5,
-                  message: "The Twitter username must be at least 5 characters."
-                }
-              })}
-              name="twitter"
-              id="twitter"
-              label="Twitter Username"
-              margin="normal"
-              error={!!errors.twitter}
-              helperText={!!errors.twitter && (
-                <TextIcon
-                  icon={<ErrorIcon className={styles.errorColor} />}
-                  text={<span className={styles.errorColor}>{errors.twitter.message}</span>}
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <IonField
+              icon={<TwitterIcon className={!!errors.twitter ? styles.errorColor : ''} />}
+              field={(
+                <TextField
+                  inputRef={register({
+                    minLength: {
+                      value: 5,
+                      message: "username or link must be at least 5 characters."
+                    },
+                    pattern: {
+                      value: /^\S*$/,
+                      message: "Remove any space from the username or link."
+                    }
+                  })}
+                  name="twitter"
+                  id="twitter"
+                  label="Twitter Username or Profile Link"
+                  margin="normal"
+                  error={!!errors.twitter}
+                  helperText={!!errors.twitter && (
+                    <TextIcon
+                      icon={<ErrorIcon className={styles.errorColor} />}
+                      text={<span className={styles.errorColor}>{errors.twitter.message}</span>}
+                    />
+                  )}
                 />
               )}
+              hasError={!!errors.twitter}
             />
-          )}
-          hasError={!!errors.twitter}
-        />
-
-        <IonField
-          icon={<InstagramIcon />}
-          field={(
-            <TextField
-              inputRef={register({
-                minLength: {
-                  value: 5,
-                  message: "The Instagram username must be at least 5 characters."
-                }
-              })}
-              name="instagram"
-              id="instagram"
-              label="Instagram Username"
-              margin="normal"
-              error={!!errors.instagram}
-              helperText={!!errors.instagram && (
-                <TextIcon
-                  icon={<ErrorIcon className={styles.errorColor} />}
-                  text={<span className={styles.errorColor}>{errors.instagram.message}</span>}
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <IonField
+              icon={<InstagramIcon className={!!errors.instagram ? styles.errorColor : ''} />}
+              field={(
+                <TextField
+                  inputRef={register({
+                    minLength: {
+                      value: 5,
+                      message: "username or link must be at least 5 characters."
+                    },
+                    pattern: {
+                      value: /^\S*$/,
+                      message: "Remove any space from the username or link."
+                    }
+                  })}
+                  name="instagram"
+                  id="instagram"
+                  label="Instagram Username or Profile Link"
+                  margin="normal"
+                  error={!!errors.instagram}
+                  helperText={!!errors.instagram && (
+                    <TextIcon
+                      icon={<ErrorIcon className={styles.errorColor} />}
+                      text={<span className={styles.errorColor}>{errors.instagram.message}</span>}
+                    />
+                  )}
                 />
               )}
+              hasError={!!errors.instagram}
             />
-          )}
-          hasError={!!errors.instagram}
-        />
-
-        <IonField
-          icon={<YouTubeIcon />}
-          field={(
-            <TextField
-              inputRef={register({
-                minLength: {
-                  value: 5,
-                  message: "The YouTube username must be at least 5 characters."
-                }
-              })}
-              name="youtube"
-              id="youtube"
-              label="YouTube Username"
-              margin="normal"
-              error={!!errors.youtube}
-              helperText={!!errors.youtube && (
-                <TextIcon
-                  icon={<ErrorIcon className={styles.errorColor} />}
-                  text={<span className={styles.errorColor}>{errors.youtube.message}</span>}
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <IonField
+              icon={<YouTubeIcon className={!!errors.youtube ? styles.errorColor : ''} />}
+              field={(
+                <TextField
+                  inputRef={register({
+                    minLength: {
+                      value: 5,
+                      message: "username or link must be at least 5 characters."
+                    },
+                    pattern: {
+                      value: /^\S*$/,
+                      message: "Remove any space from the username or link."
+                    }
+                  })}
+                  name="youtube"
+                  id="youtube"
+                  label="YouTube Username or Profile Link"
+                  margin="normal"
+                  error={!!errors.youtube}
+                  helperText={!!errors.youtube && (
+                    <TextIcon
+                      icon={<ErrorIcon className={styles.errorColor} />}
+                      text={<span className={styles.errorColor}>{errors.youtube.message}</span>}
+                    />
+                  )}
                 />
               )}
+              hasError={!!errors.youtube}
             />
-          )}
-          hasError={!!errors.youtube}
-        />
+          </Grid>
+        </Grid>
 
         <TextField
           inputRef={register({
