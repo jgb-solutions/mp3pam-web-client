@@ -65,43 +65,44 @@ const useStyles = makeStyles(theme => ({
 }));
 
 type Props = {
-	list: ListInterface;
+	// track: ListInterface;
+	track: any;
 	className: string;
 	isPlaying: boolean;
-	listId: string
+	trackId: string
 };
 
 const Thumbnail = (props: Props) => {
 	const styles: any = useStyles();
 	const history = useHistory();
 
-	const { list, listId, isPlaying } = props;
-	const goToDetailPage = (list: ListInterface) => {
-		const route = get(Routes, list.type).detailPage(list)
-		history.push(route, { listParam: list });
+	const { track, trackId, isPlaying } = props;
+	const goToDetailPage = (track: ListInterface) => {
+		const route = get(Routes, track.type).detailPage(track)
+		history.push(route, { trackParam: track });
 	};
 
 	return (
 		<div className={props.className}>
 			<div
 				className={styles.imgContainer}
-				style={{ backgroundImage: `url(${list.image})` }}
+				style={{ backgroundImage: `url(${track.image})` }}
 			>
 				<div
 					className={styles.transparentBackground}
-					onClick={() => goToDetailPage(list)}
+					onClick={() => goToDetailPage(track)}
 				>
 					<IconButton className={styles.playPauseButton}>
-						{(isPlaying && listId === list.id) && (
+						{(isPlaying && trackId === track.id) && (
 							<PauseCircleOutline className={styles.icon} />
 						)}
-						{(!isPlaying || (isPlaying && listId !== list.id)) && (
+						{(!isPlaying || (isPlaying && trackId !== track.id)) && (
 							<PlayCircleOutline className={styles.icon} />
 						)}
 					</IconButton>
 				</div>
 			</div>
-			<h3 className={styles.title}>{list.name}</h3>
+			<h3 className={styles.title}>{track.name}</h3>
 			<p className={styles.details}>
 				Drift away with child <br />
 				ambient music. <br />
@@ -112,7 +113,7 @@ const Thumbnail = (props: Props) => {
 
 export default connect(
 	({ player }: any) => ({
-		listId: get(player, 'list.id'),
+		trackId: get(player, 'track.id'),
 		isPlaying: player.isPlaying
 	})
 )(Thumbnail);

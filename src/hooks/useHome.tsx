@@ -1,53 +1,39 @@
-import { useEffect, useState } from 'react';
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/react-hooks';
 
-export const FETCH_HOME = gql`
-  query homeMusics($page: Int) {
-    # 10 latest tracks
-    tracks(page: $page) {
-      paginatorInfo {
-        currentPage
-        hasMorePages
-      }
-      data {
-        title
-      }
-    }
-  }
-`;
+import { FETCH_HOME } from '../graphql/queries';
 
 export default function useHome() {
-  const [hasMore, setHasMore] = useState(true);
-  const { loading, error, data, fetchMore } = useQuery(FETCH_HOME, {
+  // const [hasMore, setHasMore] = useState(true);
+  const { loading, error, data: homeData } = useQuery(FETCH_HOME, {
     notifyOnNetworkStatusChange: true,
-  })
+    variables: {
+      take: 10,
+      orderBy: [{ field: "created_at", order: 'DESC' }]
+    },
+    onCompleted: (data => console.log(data))
+  });
 
-  useEffect(() => {
-    console.log(error);
-  }, [error])
+  // const loadMoreTracks = () => {
+  //   const { hasMorePages, currentPage } = data.tracks.paginatorInfo;
 
-  const loadMoreTracks = () => {
-    const { hasMorePages, currentPage } = data.tracks.paginatorInfo;
+  //   setHasMore(hasMorePages)
 
-    setHasMore(hasMorePages)
+  //   fetchMore({
+  //     variables: {
+  //       page: currentPage + 1
+  //     },
+  //     updateQuery: (previousResult, { fetchMoreResult }) => {
+  //       const { tracks: { data: oldTracks } } = previousResult;
+  //       const { tracks: { data: newTracks, ...newInfo } } = fetchMoreResult;
+  //       return {
+  //         tracks: {
+  //           ...newInfo,
+  //           data: [...oldTracks, ...newTracks]
+  //         }
+  //       };
+  //     }
+  //   });
+  // }
 
-    fetchMore({
-      variables: {
-        page: currentPage + 1
-      },
-      updateQuery: (previousResult, { fetchMoreResult }) => {
-        const { tracks: { data: oldTracks } } = previousResult;
-        const { tracks: { data: newTracks, ...newInfo } } = fetchMoreResult;
-        return {
-          tracks: {
-            ...newInfo,
-            data: [...oldTracks, ...newTracks]
-          }
-        };
-      }
-    });
-  }
-
-  return { loading, error, homeData: data, loadMoreTracks, hasMore };
+  return { loading, error, homeData };
 };

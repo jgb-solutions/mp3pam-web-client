@@ -1,6 +1,3 @@
-import TrackInterface from "./interfaces/TrackInterface";
-import { UserData } from "./interfaces/UserInterface";
-
 const Routes = {
 	pages: {
 		home: `/`,
@@ -14,23 +11,23 @@ const Routes = {
 	},
 	album: {
 		show: `/album/:hash`,
-		detailPage: (album: any) => `/album/${album.id}`,
+		detailPage: (hash: string) => `/album/${hash}`,
 	},
 	artist: {
 		show: `/artist/:hash`,
-		detailPage: (artist: any) => `/artist/${artist.id}`,
+		detailPage: (hash: string) => `/artist/${hash}`,
 	},
 	track: {
 		show: `/track/:hash`,
-		detailPage: (track: TrackInterface) => `/track/${track.id}`,
+		detailPage: (hash: string) => `/track/${hash}`,
 	},
 	podcast: {
 		show: `/podcast/:hash`,
-		detailPage: (podcast: any) => `/podcast/${podcast.id}`,
+		detailPage: (hash: string) => `/podcast/${hash}`,
 		goToAuthorDetail: (authorID: string) => `/author/${authorID}`
 	},
 	user: {
-		detailPage: (user: UserData) => `/user/${user.id}`,
+		detailPage: (userHash: string) => `/user/${userHash}`,
 		account: `/account`,
 		library: {
 			tracks: `/your-tracks`,
@@ -60,7 +57,7 @@ const Routes = {
 		},
 	},
 	browse: {
-		detailPage: (user: UserData) => `/user/${user.id}`,
+		detailPage: (userHash: string) => `/user/${userHash}`,
 		users: `/users`,
 		tracks: `/browse-tracks`,
 		albums: `/browse-albums`,

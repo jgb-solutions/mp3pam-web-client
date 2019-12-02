@@ -34,11 +34,11 @@ type IconFieldProps = {
 }
 export function IconField({ icon, field, hasError }: IconFieldProps) {
   return (
-    <Grid container spacing={1} alignItems={hasError ? "center" : "flex-end"}>
+    <Grid container spacing={3} alignItems={hasError ? "center" : "flex-end"}>
       <Grid item xs={1}>
         {icon}
       </Grid>
-      <Grid item xs={10}>
+      <Grid item xs={11}>
         {field}
       </Grid>
     </Grid>
@@ -210,7 +210,7 @@ export default function AddArtistScreen() {
                   })}
                   name="facebook"
                   id="facebook"
-                  label="Facebook Username or Profile Link"
+                  label="Facebook Username or Link"
                   margin="normal"
                   error={!!errors.facebook}
                   helperText={!!errors.facebook && (
@@ -238,7 +238,7 @@ export default function AddArtistScreen() {
                   })}
                   name="twitter"
                   id="twitter"
-                  label="Twitter Username or Profile Link"
+                  label="Twitter Username or Link"
                   margin="normal"
                   error={!!errors.twitter}
                   helperText={!!errors.twitter && (
@@ -266,7 +266,7 @@ export default function AddArtistScreen() {
                   })}
                   name="instagram"
                   id="instagram"
-                  label="Instagram Username or Profile Link"
+                  label="Instagram Username or Link"
                   margin="normal"
                   error={!!errors.instagram}
                   helperText={!!errors.instagram && (
@@ -294,7 +294,7 @@ export default function AddArtistScreen() {
                   })}
                   name="youtube"
                   id="youtube"
-                  label="YouTube Username or Profile Link"
+                  label="YouTube Username or Link"
                   margin="normal"
                   error={!!errors.youtube}
                   helperText={!!errors.youtube && (
