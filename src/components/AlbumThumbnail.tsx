@@ -12,7 +12,7 @@ import colors from "../utils/colors";
 import Routes from "../routes";
 import { get } from "lodash-es";
 import { SMALL_SCREEN_SIZE } from "../utils/constants";
-import { ArtistThumbnailData } from "./ArtistScrollingList";
+import { AlbumThumbnailData } from "./AlbumScrollingList";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
@@ -68,6 +68,12 @@ const useStyles = makeStyles(theme => ({
     color: "#9d9d9d",
     marginTop: 5,
     marginBottom: 0,
+    [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
+      fontSize: 11,
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+    },
   },
   link: {
     color: colors.white,
@@ -77,56 +83,56 @@ const useStyles = makeStyles(theme => ({
 }));
 
 type Props = {
-  artist: ArtistThumbnailData;
+  album: AlbumThumbnailData;
   className: string;
   isPlaying: boolean;
-  artistHash: string;
+  albumHash: string;
 };
 
-const ArtistThumbnail = (props: Props) => {
+const AlbumThumbnail = (props: Props) => {
   const styles = useStyles();
   const history = useHistory();
 
-  const { artist, artistHash, isPlaying } = props;
+  const { album, albumHash, isPlaying } = props;
 
-  const goToArtistPage = () => {
-    const route = Routes.artist.detailPage(artist.hash);
-    history.push(route, { artistParam: artist });
+  const goToAlbumPage = () => {
+    const route = Routes.album.detailPage(album.hash);
+    history.push(route, { albumParam: album });
   };
 
   return (
     <div className={props.className}>
       <div
         className={styles.imgContainer}
-        style={{ backgroundImage: `url(${artist.poster_url})` }}
+        style={{ backgroundImage: `url(${album.cover_url})` }}
       >
         <div
           className={styles.transparentBackground}
-          onClick={goToArtistPage}
+          onClick={goToAlbumPage}
         >
           <IconButton>
-            {(isPlaying && artistHash === artist.hash) && (
+            {(isPlaying && albumHash === album.hash) && (
               <PauseCircleOutline className={styles.icon} />
             )}
-            {(!isPlaying || (isPlaying && artistHash !== artist.hash)) && (
+            {(!isPlaying || (isPlaying && albumHash !== album.hash)) && (
               <PlayCircleOutline className={styles.icon} />
             )}
           </IconButton>
         </div>
       </div>
-      <h3 className={styles.title}>{artist.stage_name}</h3>
-      {/* <p className={styles.details}>
-        by: <span onClick={goToArtistPage} className={styles.link}>
-          {artist.artist.stage_name}
+      <h3 className={styles.title}>{album.title}</h3>
+      <p className={styles.details}>
+        by: <span onClick={goToAlbumPage} className={styles.link}>
+          {album.artist.stage_name}
         </span>
-      </p> */}
+      </p>
     </div>
   );
 };
 
 export default connect(
   ({ player }: any) => ({
-    artistHash: get(player, 'artist.hash'),
+    albumHash: get(player, 'album.hash'),
     isPlaying: player.isPlaying
   })
-)(ArtistThumbnail);
+)(AlbumThumbnail);

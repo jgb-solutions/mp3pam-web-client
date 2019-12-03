@@ -23,6 +23,59 @@ export const FETCH_HOME = gql`
         poster_url
       }
     }
+
+    # latest 1o albums
+    latestAlbums: albums(take: 10, orderBy: [{ field: "created_at", order: DESC }]) {
+      data {
+        title
+        hash
+        cover_url
+        artist {
+          stage_name
+          hash
+          poster_url
+        }
+      }
+    }
+  }
+`;
+
+export const FETCH_TRACKS = gql`
+  query tracksData($page: Int, $take: Int, $orderBy: [OrderByClause!]) {
+    # Latest 10 tracks
+    tracks(take: $take, page: $page, orderBy: $orderBy) {
+      data {
+        hash
+        title
+        poster_url
+        artist {
+          stage_name
+          hash
+        }
+      }
+    }
+  }
+`;
+
+export const FETCH_TRACK = gql`
+  query trackDetail($hash: String!) {
+    track(hash: $hash) {
+      title
+      hash
+      audio_url
+      poster_url
+      featured
+      detail
+      lyrics
+      genre {
+        name
+        slug
+      }
+      artist {
+        stage_name
+        hash
+      }
+    }
   }
 `;
 

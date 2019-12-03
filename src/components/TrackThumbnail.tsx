@@ -55,17 +55,30 @@ const useStyles = makeStyles(theme => ({
   title: {
     margin: 0,
     fontSize: 14,
-    color: colors.white
+    color: colors.white,
+    [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
+      fontSize: 12,
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+    },
   },
   details: {
     fontSize: 13,
     color: "#9d9d9d",
     marginTop: 5,
-    marginBottom: 0
+    marginBottom: 0,
+    [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
+      fontSize: 11,
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+    },
   },
   link: {
     color: colors.white,
     textDecoration: 'none',
+    cursor: 'pointer',
   }
 }));
 
@@ -84,12 +97,12 @@ const TrackThumbnail = (props: Props) => {
 
   const goToTrackPage = () => {
     const route = Routes.track.detailPage(track.hash);
-    history.push(route, { trackParam: track });
+    history.push(route, { hash: track.hash });
   };
 
   const goToArtistPage = () => {
     const route = Routes.artist.detailPage(track.artist.hash);
-    history.push(route, { artistParam: track.artist });
+    history.push(route, { hash: track.artist.hash });
   };
 
   return (

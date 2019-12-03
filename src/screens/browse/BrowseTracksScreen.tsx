@@ -1,20 +1,35 @@
-import React from "react";
-// import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
+import { get } from "lodash-es";
 
-// import ListTable from '../components/ListTable';
-// import AppStateInterface from "../interfaces/AppStateInterface";
+import Spinner from "../../components/Spinner";
+import HeaderTitle from "../../components/HeaderTitle";
+import useTracks from "../../hooks/useTracks";
+import TrackThumbnail from "../../components/TrackThumbnail";
+import { useTrackScrollingListStyles, TrackWithArtistThumbnailData } from "../../components/TrackScrollingList";
 
-function BrowseTracksScreen() {
-  // const list = useSelector(({ player }: AppStateInterface) => player.list);
+export default function BrowseTrackScreen() {
+  const trackThumnailStyles = useTrackScrollingListStyles()
+  const { loading, error, data } = useTracks();
+  const tracks = get(data, 'tracks');
+  // fetch home data
+  useEffect(() => {
+    console.log(data);
+  }, [data])
+
+  if (loading) return <Spinner.Full />;
+
+  if (error) return <p>Error Loading new data. Please refresh the page.</p>;
 
   return (
     <>
-      <h1>Browse Tracks</h1>
+      <HeaderTitle icon={<MusicNoteIcon />} text="Browse Tracks" />
 
-      {/* {!list && <h3>Your queue is empty!</h3>} */}
-
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {tracks.data.map((track: TrackWithArtistThumbnailData) => (
+          <TrackThumbnail key={track.hash} className={trackThumnailStyles.thumbnail} track={track} />
+        ))}
+      </div>
     </>
   );
 }
-
-export default BrowseTracksScreen;

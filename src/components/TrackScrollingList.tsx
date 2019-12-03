@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import TrackThumbnail from "./TrackThumbnail";
 import { SMALL_SCREEN_SIZE } from "../utils/constants";
 
-const useStyles = makeStyles(theme => ({
+export const useTrackScrollingListStyles = makeStyles(theme => ({
   container: {
-    marginBottom: 20
+    marginBottom: 30
   },
   list: {
     display: "flex",
@@ -50,9 +50,9 @@ export interface TrackWithArtistThumbnailData {
   artist: ArtistThumbnailData;
 };
 
-export const TrackScrollingList = (props: { tracks: TrackWithArtistThumbnailData[], category: string }) => {
-  const { tracks, category } = props;
-  const styles = useStyles();
+export const TrackScrollingList = (props: { tracks: TrackWithArtistThumbnailData[], category: string, browse: string }) => {
+  const { tracks, category, browse } = props;
+  const styles = useTrackScrollingListStyles();
   let domElement: any;
 
   const scroll = (dir: string) => {
@@ -63,15 +63,15 @@ export const TrackScrollingList = (props: { tracks: TrackWithArtistThumbnailData
       domElement.scrollLeft += distance;
     }
 
-    console.log("clientWidth", domElement.clientWidth);
-    console.log("offsetWidth", domElement.offsetWidth);
-    console.log("scrollWidth", domElement.scrollWidth);
+    // console.log("clientWidth", domElement.clientWidth);
+    // console.log("offsetWidth", domElement.offsetWidth);
+    // console.log("scrollWidth", domElement.scrollWidth);
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.listHeader}>
-        <Link to="/cat/konpa" className={styles.link}>
+        <Link to={browse} className={styles.link}>
           <h2 className={styles.category}>{category}</h2>
         </Link>
         <div>

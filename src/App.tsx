@@ -11,8 +11,9 @@ import { setContext } from 'apollo-link-context';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { get } from 'lodash-es';
 
+// Show Screens
+import TrackShowScreen from './screens/TrackShowScreen';
 // Main screens
-import ListScreen from './screens/ListScreen';
 import HomeScreen from './screens/HomeScreen';
 import UsersScreen from './screens/UsersScreen';
 import QueueScreen from './screens/library/QueueScreen';
@@ -168,22 +169,22 @@ export default function App() {
                 </Route>
                 <Route path={Routes.album.show}>
                   <Main>
-                    <ListScreen />
+                    <TrackShowScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.artist.show}>
                   <Main>
-                    <ListScreen />
+                    <TrackShowScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.track.show}>
                   <Main>
-                    <ListScreen />
+                    <TrackShowScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.podcast.show}>
                   <Main>
-                    <ListScreen />
+                    <TrackShowScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.pages.users}>

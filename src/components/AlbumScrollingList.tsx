@@ -4,7 +4,8 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
 import { SMALL_SCREEN_SIZE } from "../utils/constants";
-import ArtistThumbnail from "./ArtistThumbnail";
+import AlbumThumbnail from "./AlbumThumbnail";
+import { ArtistThumbnailData } from "./ArtistScrollingList";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -38,14 +39,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export interface ArtistThumbnailData {
-  stage_name: string,
+export interface AlbumThumbnailData {
+  title: string,
   hash: string,
-  poster_url: string,
+  cover_url: string,
+  artist: ArtistThumbnailData
 };
 
-export const ArtistScrollingList = (props: { artists: ArtistThumbnailData[], category: string, browse: string }) => {
-  const { artists, category, browse } = props;
+export const AlbumScrollingList = (props: { albums: AlbumThumbnailData[], category: string, browse: string }) => {
+  const { albums, category, browse } = props;
   const styles = useStyles();
   let domElement: any;
 
@@ -80,8 +82,8 @@ export const ArtistScrollingList = (props: { artists: ArtistThumbnailData[], cat
           domElement = el;
         }}
       >
-        {artists.map(artist => (
-          <ArtistThumbnail key={artist.hash} className={styles.thumbnail} artist={artist} />
+        {albums.map(album => (
+          <AlbumThumbnail key={album.hash} className={styles.thumbnail} album={album} />
         ))}
       </div>
     </div>

@@ -1,20 +1,14 @@
 import React, { useEffect } from "react";
 import Home from "@material-ui/icons/Home";
 
-import { TrackScrollingList } from "../components/TrackScrollingList";
 import Spinner from '../components/Spinner';
 import useHome from "../hooks/useHome";
 import HeaderTitle from "../components/HeaderTitle";
+import { TrackScrollingList } from "../components/TrackScrollingList";
 import { ArtistScrollingList } from "../components/ArtistScrollingList";
+import { AlbumScrollingList } from "../components/AlbumScrollingList";
+import Routes from "../routes";
 
-// const categories: string[] = [
-// 	"Featured",
-// 	"Rap",
-// 	"Compas",
-// 	"Pop",
-// 	"Reggae",
-// 	"Roots"
-// ];
 export default function HomeScreen() {
 	const { loading, error, homeData } = useHome();
 	// fetch home data
@@ -29,35 +23,28 @@ export default function HomeScreen() {
 	return (
 		<>
 			<HeaderTitle icon={<Home />} text="Home" />
-			{/* Latest Tracks */}
+
 			{homeData.latestTracks && (
 				<TrackScrollingList
-					category="Latest Tracks"
+					category="New Tracks"
 					tracks={homeData.latestTracks.data}
+					browse={Routes.browse.tracks}
 				/>
 			)}
 
-			{/* Latest Artists */}
+			{homeData.latestAlbums && (
+				<AlbumScrollingList
+					category="New Albums"
+					albums={homeData.latestAlbums.data}
+					browse={Routes.browse.albums}
+				/>
+			)}
+
 			{homeData.latestArtists && (
 				<ArtistScrollingList
-					category="Latest Artists"
+					category="New Artists"
 					artists={homeData.latestArtists.data}
-				/>
-			)}
-
-			{/* Latest Tracks */}
-			{homeData.latestTracks && (
-				<TrackScrollingList
-					category="Latest Tracks"
-					tracks={homeData.latestTracks.data}
-				/>
-			)}
-
-			{/* Latest Tracks */}
-			{homeData.latestTracks && (
-				<TrackScrollingList
-					category="Latest Tracks"
-					tracks={homeData.latestTracks.data}
+					browse={Routes.browse.artists}
 				/>
 			)}
 		</>

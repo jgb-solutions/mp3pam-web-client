@@ -1,13 +1,13 @@
 import { useQuery } from '@apollo/react-hooks';
 
-import { FETCH_HOME } from '../graphql/queries';
+import { FETCH_TRACKS } from '../graphql/queries';
 
-export default function useHome() {
+export default function useTracks() {
   // const [hasMore, setHasMore] = useState(true);
-  const { loading, error, data: homeData } = useQuery(FETCH_HOME, {
+  const { loading, error, data } = useQuery(FETCH_TRACKS, {
     notifyOnNetworkStatusChange: true,
     variables: {
-      take: 10,
+      // take: 10,
       orderBy: [{ field: "created_at", order: 'DESC' }]
     }
   });
@@ -34,5 +34,5 @@ export default function useHome() {
   //   });
   // }
 
-  return { loading, error, homeData };
+  return { loading, error, data };
 };
