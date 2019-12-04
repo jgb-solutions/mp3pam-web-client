@@ -17,19 +17,24 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   imgContainer: {
+    // minWidth: 100,
+    // minHeight: 100,
     backgroundSize: "contain",
+    backgroundRepeat: 'no-repeat',
     cursor: "pointer",
-    width: 175,
-    height: 175,
+    width: 200,
+    height: 200,
+    maxWidth: '100%',
+    maxHeight: '100%',
     position: "relative",
     marginBottom: 10,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
-      width: 100,
-      height: 100,
-    },
+    // [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
+    //   width: 100,
+    //   height: 100,
+    // },
   },
   transparentBackground: {
     opacity: 0,
@@ -84,7 +89,8 @@ const useStyles = makeStyles(theme => ({
 
 type Props = {
   track: TrackWithArtistThumbnailData;
-  className: string;
+  className?: string;
+  style?: object,
   isPlaying: boolean;
   trackHash: string;
 };
@@ -106,7 +112,7 @@ const TrackThumbnail = (props: Props) => {
   };
 
   return (
-    <div className={props.className}>
+    <div className={props.className} style={props.style}>
       <div
         className={styles.imgContainer}
         style={{ backgroundImage: `url(${track.poster_url})` }}

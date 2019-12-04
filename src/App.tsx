@@ -12,7 +12,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { get } from 'lodash-es';
 
 // Show Screens
-import TrackShowScreen from './screens/TrackShowScreen';
+import TrackDetailScreen from './screens/TrackDetailScreen';
 // Main screens
 import HomeScreen from './screens/HomeScreen';
 import UsersScreen from './screens/UsersScreen';
@@ -169,22 +169,22 @@ export default function App() {
                 </Route>
                 <Route path={Routes.album.show}>
                   <Main>
-                    <TrackShowScreen />
+                    <TrackDetailScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.artist.show}>
                   <Main>
-                    <TrackShowScreen />
+                    <TrackDetailScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.track.show}>
                   <Main>
-                    <TrackShowScreen />
+                    <TrackDetailScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.podcast.show}>
                   <Main>
-                    <TrackShowScreen />
+                    <TrackDetailScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.pages.users}>

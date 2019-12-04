@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import { get } from "lodash-es";
+import { Grid } from "@material-ui/core";
 
 import Spinner from "../../components/Spinner";
 import HeaderTitle from "../../components/HeaderTitle";
 import useTracks from "../../hooks/useTracks";
 import TrackThumbnail from "../../components/TrackThumbnail";
-import { useTrackScrollingListStyles, TrackWithArtistThumbnailData } from "../../components/TrackScrollingList";
+import {
+  useTrackScrollingListStyles,
+  TrackWithArtistThumbnailData
+} from "../../components/TrackScrollingList";
 
 export default function BrowseTrackScreen() {
   const trackThumnailStyles = useTrackScrollingListStyles()
@@ -25,11 +29,18 @@ export default function BrowseTrackScreen() {
     <>
       <HeaderTitle icon={<MusicNoteIcon />} text="Browse Tracks" />
 
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      {/* <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {tracks.data.map((track: TrackWithArtistThumbnailData) => (
           <TrackThumbnail key={track.hash} className={trackThumnailStyles.thumbnail} track={track} />
         ))}
-      </div>
+      </div> */}
+      <Grid container spacing={2}>
+        {tracks.data.map((track: TrackWithArtistThumbnailData) => (
+          <Grid item xs={6} md={3} sm={4} key={track.hash}>
+            <TrackThumbnail track={track} />
+          </Grid>
+        ))}
+      </Grid>
     </>
   );
 }

@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { darken, makeStyles } from "@material-ui/core/styles";
 import { Link, useRouteMatch, useLocation, useParams } from "react-router-dom";
 import { get } from 'lodash';
+import InfoIcon from '@material-ui/icons/Info';
+import LineWeightIcon from '@material-ui/icons/LineWeight';
 
 import Routes from "../routes";
 import colors from "../utils/colors";
@@ -17,6 +19,7 @@ import AppStateInterface from "../interfaces/AppStateInterface";
 import { Grid } from "@material-ui/core";
 import { SMALL_SCREEN_SIZE } from "../utils/constants";
 import Spinner from "../components/Spinner";
+import HeaderTitle from "../components/HeaderTitle";
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -101,10 +104,8 @@ type Props = {
   currentTime: number;
 };
 
-const TrackShowScreen = (props: Props) => {
+const TrackDetailScreen = (props: Props) => {
   const styles = useStyles();
-  const match = useRouteMatch();
-  const location = useLocation();
   const params = useParams();
   const hash = get(params, 'hash');
 
@@ -173,7 +174,12 @@ const TrackShowScreen = (props: Props) => {
         </Grid>
       </Grid>
       <br />
-      {/* {track.tracks && <ListTable list={list} />} */}
+      {/* TODO: Related Tracks */}
+      <HeaderTitle icon={<InfoIcon />} text="Detail" />
+      <p dangerouslySetInnerHTML={{ __html: track.detail }} style={{ whiteSpace: 'pre' }} />
+
+      <HeaderTitle icon={<LineWeightIcon />} text="Lyrics" />
+      <p dangerouslySetInnerHTML={{ __html: track.lyrics }} style={{ whiteSpace: 'pre' }} />
     </>
   ) : null;
 }
@@ -189,4 +195,4 @@ export default connect(
     pauseList: playerActions.pauseList,
     resumeList: playerActions.resumeList
   }
-)(TrackShowScreen);
+)(TrackDetailScreen);
