@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { darken, makeStyles } from "@material-ui/core/styles";
-import { Link, useRouteMatch, useLocation, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { get } from 'lodash';
 import InfoIcon from '@material-ui/icons/Info';
 import LineWeightIcon from '@material-ui/icons/LineWeight';
@@ -153,9 +153,9 @@ const TrackDetailScreen = (props: Props) => {
                 {track.artist.stage_name}
               </Link>
             </p>
-            <Grid className={styles.ctaButtons} container>
+            <Grid className={styles.ctaButtons} container spacing={2}>
               <Grid item sm={4} xs={12}>
-                <Button onClick={() => {
+                <Button fullWidth style={{ maxWidth: 120 }} onClick={() => {
                   // togglePlay(list)
                 }}>
                   {(props.playingListId !== hash) && "Play"}
@@ -175,11 +175,19 @@ const TrackDetailScreen = (props: Props) => {
       </Grid>
       <br />
       {/* TODO: Related Tracks */}
-      <HeaderTitle icon={<InfoIcon />} text="Detail" />
-      <p dangerouslySetInnerHTML={{ __html: track.detail }} style={{ whiteSpace: 'pre' }} />
+      {track.detail && (
+        <>
+          <HeaderTitle icon={<InfoIcon />} text="Detail" />
+          <p dangerouslySetInnerHTML={{ __html: track.detail }} style={{ wordWrap: 'normal' }} />
+        </>
+      )}
 
-      <HeaderTitle icon={<LineWeightIcon />} text="Lyrics" />
-      <p dangerouslySetInnerHTML={{ __html: track.lyrics }} style={{ whiteSpace: 'pre' }} />
+      {track.lyrics && (
+        <>
+          <HeaderTitle icon={<LineWeightIcon />} text="Lyrics" />
+          <p dangerouslySetInnerHTML={{ __html: track.lyrics }} style={{ wordWrap: 'normal' }} />
+        </>
+      )}
     </>
   ) : null;
 }

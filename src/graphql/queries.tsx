@@ -53,6 +53,10 @@ export const FETCH_TRACKS = gql`
           hash
         }
       }
+      paginatorInfo {
+        hasMorePages
+        currentPage
+      }
     }
   }
 `;
