@@ -14,6 +14,7 @@ import { get } from "lodash-es";
 import { SMALL_SCREEN_SIZE } from "../utils/constants";
 import { TrackWithArtistThumbnailData, ArtistThumbnailData } from "./TrackScrollingList";
 import { Link } from "react-router-dom";
+import AppStateInterface from "../interfaces/AppStateInterface";
 
 const useStyles = makeStyles(theme => ({
   imgContainer: {
@@ -92,14 +93,14 @@ type Props = {
   className?: string;
   style?: object,
   isPlaying: boolean;
-  trackHash: string;
+  listId: string;
 };
 
 const TrackThumbnail = (props: Props) => {
   const styles = useStyles();
   const history = useHistory();
 
-  const { track, trackHash, isPlaying } = props;
+  const { track, listId, isPlaying } = props;
 
   const goToTrackPage = () => {
     const route = Routes.track.detailPage(track.hash);
@@ -122,10 +123,10 @@ const TrackThumbnail = (props: Props) => {
           onClick={goToTrackPage}
         >
           <IconButton>
-            {(isPlaying && trackHash === track.hash) && (
+            {(isPlaying && listId === track.hash) && (
               <PauseCircleOutline className={styles.icon} />
             )}
-            {(!isPlaying || (isPlaying && trackHash !== track.hash)) && (
+            {(!isPlaying || (isPlaying && listId !== track.hash)) && (
               <PlayCircleOutline className={styles.icon} />
             )}
           </IconButton>
@@ -142,8 +143,8 @@ const TrackThumbnail = (props: Props) => {
 };
 
 export default connect(
-  ({ player }: any) => ({
-    trackHash: get(player, 'track.hash'),
+  ({ player }: AppStateInterface) => ({
+    listId: get(player, 'list.id'),
     isPlaying: player.isPlaying
   })
 )(TrackThumbnail);

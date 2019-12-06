@@ -12,7 +12,7 @@ import colors from "../utils/colors";
 import * as playerActions from "../store/actions/playerActions";
 import AppStateInterface from "../interfaces/AppStateInterface";
 import ListInterface from "../interfaces/ListInterface";
-import TrackInterface from "../interfaces/TrackInterface";
+import { SoundInterface } from "../interfaces/ListInterface";
 
 const useStyles = makeStyles({
   icon: {
@@ -39,44 +39,44 @@ type Props = {
   pauseList(): void,
   resumeList(): void,
   isPlaying: boolean,
-  resumeTrack(): void,
-  pauseTrack(): void,
+  resumeSound(): void,
+  pauseSound(): void,
   list: ListInterface,
-  track: TrackInterface,
+  sound: SoundInterface,
   playingListId: string,
-  currentTrack?: TrackInterface,
+  currentSound?: SoundInterface,
   playList(list: ListInterface): void,
-  playTrack: (track: TrackInterface) => void,
+  playSound: (sound: SoundInterface) => void,
 }
 
 function PlayPause({
   list,
-  track,
+  sound,
   playList,
   isPlaying,
   pauseList,
   resumeList,
-  currentTrack,
+  currentSound,
   playingListId,
-  playTrack,
-  resumeTrack,
-  pauseTrack,
+  playSound,
+  resumeSound,
+  pauseSound,
 }: Props
 ) {
   const styles = useStyles();
 
   const togglePlay = () => {
-    if (currentTrack && list.id === playingListId) {
-      if (track.hash === currentTrack.hash && isPlaying) {
-        pauseTrack();
+    if (currentSound && list.id === playingListId) {
+      if (sound.hash === currentSound.hash && isPlaying) {
+        pauseSound();
       }
 
-      if (track.hash === currentTrack.hash && !isPlaying) {
-        resumeTrack();
+      if (sound.hash === currentSound.hash && !isPlaying) {
+        resumeSound();
       }
 
-      if (track.hash !== currentTrack.hash) {
-        playTrack(track);
+      if (sound.hash !== currentSound.hash) {
+        playSound(sound);
       }
     }
 
@@ -95,9 +95,9 @@ function PlayPause({
     }
   };
 
-  return currentTrack ? (
+  return currentSound ? (
     <IconButton onClick={togglePlay} className={styles.button}>
-      {track.hash === currentTrack.hash && isPlaying ? (
+      {sound.hash === currentSound.hash && isPlaying ? (
         <PauseCircleOutline
           className={styles.icon}
           style={{ fontSize: 35 }}
@@ -116,14 +116,14 @@ export default connect(
   ({ player }: AppStateInterface) => ({
     playingListId: get(player, 'list.id'),
     isPlaying: player.isPlaying,
-    currentTrack: player.currentTrack
+    currentSound: player.currentSound
   }),
   {
     playList: playerActions.playList,
     pauseList: playerActions.pauseList,
     resumeList: playerActions.resumeList,
-    pauseTrack: playerActions.pauseTrack,
-    resumeTrack: playerActions.resumeTrack,
-    playTrack: playerActions.playTrack
+    pauseSound: playerActions.pauseSound,
+    resumeSound: playerActions.resumeSound,
+    playSound: playerActions.playSound
   }
 )(PlayPause);

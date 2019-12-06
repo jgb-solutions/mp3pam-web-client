@@ -24,11 +24,11 @@ import Slider from "./Slider";
 import Routes from '../routes';
 import { debounce } from "../utils/helpers";
 import { ALL, ONE, NONE } from '../utils/constants';
-import TrackInterface from "../interfaces/TrackInterface";
+import { SoundInterface } from "../interfaces/ListInterface";
 import PlayerInterface from "../interfaces/PlayerInterface";
 import * as playerActions from "../store/actions/playerActions";
 import {
-	RESUME, PAUSE, PLAY, PLAY_TRACK, PAUSE_TRACK, RESUME_TRACK
+	RESUME, PAUSE, PLAY, PLAY_SOUND, PAUSE_SOUND, RESUME_SOUND
 } from "../store/actions/actions";
 import AppStateInterface from "../interfaces/AppStateInterface";
 import PlayerStyle from "../styles/PlayerStyle";
@@ -62,11 +62,8 @@ function Player(props: Props) {
 		audio.ontimeupdate = onTimeUpdate;
 		audio.onpause = onPause;
 		audio.onplay = onPlay;
-		// eslint-disable-next-line
-	}, []);
 
-	// set the last state of the audio player
-	useEffect(() => {
+		// set the last state of the audio player
 		if (state.currentTime > 0) {
 			prepareAudio();
 			audio.currentTime = state.currentTime;
@@ -101,23 +98,23 @@ function Player(props: Props) {
 	};
 
 	const onEnded = () => {
-		const tracks = get(state.list, 'tracks', [])
+		const sounds = get(state.list, 'sounds', [])
 		const { repeat } = state;
 
-		const currentTrack = state.currentTrack
-		if (!currentTrack) return;
-		const currentTrackIndex = findIndex(currentTrack, tracks)
-		const totalTracksIndexes = tracks.length - 1;
+		const currentSound = state.currentSound
+		if (!currentSound) return;
+		const currentSoundIndex = findIndex(currentSound, sounds)
+		const totalSoundsIndexes = sounds.length - 1;
 
 		if (
-			tracks.length > 1 && repeat === ALL
+			sounds.length > 1 && repeat === ALL
 		) {
 			playNext();
 		}
 
 		if (
-			tracks.length > 1 && repeat === NONE &&
-			currentTrackIndex < totalTracksIndexes
+			sounds.length > 1 && repeat === NONE &&
+			currentSoundIndex < totalSoundsIndexes
 		) {
 			playNext();
 		}
@@ -140,7 +137,7 @@ function Player(props: Props) {
 	};
 
 	const play = () => {
-		if (!state.currentTrack) return;
+		if (!state.currentSound) return;
 
 		setState(prevState => ({
 			...prevState,
@@ -163,8 +160,8 @@ function Player(props: Props) {
 	};
 
 	const prepareAudio = () => {
-		if (!state.currentTrack) return;
-		audio.src = state.currentTrack.play_url;
+		if (!state.currentSound) return;
+		audio.src = state.currentSound.play_url;
 		audio.load();
 	};
 
@@ -187,26 +184,26 @@ function Player(props: Props) {
 	};
 
 	const playPrevious = () => {
-		const tracks = get(state.list, 'tracks', [])
+		const sounds = get(state.list, 'sounds', [])
 		if (state.isShuffled) {
-			getRandomTrack(tracks)
+			getRandomSound(sounds)
 			play();
 		} else {
-			if (tracks.length > 1) {
+			if (sounds.length > 1) {
 				let indexToPlay: number;
-				let totalTracksIndexes = tracks.length - 1;
+				let totalSoundsIndexes = sounds.length - 1;
 
-				if (!state.currentTrack) return;
-				let currentIndex = findIndex(state.currentTrack, tracks);
+				if (!state.currentSound) return;
+				let currentIndex = findIndex(state.currentSound, sounds);
 				if (currentIndex > 0) {
 					indexToPlay = currentIndex - 1;
 				} else {
-					indexToPlay = totalTracksIndexes;
+					indexToPlay = totalSoundsIndexes;
 				}
 
 				setState(prevState => ({
 					...prevState,
-					currentTrack: tracks[indexToPlay]
+					currentSound: sounds[indexToPlay]
 				}))
 			} else {
 				play();
@@ -215,19 +212,19 @@ function Player(props: Props) {
 	};
 
 	const playNext = () => {
-		const tracks = get(state.list, 'tracks', [])
+		const sounds = get(state.list, 'sounds', [])
 		if (state.isShuffled) {
-			getRandomTrack(tracks)
+			getRandomSound(sounds)
 			play();
 		} else {
-			if (tracks.length > 1) {
+			if (sounds.length > 1) {
 				let indexToPlay: number;
-				let totalTracksIndexes = tracks.length - 1;
+				let totalSoundsIndexes = sounds.length - 1;
 
-				if (!state.currentTrack) return;
-				let currentIndex = findIndex(state.currentTrack, tracks);
+				if (!state.currentSound) return;
+				let currentIndex = findIndex(state.currentSound, sounds);
 
-				if (currentIndex < totalTracksIndexes) {
+				if (currentIndex < totalSoundsIndexes) {
 					indexToPlay = currentIndex + 1;
 				} else {
 					indexToPlay = 0;
@@ -235,7 +232,7 @@ function Player(props: Props) {
 
 				setState(prevState => ({
 					...prevState,
-					currentTrack: tracks[indexToPlay]
+					currentSound: sounds[indexToPlay]
 				}))
 			} else {
 				play();
@@ -243,18 +240,18 @@ function Player(props: Props) {
 		}
 	};
 
-	const findIndex = (track: TrackInterface, trackList: TrackInterface[]): number => {
-		return trackList.findIndex(item => item.id === track.id);
+	const findIndex = (sound: SoundInterface, soundList: SoundInterface[]): number => {
+		return soundList.findIndex(item => item.hash === sound.hash);
 	}
 
-	const getRandomTrack = (tracks: TrackInterface[]) => {
-		const randomTrack = tracks[
-			Math.floor(Math.random() * tracks.length)
+	const getRandomSound = (sounds: SoundInterface[]) => {
+		const randomSound = sounds[
+			Math.floor(Math.random() * sounds.length)
 		];
 
 		setState(prevState => ({
 			...prevState,
-			currentTrack: randomTrack
+			currentSound: randomSound
 		}))
 	};
 
@@ -317,18 +314,16 @@ function Player(props: Props) {
 
 	// update playing when the store state changes
 	useEffect(() => {
-		// play new set
+		// play new list
 		if (
 			get(storePlayerData, 'list.id') !== get(state, 'list.id')
 			&& storePlayerData.action === PLAY
 		) {
-			const currentTrack = get(storePlayerData, 'list.tracks')[0]
-
 			setState(prevState => ({
 				...prevState,
 				action: PLAY,
 				list: storePlayerData.list,
-				currentTrack
+				currentSound: get(storePlayerData, 'list.sounds')[0]
 			}));
 		}
 
@@ -355,28 +350,28 @@ function Player(props: Props) {
 		// eslint-disable-next-line
 	}, [storePlayerData.list, storePlayerData.action, storePlayerData.updateHack]);
 
-	// Play, Pause and resume track
+	// Play, Pause and resume sound
 	useEffect(() => {
 		switch (storePlayerData.action) {
-			case PLAY_TRACK:
+			case PLAY_SOUND:
 				setState(prevState => ({
 					...prevState,
-					action: PLAY_TRACK,
-					currentTrack: get(storePlayerData, 'track')
+					action: PLAY_SOUND,
+					currentSound: get(storePlayerData, 'currentSound')
 				}));
 				break;
-			case PAUSE_TRACK:
+			case PAUSE_SOUND:
 				pause();
 				setState(prevState => ({
 					...prevState,
-					action: PAUSE_TRACK,
+					action: PAUSE_SOUND,
 				}));
 				break;
-			case RESUME_TRACK:
+			case RESUME_SOUND:
 				resume();
 				setState(prevState => ({
 					...prevState,
-					action: RESUME_TRACK,
+					action: RESUME_SOUND,
 				}));
 				break;
 		}
@@ -389,14 +384,14 @@ function Player(props: Props) {
 		// eslint-disable-next-line
 	}, [state.volume]);
 
-	// play current track after it has been updated
+	// play current sound after it has been updated
 	useEffect(() => {
-		if (get(storePlayerData, 'currentTrack.id') !== get(state, 'currentTrack.id')) {
-			syncState({ currentTrack: state.currentTrack });
+		if (get(storePlayerData, 'currentSound.hash') !== get(state, 'currentSound.hash')) {
+			syncState({ currentSound: state.currentSound });
 			play();
 		}
 		// eslint-disable-next-line
-	}, [state.currentTrack]);
+	}, [state.currentSound]);
 
 	useEffect(() => {
 		syncState({ isPlaying: state.isPlaying });
@@ -437,24 +432,23 @@ function Player(props: Props) {
 		// eslint-disable-next-line
 	}, [state.isShuffled]);
 
-	const showPlayer = !!state.currentTrack;
 	return (
-		<Slide direction="up" timeout={500} in={showPlayer} mountOnEnter unmountOnExit>
+		<Slide direction="up" timeout={500} in={!!state.currentSound} mountOnEnter unmountOnExit>
 			<div className={styles.container}>
 				<div className={styles.player}>
 					<div className={styles.posterTitle}>
 						<img
-							src={state.currentTrack ? state.currentTrack.image : '/assets/images/loader.svg'}
+							src={state.currentSound ? state.currentSound.image : '/assets/images/loader.svg'}
 							className={styles.image}
-							alt={state.currentTrack && state.currentTrack.title}
+							alt={state.currentSound && state.currentSound.title}
 						/>
 						<div className={styles.titleArtist}>
 							<span className={styles.title}>
-								{state.currentTrack && state.currentTrack.title}
+								{state.currentSound && state.currentSound.title}
 								<Heart />
 							</span>
 							<span className={styles.artist}>
-								{state.currentTrack && state.currentTrack.artist.name}
+								{state.currentSound && state.currentSound.author_name}
 							</span>
 						</div>
 					</div>

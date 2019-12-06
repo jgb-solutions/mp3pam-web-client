@@ -78,8 +78,8 @@ const Thumbnail = (props: Props) => {
 
 	const { track, trackId, isPlaying } = props;
 	const goToDetailPage = (track: ListInterface) => {
-		const route = get(Routes, track.type).detailPage(track)
-		history.push(route, { trackParam: track });
+		// const route = get(Routes, track.type).detailPage(track)
+		// history.push(route, { trackParam: track });
 	};
 
 	return (

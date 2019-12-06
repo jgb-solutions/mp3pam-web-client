@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { darken, makeStyles } from "@material-ui/core/styles";
 import { Link, useParams } from "react-router-dom";
@@ -108,11 +108,30 @@ const TrackDetailScreen = (props: Props) => {
   const styles = useStyles();
   const params = useParams();
   const hash = get(params, 'hash');
+  let list: ListInterface;
 
   const { data, loading, error } = useTrackDetail(hash);
   const track = get(data, 'track');
 
-  const togglePlay = (list: ListInterface) => {
+  useEffect(() => {
+    if (track) {
+      const { hash, title, poster_url, artist, audio_url } = track;
+      list = {
+        id: hash,
+        sounds: [{
+          hash,
+          title,
+          image: poster_url,
+          author_name: artist.stage_name,
+          author_hash: artist.hash,
+          play_url: audio_url
+        }]
+      };
+      console.log(list);
+    }
+  }, [track]);
+
+  const togglePlay = () => {
     if (props.isPlaying && props.playingListId === hash) {
       props.pauseList();
     }
@@ -155,9 +174,7 @@ const TrackDetailScreen = (props: Props) => {
             </p>
             <Grid className={styles.ctaButtons} container spacing={2}>
               <Grid item sm={4} xs={12}>
-                <Button fullWidth style={{ maxWidth: 120 }} onClick={() => {
-                  // togglePlay(list)
-                }}>
+                <Button fullWidth style={{ maxWidth: 120 }} onClick={togglePlay}>
                   {(props.playingListId !== hash) && "Play"}
                   {(props.isPlaying && props.playingListId === hash) && "Pause"}
                   {(!props.isPlaying && props.playingListId === hash) && "Resume"}
@@ -194,7 +211,7 @@ const TrackDetailScreen = (props: Props) => {
 
 export default connect(
   ({ player }: AppStateInterface) => ({
-    playingListId: get(player, 'hash'),
+    playingListId: get(player, 'list.id'),
     isPlaying: player.isPlaying,
     currentTime: player.currentTime
   }),

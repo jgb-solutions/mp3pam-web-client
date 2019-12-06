@@ -1,5 +1,4 @@
-import ListInterface from "./ListInterface";
-import TrackInterface from "./TrackInterface";
+import ListInterface, { SoundInterface } from "./ListInterface";
 
 export default interface PlayerInterface {
 	volume: number;
@@ -12,6 +11,6 @@ export default interface PlayerInterface {
 	duration: string;
 	currentTime: number;
 	updateHack: string,
-	currentTrack?: TrackInterface;
+	currentSound?: SoundInterface;
 	list?: ListInterface;
 }

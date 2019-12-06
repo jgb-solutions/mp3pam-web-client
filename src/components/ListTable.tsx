@@ -13,7 +13,7 @@ import PlayPause from './PlayPause';
 import TrackInterface from '../interfaces/TrackInterface';
 import { useSelector } from 'react-redux';
 import AppStateInterface from '../interfaces/AppStateInterface';
-import ListInterface from '../interfaces/ListInterface';
+import ListInterface, { SoundInterface } from '../interfaces/ListInterface';
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -46,8 +46,8 @@ type Props = {
 
 export default function ListTable(props: Props) {
   const styles = useStyles();
-  const tracks = props.list.tracks;
-  const currentTrack = useSelector(({ player }: AppStateInterface) => player.currentTrack);
+  const sounds = props.list.sounds;
+  const currentSound = useSelector(({ player }: AppStateInterface) => player.currentSound);
 
   return (
     <Table className={styles.table} size="small">
@@ -61,22 +61,22 @@ export default function ListTable(props: Props) {
         </TableRow>
       </TableHead>
       <TableBody>
-        {tracks && tracks.map((track: TrackInterface, index: number) => {
-          const color = currentTrack
-            && track.hash === currentTrack.hash ? colors.primary
+        {sounds && sounds.map((sound: SoundInterface, index: number) => {
+          const color = currentSound
+            && sound.hash === currentSound.hash ? colors.primary
             : undefined;
 
           return (
-            <TableRow key={track.hash} style={{
-              borderBottom: tracks.length - 1 === index ? '' : '1px solid white',
+            <TableRow key={sound.hash} style={{
+              borderBottom: sounds.length - 1 === index ? '' : '1px solid white',
             }}>
               <StyledTableCell style={{ width: '15%', minWidth: '80px' }}>
-                <PlayPause track={track} list={props.list} />
+                <PlayPause sound={sound} list={props.list} />
                 <Heart />
               </StyledTableCell>
-              <StyledTableCell style={{ width: '30%', color }}>{track.title}</StyledTableCell>
-              <StyledTableCell style={{ width: '30%', color }}>{track.artist.name}</StyledTableCell>
-              <StyledTableCell style={{ width: '20%', color }}>{track.title}</StyledTableCell>
+              <StyledTableCell style={{ width: '30%', color }}>{sound.title}</StyledTableCell>
+              <StyledTableCell style={{ width: '30%', color }}>{sound.author_name}</StyledTableCell>
+              <StyledTableCell style={{ width: '20%', color }}>{sound.title}</StyledTableCell>
               <StyledTableCell>
                 <More />
               </StyledTableCell>
