@@ -4,26 +4,28 @@ import {
   PauseCircleOutline
 } from "@material-ui/icons";
 import { useHistory } from "react-router";
-import { connect } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 
 import colors from "../utils/colors";
 import Routes from "../routes";
-import { get } from "lodash-es";
 import { SMALL_SCREEN_SIZE } from "../utils/constants";
 import { ArtistThumbnailData } from "./ArtistScrollingList";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   imgContainer: {
+    // minWidth: 100,
+    // minHeight: 100,
     backgroundSize: "contain",
+    backgroundRepeat: 'no-repeat',
     cursor: "pointer",
     width: 175,
     height: 175,
+    maxWidth: '100%',
+    maxHeight: '100%',
     position: "relative",
     marginBottom: 10,
-    display: "flex",
+    // display: "flex",
     alignItems: "center",
     justifyContent: "center",
     [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
@@ -68,6 +70,12 @@ const useStyles = makeStyles(theme => ({
     color: "#9d9d9d",
     marginTop: 5,
     marginBottom: 0,
+    [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
+      fontSize: 11,
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+    },
   },
   link: {
     color: colors.white,
@@ -78,24 +86,23 @@ const useStyles = makeStyles(theme => ({
 
 type Props = {
   artist: ArtistThumbnailData;
-  className: string;
-  isPlaying: boolean;
-  artistHash: string;
+  className?: string;
+  style?: object,
 };
 
-const ArtistThumbnail = (props: Props) => {
+export default function ArtistThumbnail(props: Props) {
   const styles = useStyles();
   const history = useHistory();
 
-  const { artist, artistHash, isPlaying } = props;
+  const { artist } = props;
 
   const goToArtistPage = () => {
     const route = Routes.artist.detailPage(artist.hash);
-    history.push(route, { artistParam: artist });
+    history.push(route, { hash: artist.hash });
   };
 
   return (
-    <div className={props.className}>
+    <div className={props.className} style={props.style}>
       <div
         className={styles.imgContainer}
         style={{ backgroundImage: `url(${artist.poster_url})` }}
@@ -105,28 +112,11 @@ const ArtistThumbnail = (props: Props) => {
           onClick={goToArtistPage}
         >
           <IconButton>
-            {(isPlaying && artistHash === artist.hash) && (
-              <PauseCircleOutline className={styles.icon} />
-            )}
-            {(!isPlaying || (isPlaying && artistHash !== artist.hash)) && (
-              <PlayCircleOutline className={styles.icon} />
-            )}
+            <PlayCircleOutline className={styles.icon} />
           </IconButton>
         </div>
       </div>
       <h3 className={styles.title}>{artist.stage_name}</h3>
-      {/* <p className={styles.details}>
-        by: <span onClick={goToArtistPage} className={styles.link}>
-          {artist.artist.stage_name}
-        </span>
-      </p> */}
     </div>
   );
 };
-
-export default connect(
-  ({ player }: any) => ({
-    artistHash: get(player, 'artist.hash'),
-    isPlaying: player.isPlaying
-  })
-)(ArtistThumbnail);

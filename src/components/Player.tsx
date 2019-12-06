@@ -316,7 +316,7 @@ function Player(props: Props) {
 	useEffect(() => {
 		// play new list
 		if (
-			get(storePlayerData, 'list.id') !== get(state, 'list.id')
+			get(storePlayerData, 'list.hash') !== get(state, 'list.hash')
 			&& storePlayerData.action === PLAY
 		) {
 			setState(prevState => ({
@@ -338,7 +338,7 @@ function Player(props: Props) {
 
 		// Resume player
 		if (
-			get(storePlayerData, 'list.id') === get(state, 'list.id')
+			get(storePlayerData, 'list.hash') === get(state, 'list.hash')
 			&& storePlayerData.action === RESUME
 		) {
 			audio.play();

@@ -43,7 +43,7 @@ type Props = {
   pauseSound(): void,
   list: ListInterface,
   sound: SoundInterface,
-  playingListId: string,
+  playingListHash: string,
   currentSound?: SoundInterface,
   playList(list: ListInterface): void,
   playSound: (sound: SoundInterface) => void,
@@ -57,7 +57,7 @@ function PlayPause({
   pauseList,
   resumeList,
   currentSound,
-  playingListId,
+  playingListHash,
   playSound,
   resumeSound,
   pauseSound,
@@ -66,7 +66,7 @@ function PlayPause({
   const styles = useStyles();
 
   const togglePlay = () => {
-    if (currentSound && list.id === playingListId) {
+    if (currentSound && list.hash === playingListHash) {
       if (sound.hash === currentSound.hash && isPlaying) {
         pauseSound();
       }
@@ -80,16 +80,16 @@ function PlayPause({
       }
     }
 
-    if (list.id !== playingListId) {
-      if (isPlaying && playingListId === list.id) {
+    if (list.hash !== playingListHash) {
+      if (isPlaying && playingListHash === list.hash) {
         pauseList();
       }
 
-      if (!isPlaying && playingListId === list.id) {
+      if (!isPlaying && playingListHash === list.hash) {
         resumeList();
       }
 
-      if (playingListId !== list.id) {
+      if (playingListHash !== list.hash) {
         playList(list);
       }
     }
@@ -114,7 +114,7 @@ function PlayPause({
 
 export default connect(
   ({ player }: AppStateInterface) => ({
-    playingListId: get(player, 'list.id'),
+    playingListHash: get(player, 'list.hash'),
     isPlaying: player.isPlaying,
     currentSound: player.currentSound
   }),

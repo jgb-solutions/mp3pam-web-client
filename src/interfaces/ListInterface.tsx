@@ -9,6 +9,6 @@ export interface SoundInterface {
 }
 
 export default interface ListInterface {
-	id: string;
+	hash: string;
 	sounds: SoundInterface[];
 }

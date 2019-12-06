@@ -100,7 +100,7 @@ type Props = {
   pauseList(): void;
   resumeList(): void;
   isPlaying: boolean;
-  playingListId: string;
+  playingListHash: string;
   currentTime: number;
 };
 
@@ -108,40 +108,38 @@ const TrackDetailScreen = (props: Props) => {
   const styles = useStyles();
   const params = useParams();
   const hash = get(params, 'hash');
-  let list: ListInterface;
 
   const { data, loading, error } = useTrackDetail(hash);
   const track = get(data, 'track');
 
-  useEffect(() => {
-    if (track) {
-      const { hash, title, poster_url, artist, audio_url } = track;
-      list = {
-        id: hash,
-        sounds: [{
-          hash,
-          title,
-          image: poster_url,
-          author_name: artist.stage_name,
-          author_hash: artist.hash,
-          play_url: audio_url
-        }]
-      };
-      console.log(list);
-    }
-  }, [track]);
+  const makeList = () => {
+    const { hash, title, poster_url, artist, audio_url } = track;
+    const list: ListInterface = {
+      hash,
+      sounds: [{
+        hash,
+        title,
+        image: poster_url,
+        author_name: artist.stage_name,
+        author_hash: artist.hash,
+        play_url: audio_url
+      }]
+    };
+    console.log(list);
+    return list;
+  };
 
   const togglePlay = () => {
-    if (props.isPlaying && props.playingListId === hash) {
+    if (props.isPlaying && props.playingListHash === track.hash) {
       props.pauseList();
     }
 
-    if (!props.isPlaying && props.playingListId === hash) {
+    if (!props.isPlaying && props.playingListHash === track.hash) {
       props.resumeList();
     }
 
-    if (props.playingListId !== hash) {
-      props.playList(list);
+    if (props.playingListHash !== track.hash) {
+      props.playList(makeList());
     }
   };
 
@@ -175,9 +173,9 @@ const TrackDetailScreen = (props: Props) => {
             <Grid className={styles.ctaButtons} container spacing={2}>
               <Grid item sm={4} xs={12}>
                 <Button fullWidth style={{ maxWidth: 120 }} onClick={togglePlay}>
-                  {(props.playingListId !== hash) && "Play"}
-                  {(props.isPlaying && props.playingListId === hash) && "Pause"}
-                  {(!props.isPlaying && props.playingListId === hash) && "Resume"}
+                  {(props.playingListHash !== track.hash) && "Play"}
+                  {(props.isPlaying && props.playingListHash === track.hash) && "Pause"}
+                  {(!props.isPlaying && props.playingListHash === track.hash) && "Resume"}
                   {/* todo // using props.currentTime > 0  to display rsesume or replay */}
                 </Button>
               </Grid>
@@ -211,7 +209,7 @@ const TrackDetailScreen = (props: Props) => {
 
 export default connect(
   ({ player }: AppStateInterface) => ({
-    playingListId: get(player, 'list.id'),
+    playingListHash: get(player, 'list.hash'),
     isPlaying: player.isPlaying,
     currentTime: player.currentTime
   }),

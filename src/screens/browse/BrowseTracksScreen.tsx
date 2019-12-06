@@ -10,7 +10,7 @@ import useTracks from "../../hooks/useTracks";
 import TrackThumbnail from "../../components/TrackThumbnail";
 import { TrackWithArtistThumbnailData } from "../../components/TrackScrollingList";
 
-export default function BrowseTrackScreen() {
+export default function BrowseTracksScreen() {
   const { loading, error, data, loadMoreTracks, hasMore } = useTracks();
   const tracks = get(data, 'tracks');
   // fetch home data
