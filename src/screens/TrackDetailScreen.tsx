@@ -266,7 +266,7 @@ const TrackDetailScreen = (props: Props) => {
                   {/* todo // using props.currentTime > 0  to display rsesume or replay */}
                 </Button>
               </Grid>
-              <Grid item sm={5} xs={3}>
+              <Grid item sm={5} xs={4}>
                 <Heart border />
                 &nbsp; &nbsp;
 								<More border />
