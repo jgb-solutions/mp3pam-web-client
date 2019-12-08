@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { darken, makeStyles } from "@material-ui/core/styles";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { get } from 'lodash';
 import InfoIcon from '@material-ui/icons/Info';
 import LineWeightIcon from '@material-ui/icons/LineWeight';
@@ -29,7 +29,7 @@ import Button from "../components/Button";
 import ListInterface from "../interfaces/ListInterface";
 import * as playerActions from "../store/actions/playerActions";
 import AppStateInterface from "../interfaces/AppStateInterface";
-import { Grid } from "@material-ui/core";
+import { Grid, Hidden } from "@material-ui/core";
 import { SMALL_SCREEN_SIZE } from "../utils/constants";
 import Spinner from "../components/Spinner";
 import { TrackScrollingList } from "../components/TrackScrollingList";
@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
     // justifyContent: "flex-end",
     [theme.breakpoints.up(SMALL_SCREEN_SIZE)]: {
       position: 'absolute',
-      bottom: 0,
+      bottom: 4,
     },
     "& > *": {
       padding: 0,
@@ -92,7 +92,7 @@ const useStyles = makeStyles(theme => ({
     textTransform: "uppercase"
   },
   listName: {
-    fontSize: 48,
+    fontSize: 36,
     fontWeight: "bold",
     [theme.breakpoints.down('xs')]: {
       fontSize: 32,
@@ -115,6 +115,7 @@ type Props = {
 const TrackDetailScreen = (props: Props) => {
   const styles = useStyles();
   const params = useParams();
+  const location = useLocation();
   const hash = get(params, 'hash');
   const { loading: relatedLoading, data: relatedTracksData, fetchRelatedTracks } = useRelatedTracks(hash);
   const relatedTracks = get(relatedTracksData, 'relatedTracks');
@@ -168,6 +169,8 @@ const TrackDetailScreen = (props: Props) => {
   }
 
   const getTabs = () => {
+    const url = window.location.href;
+    const title = `Listen to ${track.title} by ${track.artist.stage_name}`
     const tabs: TabItem[] = [
       {
         icon: <ShareIcon />,
@@ -175,30 +178,29 @@ const TrackDetailScreen = (props: Props) => {
         value: (
           <>
             <br />
-            {/* TODO URL */}
             <Grid container spacing={2}>
               <Grid item>
-                <FacebookShareButton url="ksdf" quote="" hashtag="#">
+                <FacebookShareButton url={url} quote={title} hashtag="#">
                   <FacebookIcon size={48} />
                 </FacebookShareButton>
               </Grid>
               <Grid item>
-                <TwitterShareButton url="ksdf" title="" via="" hashtags={[""]}>
+                <TwitterShareButton url={url} title={title} via="" hashtags={[""]}>
                   <TwitterIcon size={48} />
                 </TwitterShareButton>
               </Grid>
               <Grid item>
-                <WhatsappShareButton url="ksdf" title="" separator="">
+                <WhatsappShareButton url={url} title={title} separator="">
                   <WhatsappIcon size={48} />
                 </WhatsappShareButton>
               </Grid>
               <Grid item>
-                <TelegramShareButton url="sdfs" title="">
+                <TelegramShareButton url={url} title={title}>
                   <TelegramIcon size={48} />
                 </TelegramShareButton>
               </Grid>
               <Grid item>
-                <EmailShareButton url="ksdf">
+                <EmailShareButton url={url} subject={title} body={title} separator="--">
                   <EmailIcon size={48} />
                 </EmailShareButton>
               </Grid>
@@ -245,9 +247,18 @@ const TrackDetailScreen = (props: Props) => {
               >
                 {track.artist.stage_name}
               </Link>
+
+              <span className={styles.listBy}>, In </span>
+              <Link
+                to={Routes.genre.detailPage(track.genre.slug)}
+                className={styles.listAuthor}
+              >
+                {track.genre.name}
+              </Link>
             </p>
             <Grid className={styles.ctaButtons} container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item xs={2} implementation="css" smUp component={Hidden} />
+              <Grid item sm={6} xs={5}>
                 <Button fullWidth style={{ maxWidth: 150, paddingLeft: 30, paddingRight: 30 }} onClick={togglePlay}>
                   {(props.playingListHash !== track.hash) && "Play"}
                   {(props.isPlaying && props.playingListHash === track.hash) && "Pause"}
@@ -255,7 +266,7 @@ const TrackDetailScreen = (props: Props) => {
                   {/* todo // using props.currentTime > 0  to display rsesume or replay */}
                 </Button>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item sm={5} xs={3}>
                 <Heart border />
                 &nbsp; &nbsp;
 								<More border />

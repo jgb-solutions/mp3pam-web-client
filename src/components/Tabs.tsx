@@ -35,7 +35,7 @@ type TabsProps = {
 
 export default function Tabs(props: TabsProps) {
   const { tabs, title } = props;
-  const [selected, setSelected] = React.useState(1);
+  const [selected, setSelected] = React.useState(tabs.length > 1 ? 1 : 0);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setSelected(newValue);
