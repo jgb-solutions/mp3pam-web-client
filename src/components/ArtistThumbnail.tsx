@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  PlayCircleOutline,
-  PauseCircleOutline
-} from "@material-ui/icons";
+import { PlayCircleOutline } from "@material-ui/icons";
 import { useHistory } from "react-router";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";

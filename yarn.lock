@@ -1466,6 +1466,13 @@
     "@types/history" "*"
     "@types/react" "*"
 
+"@types/react-share@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/react-share/-/react-share-3.0.3.tgz#d75514902b0a3a77800b3bea0395f7add463b228"
+  integrity sha512-GpKAVNbwMBgad0995uVLkOdKWp3CjCrvIeUt4qZcsrgLtf7SMR7gIfMgC9X2rsfLgN6saT/nr2T4QLJE9cCZiA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@^4.2.0":
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.2.3.tgz#4924133f7268694058e415bf7aea2d4c21131470"

@@ -30,6 +30,7 @@ export const useStyles = makeStyles({
 const theme = createMuiTheme({
   palette: {
     type: 'dark',
+    // primary: colors.primary
   },
 });
 

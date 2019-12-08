@@ -1,25 +1,39 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { darken, makeStyles } from "@material-ui/core/styles";
 import { Link, useParams } from "react-router-dom";
 import { get } from 'lodash';
 import InfoIcon from '@material-ui/icons/Info';
 import LineWeightIcon from '@material-ui/icons/LineWeight';
+import ShareIcon from '@material-ui/icons/Share';
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  TelegramShareButton,
+  WhatsappShareButton,
+  EmailShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  TelegramIcon,
+  WhatsappIcon,
+  EmailIcon,
+} from 'react-share';
 
 import Routes from "../routes";
 import colors from "../utils/colors";
 import More from "../components/More";
+import Tabs, { TabItem } from "../components/Tabs";
 import useTrackDetail from '../hooks/useTrackDetail';
 import Heart from "../components/Heart";
 import Button from "../components/Button";
-import ListTable from '../components/ListTable';
 import ListInterface from "../interfaces/ListInterface";
 import * as playerActions from "../store/actions/playerActions";
 import AppStateInterface from "../interfaces/AppStateInterface";
 import { Grid } from "@material-ui/core";
 import { SMALL_SCREEN_SIZE } from "../utils/constants";
 import Spinner from "../components/Spinner";
-import HeaderTitle from "../components/HeaderTitle";
+import { TrackScrollingList } from "../components/TrackScrollingList";
+import useTracks from "../hooks/useTracks";
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -108,6 +122,8 @@ const TrackDetailScreen = (props: Props) => {
   const styles = useStyles();
   const params = useParams();
   const hash = get(params, 'hash');
+  const { loading: relatedLoading, data: relatedTracksData } = useTracks();
+  const relatedTracks = get(relatedTracksData, 'tracks');
 
   const { data, loading, error } = useTrackDetail(hash);
   const track = get(data, 'track');
@@ -151,6 +167,66 @@ const TrackDetailScreen = (props: Props) => {
     return (<h1>There was an error fetching the list</h1>)
   }
 
+  const getTabs = () => {
+    const tabs: TabItem[] = [
+      {
+        icon: <ShareIcon />,
+        label: "Share",
+        value: (
+          <>
+            <br />
+            {/* TODO URL */}
+            <Grid container spacing={2}>
+              <Grid item>
+                <FacebookShareButton url="ksdf" quote="" hashtag="#">
+                  <FacebookIcon size={48} />
+                </FacebookShareButton>
+              </Grid>
+              <Grid item>
+                <TwitterShareButton url="ksdf" title="" via="" hashtags={[""]}>
+                  <TwitterIcon size={48} />
+                </TwitterShareButton>
+              </Grid>
+              <Grid item>
+                <WhatsappShareButton url="ksdf" title="" separator="">
+                  <WhatsappIcon size={48} />
+                </WhatsappShareButton>
+              </Grid>
+              <Grid item>
+                <TelegramShareButton url="sdfs" title="">
+                  <TelegramIcon size={48} />
+                </TelegramShareButton>
+              </Grid>
+              <Grid item>
+                <EmailShareButton url="ksdf">
+                  <EmailIcon size={48} />
+                </EmailShareButton>
+              </Grid>
+            </Grid>
+          </>
+        )
+      }
+    ];
+
+    if (track.detail) {
+      tabs.push({
+        icon: <InfoIcon />,
+        label: "Detail",
+        value: <p dangerouslySetInnerHTML={{ __html: track.detail }} style={{ wordWrap: 'normal' }} />
+      })
+    }
+
+    if (track.lyrics) {
+      tabs.push({
+        icon: <LineWeightIcon />,
+        label: "Lyrics",
+        value: <p dangerouslySetInnerHTML={{ __html: track.lyrics }} style={{ wordWrap: 'normal' }} />
+      })
+    }
+
+    return tabs;
+  }
+
   return track ? (
     <>
       <Grid container spacing={2}>
@@ -188,20 +264,25 @@ const TrackDetailScreen = (props: Props) => {
           </div>
         </Grid>
       </Grid>
-      <br />
-      {/* TODO: Related Tracks */}
-      {track.detail && (
-        <>
-          <HeaderTitle icon={<InfoIcon />} text="Detail" />
-          <p dangerouslySetInnerHTML={{ __html: track.detail }} style={{ wordWrap: 'normal' }} />
-        </>
-      )}
 
-      {track.lyrics && (
-        <>
-          <HeaderTitle icon={<LineWeightIcon />} text="Lyrics" />
-          <p dangerouslySetInnerHTML={{ __html: track.lyrics }} style={{ wordWrap: 'normal' }} />
-        </>
+      <br />
+
+      {getTabs().length ? (
+        <Tabs
+          title="Detail Tabs"
+          tabs={getTabs()}
+        />
+      ) : null}
+
+      <br />
+      <br />
+
+      {relatedTracks && (
+        <TrackScrollingList
+          category="Related Tracks"
+          tracks={relatedTracks.data}
+          browse={Routes.browse.tracks}
+        />
       )}
     </>
   ) : null;

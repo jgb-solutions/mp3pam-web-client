@@ -78,6 +78,28 @@ export const FETCH_ARTISTS = gql`
   }
 `;
 
+export const FETCH_ALBUMS = gql`
+  query albumsData($page: Int, $take: Int, $orderBy: [OrderByClause!]) {
+    # Latest 10 albums
+    albums(take: $take, page: $page, orderBy: $orderBy) {
+      data {
+        hash
+        title
+        cover_url
+        artist {
+          hash
+          stage_name
+          poster_url
+        }
+      }
+      paginatorInfo {
+        hasMorePages
+        currentPage
+      }
+    }
+  }
+`;
+
 export const FETCH_TRACK = gql`
   query trackDetail($hash: String!) {
     track(hash: $hash) {

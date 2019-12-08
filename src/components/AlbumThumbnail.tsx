@@ -84,7 +84,7 @@ const useStyles = makeStyles(theme => ({
 
 type Props = {
   album: AlbumThumbnailData;
-  className: string;
+  className?: string;
   isPlaying: boolean;
   albumHash: string;
 };
@@ -122,7 +122,8 @@ const AlbumThumbnail = (props: Props) => {
       </div>
       <h3 className={styles.title}>{album.title}</h3>
       <p className={styles.details}>
-        by: <span onClick={goToAlbumPage} className={styles.link}>
+        {/* by: */}
+        <span onClick={goToAlbumPage} className={styles.link}>
           {album.artist.stage_name}
         </span>
       </p>

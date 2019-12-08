@@ -27,13 +27,13 @@ import LibraryScreen from './screens/library/LibraryScreen';
 import YourTracksScreen from './screens/library/YourTracksScreen';
 import YourAlbumsScreen from './screens/library/YourAlbumsScreen';
 import YourArtistsScreen from './screens/library/YourArtistsScreen';
-import YourPodcastsScreen from './screens/library/YourPodcastsScreen';
+// import YourPodcastsScreen from './screens/library/YourPodcastsScreen';
 // Browse screens
 import BrowseScreen from './screens/browse/BrowseScreen';
 import BrowseTracksScreen from './screens/browse/BrowseTracksScreen';
 import BrowseAlbumsScreen from './screens/browse/BrowseAlbumsScreen';
 import BrowseArtistsScreen from './screens/browse/BrowseArtistsScreen';
-import BrowsePodcastsScreen from './screens/browse/BrowsePodcastsScreen';
+// import BrowsePodcastsScreen from './screens/browse/BrowsePodcastsScreen';
 import BrowsePlaylistsScreen from './screens/browse/BrowsePlaylistsScreen';
 
 
@@ -149,7 +149,7 @@ export default function App() {
                 </Route>
                 <Route path={Routes.browse.podcasts}>
                   <Main>
-                    <BrowsePodcastsScreen />
+                    {/* <BrowsePodcastsScreen /> */}
                   </Main>
                 </Route>
                 <Route path={Routes.browse.playlists}>
@@ -222,7 +222,7 @@ export default function App() {
                 </Route>
                 <Route path={Routes.user.library.podcasts}>
                   <Main>
-                    <YourPodcastsScreen />
+                    {/* <YourPodcastsScreen /> */}
                   </Main>
                 </Route>
                 <Route path={Routes.user.library.playlists}>

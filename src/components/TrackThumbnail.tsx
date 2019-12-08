@@ -134,7 +134,8 @@ const TrackThumbnail = (props: Props) => {
       </div>
       <h3 className={styles.title}>{track.title}</h3>
       <p className={styles.details}>
-        by: <span onClick={goToArtistPage} className={styles.link}>
+        {/* by: */}
+        <span onClick={goToArtistPage} className={styles.link}>
           {track.artist.stage_name}
         </span>
       </p>
