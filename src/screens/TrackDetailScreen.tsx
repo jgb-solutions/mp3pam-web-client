@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { darken, makeStyles } from "@material-ui/core/styles";
 import { Link, useParams } from "react-router-dom";
@@ -33,7 +33,7 @@ import { Grid } from "@material-ui/core";
 import { SMALL_SCREEN_SIZE } from "../utils/constants";
 import Spinner from "../components/Spinner";
 import { TrackScrollingList } from "../components/TrackScrollingList";
-import useTracks from "../hooks/useTracks";
+import useRelatedTracks from "../hooks/useRelatedTracks";
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -101,12 +101,6 @@ const useStyles = makeStyles(theme => ({
   ctaButtons: {
     marginTop: 10,
   },
-  hearMore: {
-    alignSelf: 'flex-start',
-    [theme.breakpoints.down('xs')]: {
-      marginTop: 10,
-    },
-  }
 }));
 
 type Props = {
@@ -122,8 +116,8 @@ const TrackDetailScreen = (props: Props) => {
   const styles = useStyles();
   const params = useParams();
   const hash = get(params, 'hash');
-  const { loading: relatedLoading, data: relatedTracksData } = useTracks();
-  const relatedTracks = get(relatedTracksData, 'tracks');
+  const { loading: relatedLoading, data: relatedTracksData, fetchRelatedTracks } = useRelatedTracks(hash);
+  const relatedTracks = get(relatedTracksData, 'relatedTracks');
 
   const { data, loading, error } = useTrackDetail(hash);
   const track = get(data, 'track');
@@ -144,6 +138,12 @@ const TrackDetailScreen = (props: Props) => {
     console.log(list);
     return list;
   };
+
+  useEffect(() => {
+    if (data) {
+      fetchRelatedTracks();
+    }
+  }, [data])
 
   const togglePlay = () => {
     if (props.isPlaying && props.playingListHash === track.hash) {
@@ -247,15 +247,15 @@ const TrackDetailScreen = (props: Props) => {
               </Link>
             </p>
             <Grid className={styles.ctaButtons} container spacing={2}>
-              <Grid item sm={4} xs={12}>
-                <Button fullWidth style={{ maxWidth: 120 }} onClick={togglePlay}>
+              <Grid item xs={6}>
+                <Button fullWidth style={{ maxWidth: 150, paddingLeft: 30, paddingRight: 30 }} onClick={togglePlay}>
                   {(props.playingListHash !== track.hash) && "Play"}
                   {(props.isPlaying && props.playingListHash === track.hash) && "Pause"}
                   {(!props.isPlaying && props.playingListHash === track.hash) && "Resume"}
                   {/* todo // using props.currentTime > 0  to display rsesume or replay */}
                 </Button>
               </Grid>
-              <Grid item sm={8} xs={12} className={styles.hearMore}>
+              <Grid item xs={6}>
                 <Heart border />
                 &nbsp; &nbsp;
 								<More border />
@@ -277,10 +277,11 @@ const TrackDetailScreen = (props: Props) => {
       <br />
       <br />
 
+      {relatedLoading && <Spinner.Full />}
       {relatedTracks && (
         <TrackScrollingList
           category="Related Tracks"
-          tracks={relatedTracks.data}
+          tracks={relatedTracks}
           browse={Routes.browse.tracks}
         />
       )}
