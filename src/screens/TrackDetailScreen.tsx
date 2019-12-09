@@ -181,12 +181,19 @@ const TrackDetailScreen = (props: Props) => {
             <br />
             <Grid container spacing={2}>
               <Grid item>
-                <FacebookShareButton url={url} quote={title} hashtag={hashtags}>
+                <FacebookShareButton
+                  url={url}
+                  quote={title}
+                  hashtag={hashtags.split(' ').join(' #')}>
                   <FacebookIcon size={48} />
                 </FacebookShareButton>
               </Grid>
               <Grid item>
-                <TwitterShareButton url={url} title={title} via={TWITTER_HANDLE} hashtags={hashtags.split(' ')}>
+                <TwitterShareButton
+                  url={url}
+                  title={title}
+                  via={TWITTER_HANDLE}
+                  hashtags={hashtags.split(' ')}>
                   <TwitterIcon size={48} />
                 </TwitterShareButton>
               </Grid>
