@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { darken, makeStyles } from "@material-ui/core/styles";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { get } from 'lodash';
 import InfoIcon from '@material-ui/icons/Info';
 import LineWeightIcon from '@material-ui/icons/LineWeight';
@@ -30,10 +30,11 @@ import ListInterface from "../interfaces/ListInterface";
 import * as playerActions from "../store/actions/playerActions";
 import AppStateInterface from "../interfaces/AppStateInterface";
 import { Grid, Hidden } from "@material-ui/core";
-import { SMALL_SCREEN_SIZE } from "../utils/constants";
+import { SMALL_SCREEN_SIZE, APP_NAME, DOMAIN, SEO_TRACK_TYPE } from "../utils/constants";
 import Spinner from "../components/Spinner";
 import { TrackScrollingList } from "../components/TrackScrollingList";
 import useRelatedTracks from "../hooks/useRelatedTracks";
+import SEO from "../components/SEO";
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -115,7 +116,6 @@ type Props = {
 const TrackDetailScreen = (props: Props) => {
   const styles = useStyles();
   const params = useParams();
-  const location = useLocation();
   const hash = get(params, 'hash');
   const { loading: relatedLoading, data: relatedTracksData, fetchRelatedTracks } = useRelatedTracks(hash);
   const relatedTracks = get(relatedTracksData, 'relatedTracks');
@@ -296,6 +296,15 @@ const TrackDetailScreen = (props: Props) => {
           browse={Routes.browse.tracks}
         />
       )}
+      {/* handling SEO */}
+      <SEO
+        title={`${track.title} by ${track.artist.stage_name}`}
+        url={`${DOMAIN}/track/${track.hash}`}
+        description={`Listen to ${track.title} by ${track.artist.stage_name} on ${APP_NAME}`}
+        type={SEO_TRACK_TYPE}
+        image={track.poster_url}
+        artist={`${DOMAIN}/artist/${track.artist.hash}`}
+      />
     </>
   ) : null;
 }

@@ -3,12 +3,13 @@ import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash-es';
 
 import { FETCH_ALBUMS } from '../graphql/queries';
+import { FETCH_ALBUMS_NUMBER } from '../utils/constants';
 
 export default function useAlbums() {
   const [hasMore, setHasMore] = useState(true);
   const { loading, error, data, fetchMore } = useQuery(FETCH_ALBUMS, {
     variables: {
-      take: 24,
+      take: FETCH_ALBUMS_NUMBER,
       orderBy: [{ field: "created_at", order: 'DESC' }]
     }
   });
