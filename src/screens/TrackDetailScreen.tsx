@@ -136,7 +136,6 @@ const TrackDetailScreen = (props: Props) => {
         play_url: audio_url
       }]
     };
-    console.log(list);
     return list;
   };
 
@@ -238,7 +237,7 @@ const TrackDetailScreen = (props: Props) => {
   }
 
   return track ? (
-    <>
+    <div className="react-transition flip-in-x-reverse">
       <Grid container spacing={2}>
         <Grid item sm={4} xs={12} className={styles.imageContainer}>
           <img src={track.poster_url} alt={track.title} className={styles.image} />
@@ -313,7 +312,7 @@ const TrackDetailScreen = (props: Props) => {
         image={track.poster_url}
         artist={`${DOMAIN}/artist/${track.artist.hash}`}
       />
-    </>
+    </div>
   ) : null;
 }
 
