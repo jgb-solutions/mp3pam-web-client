@@ -30,7 +30,7 @@ import ListInterface from "../interfaces/ListInterface";
 import * as playerActions from "../store/actions/playerActions";
 import AppStateInterface from "../interfaces/AppStateInterface";
 import { Grid, Hidden } from "@material-ui/core";
-import { SMALL_SCREEN_SIZE, APP_NAME, DOMAIN, SEO_TRACK_TYPE } from "../utils/constants";
+import { SMALL_SCREEN_SIZE, APP_NAME, DOMAIN, SEO_TRACK_TYPE, TWITTER_HANDLE } from "../utils/constants";
 import Spinner from "../components/Spinner";
 import { TrackScrollingList } from "../components/TrackScrollingList";
 import useRelatedTracks from "../hooks/useRelatedTracks";
@@ -170,7 +170,8 @@ const TrackDetailScreen = (props: Props) => {
 
   const getTabs = () => {
     const url = window.location.href;
-    const title = `Listen to ${track.title} by ${track.artist.stage_name}`
+    const title = `Listen to ${track.title} by ${track.artist.stage_name}`;
+    const hashtags = `${APP_NAME} music track share`;
     const tabs: TabItem[] = [
       {
         icon: <ShareIcon />,
@@ -180,17 +181,17 @@ const TrackDetailScreen = (props: Props) => {
             <br />
             <Grid container spacing={2}>
               <Grid item>
-                <FacebookShareButton url={url} quote={title} hashtag="#">
+                <FacebookShareButton url={url} quote={title} hashtag={hashtags}>
                   <FacebookIcon size={48} />
                 </FacebookShareButton>
               </Grid>
               <Grid item>
-                <TwitterShareButton url={url} title={title} via="" hashtags={[""]}>
+                <TwitterShareButton url={url} title={title} via={TWITTER_HANDLE} hashtags={hashtags.split(' ')}>
                   <TwitterIcon size={48} />
                 </TwitterShareButton>
               </Grid>
               <Grid item>
-                <WhatsappShareButton url={url} title={title} separator="">
+                <WhatsappShareButton url={url} title={title} separator="--">
                   <WhatsappIcon size={48} />
                 </WhatsappShareButton>
               </Grid>

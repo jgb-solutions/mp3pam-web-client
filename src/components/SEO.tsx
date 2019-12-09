@@ -42,7 +42,7 @@ export default function SEO({ title, url, description, type, image, artist, imag
         <meta property="music:duration" content="236" /> */}
 
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content={TWITTER_HANDLE} />
+        <meta name="twitter:site" content={`@${TWITTER_HANDLE}`} />
         <meta name="twitter:title" content={titleContent} />
         <meta name="twitter:description" content={descriptionContent} />
         <meta name="twitter:image" content={imageContent} />
