@@ -119,6 +119,7 @@ export const FETCH_TRACK = gql`
     track(hash: $hash) {
       title
       hash
+      allowDownload
       audio_url
       poster_url
       featured

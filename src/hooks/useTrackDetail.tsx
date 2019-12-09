@@ -2,26 +2,11 @@ import { useQuery } from '@apollo/react-hooks';
 
 import { FETCH_TRACK } from '../graphql/queries';
 import { ApolloError } from 'apollo-client';
+import TrackInterface from '../interfaces/TrackInterface';
 
 type TrackDetail = {
   data: {
-    track: {
-      title: string,
-      hash: string,
-      audio_url: string,
-      poster_url: string,
-      featured: boolean,
-      detail: string,
-      lyrics: string,
-      genre: {
-        name: string,
-        slug: string,
-      }
-      artist: {
-        stage_name: string,
-        hash: string,
-      }
-    },
+    track: TrackInterface,
   },
   loading: boolean,
   error: ApolloError | undefined

@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { get } from 'lodash';
 import InfoIcon from '@material-ui/icons/Info';
 import LineWeightIcon from '@material-ui/icons/LineWeight';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import ShareIcon from '@material-ui/icons/Share';
 import {
   FacebookShareButton,
@@ -35,6 +36,7 @@ import Spinner from "../components/Spinner";
 import { TrackScrollingList } from "../components/TrackScrollingList";
 import useRelatedTracks from "../hooks/useRelatedTracks";
 import SEO from "../components/SEO";
+import Download from "../components/Download";
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -50,10 +52,12 @@ const useStyles = makeStyles(theme => ({
     maxWidth: "100%",
   },
   listByAuthor: {
-    fontSize: 12
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   listBy: {
-    color: darken(colors.white, 0.5)
+    color: darken(colors.white, 0.5),
+    fontSize: 12
   },
   listAuthor: {
     textDecoration: "none",
@@ -217,6 +221,14 @@ const TrackDetailScreen = (props: Props) => {
       }
     ];
 
+    if (track.allowDownload) {
+      tabs.push({
+        icon: <GetAppIcon />,
+        label: "Download",
+        value: <Download type="track" hash={track.hash} />
+      })
+    }
+
     if (track.detail) {
       tabs.push({
         icon: <InfoIcon />,
@@ -266,7 +278,7 @@ const TrackDetailScreen = (props: Props) => {
             <Grid className={styles.ctaButtons} container spacing={2}>
               <Grid item xs={2} implementation="css" smUp component={Hidden} />
               <Grid item sm={6} xs={5}>
-                <Button fullWidth style={{ maxWidth: 150, paddingLeft: 30, paddingRight: 30 }} onClick={togglePlay}>
+                <Button fullWidth style={{ minWidth: 120, maxWidth: 150, paddingLeft: 30, paddingRight: 30 }} onClick={togglePlay}>
                   {(props.playingListHash !== track.hash) && "Play"}
                   {(props.isPlaying && props.playingListHash === track.hash) && "Pause"}
                   {(!props.isPlaying && props.playingListHash === track.hash) && "Resume"}

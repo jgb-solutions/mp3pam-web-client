@@ -8,7 +8,7 @@ import ErrorIcon from '@material-ui/icons/Error';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { useHistory } from "react-router-dom";
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
-import { Grid } from "@material-ui/core";
+import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
 import { useMutation } from '@apollo/react-hooks';
 
 import ProgressBar from "../../components/ProgressBar";
@@ -35,6 +35,7 @@ export interface FormData {
 	detail: string;
 	lyrics: string;
 	artistId: string;
+	allowDownload: boolean;
 };
 
 export interface ArtistData {
@@ -217,7 +218,9 @@ export default function AddTrackScreen() {
 		watch,
 		setError,
 		clearError,
-		setValue } = useForm<FormData>({ mode: 'onBlur' });
+		setValue
+	} = useForm<FormData>({ mode: 'onBlur' });
+	register({ name: 'allowDownload', });
 	const { data: trackUploadInfo } = useQuery(TRACK_UPLOAD_DATA_QUERY, {
 		fetchPolicy: 'network-only'
 	});
@@ -346,6 +349,10 @@ export default function AddTrackScreen() {
 			setOpenAddGenreDialog(true);
 		}
 	}, [watchGenreValue]);
+
+	const handleAllowDownload = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setValue('allowDownload', event.target.checked);
+	};
 
 	const handleImageUpload = (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -603,6 +610,17 @@ export default function AddTrackScreen() {
 						/>
 					)}
 				/>
+
+				<div style={{ marginTop: 15, marginBottom: 15 }}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								onChange={handleAllowDownload}
+							/>
+						}
+						label="Allow Download"
+					/>
+				</div>
 
 				<Button
 					type="submit"

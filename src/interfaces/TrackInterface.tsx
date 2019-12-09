@@ -2,18 +2,20 @@ import CategoryInterface from "./CategoryInterface";
 import ArtistInterface from "./ArtistInterface";
 
 export default interface TrackInterface {
-	id: string,
-	hash: number,
-	url: string;
 	title: string;
-	image: string;
+	hash: string;
+	allowDownload: boolean;
+	audio_url: string;
+	poster_url: string;
+	featured: boolean;
 	detail: string;
 	lyrics: string;
-	play_url: string;
-	favorite: boolean;
-	play_count: number;
-	download_url: string;
-	download_count: number;
-	artist: ArtistInterface;
-	category: CategoryInterface;
+	genre: {
+		name: string;
+		slug: string;
+	}
+	artist: {
+		stage_name: string;
+		hash: string;
+	}
 }
