@@ -10,9 +10,11 @@ type Props = {
   type?: string,
   image?: string,
   artist?: string,
+  imageWidth?: number,
+  imageHeight?: number,
 };
 
-export default function SEO({ title, url, description, type, image, artist }: Props) {
+export default function SEO({ title, url, description, type, image, artist, imageWidth, imageHeight }: Props) {
   const titleContent = `MP3 Pam - ${title || "Listen, Download and Share Unlimited Sounds!"}`;
   const descriptionContent = description || `
       MP3Pam is a free entertainment platform for sharing all kinds of sounds.
@@ -29,6 +31,9 @@ export default function SEO({ title, url, description, type, image, artist }: Pr
         <meta property="og:description" content={descriptionContent} />
         <meta property="og:type" content={type || "website"} />
         <meta property="og:image" content={imageContent} />
+        {imageWidth && <meta property="og:image:width" content={`${imageWidth}`} />}
+        {imageHeight && <meta property="og:image:width" content={`${imageHeight}`} />}
+
         <meta property="fb:app_id" content={FB_APP_ID} />
 
         {artist && <meta property="music:musician" content={artist} />}
