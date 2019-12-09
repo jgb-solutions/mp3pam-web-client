@@ -15,9 +15,9 @@ type Props = {
 };
 
 export default function SEO({ title, url, description, type, image, artist, imageWidth, imageHeight }: Props) {
-  const titleContent = `MP3 Pam - ${title || "Listen, Download and Share Unlimited Sounds!"}`;
+  const titleContent = `${APP_NAME} - ${title || "Listen, Download and Share Unlimited Sounds!"}`;
   const descriptionContent = description || `
-      MP3Pam is a free entertainment platform for sharing all kinds of sounds.
+      ${APP_NAME} is a free entertainment platform for sharing all kinds of sounds.
       Music, Podcast, and even Ad. You name it. Brought to you by JGB Solutions.
   `;
   const imageContent = image || `${DOMAIN}/social-media-share.png`;
