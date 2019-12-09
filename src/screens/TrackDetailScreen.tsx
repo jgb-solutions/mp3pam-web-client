@@ -198,7 +198,7 @@ const TrackDetailScreen = (props: Props) => {
                 </TwitterShareButton>
               </Grid>
               <Grid item>
-                <WhatsappShareButton url={url} title={title} separator="--">
+                <WhatsappShareButton url={url} title={title}>
                   <WhatsappIcon size={48} />
                 </WhatsappShareButton>
               </Grid>
@@ -208,7 +208,7 @@ const TrackDetailScreen = (props: Props) => {
                 </TelegramShareButton>
               </Grid>
               <Grid item>
-                <EmailShareButton url={url} subject={title} body={title} separator="--">
+                <EmailShareButton url={url} subject={title} body={title}>
                   <EmailIcon size={48} />
                 </EmailShareButton>
               </Grid>
