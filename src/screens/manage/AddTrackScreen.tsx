@@ -233,7 +233,11 @@ export default function AddTrackScreen() {
 		isValid: imgValid,
 		errorMessage: imgErrorMessage,
 		filename: poster
-	} = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose a poster." });
+	} = useFileUpload({
+		bucket: IMG_BUCKET,
+		message: "You must choose a poster.",
+		headers: { public: true }
+	});
 
 	const {
 		upload: uploadAudio,

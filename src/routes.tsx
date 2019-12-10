@@ -21,6 +21,10 @@ const Routes = {
 		show: `/track/:hash`,
 		detailPage: (hash: string) => `/track/${hash}`,
 	},
+	episode: {
+		show: `/episode/:hash`,
+		detailPage: (hash: string) => `/episode/${hash}`,
+	},
 	genre: {
 		show: `/genre/:hash`,
 		detailPage: (hash: string) => `/genre/${hash}`,

@@ -10,6 +10,9 @@ export default interface TrackInterface {
 	featured: boolean;
 	detail: string;
 	lyrics: string;
+	play_count: number;
+	download_count: number;
+	audio_file_size: number;
 	genre: {
 		name: string;
 		slug: string;

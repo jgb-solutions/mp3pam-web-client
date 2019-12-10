@@ -436,7 +436,22 @@ function Player(props: Props) {
 		<Slide direction="up" timeout={500} in={!!state.currentSound} mountOnEnter unmountOnExit>
 			<div className={styles.container}>
 				<div className={styles.player}>
-					<div className={styles.posterTitle}>
+					<div className={styles.posterTitle} onClick={() => {
+						const type = get(state, 'currentSound.type');
+						const hash = get(state, 'currentSound.hash');
+						let route: string;
+
+						switch (type) {
+							case 'track':
+								route = Routes.track.detailPage(hash);
+								history.push(route);
+								break;
+							case 'episode':
+								route = Routes.episode.detailPage(hash);
+								history.push(route);
+								break;
+						}
+					}}>
 						<img
 							src={state.currentSound ? state.currentSound.image : '/assets/images/loader.svg'}
 							className={styles.image}
@@ -445,8 +460,9 @@ function Player(props: Props) {
 						<div className={styles.titleArtist}>
 							<span className={styles.title}>
 								{state.currentSound && state.currentSound.title}
-								<Heart />
+								{/* <Heart /> */}
 							</span>
+							<br />
 							<span className={styles.artist}>
 								{state.currentSound && state.currentSound.author_name}
 							</span>

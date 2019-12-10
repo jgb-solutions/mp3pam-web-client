@@ -125,6 +125,9 @@ export const FETCH_TRACK = gql`
       featured
       detail
       lyrics
+      play_count
+	    download_count
+      audio_file_size
       genre {
         name
         slug
@@ -146,8 +149,8 @@ export const FETCH_DOWNLOAD_URL = gql`
 `;
 
 export const UPLOAD_URL_QUERY = gql`
-  query getUploadUrl($name: String!, $bucket: String!) {
-    uploadUrl(name: $name, bucket: $bucket) {
+  query getUploadUrl($input: UploadUrlInput!) {
+    uploadUrl(input: $input) {
      signedUrl
      filename
     }

@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { ApolloError } from 'apollo-client';
 
 import { FETCH_DOWNLOAD_URL } from '../graphql/queries';
@@ -10,7 +10,6 @@ type TrackDetail = {
   },
   loading: boolean,
   error: ApolloError | undefined,
-  fetchDownloadUrl: () => void,
   updateDownloadCount: () => void,
 };
 
@@ -20,7 +19,7 @@ type DownloadProps = {
 };
 
 export default function useDownload(input: DownloadProps): TrackDetail {
-  const [fetchDownloadUrl, { loading, error, data }] = useLazyQuery(FETCH_DOWNLOAD_URL, {
+  const { loading, error, data } = useQuery(FETCH_DOWNLOAD_URL, {
     variables: { input }
   });
 
@@ -29,5 +28,5 @@ export default function useDownload(input: DownloadProps): TrackDetail {
     fetchPolicy: 'no-cache',
   });
 
-  return { loading, error, data, fetchDownloadUrl, updateDownloadCount };
+  return { loading, error, data, updateDownloadCount };
 };

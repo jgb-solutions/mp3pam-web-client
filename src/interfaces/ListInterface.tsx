@@ -6,6 +6,7 @@ export interface SoundInterface {
 	author_name: string;
 	author_hash: string;
 	play_url: string;
+	type: string;
 }
 
 export default interface ListInterface {

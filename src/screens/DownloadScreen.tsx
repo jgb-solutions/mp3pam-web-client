@@ -35,7 +35,7 @@ export default function DownloadScreen() {
       <Logo size={300} />
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Download type={type} hash={hash} hideDownloadButton />
+        <Download type={type} hash={hash} />
       </div>
     </div>
   );

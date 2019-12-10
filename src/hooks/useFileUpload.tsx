@@ -17,7 +17,14 @@ type UploadFileType = {
   errorMessage: string | undefined
 };
 
-type Params = { bucket: string, message?: string | undefined, headers?: object };
+type Params = {
+  bucket: string,
+  message?: string | undefined,
+  headers?: {
+    public?: boolean,
+    attachment?: boolean
+  }
+};
 
 export default function useFileUpload({ bucket, message, headers }: Params): UploadFileType {
   const client = useApolloClient();
@@ -31,6 +38,20 @@ export default function useFileUpload({ bucket, message, headers }: Params): Upl
   const [isUploaded, setIsUploaded] = useState(false);
   const [percentUploaded, setPercentUploaded] = useState(0);
   const [size, setSize] = useState(0);
+
+  const getHeaders = () => {
+    let h: any = {};
+
+    if (headers && headers.public) {
+      h["x-amz-acl"] = 'public-read';
+    }
+
+    if (headers && headers.attachment) {
+      h['Content-Disposition'] = 'attachment';
+    }
+
+    return h;
+  };
 
   useEffect(() => {
     if (isValid) {
@@ -57,7 +78,13 @@ export default function useFileUpload({ bucket, message, headers }: Params): Upl
     try {
       const { data: { uploadUrl: { signedUrl, fileUrl, filename } } } = await client.query({
         query: UPLOAD_URL_QUERY,
-        variables: { name: file.name, bucket },
+        variables: {
+          input: {
+            name: file.name,
+            bucket,
+            ...headers
+          }
+        },
         fetchPolicy: 'network-only'
       });
 
@@ -67,9 +94,7 @@ export default function useFileUpload({ bucket, message, headers }: Params): Upl
       const options = {
         headers: {
           "Content-Type": file.type,
-          "x-amz-acl": 'public-read',
-          // 'Content-Disposition': 'attachment'
-          ...headers
+          ...getHeaders()
         },
         onUploadProgress: (progressEvent: ProgressEvent) => {
           const percentCompleted = Math.round(

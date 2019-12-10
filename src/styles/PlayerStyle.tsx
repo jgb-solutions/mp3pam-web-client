@@ -31,6 +31,7 @@ export default makeStyles(theme => ({
     [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
       display: 'none',
     },
+    cursor: 'pointer',
   },
   image: {
     width: 55,

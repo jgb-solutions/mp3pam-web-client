@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { darken, makeStyles } from "@material-ui/core/styles";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import { get } from 'lodash';
 import InfoIcon from '@material-ui/icons/Info';
 import LineWeightIcon from '@material-ui/icons/LineWeight';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import ShareIcon from '@material-ui/icons/Share';
+import FindReplaceIcon from '@material-ui/icons/FindReplace';
+
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -37,6 +39,8 @@ import { TrackScrollingList } from "../components/TrackScrollingList";
 import useRelatedTracks from "../hooks/useRelatedTracks";
 import SEO from "../components/SEO";
 import Download from "../components/Download";
+import FourOrFour from "../components/FourOrFour";
+import HeaderTitle from "../components/HeaderTitle";
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -120,6 +124,7 @@ type Props = {
 const TrackDetailScreen = (props: Props) => {
   const styles = useStyles();
   const params = useParams();
+  const history = useHistory();
   const hash = get(params, 'hash');
   const { loading: relatedLoading, data: relatedTracksData, fetchRelatedTracks } = useRelatedTracks(hash);
   const relatedTracks = get(relatedTracksData, 'relatedTracks');
@@ -137,7 +142,8 @@ const TrackDetailScreen = (props: Props) => {
         image: poster_url,
         author_name: artist.stage_name,
         author_hash: artist.hash,
-        play_url: audio_url
+        play_url: audio_url,
+        type: 'track',
       }]
     };
     return list;
@@ -225,7 +231,17 @@ const TrackDetailScreen = (props: Props) => {
       tabs.push({
         icon: <GetAppIcon />,
         label: "Download",
-        value: <Download type="track" hash={track.hash} />
+        value: (
+          <>
+            <br />
+            <Button
+              size="large"
+              style={{ minWidth: 150 }}
+              onClick={() => history.push(Routes.download.trackPage(track.hash))}>
+              Download ({track.audio_file_size})
+            </Button>
+          </>
+        )
       })
     }
 
@@ -258,7 +274,7 @@ const TrackDetailScreen = (props: Props) => {
           <div className={styles.listDetails}>
             <h5 className={styles.listType}>Track</h5>
             <h1 className={styles.listName}>{track.title}</h1>
-            <p className={styles.listByAuthor}>
+            <p className={styles.listByAuthor} style={{ marginBottom: 5 }}>
               <span className={styles.listBy}>By </span>
               <Link
                 to={Routes.artist.detailPage(track.artist.hash)}
@@ -274,6 +290,17 @@ const TrackDetailScreen = (props: Props) => {
               >
                 {track.genre.name}
               </Link>
+            </p>
+            <p className={styles.listByAuthor}>
+              <span className={styles.listBy}>Play: </span>
+              <span className={styles.listAuthor}>
+                {track.play_count}
+              </span>
+
+              <span className={styles.listBy}>, Download: </span>
+              <span className={styles.listAuthor}>
+                {track.download_count}
+              </span>
             </p>
             <Grid className={styles.ctaButtons} container spacing={2}>
               <Grid item xs={2} implementation="css" smUp component={Hidden} />
@@ -325,7 +352,21 @@ const TrackDetailScreen = (props: Props) => {
         artist={`${DOMAIN}/artist/${track.artist.hash}`}
       />
     </div>
-  ) : null;
+  ) : (
+      <>
+        <HeaderTitle icon={<FindReplaceIcon />} text="OOPS! The Track was not found." />
+        <h3>
+          Go to the <Link style={{ color: 'white' }} to={Routes.pages.home}>home page</Link>{' '}
+          or
+          {' '}
+          <Link
+            style={{ cursor: 'pointer', textDecoration: 'underline', color: colors.white }}
+            to={Routes.browse.tracks}>browse other tracks.
+          </Link>.
+        </h3>
+        <FourOrFour />
+      </>
+    );
 }
 
 export default connect(
