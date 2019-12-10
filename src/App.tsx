@@ -51,6 +51,9 @@ import FacebookAuth from './screens/auth/FacebookAuth';
 import AccountScreen from './screens/user/AccountScreen';
 import LoginScreen from './screens/auth/LoginScreen';
 
+// Download Screens
+import DownloadScreen from './screens/DownloadScreen';
+
 //  Routers
 import Routes from './routes';
 
@@ -198,6 +201,11 @@ export default function App() {
                 <Route path={Routes.pages.login} exact>
                   <Plain>
                     <LoginScreen />
+                  </Plain>
+                </Route>
+                <Route path={Routes.download.audio} exact>
+                  <Plain>
+                    <DownloadScreen />
                   </Plain>
                 </Route>
                 <Route path={Routes.pages.library} exact>

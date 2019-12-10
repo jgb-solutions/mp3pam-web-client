@@ -137,6 +137,14 @@ export const FETCH_TRACK = gql`
   }
 `;
 
+export const FETCH_DOWNLOAD_URL = gql`
+  query download($input: DownloadInput!) {
+    download(input: $input) {
+      url
+    }
+  }
+`;
+
 export const UPLOAD_URL_QUERY = gql`
   query getUploadUrl($name: String!, $bucket: String!) {
     uploadUrl(name: $name, bucket: $bucket) {

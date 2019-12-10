@@ -30,6 +30,11 @@ const Routes = {
 		detailPage: (hash: string) => `/podcast/${hash}`,
 		goToAuthorDetail: (authorID: string) => `/author/${authorID}`
 	},
+	download: {
+		audio: `/download/:type/:hash`,
+		podcastPage: (hash: string) => `/download/podcast/${hash}`,
+		trackPage: (hash: string) => `/download/track/${hash}`,
+	},
 	user: {
 		detailPage: (userHash: string) => `/user/${userHash}`,
 		account: `/account`,

@@ -44,3 +44,9 @@ export const LOG_OUT_MUTATION = gql`
     }
   }
 `
+
+export const UPDATE_DOWNLOAD_COUNT = gql`
+  mutation UpdateDownloadCount($input:DownloadInput!) {
+    updateDownloadCount(input: $input)
+  }
+`

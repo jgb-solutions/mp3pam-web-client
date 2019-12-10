@@ -278,7 +278,7 @@ const TrackDetailScreen = (props: Props) => {
             <Grid className={styles.ctaButtons} container spacing={2}>
               <Grid item xs={2} implementation="css" smUp component={Hidden} />
               <Grid item sm={6} xs={5}>
-                <Button fullWidth style={{ minWidth: 120, maxWidth: 150, paddingLeft: 30, paddingRight: 30 }} onClick={togglePlay}>
+                <Button fullWidth style={{ minWidth: 110, maxWidth: 150, paddingLeft: 30, paddingRight: 30 }} onClick={togglePlay}>
                   {(props.playingListHash !== track.hash) && "Play"}
                   {(props.isPlaying && props.playingListHash === track.hash) && "Pause"}
                   {(!props.isPlaying && props.playingListHash === track.hash) && "Resume"}
