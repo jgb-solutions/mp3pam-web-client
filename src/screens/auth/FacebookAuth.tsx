@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 
 import Routes from '../../routes';
 import Spinner from '../../components/Spinner';
-import { LOG_IN } from '../../store/actions/types';
+import { LOG_IN } from '../../store/actions/user_action_types';
 
 const FACEOOK_LOGIN = gql`
   mutation facebookLogin($code: String!) {

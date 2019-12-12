@@ -90,7 +90,7 @@ const Left = (props: Props) => {
 			</div>
 
 			{/* Favorite Menu */}
-			<div>
+			{/* <div>
 				<p>
 					<NavLink
 						activeClassName={styles.activeClassName}
@@ -113,7 +113,7 @@ const Left = (props: Props) => {
 						<span className={styles.linkText}>{menuItem.name}</span>
 					</NavLink>
 				))}
-			</div>
+			</div> */}
 		</>
 	);
 };

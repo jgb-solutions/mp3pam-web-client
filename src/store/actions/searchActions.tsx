@@ -1,4 +1,4 @@
-import { SEARCH } from "./types";
+import { SEARCH } from "./search_action_types";
 
 export const search = (term: string) => {
 	return {

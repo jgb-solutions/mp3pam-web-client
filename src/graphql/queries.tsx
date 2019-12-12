@@ -136,6 +136,10 @@ export const FETCH_TRACK = gql`
         stage_name
         hash
       }
+      album {
+        title
+        hash
+      }
     }
   }
 `;

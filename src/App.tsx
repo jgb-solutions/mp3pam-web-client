@@ -64,7 +64,7 @@ import persistedStore from './store';
 import './App.css';
 import './styles/react-transitions.css';
 
-import { LOG_OUT } from './store/actions/types';
+import { LOG_OUT } from './store/actions/user_action_types';
 import Plain from './components/layouts/Plain';
 import Root from './components/layouts/Root';
 

@@ -68,28 +68,34 @@ function PlayPause({
   const togglePlay = () => {
     if (currentSound && list.hash === playingListHash) {
       if (sound.hash === currentSound.hash && isPlaying) {
+        console.log('pause sound')
         pauseSound();
       }
 
       if (sound.hash === currentSound.hash && !isPlaying) {
+        console.log('resume sound')
         resumeSound();
       }
 
       if (sound.hash !== currentSound.hash) {
+        console.log('play sound')
         playSound(sound);
       }
     }
 
     if (list.hash !== playingListHash) {
       if (isPlaying && playingListHash === list.hash) {
+        console.log('pause list')
         pauseList();
       }
 
       if (!isPlaying && playingListHash === list.hash) {
+        console.log('resume list')
         resumeList();
       }
 
       if (playingListHash !== list.hash) {
+        console.log('play list')
         playList(list);
       }
     }

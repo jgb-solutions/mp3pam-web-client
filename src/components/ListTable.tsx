@@ -67,7 +67,7 @@ export default function ListTable(props: Props) {
             : undefined;
 
           return (
-            <TableRow key={sound.hash} style={{
+            <TableRow key={index} style={{
               borderBottom: sounds.length - 1 === index ? '' : '1px solid white',
             }}>
               <StyledTableCell style={{ width: '15%', minWidth: '80px' }}>
@@ -77,9 +77,9 @@ export default function ListTable(props: Props) {
               <StyledTableCell style={{ width: '30%', color }}>{sound.title}</StyledTableCell>
               <StyledTableCell style={{ width: '30%', color }}>{sound.author_name}</StyledTableCell>
               <StyledTableCell style={{ width: '20%', color }}>{sound.title}</StyledTableCell>
-              <StyledTableCell>
+              {/* <StyledTableCell>
                 <More />
-              </StyledTableCell>
+              </StyledTableCell> */}
             </TableRow>
           )
         })}

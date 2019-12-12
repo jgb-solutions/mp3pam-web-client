@@ -16,9 +16,13 @@ export default interface TrackInterface {
 	genre: {
 		name: string;
 		slug: string;
-	}
+	};
 	artist: {
 		stage_name: string;
+		hash: string;
+	};
+	album: {
+		title: string;
 		hash: string;
 	}
 }

@@ -30,8 +30,14 @@ const useStyles = makeStyles({
   }
 });
 
+type Option = {
+  name: string,
+  method: () => void,
+};
+
 type Props = {
   border?: boolean,
+  options: Option[],
 };
 
 function Heart(props: Props) {
@@ -45,16 +51,6 @@ function Heart(props: Props) {
   const handleClose = () => {
     listAnchorEl(null);
   }
-
-  const menuItems = [
-    { name: 'Add To Queue', method: () => { } },
-    { name: 'Play Next', method: () => { } },
-    { name: 'Go To Artist', method: () => { } },
-    { name: 'Go To Album', method: () => { } },
-    { name: 'Remove from your Liked Tracks', method: () => { } },
-    { name: 'Add To Playlist', method: () => { } },
-    { name: 'Share', method: () => { } },
-  ]
 
   const handleClick = (method: () => void) => {
     handleClose();
@@ -82,12 +78,12 @@ function Heart(props: Props) {
           },
         }}
       >
-        {menuItems.map((menuItem, index) =>
+        {props.options.map((option, index) =>
           <MenuItem
             key={index}
-            onClick={() => handleClick(menuItem.method)}
+            onClick={() => handleClick(option.method)}
             className={styles.menuItem}>
-            {menuItem.name}
+            {option.name}
           </MenuItem>
         )}
       </Menu>

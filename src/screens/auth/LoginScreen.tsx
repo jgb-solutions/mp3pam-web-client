@@ -13,7 +13,7 @@ import Logo from "../../components/Logo";
 import Button from "../../components/Button";
 import Divider from '../../components/Divider';
 import TextField from "../../components/TextField";
-import { LOG_IN } from "../../store/actions/types";
+import { LOG_IN } from "../../store/actions/user_action_types";
 import { emailRegex } from "../../utils/validators";
 import AppStateInterface from "../../interfaces/AppStateInterface";
 

@@ -1,11 +1,14 @@
-import {
-	PLAY_LIST,
-	RESUME_LIST,
-	PAUSE_PLAYER,
-	SYNC_PLAYER_STATE,
-} from "./types";
-import { PAUSE, PLAY, RESUME, PAUSE_SOUND, RESUME_SOUND, PLAY_SOUND } from "./actions";
 import ListInterface, { SoundInterface } from "../../interfaces/ListInterface";
+import {
+	SYNC_PLAYER_STATE,
+	PLAY_LIST, PLAY,
+	PAUSE_PLAYER,
+	PAUSE, RESUME_LIST,
+	RESUME, PAUSE_SOUND,
+	RESUME_SOUND, PLAY_NEXT,
+	ADD_TO_QUEUE,
+	PLAY_SOUND
+} from "./player_action_types";
 
 export const syncState = (updatedState: Object) => ({
 	type: SYNC_PLAYER_STATE,
@@ -13,7 +16,6 @@ export const syncState = (updatedState: Object) => ({
 });
 
 export const playList = (list: ListInterface) => {
-	console.log(list)
 	return {
 		type: PLAY_LIST,
 		payload: { list, action: PLAY }
@@ -29,6 +31,10 @@ export const resumeList = () => ({
 	type: RESUME_LIST,
 	payload: { action: RESUME }
 });
+export const playSound = (sound: SoundInterface) => ({
+	type: PLAY_SOUND,
+	payload: { action: PLAY_SOUND, sound }
+});
 
 export const pauseSound = () => ({
 	type: PAUSE_SOUND,
@@ -40,7 +46,12 @@ export const resumeSound = () => ({
 	payload: { action: RESUME_SOUND }
 });
 
-export const playSound = (sound: SoundInterface) => ({
-	type: PLAY_SOUND,
-	payload: { action: PLAY_SOUND, sound }
+export const playNext = (soundList: SoundInterface[]) => ({
+	type: PLAY_NEXT,
+	payload: { action: PLAY_NEXT, soundList }
+});
+
+export const addToQueue = (soundList: SoundInterface[]) => ({
+	type: ADD_TO_QUEUE,
+	payload: { action: ADD_TO_QUEUE, soundList }
 });

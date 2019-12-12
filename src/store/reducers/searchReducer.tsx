@@ -1,4 +1,4 @@
-import { SEARCH } from "../actions/types";
+import { SEARCH } from "../actions/search_action_types";
 const location: any = document.location;
 
 const INITIAL_STATE = {
@@ -246,7 +246,7 @@ const INITIAL_STATE = {
 		}
 	]
 };
-export default function(
+export default function (
 	state = INITIAL_STATE,
 	searchAction: { type: string; payload: { results: any; term: string } }
 ) {

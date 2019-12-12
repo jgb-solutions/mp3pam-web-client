@@ -24,12 +24,12 @@ import Slider from "./Slider";
 import Routes from '../routes';
 import { debounce } from "../utils/helpers";
 import { ALL, ONE, NONE } from '../utils/constants';
-import { SoundInterface } from "../interfaces/ListInterface";
+import ListInterface, { SoundInterface } from "../interfaces/ListInterface";
 import PlayerInterface from "../interfaces/PlayerInterface";
 import * as playerActions from "../store/actions/playerActions";
 import {
-	RESUME, PAUSE, PLAY, PLAY_SOUND, PAUSE_SOUND, RESUME_SOUND
-} from "../store/actions/actions";
+	RESUME, PAUSE, PLAY, PLAY_SOUND, PAUSE_SOUND, RESUME_SOUND, PLAY_NEXT
+} from "../store/actions/player_action_types";
 import AppStateInterface from "../interfaces/AppStateInterface";
 import PlayerStyle from "../styles/PlayerStyle";
 import colors from "../utils/colors";
@@ -240,8 +240,8 @@ function Player(props: Props) {
 		}
 	};
 
-	const findIndex = (sound: SoundInterface, soundList: SoundInterface[]): number => {
-		return soundList.findIndex(item => item.hash === sound.hash);
+	const findIndex = (sound: any, soundList: any[]): number => {
+		return soundList.findIndex((item: SoundInterface) => item.hash === sound.hash);
 	}
 
 	const getRandomSound = (sounds: SoundInterface[]) => {
@@ -347,6 +347,41 @@ function Player(props: Props) {
 				action: RESUME
 			}));
 		}
+
+		if (storePlayerData.action === PLAY_NEXT) {
+			const currentSound = get(state, 'currentSound');
+			const listHash = get(state, 'list.hash');
+			const stateSoundList: any[] = get(state, 'list.sounds');
+			const storeSoundList: any[] = get(storePlayerData, 'list.sounds');
+
+			if (currentSound) {
+				const index = findIndex(currentSound, stateSoundList);
+
+				let newSoundList: any[] = [...stateSoundList];
+
+				newSoundList.splice(index + 1, 0, ...storePlayerData.soundList);
+
+				const list: ListInterface = { hash: listHash, sounds: newSoundList };
+
+				console.log(`list`, list);
+				console.log(`stateSoundList`, stateSoundList);
+				console.log(`newSoundList`, newSoundList);
+				console.log(`currentSound`, currentSound);
+				console.log(`storePlayerData.soundList`, storePlayerData.soundList)
+
+				setState(prevState => ({
+					...prevState,
+					action: PLAY_NEXT,
+					list,
+					soundList: []
+				}));
+
+				if (stateSoundList.length !== storeSoundList.length) {
+					syncState({ list });
+				}
+
+			}
+		}
 		// eslint-disable-next-line
 	}, [storePlayerData.list, storePlayerData.action, storePlayerData.updateHack]);
 
@@ -354,6 +389,7 @@ function Player(props: Props) {
 	useEffect(() => {
 		switch (storePlayerData.action) {
 			case PLAY_SOUND:
+				console.log('called play sound')
 				setState(prevState => ({
 					...prevState,
 					action: PLAY_SOUND,

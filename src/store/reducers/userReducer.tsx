@@ -1,4 +1,4 @@
-import { LOG_OUT, LOG_IN } from '../actions/types';
+import { LOG_OUT, LOG_IN } from '../actions/user_action_types';
 import UserInterface from "../../interfaces/UserInterface";
 
 const INITIAL_USER_STATE = {

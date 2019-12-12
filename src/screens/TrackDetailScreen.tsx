@@ -29,7 +29,7 @@ import Tabs, { TabItem } from "../components/Tabs";
 import useTrackDetail from '../hooks/useTrackDetail';
 import Heart from "../components/Heart";
 import Button from "../components/Button";
-import ListInterface from "../interfaces/ListInterface";
+import ListInterface, { SoundInterface } from "../interfaces/ListInterface";
 import * as playerActions from "../store/actions/playerActions";
 import AppStateInterface from "../interfaces/AppStateInterface";
 import { Grid, Hidden } from "@material-ui/core";
@@ -116,6 +116,8 @@ type Props = {
   playList(list: ListInterface): void;
   pauseList(): void;
   resumeList(): void;
+  playNext(soundList: SoundInterface[]): void;
+  addToQueue(soundList: SoundInterface[]): void;
   isPlaying: boolean;
   playingListHash: string;
   currentTime: number;
@@ -133,20 +135,28 @@ const TrackDetailScreen = (props: Props) => {
   const track = get(data, 'track');
 
   const makeList = () => {
-    const { hash, title, poster_url, artist, audio_url } = track;
+    const { hash } = track;
+
     const list: ListInterface = {
       hash,
-      sounds: [{
-        hash,
-        title,
-        image: poster_url,
-        author_name: artist.stage_name,
-        author_hash: artist.hash,
-        play_url: audio_url,
-        type: 'track',
-      }]
+      sounds: makeSoundList()
     };
+
     return list;
+  };
+
+  const makeSoundList = () => {
+    const { hash, title, poster_url, artist, audio_url } = track;
+
+    return [{
+      hash,
+      title,
+      image: poster_url,
+      author_name: artist.stage_name,
+      author_hash: artist.hash,
+      play_url: audio_url,
+      type: 'track',
+    }]
   };
 
   useEffect(() => {
@@ -245,13 +255,26 @@ const TrackDetailScreen = (props: Props) => {
       })
     }
 
-    if (track.detail) {
-      tabs.push({
-        icon: <InfoIcon />,
-        label: "Detail",
-        value: <p dangerouslySetInnerHTML={{ __html: track.detail }} style={{ wordWrap: 'normal' }} />
-      })
-    }
+    tabs.push({
+      icon: <InfoIcon />,
+      label: "Detail",
+      value: (
+        <>
+          <p className={styles.listByAuthor}>
+            <span className={styles.listBy}>Play: </span>
+            <span className={styles.listAuthor}>
+              {track.play_count}
+            </span>
+
+            <span className={styles.listBy}>, Download: </span>
+            <span className={styles.listAuthor}>
+              {track.download_count}
+            </span>
+          </p>
+          {track.detail && <p dangerouslySetInnerHTML={{ __html: track.detail }} style={{ wordWrap: 'normal' }} />}
+        </>
+      )
+    })
 
     if (track.lyrics) {
       tabs.push({
@@ -262,6 +285,39 @@ const TrackDetailScreen = (props: Props) => {
     }
 
     return tabs;
+  }
+
+  const getMoreOptions = () => {
+    let options = [
+      {
+        name: 'Play Next',
+        method: () => props.playNext(makeSoundList())
+      },
+      {
+        name: 'Go To Artist',
+        method: () => {
+          history.push(Routes.artist.detailPage(track.artist.hash));
+        }
+      },
+      // { name: 'Remove from your Liked Tracks', method: () => { } },
+      // { name: 'Add To Playlist', method: () => { } },
+    ];
+
+    if (track.album) {
+      options.push({
+        name: 'Go To Album',
+        method: () => {
+          history.push(Routes.album.detailPage(track.album.hash));
+        }
+      });
+    }
+
+    options.push({
+      name: 'Add To Queue',
+      method: () => props.addToQueue(makeSoundList())
+    });
+
+    return options;
   }
 
   return track ? (
@@ -291,17 +347,6 @@ const TrackDetailScreen = (props: Props) => {
                 {track.genre.name}
               </Link>
             </p>
-            <p className={styles.listByAuthor}>
-              <span className={styles.listBy}>Play: </span>
-              <span className={styles.listAuthor}>
-                {track.play_count}
-              </span>
-
-              <span className={styles.listBy}>, Download: </span>
-              <span className={styles.listAuthor}>
-                {track.download_count}
-              </span>
-            </p>
             <Grid className={styles.ctaButtons} container spacing={2}>
               <Grid item xs={2} implementation="css" smUp component={Hidden} />
               <Grid item sm={6} xs={5}>
@@ -313,9 +358,9 @@ const TrackDetailScreen = (props: Props) => {
                 </Button>
               </Grid>
               <Grid item sm={5} xs={4}>
-                <Heart border />
-                &nbsp; &nbsp;
-								<More border />
+                {/* <Heart border />
+                &nbsp; &nbsp; */}
+                <More border options={getMoreOptions()} />
               </Grid>
             </Grid>
           </div>
@@ -378,6 +423,8 @@ export default connect(
   {
     playList: playerActions.playList,
     pauseList: playerActions.pauseList,
-    resumeList: playerActions.resumeList
+    resumeList: playerActions.resumeList,
+    playNext: playerActions.playNext,
+    addToQueue: playerActions.addToQueue,
   }
 )(TrackDetailScreen);

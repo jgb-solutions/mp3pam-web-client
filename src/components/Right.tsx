@@ -11,7 +11,7 @@ import { useMutation, useApolloClient } from '@apollo/react-hooks';
 
 import Button from './Button';
 import Routes from '../routes';
-import { LOG_OUT } from '../store/actions/types';
+import { LOG_OUT } from '../store/actions/user_action_types';
 import { menuStyles } from '../styles/menuStyles';
 import AppStateInterface from '../interfaces/AppStateInterface';
 import { LOG_OUT_MUTATION } from '../graphql/mutations';

@@ -13,4 +13,5 @@ export default interface PlayerInterface {
 	updateHack: string,
 	currentSound?: SoundInterface;
 	list?: ListInterface;
+	soundList: SoundInterface[];
 }
