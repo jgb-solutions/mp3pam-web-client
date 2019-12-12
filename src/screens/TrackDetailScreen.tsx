@@ -244,11 +244,14 @@ const TrackDetailScreen = (props: Props) => {
         value: (
           <>
             <br />
+            <p>
+              File Size: {track.audio_file_size}
+            </p>
             <Button
               size="large"
               style={{ minWidth: 150 }}
               onClick={() => history.push(Routes.download.trackPage(track.hash))}>
-              Download ({track.audio_file_size})
+              Download
             </Button>
           </>
         )
