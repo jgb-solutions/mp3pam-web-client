@@ -15,7 +15,7 @@ export default makeStyles(theme => ({
     color: "white",
     paddingLeft: 24,
     paddingRight: 24,
-    transform: 'none'
+    zIndex: 999
   },
   player: {
     flex: 1,
