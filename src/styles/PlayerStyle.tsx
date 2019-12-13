@@ -6,7 +6,7 @@ import { SMALL_SCREEN_SIZE } from "../utils/constants";
 export default makeStyles(theme => ({
   container: {
     display: "flex",
-    position: "absolute",
+    position: "fixed",
     bottom: 0,
     left: 0,
     right: 0,
@@ -15,6 +15,7 @@ export default makeStyles(theme => ({
     color: "white",
     paddingLeft: 24,
     paddingRight: 24,
+    transform: 'none'
   },
   player: {
     flex: 1,
