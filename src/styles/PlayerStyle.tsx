@@ -6,7 +6,7 @@ import { SMALL_SCREEN_SIZE } from "../utils/constants";
 export default makeStyles(theme => ({
   container: {
     display: "flex",
-    position: "fixed",
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
