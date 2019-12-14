@@ -22,7 +22,7 @@ import { ArtistThumbnailData } from "../components/ArtistScrollingList";
 export default function SearchScreen() {
 	const dispatch = useDispatch();
 	const { search, data: resultData, loading, error } = useSearch();
-	const debounceSearch = debounce(search, 500);
+	const debounceSearch = debounce(search, 300);
 	const { term, data: storeData } = useSelector(({ search }: AppStateInterface) => search);
 	const [state, setState] = useState<SearchData>(storeData);
 	const [lastSearchTerm, setLastSearchTerm] = useState(term);
