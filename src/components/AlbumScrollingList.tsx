@@ -43,7 +43,10 @@ export interface AlbumThumbnailData {
   title: string,
   hash: string,
   cover_url: string,
-  artist: ArtistThumbnailData
+  artist: {
+    hash: string;
+    stage_name: string;
+  };
 };
 
 export const AlbumScrollingList = (props: { albums: AlbumThumbnailData[], category: string, browse: string }) => {

@@ -243,7 +243,6 @@ const TrackDetailScreen = (props: Props) => {
         label: "Download",
         value: (
           <>
-            <br />
             <p>
               File Size: {track.audio_file_size}
             </p>

@@ -19,6 +19,10 @@ export interface SearchData {
     hash: string;
     title: string;
     cover_url: string;
+    artist: {
+      hash: string;
+      stage_name: string;
+    };
   }[];
 }
 

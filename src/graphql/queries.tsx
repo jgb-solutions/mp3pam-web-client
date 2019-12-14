@@ -201,6 +201,10 @@ export const SEARCH_QUERY = gql`
         hash
         title
         cover_url
+         artist {
+          hash
+          stage_name
+        }
       }
     }
   }

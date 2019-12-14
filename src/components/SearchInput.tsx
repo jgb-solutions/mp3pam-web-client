@@ -42,9 +42,12 @@ export default function SearchInput() {
 	const history = useHistory()
 	const styles = useStyles();
 	const [searchTerm, setSearchTerm] = useState(term);
+	const [clicked, setClicked] = useState(false);
 
 	useEffect(() => {
-		updateSearchUrl();
+		if (clicked) {
+			updateSearchUrl();
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchTerm]);
 
@@ -54,17 +57,11 @@ export default function SearchInput() {
 		dispatch({ type: SEARCH, payload: { term: text } });
 	};
 
-	const updateSearchUrl = (isClicked = false) => {
-		if (searchTerm.length || isClicked) {
-			history.push({
-				pathname: "/search",
-				search: searchTerm.length ? `?query=${searchTerm}` : ""
-			});
-		} else {
-			history.push({
-				search: ""
-			});
-		}
+	const updateSearchUrl = () => {
+		history.push({
+			pathname: "/search",
+			search: searchTerm.length ? `?query=${searchTerm}` : ""
+		});
 	};
 
 	return (
@@ -79,7 +76,10 @@ export default function SearchInput() {
 					input: styles.inputInput
 				}}
 				inputProps={{ "aria-label": "Search" }}
-				onClick={() => updateSearchUrl(true)}
+				onClick={() => {
+					setClicked(true);
+					updateSearchUrl();
+				}}
 				onChange={handleChange}
 				value={searchTerm}
 			/>

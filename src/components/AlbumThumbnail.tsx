@@ -100,6 +100,11 @@ const AlbumThumbnail = (props: Props) => {
     history.push(route, { albumParam: album });
   };
 
+  const goToArtistPage = () => {
+    const route = Routes.artist.detailPage(album.artist.hash);
+    history.push(route, { albumParam: album });
+  };
+
   return (
     <div className={props.className}>
       <div
@@ -123,7 +128,7 @@ const AlbumThumbnail = (props: Props) => {
       <h3 className={styles.title}>{album.title}</h3>
       <p className={styles.details}>
         {/* by: */}
-        <span onClick={goToAlbumPage} className={styles.link}>
+        <span onClick={goToArtistPage} className={styles.link}>
           {album.artist.stage_name}
         </span>
       </p>

@@ -6,7 +6,9 @@ import { SearchData } from '../interfaces/SearchInterface';
 
 type SearchResult = {
   search: (query: string) => void,
-  data: SearchData,
+  data: {
+    search: SearchData,
+  },
   loading: boolean,
   error: ApolloError | undefined
 };
