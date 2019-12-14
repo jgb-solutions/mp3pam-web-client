@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
-import { connect } from "react-redux";
-import * as searchActions from "../store/actions/searchActions";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import AppStateInterface from "../interfaces/AppStateInterface";
+import { SEARCH } from "../store/actions/search_action_types";
 
 const useStyles = makeStyles(theme => ({
 	search: {
@@ -35,13 +36,9 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-type Props = {
-	search(term: string): void;
-	term: string;
-};
-
-const Search = (props: Props) => {
-	const { search, term } = props;
+export default function SearchInput() {
+	const dispatch = useDispatch();
+	const term = useSelector(({ search }: AppStateInterface) => search.term);
 	const history = useHistory()
 	const styles = useStyles();
 	const [searchTerm, setSearchTerm] = useState(term);
@@ -54,7 +51,7 @@ const Search = (props: Props) => {
 	const handleChange = (event: any) => {
 		const text = event.target.value;
 		setSearchTerm(text);
-		search(text);
+		dispatch({ type: SEARCH, payload: { term: text } });
 	};
 
 	const updateSearchUrl = (isClicked = false) => {
@@ -89,12 +86,3 @@ const Search = (props: Props) => {
 		</div>
 	);
 };
-
-export default connect(
-	({ search }: any) => ({
-		term: search.term
-	}),
-	{
-		search: searchActions.search
-	}
-)(Search);

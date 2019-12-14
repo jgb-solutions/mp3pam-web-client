@@ -179,3 +179,29 @@ export const TRACK_UPLOAD_DATA_QUERY = gql`
     }
   }
 `;
+
+export const SEARCH_QUERY = gql`
+  query search($query: String!) {
+    search(query: $query) {
+      tracks {
+        hash
+        title
+        poster_url
+        artist {
+          hash
+          stage_name
+        }
+      }
+      artists {
+        hash
+        stage_name
+        poster_url
+      }
+      albums {
+        hash
+        title
+        cover_url
+      }
+    }
+  }
+`;

@@ -12,7 +12,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 import Left from './Left';
 import colors from '../utils/colors';
-import Search from './Search';
+import SearchInput from './SearchInput';
 import { SMALL_SCREEN_SIZE } from '../utils/constants';
 import Routes from '../routes';
 import AppStateInterface from '../interfaces/AppStateInterface';
@@ -96,7 +96,7 @@ const Header = (props: Props) => {
             className={styles.leftMenuIcon}>
             <MenuIcon />
           </IconButton>
-          <Search />
+          <SearchInput />
           <div className={styles.grow} />
           <div>
             {

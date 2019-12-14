@@ -363,12 +363,6 @@ function Player(props: Props) {
 
 				const list: ListInterface = { hash: listHash, sounds: newSoundList };
 
-				console.log(`list`, list);
-				console.log(`stateSoundList`, stateSoundList);
-				console.log(`newSoundList`, newSoundList);
-				console.log(`currentSound`, currentSound);
-				console.log(`storePlayerData.soundList`, storePlayerData.soundList)
-
 				setState(prevState => ({
 					...prevState,
 					action: PLAY_NEXT,
@@ -379,7 +373,6 @@ function Player(props: Props) {
 				if (stateSoundList.length !== storeSoundList.length) {
 					syncState({ list });
 				}
-
 			}
 		}
 		// eslint-disable-next-line
