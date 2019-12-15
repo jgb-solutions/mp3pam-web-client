@@ -11,7 +11,9 @@ export default interface PlayerInterface {
 	duration: string;
 	currentTime: number;
 	updateHack: string,
+	currentPlayingIndex?: number;
 	currentSound?: SoundInterface;
 	list?: ListInterface;
 	soundList: SoundInterface[];
+	queueList: SoundInterface[];
 }

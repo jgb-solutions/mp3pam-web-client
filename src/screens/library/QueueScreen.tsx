@@ -1,11 +1,14 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { get } from "lodash-es";
 
-import ListTable from '../../components/ListTable';
+import QueueTable from '../../components/QueueTable';
 import AppStateInterface from "../../interfaces/AppStateInterface";
 
 function QueueScreen() {
-  const list = useSelector(({ player }: AppStateInterface) => player.list);
+  const list = useSelector(
+    ({ player: { list } }: AppStateInterface) => list
+  );
 
   return (
     <>
@@ -13,7 +16,7 @@ function QueueScreen() {
 
       {!list && <h3>Your queue is empty!</h3>}
 
-      {list && <ListTable list={list} />}
+      <QueueTable />
     </>
   );
 }

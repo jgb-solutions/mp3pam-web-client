@@ -20,6 +20,7 @@ export const HOMEPAGE_PER_PAGE_NUMBER = 10;
 export const FETCH_ALBUMS_NUMBER = 24;
 export const FETCH_TRACKS_NUMBER = 24;
 export const FETCH_ARTISTS_NUMBER = 24;
+export const SECONDS_TO_UPDATE_PLAY_COUNT = 30;
 export const APP_NAME = `MP3PAM`;
 export const DOMAIN = `https://staging.mp3pam.com`;
 export const FB_APP_ID = `232624100615967`;

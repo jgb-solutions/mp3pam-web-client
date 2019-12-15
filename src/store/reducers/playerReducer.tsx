@@ -26,6 +26,7 @@ const INITIAL_PLAYER_STATE = {
 	updateHack: '',
 	action: PAUSE,
 	soundList: [],
+	queueList: [],
 };
 
 export default function (
@@ -55,7 +56,6 @@ export default function (
 			return { ...playerState, ...payload };
 
 		case PLAY_SOUND:
-			console.log(payload);
 			return { ...playerState, ...payload, updateHack: time };
 
 		case PLAY_NEXT:
