@@ -33,7 +33,7 @@ import {
 import AppStateInterface from "../interfaces/AppStateInterface";
 import PlayerStyle from "../styles/PlayerStyle";
 import colors from "../utils/colors";
-import usePlay from "../hooks/usePlay";
+import useUpdatePlayCount from "../hooks/useUpdatePlayCount";
 
 // Setup Audio
 const audio = new Audio();
@@ -46,7 +46,7 @@ type Props = {
 
 function Player(props: Props) {
 	const history = useHistory();
-	const { updatePlayCount } = usePlay();
+	const { updatePlayCount } = useUpdatePlayCount();
 	const [loggedHash, setLoggedHash] = useState('')
 	const [drawerOPen, setDrawerOpen] = useState(false);
 	const { storePlayerData, syncState } = props;

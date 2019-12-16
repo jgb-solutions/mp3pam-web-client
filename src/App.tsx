@@ -39,6 +39,9 @@ import BrowsePlaylistsScreen from './screens/browse/BrowsePlaylistsScreen';
 
 // Manage Screens
 import ManageScreen from './screens/manage/ManageScreen';
+import ManageTracksScreen from './screens/manage/ManageTracksScreen';
+import ManageArtistsScreen from './screens/manage/ManageArtistsScreen';
+import ManageAlbumsScreen from './screens/manage/ManageAlbumsScreen';
 // import AddPodcastScreen from './screens/manage/AddPodcastScreen';
 import CreateAlbumScreen from './screens/manage/CreateAlbumScreen';
 import AddArtistScreen from './screens/manage/AddArtistScreen';
@@ -80,7 +83,10 @@ const client = new ApolloClient({
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
         graphQLErrors.forEach(({ message, extensions: { statusCode } }: any) => {
-          if (statusCode === 401 && !window.location.pathname.startsWith('/login')) {
+          if (
+            statusCode === 401 &&
+            !window.location.pathname.startsWith('/login')
+          ) {
             client.clearStore();
             store.dispatch({ type: LOG_OUT });
           }
@@ -243,9 +249,24 @@ export default function App() {
                     <FacebookAuth />
                   </Plain>
                 </Route>
-                <Route path={Routes.user.manage.home}>
+                <Route path={Routes.user.manage.home} exact>
                   <Main>
                     <ManageScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.user.manage.tracks} exact>
+                  <Main>
+                    <ManageTracksScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.user.manage.artists} exact>
+                  <Main>
+                    <ManageArtistsScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.user.manage.albums} exact>
+                  <Main>
+                    <ManageAlbumsScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.user.create.track}>

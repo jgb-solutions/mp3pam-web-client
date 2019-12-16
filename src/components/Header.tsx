@@ -102,7 +102,7 @@ const Header = (props: Props) => {
             {
               currentUser.loggedIn && currentUser.data ? (
                 <div className={styles.avatarWrapper} onClick={() => setDrawerRightOpen(true)}>
-                  <Avatar alt={currentUser.data.name} src={currentUser.data.avatar} className={styles.avatar} />
+                  <Avatar alt={currentUser.data.name} src={currentUser.data.avatar_url} className={styles.avatar} />
                   <KeyboardArrowDownIcon />
                 </div>
               ) : (
@@ -137,7 +137,9 @@ const Header = (props: Props) => {
           disableDiscovery={iOS}
         >
           <div className={styles.drawer}>
-            <Right closeDrawerRight={setDrawerRightOpen} />
+            {currentUser.data && (
+              <Right closeDrawerRight={setDrawerRightOpen} user={currentUser.data} />
+            )}
           </div>
         </SwipeableDrawer>
       )}

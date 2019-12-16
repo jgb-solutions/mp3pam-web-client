@@ -8,23 +8,7 @@ import { useDispatch } from 'react-redux';
 import Routes from '../../routes';
 import Spinner from '../../components/Spinner';
 import { LOG_IN } from '../../store/actions/user_action_types';
-
-const FACEOOK_LOGIN = gql`
-  mutation facebookLogin($code: String!) {
-    handleFacebookConnect(code: $code) {
-      data {
-        name
-        email
-        active
-        avatar
-        telephone
-        created_at
-      }
-      token
-      firstLogin
-    }
-  }
-`;
+import { FACEOOK_LOGIN } from '../../graphql/mutations';
 
 export default function FacebookAuth() {
   const client = useApolloClient();
@@ -48,10 +32,14 @@ export default function FacebookAuth() {
         fetchPolicy: 'no-cache'
       });
       const { handleFacebookConnect } = data;
-      const { firstLogin, ...payload } = handleFacebookConnect;
-      console.log(handleFacebookConnect);
+      const payload = handleFacebookConnect;
       dispatch({ type: LOG_IN, payload });
-      history.push(Routes.pages.home)
+
+      if (payload.data.first_login) {
+        history.push(Routes.user.account, { editMode: true })
+      } else {
+        history.push(Routes.pages.home)
+      }
     } catch (error) {
       console.log(error);
     };

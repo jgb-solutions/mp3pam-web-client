@@ -55,4 +55,35 @@ export const UPDATE_PLAY_COUNT = gql`
   mutation UpdatePlayCount($input: PlayInput!) {
     updatePlayCount(input: $input)
   }
-`
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      id
+      name
+      email
+      active
+      avatar_url
+      telephone
+      created_at
+    }
+  }
+`;
+
+export const FACEOOK_LOGIN = gql`
+  mutation facebookLogin($code: String!) {
+    handleFacebookConnect(code: $code) {
+      data {
+        id
+        name
+        email
+        avatar_url
+        telephone
+        first_login
+        created_at
+      }
+      token
+    }
+  }
+`;

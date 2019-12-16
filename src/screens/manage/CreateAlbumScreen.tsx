@@ -63,7 +63,7 @@ export default function AddAlbumScreen() {
     isValid: imgValid,
     errorMessage: imgErrorMessage,
     filename: cover
-  } = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose a cover." });
+  } = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose a cover.", headers: { public: true } });
 
   const [openAlbumSuccessDialog, setOpenAlbumSuccessDialog] = useState(false);
   const [openAddArtistDialog, setOpenAddArtistDialog] = useState(false);

@@ -72,7 +72,7 @@ export default function AddArtistScreen() {
     isValid: imgValid,
     errorMessage: imgErrorMessage,
     filename: poster
-  } = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose a poster." });
+  } = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose a poster.", headers: { public: true } });
 
   const [openArtistSuccessDialog, setOpenArtistSuccessDialog] = useState(false);
   const [openInvalidFileSize, setOpenInvalidFileSize] = useState('');

@@ -6,6 +6,7 @@ import useForm from 'react-hook-form';
 import gql from "graphql-tag";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import ErrorIcon from '@material-ui/icons/Error';
 
 import Routes from "../../routes";
 import colors from "../../utils/colors";
@@ -16,29 +17,8 @@ import TextField from "../../components/TextField";
 import { LOG_IN } from "../../store/actions/user_action_types";
 import { emailRegex } from "../../utils/validators";
 import AppStateInterface from "../../interfaces/AppStateInterface";
-
-export const LOG_USER_IN = gql`
-  query logUserIn($input: LoginInput!) {
-    login(input: $input) {
-      token
-      data {
-        name
-        email
-        active
-        telephone
-        created_at
-      }
-    }
-  }
-`;
-
-export const FACEBOOK_LOGIN_URL = gql`
-  query facebookLoginUrl {
-    facebookLoginUrl {
-      url
-    }
-  }
-`;
+import TextIcon from "../../components/TextIcon";
+import { LOG_USER_IN, FACEBOOK_LOGIN_URL } from "../../graphql/queries";
 
 const useStyles = makeStyles({
   facebookSignupButton: {
@@ -139,7 +119,12 @@ function LoginScreen() {
               type="email"
               margin="normal"
               error={!!errors.email}
-              helperText={errors.email && errors.email.message}
+              helperText={errors.email && (
+                <TextIcon
+                  icon={<ErrorIcon />}
+                  text={errors.email.message}
+                />
+              )}
             />
           </Grid>
           <Grid item>
@@ -157,7 +142,11 @@ function LoginScreen() {
               type="password"
               margin="normal"
               error={!!errors.password}
-              helperText={errors.password && errors.password.message}
+              helperText={errors.password && (
+                <TextIcon
+                  icon={<ErrorIcon />}
+                  text={errors.password.message}
+                />)}
             />
           </Grid>
         </Grid>

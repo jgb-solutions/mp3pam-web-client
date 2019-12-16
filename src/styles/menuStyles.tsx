@@ -48,9 +48,6 @@ export const menuStyles = makeStyles(theme => ({
   libraryLink: {
     marginBottom: 15,
   },
-  logoutContainer: {
-    height: 10
-  },
   activeClassName: {
     color: colors.primary
   }

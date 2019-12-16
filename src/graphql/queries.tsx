@@ -209,3 +209,27 @@ export const SEARCH_QUERY = gql`
     }
   }
 `;
+
+export const LOG_USER_IN = gql`
+  query logUserIn($input: LoginInput!) {
+    login(input: $input) {
+      token
+      data {
+        id
+        name
+        email
+        avatar_url
+        telephone
+        created_at
+      }
+    }
+  }
+`;
+
+export const FACEBOOK_LOGIN_URL = gql`
+  query facebookLoginUrl {
+    facebookLoginUrl {
+      url
+    }
+  }
+`;

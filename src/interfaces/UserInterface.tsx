@@ -4,11 +4,9 @@ export interface UserData {
   id: string;
   name: string;
   email: string;
-  avatar: string;
-  active: boolean;
-  // tracks?: TrackInterface[];
+  avatar_url: string;
   telephone: string;
-  created_at: Date;
+  created_at: string;
 
 }
 

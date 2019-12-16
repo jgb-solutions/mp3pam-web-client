@@ -1,25 +1,17 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { AccountCircle } from "@material-ui/icons";
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from "react-router-dom";
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import AlbumIcon from '@material-ui/icons/Album';
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 import { get } from 'lodash-es';
-import { useMutation, useApolloClient } from '@apollo/react-hooks';
+import Avatar from '@material-ui/core/Avatar';
 
 
-import Button from './Button';
 import Routes from '../routes';
-import { LOG_OUT } from '../store/actions/user_action_types';
 import { menuStyles } from '../styles/menuStyles';
 import AppStateInterface from '../interfaces/AppStateInterface';
-import { LOG_OUT_MUTATION } from '../graphql/mutations';
-
-const mainMenu = [
-  { name: "Account", icon: <AccountCircle />, to: Routes.user.account },
-  // { name: "Upload", icon: <CloudUpload />, to: Routes.pages.upload }
-];
+import { UserData } from '../interfaces/UserInterface';
 
 const CreateMenu = [
   { name: "Add Track", to: Routes.user.create.track, icon: <MusicNoteIcon /> },
@@ -39,13 +31,12 @@ const libraryMenu = [
 
 type Props = {
   closeDrawerRight?: (bool: boolean) => void,
+  user: UserData
 };
 
 const Right = (props: Props) => {
   const styles = menuStyles();
-  const dispatch = useDispatch();
-  const client = useApolloClient();
-  const [logOutMutation, { data: logged_out }] = useMutation(LOG_OUT_MUTATION)
+  const user = props.user;
   const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
   const userData = get(currentUser, 'data');
 
@@ -55,37 +46,23 @@ const Right = (props: Props) => {
     }
   };
 
-  const logout = () => {
-    logOutMutation()
-  }
-
-  useEffect(() => {
-    if (logged_out) {
-      client.resetStore();
-      dispatch({ type: LOG_OUT })
-      closeDrawer();
-    }
-    // eslint-disable-next-line
-  }, [logged_out])
-
   return (
     <>
       {userData ? (
         <div className={styles.container}>
           <div className={styles.menuList}>
             <div className={styles.mainMenu}>
-              {mainMenu.map((menuItem, index) => (
-                <NavLink
-                  activeClassName={styles.activeClassName}
-                  exact
-                  key={index}
-                  to={menuItem.to}
-                  className={`${styles.link} ${styles.mainMenuLink}`}
-                  onClick={closeDrawer}>
-                  <span className={styles.linkIcon}>{menuItem.icon}</span>
-                  <span className={styles.linkText}>{menuItem.name}</span>
-                </NavLink>
-              ))}
+              <NavLink
+                activeClassName={styles.activeClassName}
+                exact
+                to={Routes.user.account}
+                className={`${styles.link} ${styles.mainMenuLink}`}
+                onClick={closeDrawer}>
+                <span className={styles.linkIcon}>
+                  <Avatar style={{ width: 20, height: 20 }} alt={user.name} src={user.avatar_url} />
+                </span>
+                <span className={styles.linkText}>Your Profile</span>
+              </NavLink>
             </div>
 
             <div>
@@ -127,9 +104,6 @@ const Right = (props: Props) => {
                 </NavLink>
               ))}
             </div>
-          </div>
-          <div className={styles.logoutContainer}>
-            <Button fullWidth onClick={logout}>Log out</Button>
           </div>
         </div>
       ) : null}

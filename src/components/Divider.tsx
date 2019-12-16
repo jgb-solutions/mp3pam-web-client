@@ -67,10 +67,10 @@ const Divider = ({ children }: Props) => {
   );
 };
 
-const HR = () => {
+const HR = ({ style }: { style?: object }) => {
   const styles = useStyles();
 
-  return <hr className={styles.hr} />
+  return <hr className={styles.hr} style={style} />
 };
 
 Divider.HR = HR;

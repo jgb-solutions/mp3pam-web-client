@@ -9,20 +9,20 @@ export const mainLayoutStyles = makeStyles({
   },
   col: {
     height: '100vh',
-    overflowY: 'auto'
+    overflowY: 'auto',
   },
   mainGrid: {
     backgroundColor: colors.contentGrey,
     position: 'relative'
   },
   leftGrid: {
-    paddingTop: 10,
+    paddingTop: 15,
     paddingLeft: 24,
     paddingRight: 24,
     backgroundColor: colors.black,
   },
   rightGrid: {
-    paddingTop: 10,
+    paddingTop: 15,
     paddingLeft: 24,
     paddingRight: 24,
     backgroundColor: colors.black

@@ -12,7 +12,7 @@ type PlayCount = {
   updatePlayCount: (input: PlayProps) => void,
 };
 
-export default function usePlay(): PlayCount {
+export default function useUpdatePlayCount(): PlayCount {
   const [updatePlayCountMutation] = useMutation(UPDATE_PLAY_COUNT, {
     fetchPolicy: 'no-cache',
   });

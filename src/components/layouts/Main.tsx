@@ -28,7 +28,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
 
       <Hidden smDown>
         <Grid item md={2} sm={2} xs={12} className={`${styles.col} ${styles.rightGrid}`}>
-          <Right />
+          {/* <Right /> */}
         </Grid>
       </Hidden>
     </>
