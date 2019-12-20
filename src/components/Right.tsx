@@ -1,17 +1,17 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { NavLink } from "react-router-dom";
-import MusicNoteIcon from '@material-ui/icons/MusicNote';
-import AlbumIcon from '@material-ui/icons/Album';
-import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
-import { get } from 'lodash-es';
-import Avatar from '@material-ui/core/Avatar';
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { NavLink } from "react-router-dom"
+import MusicNoteIcon from '@material-ui/icons/MusicNote'
+import AlbumIcon from '@material-ui/icons/Album'
+import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle'
+import { get } from 'lodash-es'
+import Avatar from '@material-ui/core/Avatar'
 
 
-import Routes from '../routes';
-import { menuStyles } from '../styles/menuStyles';
-import AppStateInterface from '../interfaces/AppStateInterface';
-import { UserData } from '../interfaces/UserInterface';
+import Routes from '../routes'
+import { menuStyles } from '../styles/menuStyles'
+import AppStateInterface from '../interfaces/AppStateInterface'
+import { UserData } from '../interfaces/UserInterface'
 
 const CreateMenu = [
   { name: "Add Track", to: Routes.user.create.track, icon: <MusicNoteIcon /> },
@@ -19,7 +19,7 @@ const CreateMenu = [
   { name: "Create Album", to: Routes.user.create.album, icon: <AlbumIcon /> },
   // { name: "Create PlayList", to: Routes.user.create.playlist, icon: <PlaylistAddIcon /> },
   // { name: "Add Podcast", to: Routes.user.create.podcast, icon: <MicIcon /> },
-];
+]
 
 const libraryMenu = [
   { name: "Tracks", to: Routes.user.manage.tracks, icon: <MusicNoteIcon /> },
@@ -27,24 +27,24 @@ const libraryMenu = [
   { name: "Albums", to: Routes.user.manage.albums, icon: <AlbumIcon /> },
   // { name: "PlayLists", to: Routes.user.manage.playlists, icon: <PlaylistAddIcon /> },
   // { name: "Podcasts", to: Routes.user.manage.podcasts, icon: <MicIcon /> },
-];
+]
 
 type Props = {
   closeDrawerRight?: (bool: boolean) => void,
   user: UserData
-};
+}
 
 const Right = (props: Props) => {
-  const styles = menuStyles();
-  const user = props.user;
-  const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
-  const userData = get(currentUser, 'data');
+  const styles = menuStyles()
+  const user = props.user
+  const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser)
+  const userData = get(currentUser, 'data')
 
   const closeDrawer = () => {
     if (props.closeDrawerRight) {
       props.closeDrawerRight(false)
     }
-  };
+  }
 
   return (
     <>
@@ -108,7 +108,7 @@ const Right = (props: Props) => {
         </div>
       ) : null}
     </>
-  );
-};
+  )
+}
 
-export default Right;
+export default Right

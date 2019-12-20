@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import React, { useState, useEffect } from 'react'
+import { makeStyles } from '@material-ui/core'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 
-import useDownload from '../hooks/useDownload';
-import colors from '../utils/colors';
-import Spinner from './Spinner';
-import { useHistory } from 'react-router-dom';
-import Routes from '../routes';
+import useDownload from '../hooks/useDownload'
+import colors from '../utils/colors'
+import Spinner from './Spinner'
+import { useHistory } from 'react-router-dom'
+import Routes from '../routes'
 
 const useStyles = makeStyles({
   root: {
@@ -36,40 +36,40 @@ const useStyles = makeStyles({
     fontSize: 48,
   },
   successColor: { color: colors.success }
-});
+})
 
 type Props = {
   hash: string,
   type: string,
 }
 
-let intervalId: any;
+let intervalId: any
 
 export default function Download(input: Props) {
   const { data, loading, error, updateDownloadCount } = useDownload(input)
-  const styles = useStyles();
-  const [count, setCount] = useState(5);
-  const history = useHistory();
+  const styles = useStyles()
+  const [count, setCount] = useState(5)
+  const history = useHistory()
 
   const startDownload = () => {
     intervalId = setInterval(() => {
       if (count >= 0) {
         setCount(count => count - 1)
       }
-    }, 1000);
-  };
+    }, 1000)
+  }
 
   useEffect(() => {
     if (count <= 0) {
-      clearInterval(intervalId);
-      updateDownloadCount();
-      window.location.href = data.download.url;
+      clearInterval(intervalId)
+      updateDownloadCount()
+      window.location.href = data.download.url
     }
   }, [count])
 
   useEffect(() => {
     if (data) {
-      startDownload();
+      startDownload()
     }
   }, [data])
 
@@ -87,18 +87,18 @@ export default function Download(input: Props) {
             Or just
             {' '}
             <span style={{ textDecoration: 'underline' }} onClick={() => {
-              let route: string;
-              const { type, hash } = input;
+              let route: string
+              const { type, hash } = input
 
               switch (type) {
                 case 'track':
-                  route = Routes.track.detailPage(hash);
-                  history.push(route);
-                  break;
+                  route = Routes.track.detailPage(hash)
+                  history.push(route)
+                  break
                 case 'episode':
-                  route = Routes.episode.detailPage(hash);
-                  history.push(route);
-                  break;
+                  route = Routes.episode.detailPage(hash)
+                  history.push(route)
+                  break
               }
             }}>listen </span>
             to the {input.type} again.

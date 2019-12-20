@@ -85,6 +85,6 @@ const Routes = {
 	links: {
 		jgbSolutions: 'https://jgb.solutions'
 	}
-};
+}
 
-export default Routes;
+export default Routes

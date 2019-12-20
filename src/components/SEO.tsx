@@ -1,7 +1,7 @@
-import React from 'react';
-import { Helmet } from "react-helmet";
+import React from 'react'
+import { Helmet } from "react-helmet"
 
-import { DOMAIN, FB_APP_ID, APP_NAME, TWITTER_HANDLE } from '../utils/constants';
+import { DOMAIN, FB_APP_ID, APP_NAME, TWITTER_HANDLE } from '../utils/constants'
 
 type Props = {
   title?: string,
@@ -12,15 +12,15 @@ type Props = {
   artist?: string,
   imageWidth?: number,
   imageHeight?: number,
-};
+}
 
 export default function SEO({ title, url, description, type, image, artist, imageWidth, imageHeight }: Props) {
-  const titleContent = `${APP_NAME} - ${title || "Listen, Download and Share Unlimited Sounds!"}`;
+  const titleContent = `${APP_NAME} - ${title || "Listen, Download and Share Unlimited Sounds!"}`
   const descriptionContent = description || `
       ${APP_NAME} is a free entertainment platform for sharing all kinds of sounds.
       Music, Podcast, and even Ad. You name it. Brought to you by JGB Solutions.
-  `;
-  const imageContent = image || `${DOMAIN}/social-media-share.png`;
+  `
+  const imageContent = image || `${DOMAIN}/social-media-share.png`
 
   return (
     <>

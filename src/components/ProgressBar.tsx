@@ -1,7 +1,7 @@
-import { withStyles } from '@material-ui/styles';
-import { darken } from '@material-ui/core/styles';
-import colors from '../utils/colors';
-import { LinearProgress } from '@material-ui/core';
+import { withStyles } from '@material-ui/styles'
+import { darken } from '@material-ui/core/styles'
+import colors from '../utils/colors'
+import { LinearProgress } from '@material-ui/core'
 
 const ProgressBar = withStyles({
   root: {
@@ -9,6 +9,6 @@ const ProgressBar = withStyles({
     backgroundColor: darken(colors.primary, 0.5),
     borderRadius: 20,
   }
-})(LinearProgress);
+})(LinearProgress)
 
-export default ProgressBar;
+export default ProgressBar

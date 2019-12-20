@@ -1,12 +1,12 @@
 import {
   Favorite,
   FavoriteBorder,
-} from "@material-ui/icons";
-import React from 'react';
-import IconButton from "@material-ui/core/IconButton";
+} from "@material-ui/icons"
+import React from 'react'
+import IconButton from "@material-ui/core/IconButton"
 
-import colors from "../utils/colors";
-import { makeStyles } from "@material-ui/styles";
+import colors from "../utils/colors"
+import { makeStyles } from "@material-ui/styles"
 
 const useStyles = makeStyles({
   icon: {
@@ -19,17 +19,17 @@ const useStyles = makeStyles({
     border: "1px solid white",
     borderRadius: "50%",
   },
-});
+})
 
 type Props = {
   toggleFavorite?: () => void,
   isFavorite?: boolean,
   border?: boolean,
-};
+}
 
 function Heart(props: Props) {
-  const { toggleFavorite, isFavorite } = props;
-  const styles = useStyles();
+  const { toggleFavorite, isFavorite } = props
+  const styles = useStyles()
 
   return (
     <IconButton onClick={toggleFavorite} className={props.border ? styles.border : ''}>
@@ -43,4 +43,4 @@ function Heart(props: Props) {
   )
 }
 
-export default Heart;
+export default Heart

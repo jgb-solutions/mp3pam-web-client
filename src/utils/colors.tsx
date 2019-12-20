@@ -7,6 +7,6 @@ const colors = {
   contentGrey: '#181818',
   error: '#f44336',
   success: "#00FF00",
-};
+}
 
-export default colors;
+export default colors

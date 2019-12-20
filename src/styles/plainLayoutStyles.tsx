@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core"
 
 export const plainLayoutStyles = makeStyles({
   col: {
@@ -9,4 +9,4 @@ export const plainLayoutStyles = makeStyles({
     // backgroundColor: colors.contentGrey,
     position: 'relative'
   },
-});
+})

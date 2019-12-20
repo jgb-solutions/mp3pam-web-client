@@ -1,10 +1,10 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import React from "react"
+import { makeStyles } from "@material-ui/core/styles"
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons"
+import { Link } from "react-router-dom"
 
-import TrackThumbnail from "./TrackThumbnail";
-import { SMALL_SCREEN_SIZE } from "../utils/constants";
+import TrackThumbnail from "./TrackThumbnail"
+import { SMALL_SCREEN_SIZE } from "../utils/constants"
 
 export const useTrackScrollingListStyles = makeStyles(theme => ({
   container: {
@@ -36,37 +36,37 @@ export const useTrackScrollingListStyles = makeStyles(theme => ({
     margin: 0,
     fontSize: 16
   }
-}));
+}))
 
 export interface ArtistThumbnailData {
   stage_name: string,
   hash: string
-};
+}
 
 export interface TrackWithArtistThumbnailData {
-  title: string;
-  hash: string;
-  poster_url: string;
-  artist: ArtistThumbnailData;
-};
+  title: string
+  hash: string
+  poster_url: string
+  artist: ArtistThumbnailData
+}
 
 export const TrackScrollingList = (props: { tracks: TrackWithArtistThumbnailData[], category: string, browse: string }) => {
-  const { tracks, category, browse } = props;
-  const styles = useTrackScrollingListStyles();
-  let domElement: any;
+  const { tracks, category, browse } = props
+  const styles = useTrackScrollingListStyles()
+  let domElement: any
 
   const scroll = (dir: string) => {
-    const distance = 400;
+    const distance = 400
     if (dir === "left") {
-      domElement.scrollLeft -= distance;
+      domElement.scrollLeft -= distance
     } else {
-      domElement.scrollLeft += distance;
+      domElement.scrollLeft += distance
     }
 
-    // console.log("clientWidth", domElement.clientWidth);
-    // console.log("offsetWidth", domElement.offsetWidth);
-    // console.log("scrollWidth", domElement.scrollWidth);
-  };
+    // console.log("clientWidth", domElement.clientWidth)
+    // console.log("offsetWidth", domElement.offsetWidth)
+    // console.log("scrollWidth", domElement.scrollWidth)
+  }
 
   return (
     <div className={styles.container}>
@@ -83,7 +83,7 @@ export const TrackScrollingList = (props: { tracks: TrackWithArtistThumbnailData
       <div
         className={styles.list}
         ref={el => {
-          domElement = el;
+          domElement = el
         }}
       >
         {tracks.map(track => (
@@ -91,5 +91,5 @@ export const TrackScrollingList = (props: { tracks: TrackWithArtistThumbnailData
         ))}
       </div>
     </div>
-  );
-};
+  )
+}

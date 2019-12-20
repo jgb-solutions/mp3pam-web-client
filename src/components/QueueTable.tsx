@@ -1,19 +1,19 @@
-import React from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import React from 'react'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
 
-import colors from '../utils/colors';
-import Heart from './Heart';
-import More from './More';
-import PlayPause from './PlayPause';
-import TrackInterface from '../interfaces/TrackInterface';
-import { useSelector } from 'react-redux';
-import AppStateInterface from '../interfaces/AppStateInterface';
-import ListInterface, { SoundInterface } from '../interfaces/ListInterface';
+import colors from '../utils/colors'
+import Heart from './Heart'
+import More from './More'
+import PlayPause from './PlayPause'
+import TrackInterface from '../interfaces/TrackInterface'
+import { useSelector } from 'react-redux'
+import AppStateInterface from '../interfaces/AppStateInterface'
+import ListInterface, { SoundInterface } from '../interfaces/ListInterface'
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3),
     overflowX: 'auto',
   },
-}));
+}))
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -38,14 +38,14 @@ const StyledTableCell = withStyles(theme => ({
     paddingRight: 1,
     textOverflow: 'ellipsis'
   },
-}))(TableCell);
+}))(TableCell)
 
 export default function ListTable() {
-  const styles = useStyles();
+  const styles = useStyles()
 
   const { currentSound, currentPlayingIndex, queueList, list } = useSelector(
     (appState: AppStateInterface) => appState.player
-  );
+  )
 
   return (
     <Table className={styles.table} size="small">
@@ -63,7 +63,7 @@ export default function ListTable() {
           const color = currentSound &&
             sound.hash === currentSound.hash &&
             index === currentPlayingIndex ? colors.primary
-            : undefined;
+            : undefined
 
           return (
             <TableRow key={index} style={{
@@ -84,5 +84,5 @@ export default function ListTable() {
         })}
       </TableBody>
     </Table>
-  );
+  )
 }

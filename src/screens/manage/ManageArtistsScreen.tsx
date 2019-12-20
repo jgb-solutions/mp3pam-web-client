@@ -1,7 +1,7 @@
-import React from "react";
-import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
+import React from "react"
+import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle'
 
-import HeaderTitle from "../../components/HeaderTitle";
+import HeaderTitle from "../../components/HeaderTitle"
 // import { useSelector } from "react-redux";
 
 // import ListTable from '../components/ListTable';
@@ -17,5 +17,5 @@ export default function ManageArtistsScreen() {
       {/* {!list && <h3>Your queue is empty!</h3>} */}
 
     </>
-  );
+  )
 }

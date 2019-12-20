@@ -1,8 +1,8 @@
-import React from "react";
+import React from "react"
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
-import { UserData } from "../interfaces/UserInterface";
-import Spinner from "../components/Spinner";
+import { UserData } from "../interfaces/UserInterface"
+import Spinner from "../components/Spinner"
 
 export const FETCH_USERS = gql`
   query allUsers {
@@ -21,12 +21,12 @@ export const FETCH_USERS = gql`
       }
     }
   }
-`;
+`
 
 export default function UsersScreen() {
-  const { loading, error, data } = useQuery(FETCH_USERS);
+  const { loading, error, data } = useQuery(FETCH_USERS)
 
-  if (loading) return <Spinner.Full />;
+  if (loading) return <Spinner.Full />
   if (error) return <h1>Error: {JSON.stringify}</h1>
 
   return (
@@ -38,5 +38,5 @@ export default function UsersScreen() {
         ))}
       </ul>
     </>
-  );
+  )
 }

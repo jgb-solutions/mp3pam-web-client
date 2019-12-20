@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuIcon from '@material-ui/icons/Menu';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import { Link } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import React, { useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import MenuIcon from '@material-ui/icons/Menu'
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
+import { Link } from 'react-router-dom'
+import Avatar from '@material-ui/core/Avatar'
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 
-import Left from './Left';
-import colors from '../utils/colors';
-import SearchInput from './SearchInput';
-import { SMALL_SCREEN_SIZE } from '../utils/constants';
-import Routes from '../routes';
-import AppStateInterface from '../interfaces/AppStateInterface';
-import { useSelector } from 'react-redux';
-import Right from './Right';
+import Left from './Left'
+import colors from '../utils/colors'
+import SearchInput from './SearchInput'
+import { SMALL_SCREEN_SIZE } from '../utils/constants'
+import Routes from '../routes'
+import AppStateInterface from '../interfaces/AppStateInterface'
+import { useSelector } from 'react-redux'
+import Right from './Right'
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -74,16 +74,16 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     marginRight: 5,
   }
-}));
+}))
 
-type Props = {};
+type Props = {}
 
 const Header = (props: Props) => {
-  const styles = useStyles();
-  const [drawerLeftOPen, setDrawerLeftOpen] = useState(false);
-  const [drawerRightOPen, setDrawerRightOpen] = useState(false);
-  const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
-  const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const styles = useStyles()
+  const [drawerLeftOPen, setDrawerLeftOpen] = useState(false)
+  const [drawerRightOPen, setDrawerRightOpen] = useState(false)
+  const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser)
+  const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
   return (
     <div className={styles.grow}>
@@ -144,7 +144,7 @@ const Header = (props: Props) => {
         </SwipeableDrawer>
       )}
     </div >
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

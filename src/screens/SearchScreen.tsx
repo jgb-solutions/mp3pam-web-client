@@ -1,56 +1,56 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import MusicNoteIcon from '@material-ui/icons/MusicNote';
-import { debounce } from "lodash-es";
-import { Grid } from "@material-ui/core";
-import SearchIcon from '@material-ui/icons/Search';
+import React, { useEffect, useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import MusicNoteIcon from '@material-ui/icons/MusicNote'
+import { debounce } from "lodash-es"
+import { Grid } from "@material-ui/core"
+import SearchIcon from '@material-ui/icons/Search'
 
-import AppStateInterface from "../interfaces/AppStateInterface";
-import useSearch from '../hooks/useSearch';
-import Spinner from "../components/Spinner";
-import HeaderTitle from "../components/HeaderTitle";
-import { TrackWithArtistThumbnailData } from "../components/TrackScrollingList";
-import TrackThumbnail from "../components/TrackThumbnail";
-import { SearchData } from "../interfaces/SearchInterface";
-import { SAVE_SEARCH } from "../store/actions/search_action_types";
-import ArtistThumbnail from "../components/ArtistThumbnail";
-import AlbumThumbnail from "../components/AlbumThumbnail";
-import { AlbumThumbnailData } from "../components/AlbumScrollingList";
-import { ArtistThumbnailData } from "../components/ArtistScrollingList";
+import AppStateInterface from "../interfaces/AppStateInterface"
+import useSearch from '../hooks/useSearch'
+import Spinner from "../components/Spinner"
+import HeaderTitle from "../components/HeaderTitle"
+import { TrackWithArtistThumbnailData } from "../components/TrackScrollingList"
+import TrackThumbnail from "../components/TrackThumbnail"
+import { SearchData } from "../interfaces/SearchInterface"
+import { SAVE_SEARCH } from "../store/actions/search_action_types"
+import ArtistThumbnail from "../components/ArtistThumbnail"
+import AlbumThumbnail from "../components/AlbumThumbnail"
+import { AlbumThumbnailData } from "../components/AlbumScrollingList"
+import { ArtistThumbnailData } from "../components/ArtistScrollingList"
 
 
 export default function SearchScreen() {
-	const dispatch = useDispatch();
-	const { search, data: resultData, loading, error } = useSearch();
-	const debounceSearch = debounce(search, 300);
-	const { term, data: storeData } = useSelector(({ search }: AppStateInterface) => search);
-	const [state, setState] = useState<SearchData>(storeData);
-	const [lastSearchTerm, setLastSearchTerm] = useState(term);
+	const dispatch = useDispatch()
+	const { search, data: resultData, loading, error } = useSearch()
+	const debounceSearch = debounce(search, 300)
+	const { term, data: storeData } = useSelector(({ search }: AppStateInterface) => search)
+	const [state, setState] = useState<SearchData>(storeData)
+	const [lastSearchTerm, setLastSearchTerm] = useState(term)
 
 	// fetch home data
 	useEffect(() => {
 		if (resultData) {
 			const { tracks, albums, artists } = resultData.search
-			const data = resultData.search;
-			setState(data);
+			const data = resultData.search
+			setState(data)
 			if (tracks.length || artists.length || albums.length) {
-				dispatch({ type: SAVE_SEARCH, payload: { term, data } });
+				dispatch({ type: SAVE_SEARCH, payload: { term, data } })
 			}
 		}
 	}, [resultData])
 
 	useEffect(() => {
-		const searchTerm = term.trim();
+		const searchTerm = term.trim()
 		if (searchTerm.length >= 2 && searchTerm != lastSearchTerm) {
-			debounceSearch(term);
-			setLastSearchTerm(searchTerm);
+			debounceSearch(term)
+			setLastSearchTerm(searchTerm)
 		}
 	}, [term])
 
-	if (loading) return <Spinner.Full />;
+	if (loading) return <Spinner.Full />
 
-	if (error) return <p>Error Loading new data. Please refresh the page.</p>;
-	const { tracks, albums, artists } = state;
+	if (error) return <p>Error Loading new data. Please refresh the page.</p>
+	const { tracks, albums, artists } = state
 
 	return (
 		<>
@@ -106,5 +106,5 @@ export default function SearchScreen() {
 				</>
 			) : null}
 		</>
-	);
-};
+	)
+}

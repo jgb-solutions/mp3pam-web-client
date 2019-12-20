@@ -1,5 +1,5 @@
-import { makeStyles } from "@material-ui/core";
-import colors from "../utils/colors";
+import { makeStyles } from "@material-ui/core"
+import colors from "../utils/colors"
 
 export const mainLayoutStyles = makeStyles({
   container: {
@@ -27,4 +27,4 @@ export const mainLayoutStyles = makeStyles({
     paddingRight: 24,
     backgroundColor: colors.black
   }
-});
+})

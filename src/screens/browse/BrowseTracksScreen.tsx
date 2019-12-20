@@ -1,26 +1,26 @@
-import React, { useEffect } from "react";
-import MusicNoteIcon from '@material-ui/icons/MusicNote';
-import { get } from "lodash-es";
-import { Grid } from "@material-ui/core";
-import InfiniteScroll from 'react-infinite-scroller';
+import React, { useEffect } from "react"
+import MusicNoteIcon from '@material-ui/icons/MusicNote'
+import { get } from "lodash-es"
+import { Grid } from "@material-ui/core"
+import InfiniteScroll from 'react-infinite-scroller'
 
-import Spinner from "../../components/Spinner";
-import HeaderTitle from "../../components/HeaderTitle";
-import useTracks from "../../hooks/useTracks";
-import TrackThumbnail from "../../components/TrackThumbnail";
-import { TrackWithArtistThumbnailData } from "../../components/TrackScrollingList";
+import Spinner from "../../components/Spinner"
+import HeaderTitle from "../../components/HeaderTitle"
+import useTracks from "../../hooks/useTracks"
+import TrackThumbnail from "../../components/TrackThumbnail"
+import { TrackWithArtistThumbnailData } from "../../components/TrackScrollingList"
 
 export default function BrowseTracksScreen() {
-  const { loading, error, data, loadMoreTracks, hasMore } = useTracks();
-  const tracks = get(data, 'tracks');
+  const { loading, error, data, loadMoreTracks, hasMore } = useTracks()
+  const tracks = get(data, 'tracks')
   // fetch home data
   useEffect(() => {
-    console.log(data);
+    console.log(data)
   }, [data])
 
-  if (loading) return <Spinner.Full />;
+  if (loading) return <Spinner.Full />
 
-  if (error) return <p>Error Loading new data. Please refresh the page.</p>;
+  if (error) return <p>Error Loading new data. Please refresh the page.</p>
 
   return (
     <>
@@ -41,5 +41,5 @@ export default function BrowseTracksScreen() {
         </Grid>
       </InfiniteScroll>
     </>
-  );
+  )
 }

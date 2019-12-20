@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
-import { makeStyles } from "@material-ui/core/styles";
+import React, { ReactNode } from 'react'
+import { makeStyles } from "@material-ui/core/styles"
 
-import colors from '../utils/colors';
+import colors from '../utils/colors'
 
 
 export const useStyles = makeStyles({
@@ -53,26 +53,26 @@ export const useStyles = makeStyles({
       ${colors.black} 100%)
     `
   }
-});
+})
 
-type Props = { children: ReactNode };
+type Props = { children: ReactNode }
 
 const Divider = ({ children }: Props) => {
-  const styles = useStyles();
+  const styles = useStyles()
 
   return (
     <div className={styles.divider}>
       <strong className={styles.title}>{children}</strong>
     </div>
-  );
-};
+  )
+}
 
 const HR = ({ style }: { style?: object }) => {
-  const styles = useStyles();
+  const styles = useStyles()
 
   return <hr className={styles.hr} style={style} />
-};
+}
 
-Divider.HR = HR;
+Divider.HR = HR
 
-export default Divider;
+export default Divider

@@ -1,19 +1,12 @@
-import React, { ReactNode } from 'react';
-import { makeStyles } from '@material-ui/styles';
-import { get } from "lodash-es";
+import React, { ReactNode } from 'react'
+import { get } from "lodash-es"
 
-import Button from './Button';
-
-const useStyles = makeStyles({
-  button: {
-    // color: colors.primary
-  }
-});
+import Button from './Button'
 
 export interface ImageDimensions {
-  width: number;
-  height: number;
-};
+  width: number
+  height: number
+}
 
 type Props = {
   accept: string,
@@ -30,7 +23,7 @@ type Props = {
   onFileSizeInvalid?: (fileSize: number) => void,
   onDimensionsInvalid?: (dimensions: ImageDimensions) => void
   validateImageDimensions?: (dimensions: ImageDimensions) => boolean
-};
+}
 
 const UploadButton = ({
   style,
@@ -49,71 +42,69 @@ const UploadButton = ({
   validateImageDimensions
 
 }: Props) => {
-  const styles = useStyles();
-
-  let input: HTMLInputElement | null;
+  let input: HTMLInputElement | null
 
   const triggerInput = () => {
     if (input) {
-      input.click();
+      input.click()
     }
-  };
+  }
 
   const handleOnChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file: File = get(event, 'target.files[0]');
+    const file: File = get(event, 'target.files[0]')
 
     if (file) {
       if (allowedFileSize && onFileSizeInvalid) {
         if (file.size > allowedFileSize) {
-          onFileSizeInvalid(file.size);
-          return;
+          onFileSizeInvalid(file.size)
+          return
         }
       }
 
       if (onDimensionsInvalid && validateImageDimensions) {
-        const dimensions = await getImageDimensions(file);
+        const dimensions = await getImageDimensions(file)
 
         if (!validateImageDimensions(dimensions)) {
-          onDimensionsInvalid(dimensions);
-          return;
+          onDimensionsInvalid(dimensions)
+          return
         }
       }
 
-      onChange(event);
+      onChange(event)
     }
 
-    return;
-  };
+    return
+  }
 
   const getImageDimensions = (file: File): Promise<ImageDimensions> => {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+      const reader = new FileReader()
 
       reader.onload = readerEvt => {
-        let image = new Image();
+        let image = new Image()
 
         image.onload = imgEvt => {
-          const { width, height } = get(imgEvt, 'path[0]') || get(imgEvt, 'srcElement');
-          resolve({ width, height });
-        };
+          const { width, height } = get(imgEvt, 'path[0]') || get(imgEvt, 'srcElement')
+          resolve({ width, height })
+        }
 
-        image.src = get(readerEvt, 'target.result');
+        image.src = get(readerEvt, 'target.result')
 
         reader.onerror = () => {
-          reader.abort();
+          reader.abort()
 
           reject(new DOMException("Problem parsing the file bitch."))
-        };
-      };
+        }
+      }
 
-      reader.readAsDataURL(file);
-    });
-  };
+      reader.readAsDataURL(file)
+    })
+  }
 
   return (
     <div className={style}>
       <Button
-        className={`${styles.button} ${buttonStyle}`}
+        className={buttonStyle}
         onClick={triggerInput}
         size={buttonSize}
         disabled={disabled}
@@ -129,7 +120,7 @@ const UploadButton = ({
         multiple={multiple}
       />
     </div>
-  );
-};
+  )
+}
 
-export default UploadButton;
+export default UploadButton

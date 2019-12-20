@@ -1,26 +1,26 @@
-import React, { useEffect } from "react";
-import AlbumIcon from '@material-ui/icons/Album';
-import { get } from "lodash-es";
-import { Grid } from "@material-ui/core";
-import InfiniteScroll from 'react-infinite-scroller';
+import React, { useEffect } from "react"
+import AlbumIcon from '@material-ui/icons/Album'
+import { get } from "lodash-es"
+import { Grid } from "@material-ui/core"
+import InfiniteScroll from 'react-infinite-scroller'
 
-import Spinner from "../../components/Spinner";
-import HeaderTitle from "../../components/HeaderTitle";
-import useAlbums from "../../hooks/useAlbums";
-import AlbumThumbnail from "../../components/AlbumThumbnail";
-import { AlbumThumbnailData } from "../../components/AlbumScrollingList";
+import Spinner from "../../components/Spinner"
+import HeaderTitle from "../../components/HeaderTitle"
+import useAlbums from "../../hooks/useAlbums"
+import AlbumThumbnail from "../../components/AlbumThumbnail"
+import { AlbumThumbnailData } from "../../components/AlbumScrollingList"
 
 export default function BrowseAlbumsScreen() {
-  const { loading, error, data, loadMoreAlbums, hasMore } = useAlbums();
-  const albums = get(data, 'albums');
+  const { loading, error, data, loadMoreAlbums, hasMore } = useAlbums()
+  const albums = get(data, 'albums')
   // fetch home data
   useEffect(() => {
-    console.log(data);
+    console.log(data)
   }, [data])
 
-  if (loading) return <Spinner.Full />;
+  if (loading) return <Spinner.Full />
 
-  if (error) return <p>Error Loading new data. Please refresh the page.</p>;
+  if (error) return <p>Error Loading new data. Please refresh the page.</p>
 
   return (
     <>
@@ -41,5 +41,5 @@ export default function BrowseAlbumsScreen() {
         </Grid>
       </InfiniteScroll>
     </>
-  );
+  )
 }

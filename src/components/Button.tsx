@@ -1,8 +1,8 @@
-import { lighten } from "@material-ui/core/styles";
-import { withStyles } from "@material-ui/styles";
-import { Button } from "@material-ui/core";
+import { lighten } from "@material-ui/core/styles"
+import { withStyles } from "@material-ui/styles"
+import { Button } from "@material-ui/core"
 
-import colors from "../utils/colors";
+import colors from "../utils/colors"
 
 export default withStyles({
 	root: {
@@ -27,4 +27,4 @@ export default withStyles({
 			outline: "none"
 		}
 	},
-})(Button);
+})(Button)

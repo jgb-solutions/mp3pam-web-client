@@ -1,13 +1,13 @@
-import React from "react";
-import { PlayCircleOutline } from "@material-ui/icons";
-import { useHistory } from "react-router";
-import IconButton from "@material-ui/core/IconButton";
-import { makeStyles } from "@material-ui/core/styles";
+import React from "react"
+import { PlayCircleOutline } from "@material-ui/icons"
+import { useHistory } from "react-router"
+import IconButton from "@material-ui/core/IconButton"
+import { makeStyles } from "@material-ui/core/styles"
 
-import colors from "../utils/colors";
-import Routes from "../routes";
-import { SMALL_SCREEN_SIZE } from "../utils/constants";
-import { ArtistThumbnailData } from "./ArtistScrollingList";
+import colors from "../utils/colors"
+import Routes from "../routes"
+import { SMALL_SCREEN_SIZE } from "../utils/constants"
+import { ArtistThumbnailData } from "./ArtistScrollingList"
 
 const useStyles = makeStyles(theme => ({
   imgContainer: {
@@ -79,24 +79,24 @@ const useStyles = makeStyles(theme => ({
     textDecoration: 'none',
     cursor: 'pointer',
   }
-}));
+}))
 
 type Props = {
-  artist: ArtistThumbnailData;
-  className?: string;
+  artist: ArtistThumbnailData
+  className?: string
   style?: object,
-};
+}
 
 export default function ArtistThumbnail(props: Props) {
-  const styles = useStyles();
-  const history = useHistory();
+  const styles = useStyles()
+  const history = useHistory()
 
-  const { artist } = props;
+  const { artist } = props
 
   const goToArtistPage = () => {
-    const route = Routes.artist.detailPage(artist.hash);
-    history.push(route, { hash: artist.hash });
-  };
+    const route = Routes.artist.detailPage(artist.hash)
+    history.push(route, { hash: artist.hash })
+  }
 
   return (
     <div className={props.className} style={props.style}>
@@ -115,5 +115,5 @@ export default function ArtistThumbnail(props: Props) {
       </div>
       <h3 className={styles.title}>{artist.stage_name}</h3>
     </div>
-  );
-};
+  )
+}

@@ -1,20 +1,20 @@
-import React from "react";
+import React from "react"
 import {
   PlayCircleOutline,
   PauseCircleOutline
-} from "@material-ui/icons";
-import { useHistory } from "react-router";
-import { connect } from "react-redux";
-import IconButton from "@material-ui/core/IconButton";
-import { makeStyles } from "@material-ui/core/styles";
+} from "@material-ui/icons"
+import { useHistory } from "react-router"
+import { connect } from "react-redux"
+import IconButton from "@material-ui/core/IconButton"
+import { makeStyles } from "@material-ui/core/styles"
 
-import colors from "../utils/colors";
-import Routes from "../routes";
-import { get } from "lodash-es";
-import { SMALL_SCREEN_SIZE } from "../utils/constants";
-import { TrackWithArtistThumbnailData, ArtistThumbnailData } from "./TrackScrollingList";
-import { Link } from "react-router-dom";
-import AppStateInterface from "../interfaces/AppStateInterface";
+import colors from "../utils/colors"
+import Routes from "../routes"
+import { get } from "lodash-es"
+import { SMALL_SCREEN_SIZE } from "../utils/constants"
+import { TrackWithArtistThumbnailData, ArtistThumbnailData } from "./TrackScrollingList"
+import { Link } from "react-router-dom"
+import AppStateInterface from "../interfaces/AppStateInterface"
 
 const useStyles = makeStyles(theme => ({
   imgContainer: {
@@ -86,31 +86,31 @@ const useStyles = makeStyles(theme => ({
     textDecoration: 'none',
     cursor: 'pointer',
   }
-}));
+}))
 
 type Props = {
-  track: TrackWithArtistThumbnailData;
-  className?: string;
+  track: TrackWithArtistThumbnailData
+  className?: string
   style?: object,
-  isPlaying: boolean;
-  listId: string;
-};
+  isPlaying: boolean
+  listId: string
+}
 
 const TrackThumbnail = (props: Props) => {
-  const styles = useStyles();
-  const history = useHistory();
+  const styles = useStyles()
+  const history = useHistory()
 
-  const { track, listId, isPlaying } = props;
+  const { track, listId, isPlaying } = props
 
   const goToTrackPage = () => {
-    const route = Routes.track.detailPage(track.hash);
-    history.push(route, { hash: track.hash });
-  };
+    const route = Routes.track.detailPage(track.hash)
+    history.push(route, { hash: track.hash })
+  }
 
   const goToArtistPage = () => {
-    const route = Routes.artist.detailPage(track.artist.hash);
-    history.push(route, { hash: track.artist.hash });
-  };
+    const route = Routes.artist.detailPage(track.artist.hash)
+    history.push(route, { hash: track.artist.hash })
+  }
 
   return (
     <div className={props.className} style={props.style}>
@@ -140,12 +140,12 @@ const TrackThumbnail = (props: Props) => {
         </span>
       </p>
     </div>
-  );
-};
+  )
+}
 
 export default connect(
   ({ player }: AppStateInterface) => ({
     listId: get(player, 'list.id'),
     isPlaying: player.isPlaying
   })
-)(TrackThumbnail);
+)(TrackThumbnail)

@@ -1,5 +1,5 @@
-import { makeStyles } from "@material-ui/core";
-import colors from "../utils/colors";
+import { makeStyles } from "@material-ui/core"
+import colors from "../utils/colors"
 
 export const createAlbumScreenStyles = makeStyles({
   uploadButton: {
@@ -8,4 +8,4 @@ export const createAlbumScreenStyles = makeStyles({
   },
   successColor: { color: colors.success },
   errorColor: { color: colors.error },
-});
+})

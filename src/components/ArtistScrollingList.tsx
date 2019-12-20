@@ -1,10 +1,10 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import React from "react"
+import { makeStyles } from "@material-ui/core/styles"
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons"
+import { Link } from "react-router-dom"
 
-import { SMALL_SCREEN_SIZE } from "../utils/constants";
-import ArtistThumbnail from "./ArtistThumbnail";
+import { SMALL_SCREEN_SIZE } from "../utils/constants"
+import ArtistThumbnail from "./ArtistThumbnail"
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -36,31 +36,31 @@ const useStyles = makeStyles(theme => ({
     margin: 0,
     fontSize: 16
   }
-}));
+}))
 
 export interface ArtistThumbnailData {
   stage_name: string,
   hash: string,
   poster_url: string,
-};
+}
 
 export const ArtistScrollingList = (props: { artists: ArtistThumbnailData[], category: string, browse: string }) => {
-  const { artists, category, browse } = props;
-  const styles = useStyles();
-  let domElement: any;
+  const { artists, category, browse } = props
+  const styles = useStyles()
+  let domElement: any
 
   const scroll = (dir: string) => {
-    const distance = 400;
+    const distance = 400
     if (dir === "left") {
-      domElement.scrollLeft -= distance;
+      domElement.scrollLeft -= distance
     } else {
-      domElement.scrollLeft += distance;
+      domElement.scrollLeft += distance
     }
 
-    console.log("clientWidth", domElement.clientWidth);
-    console.log("offsetWidth", domElement.offsetWidth);
-    console.log("scrollWidth", domElement.scrollWidth);
-  };
+    console.log("clientWidth", domElement.clientWidth)
+    console.log("offsetWidth", domElement.offsetWidth)
+    console.log("scrollWidth", domElement.scrollWidth)
+  }
 
   return (
     <div className={styles.container}>
@@ -70,14 +70,14 @@ export const ArtistScrollingList = (props: { artists: ArtistThumbnailData[], cat
         </Link>
         <div>
           <KeyboardArrowLeft onClick={() => scroll("left")} />
-          &nbsp;
+          &nbsp
 					<KeyboardArrowRight onClick={() => scroll("right")} />
         </div>
       </div>
       <div
         className={styles.list}
         ref={el => {
-          domElement = el;
+          domElement = el
         }}
       >
         {artists.map(artist => (
@@ -85,5 +85,5 @@ export const ArtistScrollingList = (props: { artists: ArtistThumbnailData[], cat
         ))}
       </div>
     </div>
-  );
-};
+  )
+}

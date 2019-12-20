@@ -38,7 +38,7 @@ export const FETCH_HOME = gql`
       }
     }
   }
-`;
+`
 
 export const FETCH_TRACKS = gql`
   query tracksData($page: Int, $take: Int, $orderBy: [OrderByClause!]) {
@@ -59,7 +59,7 @@ export const FETCH_TRACKS = gql`
       }
     }
   }
-`;
+`
 
 export const FETCH_RELATED_TRACKS = gql`
   query relatedTracksData($input: RelatedTracksInput!) {
@@ -73,7 +73,7 @@ export const FETCH_RELATED_TRACKS = gql`
       }
     }
   }
-`;
+`
 
 export const FETCH_ARTISTS = gql`
   query artistsData($page: Int, $take: Int, $orderBy: [OrderByClause!]) {
@@ -90,7 +90,7 @@ export const FETCH_ARTISTS = gql`
       }
     }
   }
-`;
+`
 
 export const FETCH_ALBUMS = gql`
   query albumsData($page: Int, $take: Int, $orderBy: [OrderByClause!]) {
@@ -112,7 +112,7 @@ export const FETCH_ALBUMS = gql`
       }
     }
   }
-`;
+`
 
 export const FETCH_TRACK = gql`
   query trackDetail($hash: String!) {
@@ -142,7 +142,7 @@ export const FETCH_TRACK = gql`
       }
     }
   }
-`;
+`
 
 export const FETCH_DOWNLOAD_URL = gql`
   query download($input: DownloadInput!) {
@@ -150,7 +150,7 @@ export const FETCH_DOWNLOAD_URL = gql`
       url
     }
   }
-`;
+`
 
 export const UPLOAD_URL_QUERY = gql`
   query getUploadUrl($input: UploadUrlInput!) {
@@ -159,7 +159,7 @@ export const UPLOAD_URL_QUERY = gql`
      filename
     }
   }
-`;
+`
 
 export const TRACK_UPLOAD_DATA_QUERY = gql`
   query fetchTrackUploadData {
@@ -178,7 +178,7 @@ export const TRACK_UPLOAD_DATA_QUERY = gql`
       }
     }
   }
-`;
+`
 
 export const SEARCH_QUERY = gql`
   query search($query: String!) {
@@ -208,7 +208,7 @@ export const SEARCH_QUERY = gql`
       }
     }
   }
-`;
+`
 
 export const LOG_USER_IN = gql`
   query logUserIn($input: LoginInput!) {
@@ -224,7 +224,7 @@ export const LOG_USER_IN = gql`
       }
     }
   }
-`;
+`
 
 export const FACEBOOK_LOGIN_URL = gql`
   query facebookLoginUrl {
@@ -232,4 +232,4 @@ export const FACEBOOK_LOGIN_URL = gql`
       url
     }
   }
-`;
+`

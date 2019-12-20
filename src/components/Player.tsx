@@ -10,213 +10,213 @@ import {
 	PauseCircleOutline,
 	VolumeMuteOutlined,
 	PlaylistPlayOutlined
-} from "@material-ui/icons";
-import MoreIcon from '@material-ui/icons/MoreVert';
-import { get } from "lodash-es";
-import { connect } from "react-redux";
-import React, { useState, useEffect } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import { useHistory } from "react-router-dom";
-import { Drawer, Slide } from "@material-ui/core";
+} from "@material-ui/icons"
+import MoreIcon from '@material-ui/icons/MoreVert'
+import { get } from "lodash-es"
+import { connect } from "react-redux"
+import React, { useState, useEffect } from "react"
+import IconButton from "@material-ui/core/IconButton"
+import { useHistory } from "react-router-dom"
+import { Drawer, Slide } from "@material-ui/core"
 
-import Heart from "./Heart";
-import Slider from "./Slider";
-import Routes from '../routes';
-import { debounce } from "../utils/helpers";
-import { ALL, ONE, NONE, SECONDS_TO_UPDATE_PLAY_COUNT } from '../utils/constants';
-import ListInterface, { SoundInterface } from "../interfaces/ListInterface";
-import PlayerInterface from "../interfaces/PlayerInterface";
-import * as playerActions from "../store/actions/playerActions";
+import Heart from "./Heart"
+import Slider from "./Slider"
+import Routes from '../routes'
+import { debounce } from "../utils/helpers"
+import { ALL, ONE, NONE, SECONDS_TO_UPDATE_PLAY_COUNT } from '../utils/constants'
+import ListInterface, { SoundInterface } from "../interfaces/ListInterface"
+import PlayerInterface from "../interfaces/PlayerInterface"
+import * as playerActions from "../store/actions/playerActions"
 import {
 	RESUME, PAUSE, PLAY, PLAY_SOUND, PAUSE_SOUND, RESUME_SOUND, PLAY_NEXT, ADD_TO_QUEUE
-} from "../store/actions/player_action_types";
-import AppStateInterface from "../interfaces/AppStateInterface";
-import PlayerStyle from "../styles/PlayerStyle";
-import colors from "../utils/colors";
-import useUpdatePlayCount from "../hooks/useUpdatePlayCount";
+} from "../store/actions/player_action_types"
+import AppStateInterface from "../interfaces/AppStateInterface"
+import PlayerStyle from "../styles/PlayerStyle"
+import colors from "../utils/colors"
+import useUpdatePlayCount from "../hooks/useUpdatePlayCount"
 
 // Setup Audio
-const audio = new Audio();
-let syncStateTimeoutId: number;
+const audio = new Audio()
+let syncStateTimeoutId: number
 
 type Props = {
-	syncState(state: any): void;
-	storePlayerData: PlayerInterface;
-};
+	syncState(state: any): void
+	storePlayerData: PlayerInterface
+}
 
 function Player(props: Props) {
-	const history = useHistory();
-	const { updatePlayCount } = useUpdatePlayCount();
+	const history = useHistory()
+	const { updatePlayCount } = useUpdatePlayCount()
 	const [loggedHash, setLoggedHash] = useState('')
-	const [drawerOPen, setDrawerOpen] = useState(false);
-	const { storePlayerData, syncState } = props;
-	const styles = PlayerStyle();
+	const [drawerOPen, setDrawerOpen] = useState(false)
+	const { storePlayerData, syncState } = props
+	const styles = PlayerStyle()
 	const [state, setState] = useState<PlayerInterface>({
 		...storePlayerData,
 		isPlaying: false,
 		action: PAUSE
-	});
+	})
 
 	// Audio events for when the component first mounts
 	useEffect(() => {
-		audio.volume = state.volume / 100;
-		audio.loop = state.repeat === ONE;
+		audio.volume = state.volume / 100
+		audio.loop = state.repeat === ONE
 		// audio.onended = onEnded;
-		audio.ontimeupdate = onTimeUpdate;
-		audio.onpause = onPause;
-		audio.onplay = onPlay;
+		audio.ontimeupdate = onTimeUpdate
+		audio.onpause = onPause
+		audio.onplay = onPlay
 
 		// set the last state of the audio player
 		if (state.currentTime > 0) {
-			prepareAudio();
-			audio.currentTime = state.currentTime;
+			prepareAudio()
+			audio.currentTime = state.currentTime
 		}
 		// eslint-disable-next-line
-	}, []);
+	}, [])
 
 	const onPlay = () => {
 		setState(prevState => ({
 			...prevState,
 			isPlaying: true
-		}));
-	};
+		}))
+	}
 
 	const onPause = () => {
 		setState(prevState => ({
 			...prevState,
 			isPlaying: false
-		}));
-	};
+		}))
+	}
 
 	const onTimeUpdate = () => {
-		const currentTime = audio.currentTime;
-		let duration = audio.duration;
+		const currentTime = audio.currentTime
+		let duration = audio.duration
 		setState(prevState => ({
 			...prevState,
 			position: (currentTime / duration) * 100,
 			elapsed: formatTime(currentTime),
 			duration: duration > 0 ? formatTime(duration) : "",
 			currentTime
-		}));
-	};
+		}))
+	}
 
 	const onEnded = () => {
 		const sounds = get(state.list, 'sounds', [])
-		const { repeat } = state;
+		const { repeat } = state
 
 		const currentSound = state.currentSound
-		if (!currentSound) return;
+		if (!currentSound) return
 		const currentSoundIndex = findIndex(currentSound, sounds)
-		const totalSoundsIndexes = sounds.length - 1;
+		const totalSoundsIndexes = sounds.length - 1
 
 		if (
 			sounds.length > 1 && repeat === ALL
 		) {
-			playNext();
+			playNext()
 		}
 
 		if (
 			sounds.length > 1 && repeat === NONE &&
 			currentSoundIndex < totalSoundsIndexes
 		) {
-			playNext();
+			playNext()
 		}
-	};
+	}
 
 	const togglePlay = () => {
 		if (state.isPlaying) {
-			pause();
+			pause()
 		} else {
-			playOrResume();
+			playOrResume()
 		}
-	};
+	}
 
 	const playOrResume = () => {
 		if (audio.paused && audio.currentTime > 0) {
-			resume();
+			resume()
 		} else {
-			play();
+			play()
 		}
-	};
+	}
 
 	const play = () => {
-		if (!state.currentSound) return;
+		if (!state.currentSound) return
 
-		setLoggedHash('');
+		setLoggedHash('')
 
 		const currentPlayingIndex = findIndex(
 			get(state, 'currentSound'),
 			state.queueList
-		);
+		)
 
-		syncState({ currentPlayingIndex });
+		syncState({ currentPlayingIndex })
 
 		setState(prevState => ({
 			...prevState,
 			isPlaying: true,
-		}));
+		}))
 
-		prepareAudio();
+		prepareAudio()
 
 		audio.play().then(
 			() => {
 				// console.log("started playing...");
 			},
 			error => {
-				console.log("failed because " + error);
+				console.log("failed because " + error)
 				setState(prevState => ({
 					...prevState,
 					isPlaying: false
-				}));
+				}))
 			}
-		);
-	};
+		)
+	}
 
 	const prepareAudio = () => {
-		if (!state.currentSound) return;
-		audio.src = state.currentSound.play_url;
+		if (!state.currentSound) return
+		audio.src = state.currentSound.play_url
 		// audio.load();
-	};
+	}
 
 	const resume = () => {
-		audio.play();
+		audio.play()
 
 		if (state.currentTime < SECONDS_TO_UPDATE_PLAY_COUNT) {
-			setLoggedHash('');
+			setLoggedHash('')
 		}
 
 		setState(prevState => ({
 			...prevState,
 			isPlaying: true,
 			action: RESUME
-		}));
-	};
+		}))
+	}
 
 	const pause = () => {
-		audio.pause();
+		audio.pause()
 		setState(prevState => ({
 			...prevState,
 			isPlaying: false,
 			action: PAUSE
-		}));
-	};
+		}))
+	}
 
 	const playPrevious = () => {
-		const sounds = state.queueList;
+		const sounds = state.queueList
 		if (state.isShuffled) {
 			getRandomSound(sounds)
-			play();
+			play()
 		} else {
 			if (sounds.length > 1) {
-				let indexToPlay: number;
-				let totalSoundsIndexes = state.queueList.length - 1;
+				let indexToPlay: number
+				let totalSoundsIndexes = state.queueList.length - 1
 
-				if (!state.currentSound) return;
-				let currentIndex = findIndex(state.currentSound, sounds);
+				if (!state.currentSound) return
+				let currentIndex = findIndex(state.currentSound, sounds)
 				if (currentIndex > 0) {
-					indexToPlay = currentIndex - 1;
+					indexToPlay = currentIndex - 1
 				} else {
-					indexToPlay = totalSoundsIndexes;
+					indexToPlay = totalSoundsIndexes
 				}
 
 				setState(prevState => ({
@@ -224,28 +224,28 @@ function Player(props: Props) {
 					currentSound: sounds[indexToPlay]
 				}))
 			} else {
-				play();
+				play()
 			}
 		}
-	};
+	}
 
 	const playNext = () => {
-		const sounds = state.queueList;
+		const sounds = state.queueList
 		if (state.isShuffled) {
 			getRandomSound(sounds)
-			play();
+			play()
 		} else {
 			if (sounds.length > 1) {
-				let indexToPlay: number;
-				let totalSoundsIndexes = sounds.length - 1;
+				let indexToPlay: number
+				let totalSoundsIndexes = sounds.length - 1
 
-				if (!state.currentSound) return;
-				let currentIndex = findIndex(state.currentSound, sounds);
+				if (!state.currentSound) return
+				let currentIndex = findIndex(state.currentSound, sounds)
 
 				if (currentIndex < totalSoundsIndexes) {
-					indexToPlay = currentIndex + 1;
+					indexToPlay = currentIndex + 1
 				} else {
-					indexToPlay = 0;
+					indexToPlay = 0
 				}
 
 				setState(prevState => ({
@@ -253,81 +253,81 @@ function Player(props: Props) {
 					currentSound: sounds[indexToPlay]
 				}))
 			} else {
-				play();
+				play()
 			}
 		}
-	};
+	}
 
 	const findIndex = (sound: any, soundList: any[]): number => {
-		return soundList.findIndex((item: SoundInterface) => item.hash === sound.hash);
+		return soundList.findIndex((item: SoundInterface) => item.hash === sound.hash)
 	}
 
 	const getRandomSound = (sounds: SoundInterface[]) => {
 		const randomSound = sounds[
 			Math.floor(Math.random() * sounds.length)
-		];
+		]
 
 		setState(prevState => ({
 			...prevState,
 			currentSound: randomSound
 		}))
-	};
+	}
 
 	const formatTime = (seconds: number) => {
-		let minutes: number = Math.floor(seconds / 60);
-		let sMinutes = minutes >= 10 ? minutes : "0" + minutes;
-		seconds = Math.floor(seconds % 60);
-		let sSeconds = seconds >= 10 ? seconds : "0" + seconds;
-		return sMinutes + ":" + sSeconds;
-	};
+		let minutes: number = Math.floor(seconds / 60)
+		let sMinutes = minutes >= 10 ? minutes : "0" + minutes
+		seconds = Math.floor(seconds % 60)
+		let sSeconds = seconds >= 10 ? seconds : "0" + seconds
+		return sMinutes + ":" + sSeconds
+	}
 
 	const handleSeekChange = (event: any, newPosition: number) => {
-		audio.currentTime = (newPosition * audio.duration) / 100;
+		audio.currentTime = (newPosition * audio.duration) / 100
 		setState(prevState => ({
 			...prevState,
 			position: newPosition
-		}));
-	};
+		}))
+	}
 
 	const handleVolumeChange = (event: any, newVolume: number) => {
 		// update the audio native player volume and also update the state
-		audio.volume = newVolume / 100;
+		audio.volume = newVolume / 100
 
 		setState(prevState => ({
 			...prevState,
 			volume: newVolume
-		}));
-	};
+		}))
+	}
 
 	const handleQueue = () => {
-		history.push(Routes.user.library.queue);
-	};
+		history.push(Routes.user.library.queue)
+	}
 
 	const toggleRepeat = () => {
 		setState(prevState => {
-			let newRepeatVal;
+			let newRepeatVal
 
 			switch (prevState.repeat) {
 				case NONE:
-					newRepeatVal = ALL;
-					break;
+					newRepeatVal = ALL
+					break
 				case ALL:
-					newRepeatVal = ONE;
-					break;
+					newRepeatVal = ONE
+					break
 				case ONE:
-					newRepeatVal = NONE;
-					break;
+					newRepeatVal = NONE
+					break
 			}
 
-			return { ...prevState, repeat: newRepeatVal };
-		});
-	};
+			return { ...prevState, repeat: newRepeatVal }
+		})
+	}
 
 	const toggleShuffle = () => {
 		setState(prevState => ({
 			...prevState,
 			isShuffled: !prevState.isShuffled
-		}));
+		}))
 	}
 
 	// update playing when the store state changes
@@ -343,16 +343,16 @@ function Player(props: Props) {
 				list: storePlayerData.list,
 				queueList: get(storePlayerData, 'list.sounds'),
 				currentSound: get(storePlayerData, 'list.sounds')[0]
-			}));
+			}))
 		}
 
 		// pausing the player
 		if (storePlayerData.action === PAUSE) {
-			audio.pause();
+			audio.pause()
 			setState(prevState => ({
 				...prevState,
 				action: PAUSE
-			}));
+			}))
 		}
 
 		// Resume player
@@ -360,25 +360,25 @@ function Player(props: Props) {
 			get(storePlayerData, 'list.hash') === get(state, 'list.hash')
 			&& storePlayerData.action === RESUME
 		) {
-			audio.play();
+			audio.play()
 			setState(prevState => ({
 				...prevState,
 				action: RESUME
-			}));
+			}))
 		}
 
 		if (storePlayerData.action === PLAY_NEXT) {
-			const currentSound = get(state, 'currentSound');
-			const listHash = get(state, 'list.hash');
-			const stateSoundList: any[] = get(state, 'list.sounds');
-			const storeSoundList: any[] = get(storePlayerData, 'list.sounds');
+			const currentSound = get(state, 'currentSound')
+			const listHash = get(state, 'list.hash')
+			const stateSoundList: any[] = get(state, 'list.sounds')
+			const storeSoundList: any[] = get(storePlayerData, 'list.sounds')
 
 			if (currentSound) {
-				const index = findIndex(currentSound, stateSoundList);
+				const index = findIndex(currentSound, stateSoundList)
 
-				let newSoundList: any[] = [...stateSoundList];
+				let newSoundList: any[] = [...stateSoundList]
 
-				newSoundList.splice(index + 1, 0, ...storePlayerData.soundList);
+				newSoundList.splice(index + 1, 0, ...storePlayerData.soundList)
 
 
 				setState(prevState => ({
@@ -386,7 +386,7 @@ function Player(props: Props) {
 					action: PLAY_NEXT,
 					queueList: newSoundList,
 					soundList: []
-				}));
+				}))
 			}
 		}
 
@@ -396,10 +396,10 @@ function Player(props: Props) {
 				action: ADD_TO_QUEUE,
 				queueList: [...state.queueList, ...storePlayerData.soundList],
 				soundList: []
-			}));
+			}))
 		}
 		// eslint-disable-next-line
-	}, [storePlayerData.list, storePlayerData.action, storePlayerData.updateHack]);
+	}, [storePlayerData.list, storePlayerData.action, storePlayerData.updateHack])
 
 	// Play, Pause and resume sound
 	useEffect(() => {
@@ -410,121 +410,121 @@ function Player(props: Props) {
 					...prevState,
 					action: PLAY_SOUND,
 					currentSound: get(storePlayerData, 'currentSound')
-				}));
-				break;
+				}))
+				break
 			case PAUSE_SOUND:
-				pause();
+				pause()
 				setState(prevState => ({
 					...prevState,
 					action: PAUSE_SOUND,
-				}));
-				break;
+				}))
+				break
 			case RESUME_SOUND:
-				resume();
+				resume()
 				setState(prevState => ({
 					...prevState,
 					action: RESUME_SOUND,
-				}));
-				break;
+				}))
+				break
 		}
 		// eslint-disable-next-line
-	}, [storePlayerData.action, storePlayerData.updateHack]);
+	}, [storePlayerData.action, storePlayerData.updateHack])
 
 	// update the store state when some local states change
 	useEffect(() => {
-		syncState({ volume: state.volume });
+		syncState({ volume: state.volume })
 		// eslint-disable-next-line
-	}, [state.volume]);
+	}, [state.volume])
 
 	// Update store queue list
 	useEffect(() => {
-		syncState({ queueList: state.queueList });
+		syncState({ queueList: state.queueList })
 		// eslint-disable-next-line
-	}, [state.queueList]);
+	}, [state.queueList])
 
 	// update the store state when some local states change
 	useEffect(() => {
 		if (state.currentSound) {
-			const { hash, type } = state.currentSound;
+			const { hash, type } = state.currentSound
 
 			if (
 				state.isPlaying &&
 				!loggedHash &&
 				Math.floor(state.currentTime) === SECONDS_TO_UPDATE_PLAY_COUNT
 			) {
-				setLoggedHash(hash);
-				updatePlayCount({ hash, type });
+				setLoggedHash(hash)
+				updatePlayCount({ hash, type })
 			}
 		}
 		// eslint-disable-next-line
-	}, [state.currentTime]);
+	}, [state.currentTime])
 
 	// play current sound after it has been updated
 	useEffect(() => {
 		if (get(storePlayerData, 'currentSound.hash') !== get(state, 'currentSound.hash')) {
-			syncState({ currentSound: state.currentSound });
-			play();
+			syncState({ currentSound: state.currentSound })
+			play()
 		}
 		// eslint-disable-next-line
-	}, [state.currentSound]);
+	}, [state.currentSound])
 
 	useEffect(() => {
-		syncState({ isPlaying: state.isPlaying });
+		syncState({ isPlaying: state.isPlaying })
 		// eslint-disable-next-line
-	}, [state.isPlaying]);
+	}, [state.isPlaying])
 
 	useEffect(() => {
-		const { repeat } = state;
-		audio.loop = repeat === ONE;
-		syncState({ repeat });
+		const { repeat } = state
+		audio.loop = repeat === ONE
+		syncState({ repeat })
 		// eslint-disable-next-line
-	}, [state.repeat]);
+	}, [state.repeat])
 
 	useEffect(() => {
 		debounce(() => {
-			syncState({ elapsed: state.elapsed, currentTime: state.currentTime });
-		}, 1000, syncStateTimeoutId);
+			syncState({ elapsed: state.elapsed, currentTime: state.currentTime })
+		}, 1000, syncStateTimeoutId)
 
 		if (state.elapsed === state.duration) {
-			onEnded();
+			onEnded()
 		}
 
 		// eslint-disable-next-line
-	}, [state.elapsed]);
+	}, [state.elapsed])
 
 	useEffect(() => {
-		syncState({ duration: state.duration });
+		syncState({ duration: state.duration })
 		// eslint-disable-next-line
-	}, [state.duration]);
+	}, [state.duration])
 
 	useEffect(() => {
-		syncState({ repeat: state.repeat });
+		syncState({ repeat: state.repeat })
 		// eslint-disable-next-line
-	}, [state.repeat]);
+	}, [state.repeat])
 
 	useEffect(() => {
-		syncState({ isShuffled: state.isShuffled });
+		syncState({ isShuffled: state.isShuffled })
 		// eslint-disable-next-line
-	}, [state.isShuffled]);
+	}, [state.isShuffled])
 
 	return (
 		<Slide direction="up" timeout={500} in={!!state.currentSound} mountOnEnter unmountOnExit>
 			<div className={styles.container}>
 				<div className={styles.player}>
 					<div className={styles.posterTitle} onClick={() => {
-						const type = get(state, 'currentSound.type');
-						const hash = get(state, 'currentSound.hash');
-						let route: string;
+						const type = get(state, 'currentSound.type')
+						const hash = get(state, 'currentSound.hash')
+						let route: string
 
 						switch (type) {
 							case 'track':
-								route = Routes.track.detailPage(hash);
-								history.push(route);
-								break;
+								route = Routes.track.detailPage(hash)
+								history.push(route)
+								break
 							case 'episode':
-								route = Routes.episode.detailPage(hash);
-								history.push(route);
-								break;
+								route = Routes.episode.detailPage(hash)
+								history.push(route)
+								break
 						}
 					}}>
 						<img
@@ -645,7 +645,7 @@ function Player(props: Props) {
 				</Drawer>
 			</div>
 		</Slide>
-	);
+	)
 }
 
 export default connect(
@@ -655,4 +655,4 @@ export default connect(
 	{
 		syncState: playerActions.syncState
 	}
-)(Player);
+)(Player)

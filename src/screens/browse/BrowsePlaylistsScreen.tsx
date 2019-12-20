@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 // import { useSelector } from "react-redux";
 
 // import ListTable from '../components/ListTable';
@@ -14,5 +14,5 @@ export default function BrowsePlaylistsScreen() {
       {/* {!list && <h3>Your queue is empty!</h3>} */}
 
     </>
-  );
-};
+  )
+}

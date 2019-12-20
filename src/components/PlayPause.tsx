@@ -1,18 +1,18 @@
 import {
   PlayCircleOutline,
   PauseCircleOutline,
-} from "@material-ui/icons";
-import React from 'react';
-import IconButton from "@material-ui/core/IconButton";
-import { connect } from 'react-redux';
-import { makeStyles } from "@material-ui/styles";
-import { get } from "lodash-es";
+} from "@material-ui/icons"
+import React from 'react'
+import IconButton from "@material-ui/core/IconButton"
+import { connect } from 'react-redux'
+import { makeStyles } from "@material-ui/styles"
+import { get } from "lodash-es"
 
-import colors from "../utils/colors";
-import * as playerActions from "../store/actions/playerActions";
-import AppStateInterface from "../interfaces/AppStateInterface";
-import ListInterface from "../interfaces/ListInterface";
-import { SoundInterface } from "../interfaces/ListInterface";
+import colors from "../utils/colors"
+import * as playerActions from "../store/actions/playerActions"
+import AppStateInterface from "../interfaces/AppStateInterface"
+import ListInterface from "../interfaces/ListInterface"
+import { SoundInterface } from "../interfaces/ListInterface"
 
 const useStyles = makeStyles({
   icon: {
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
   button: {
     padding: 0
   },
-});
+})
 
 type Props = {
   border?: boolean,
@@ -63,43 +63,43 @@ function PlayPause({
   pauseSound,
 }: Props
 ) {
-  const styles = useStyles();
+  const styles = useStyles()
 
   const togglePlay = () => {
     if (currentSound && list.hash === playingListHash) {
       if (sound.hash === currentSound.hash && isPlaying) {
         console.log('pause sound')
-        pauseSound();
+        pauseSound()
       }
 
       if (sound.hash === currentSound.hash && !isPlaying) {
         console.log('resume sound')
-        resumeSound();
+        resumeSound()
       }
 
       if (sound.hash !== currentSound.hash) {
         console.log('play sound')
-        playSound(sound);
+        playSound(sound)
       }
     }
 
     if (list.hash !== playingListHash) {
       if (isPlaying && playingListHash === list.hash) {
         console.log('pause list')
-        pauseList();
+        pauseList()
       }
 
       if (!isPlaying && playingListHash === list.hash) {
         console.log('resume list')
-        resumeList();
+        resumeList()
       }
 
       if (playingListHash !== list.hash) {
         console.log('play list')
-        playList(list);
+        playList(list)
       }
     }
-  };
+  }
 
   return currentSound ? (
     <IconButton onClick={togglePlay} className={styles.button}>
@@ -115,7 +115,7 @@ function PlayPause({
           />
         )}
     </IconButton>
-  ) : null;
+  ) : null
 }
 
 export default connect(
@@ -132,4 +132,4 @@ export default connect(
     resumeSound: playerActions.resumeSound,
     playSound: playerActions.playSound
   }
-)(PlayPause);
+)(PlayPause)

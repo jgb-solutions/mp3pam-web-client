@@ -1,5 +1,5 @@
-import { makeStyles } from "@material-ui/core";
-import colors from "../utils/colors";
+import { makeStyles } from "@material-ui/core"
+import colors from "../utils/colors"
 
 export const menuStyles = makeStyles(theme => ({
   container: {
@@ -51,4 +51,4 @@ export const menuStyles = makeStyles(theme => ({
   activeClassName: {
     color: colors.primary
   }
-}));
+}))

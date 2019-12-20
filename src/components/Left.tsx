@@ -1,20 +1,20 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import HomeIcon from "@material-ui/icons/Home";
-import MusicNoteIcon from '@material-ui/icons/MusicNote';
-import AlbumIcon from '@material-ui/icons/Album';
-import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
-import InfoIcon from '@material-ui/icons/Info';
-import QueueMusicIcon from '@material-ui/icons/QueueMusic';
+import React from "react"
+import { NavLink } from "react-router-dom"
+import HomeIcon from "@material-ui/icons/Home"
+import MusicNoteIcon from '@material-ui/icons/MusicNote'
+import AlbumIcon from '@material-ui/icons/Album'
+import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle'
+import InfoIcon from '@material-ui/icons/Info'
+import QueueMusicIcon from '@material-ui/icons/QueueMusic'
 
-import Routes from "../routes";
-import Logo from "./Logo";
-import { menuStyles } from "../styles/menuStyles";
+import Routes from "../routes"
+import Logo from "./Logo"
+import { menuStyles } from "../styles/menuStyles"
 
 const mainMenu = [
 	{ name: "Home", to: Routes.pages.home, icon: <HomeIcon /> },
 	{ name: "About", to: Routes.pages.about, icon: <InfoIcon />, }
-];
+]
 
 const browsingMenu = [
 	{ name: "Tracks", to: Routes.browse.tracks, icon: <MusicNoteIcon /> },
@@ -22,7 +22,7 @@ const browsingMenu = [
 	{ name: "Albums", to: Routes.browse.albums, icon: <AlbumIcon /> },
 	// { name: "PlayLists", to: Routes.browse.playlists, icon: <PlaylistAddIcon /> },
 	// { name: "Podcasts", to: Routes.browse.podcasts, icon: <MicIcon /> },
-];
+]
 
 const favoriteMenu = [
 	{ name: "Tracks", to: Routes.user.library.tracks, icon: <MusicNoteIcon /> },
@@ -31,14 +31,14 @@ const favoriteMenu = [
 	// { name: "PlayLists", to: Routes.user.library.playlists, icon: <PlaylistAddIcon /> },
 	// { name: "Podcasts", to: Routes.user.library.podcasts, icon: <MicIcon /> },
 	{ name: "Queue", to: Routes.user.library.queue, icon: <QueueMusicIcon /> },
-];
+]
 
 type Props = {
 	closeDrawerLeft?: (bool: boolean) => void,
-};
+}
 
 const Left = (props: Props) => {
-	const styles = menuStyles();
+	const styles = menuStyles()
 	const closeDrawer = () => {
 		if (props.closeDrawerLeft) {
 			props.closeDrawerLeft(false)
@@ -115,7 +115,7 @@ const Left = (props: Props) => {
 				))}
 			</div> */}
 		</>
-	);
-};
+	)
+}
 
-export default Left;
+export default Left

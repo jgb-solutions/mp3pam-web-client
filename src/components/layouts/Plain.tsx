@@ -1,15 +1,15 @@
-import React, { ReactNode } from 'react';
-import { Grid } from '@material-ui/core';
+import React, { ReactNode } from 'react'
+import { Grid } from '@material-ui/core'
 
 
-import Content from '../Content';
+import Content from '../Content'
 
-import { plainLayoutStyles } from '../../styles/plainLayoutStyles';
+import { plainLayoutStyles } from '../../styles/plainLayoutStyles'
 
-type Props = { children: ReactNode };
+type Props = { children: ReactNode }
 
 export default function PlainLayout({ children }: Props) {
-  const styles = plainLayoutStyles();
+  const styles = plainLayoutStyles()
 
   return (
     <>
@@ -17,5 +17,5 @@ export default function PlainLayout({ children }: Props) {
         <Content className={styles.col}>{children}</Content>
       </Grid>
     </>
-  );
-};
+  )
+}

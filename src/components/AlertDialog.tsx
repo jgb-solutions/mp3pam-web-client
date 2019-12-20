@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
+import React, { ReactNode } from 'react'
+import Dialog from '@material-ui/core/Dialog'
+import DialogContent from '@material-ui/core/DialogContent'
 
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   handleClose?: () => void,
   disableBackdropClick?: boolean,
   maxWidth?: false | "xs" | "sm" | "md" | "lg" | "xl" | undefined
-};
+}
 
 export default function AlertDialog({ open, children, handleClose, disableBackdropClick, maxWidth }: Props) {
   return (
@@ -25,5 +25,5 @@ export default function AlertDialog({ open, children, handleClose, disableBackdr
         {children}
       </DialogContent>
     </Dialog>
-  );
+  )
 }

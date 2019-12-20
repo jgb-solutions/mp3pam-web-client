@@ -1,28 +1,28 @@
-import React, { useEffect } from 'react';
-import { useLocation, useHistory, Redirect } from 'react-router';
-import gql from 'graphql-tag';
-import queryString from 'query-string';
-import { useApolloClient } from '@apollo/react-hooks';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react'
+import { useLocation, useHistory, Redirect } from 'react-router'
+import gql from 'graphql-tag'
+import queryString from 'query-string'
+import { useApolloClient } from '@apollo/react-hooks'
+import { useDispatch } from 'react-redux'
 
-import Routes from '../../routes';
-import Spinner from '../../components/Spinner';
-import { LOG_IN } from '../../store/actions/user_action_types';
-import { FACEOOK_LOGIN } from '../../graphql/mutations';
+import Routes from '../../routes'
+import Spinner from '../../components/Spinner'
+import { LOG_IN } from '../../store/actions/user_action_types'
+import { FACEOOK_LOGIN } from '../../graphql/mutations'
 
 export default function FacebookAuth() {
-  const client = useApolloClient();
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const history = useHistory();
+  const client = useApolloClient()
+  const dispatch = useDispatch()
+  const location = useLocation()
+  const history = useHistory()
   const { code } = queryString.parse(location.search)
 
   useEffect(() => {
     if (code) {
-      login(String(code));
+      login(String(code))
     }
     // eslint-disable-next-line
-  }, []);
+  }, [])
 
   const login = async (code: string) => {
     try {
@@ -30,10 +30,10 @@ export default function FacebookAuth() {
         mutation: FACEOOK_LOGIN,
         variables: { code },
         fetchPolicy: 'no-cache'
-      });
-      const { handleFacebookConnect } = data;
-      const payload = handleFacebookConnect;
-      dispatch({ type: LOG_IN, payload });
+      })
+      const { handleFacebookConnect } = data
+      const payload = handleFacebookConnect
+      dispatch({ type: LOG_IN, payload })
 
       if (payload.data.first_login) {
         history.push(Routes.user.account, { editMode: true })
@@ -41,8 +41,8 @@ export default function FacebookAuth() {
         history.push(Routes.pages.home)
       }
     } catch (error) {
-      console.log(error);
-    };
+      console.log(error)
+    }
   }
 
   return code ? (
@@ -51,4 +51,4 @@ export default function FacebookAuth() {
       <Spinner />
     </>
   ) : <Redirect to={Routes.pages.login} />
-};
+}

@@ -1,7 +1,7 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles"
 
-import colors from "../utils/colors";
-import { SMALL_SCREEN_SIZE } from "../utils/constants";
+import colors from "../utils/colors"
+import { SMALL_SCREEN_SIZE } from "../utils/constants"
 
 export default makeStyles(theme => ({
   container: {
@@ -124,4 +124,4 @@ export default makeStyles(theme => ({
       display: 'none'
     },
   }
-}));
+}))

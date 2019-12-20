@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import Logo from '../components/Logo';
-import LogoJGB from '../components/LogoJGB';
+import Logo from '../components/Logo'
+import LogoJGB from '../components/LogoJGB'
 
 export default class AboutScreen extends Component {
   render() {
@@ -27,6 +27,6 @@ export default class AboutScreen extends Component {
 
         <LogoJGB />
       </div >
-    );
+    )
   }
 }

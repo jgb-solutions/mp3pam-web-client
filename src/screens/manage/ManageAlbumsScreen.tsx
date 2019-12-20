@@ -1,7 +1,7 @@
-import React from "react";
-import AlbumIcon from '@material-ui/icons/Album';
+import React from "react"
+import AlbumIcon from '@material-ui/icons/Album'
 
-import HeaderTitle from "../../components/HeaderTitle";
+import HeaderTitle from "../../components/HeaderTitle"
 // import { useSelector } from "react-redux";
 
 // import ListTable from '../components/ListTable';
@@ -17,5 +17,5 @@ export default function ManageAlbumsScreen() {
       {/* {!list && <h3>Your queue is empty!</h3>} */}
 
     </>
-  );
+  )
 }

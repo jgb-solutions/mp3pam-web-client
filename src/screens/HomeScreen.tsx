@@ -1,24 +1,24 @@
-import React, { useEffect } from "react";
-import Home from "@material-ui/icons/Home";
+import React, { useEffect } from "react"
+import Home from "@material-ui/icons/Home"
 
-import Spinner from '../components/Spinner';
-import useHome from "../hooks/useHome";
-import HeaderTitle from "../components/HeaderTitle";
-import { TrackScrollingList } from "../components/TrackScrollingList";
-import { ArtistScrollingList } from "../components/ArtistScrollingList";
-import { AlbumScrollingList } from "../components/AlbumScrollingList";
-import Routes from "../routes";
+import Spinner from '../components/Spinner'
+import useHome from "../hooks/useHome"
+import HeaderTitle from "../components/HeaderTitle"
+import { TrackScrollingList } from "../components/TrackScrollingList"
+import { ArtistScrollingList } from "../components/ArtistScrollingList"
+import { AlbumScrollingList } from "../components/AlbumScrollingList"
+import Routes from "../routes"
 
 export default function HomeScreen() {
-	const { loading, error, homeData } = useHome();
+	const { loading, error, homeData } = useHome()
 	// fetch home data
 	useEffect(() => {
-		console.log(homeData);
+		console.log(homeData)
 	}, [homeData])
 
-	if (loading) return <Spinner.Full />;
+	if (loading) return <Spinner.Full />
 
-	if (error) return <p>Error Loading new data. Please refresh the page.</p>;
+	if (error) return <p>Error Loading new data. Please refresh the page.</p>
 
 	return (
 		<>
@@ -48,5 +48,5 @@ export default function HomeScreen() {
 				/>
 			)}
 		</>
-	);
+	)
 }

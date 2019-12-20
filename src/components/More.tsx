@@ -1,13 +1,13 @@
 import {
   MoreHorizOutlined,
-} from "@material-ui/icons";
-import React, { useState } from 'react';
-import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+} from "@material-ui/icons"
+import React, { useState } from 'react'
+import IconButton from "@material-ui/core/IconButton"
+import Menu from "@material-ui/core/Menu"
+import MenuItem from "@material-ui/core/MenuItem"
 
-import colors from "../utils/colors";
-import { makeStyles } from "@material-ui/styles";
+import colors from "../utils/colors"
+import { makeStyles } from "@material-ui/styles"
 
 const useStyles = makeStyles({
   icon: {
@@ -28,32 +28,32 @@ const useStyles = makeStyles({
       backgroundColor: colors.black, color: colors.white
     }
   }
-});
+})
 
 type Option = {
   name: string,
   method: () => void,
-};
+}
 
 type Props = {
   border?: boolean,
   options: Option[],
-};
+}
 
 function Heart(props: Props) {
-  const styles = useStyles();
-  const [anchorEl, listAnchorEl] = useState(null);
+  const styles = useStyles()
+  const [anchorEl, listAnchorEl] = useState(null)
 
   const handleMenu = (event: any) => {
-    listAnchorEl(event.currentTarget);
+    listAnchorEl(event.currentTarget)
   }
 
   const handleClose = () => {
-    listAnchorEl(null);
+    listAnchorEl(null)
   }
 
   const handleClick = (method: () => void) => {
-    handleClose();
+    handleClose()
     method()
   }
 
@@ -91,4 +91,4 @@ function Heart(props: Props) {
   )
 }
 
-export default Heart;
+export default Heart

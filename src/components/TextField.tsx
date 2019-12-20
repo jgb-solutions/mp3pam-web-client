@@ -1,6 +1,6 @@
-import TextField from "@material-ui/core/TextField";
-import { withStyles } from '@material-ui/styles';
-import colors from "../utils/colors";
+import TextField from "@material-ui/core/TextField"
+import { withStyles } from '@material-ui/styles'
+import colors from "../utils/colors"
 
 export default withStyles({
   root: {

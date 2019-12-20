@@ -1,50 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 import { useQuery } from '@apollo/react-hooks'
-import { get } from "lodash-es";
-import useForm from 'react-hook-form';
-import AlbumIcon from '@material-ui/icons/Album';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import { useHistory } from "react-router-dom";
-import { Grid } from "@material-ui/core";
+import { get } from "lodash-es"
+import useForm from 'react-hook-form'
+import AlbumIcon from '@material-ui/icons/Album'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import ErrorIcon from '@material-ui/icons/Error'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import { useHistory } from "react-router-dom"
+import { Grid } from "@material-ui/core"
 
-import ProgressBar from "../../components/ProgressBar";
-import TextField from "../../components/TextField";
-import Button from '../../components/Button';
-import UploadButton from '../../components/UploadButton';
-import CheckAuth from "../../components/CheckAuth";
-import HeaderTitle from "../../components/HeaderTitle";
-import { TRACK_UPLOAD_DATA_QUERY } from "../../graphql/queries";
-import useFileUpload from "../../hooks/useFileUpload";
-import TextIcon from "../../components/TextIcon";
-import { createAlbumScreenStyles } from "../../styles/createAlbumScreenStyles";
-import useCreateAlbum from '../../hooks/useCreateAlbum';
-import Routes from "../../routes";
-import AlertDialog from "../../components/AlertDialog";
-import { IMG_BUCKET, MAX_IMG_FILE_SIZE, CURRENT_YEAR } from "../../utils/constants";
-import { AddArtistForm } from "./AddTrackScreen";
-import { getFile } from "../../utils/helpers";
+
+import ProgressBar from "../../components/ProgressBar"
+import TextField from "../../components/TextField"
+import Button from '../../components/Button'
+import UploadButton from '../../components/UploadButton'
+import CheckAuth from "../../components/CheckAuth"
+import HeaderTitle from "../../components/HeaderTitle"
+import { TRACK_UPLOAD_DATA_QUERY } from "../../graphql/queries"
+import useFileUpload from "../../hooks/useFileUpload"
+import TextIcon from "../../components/TextIcon"
+import { createAlbumScreenStyles } from "../../styles/createAlbumScreenStyles"
+import useCreateAlbum from '../../hooks/useCreateAlbum'
+import Routes from "../../routes"
+import AlertDialog from "../../components/AlertDialog"
+import { IMG_BUCKET, MAX_IMG_FILE_SIZE, CURRENT_YEAR } from "../../utils/constants"
+import { AddArtistForm } from "./AddTrackScreen"
+import { getFile } from "../../utils/helpers"
 
 export interface FormData {
-  title: string;
-  release_year: string;
-  artist_id: string;
-  detail: string;
+  title: string
+  release_year: string
+  artist_id: string
+  detail: string
 };
 
 export interface ArtistData {
-  id: string;
-  stage_name: string;
+  id: string
+  stage_name: string
 };
 
 export interface AlbumData extends FormData {
-  cover: string;
+  cover: string
   img_bucket: string,
 }
 
 export default function AddAlbumScreen() {
-  const history = useHistory();
+  const history = useHistory()
   const { register,
     handleSubmit,
     errors,
@@ -52,9 +53,9 @@ export default function AddAlbumScreen() {
     watch,
     setError,
     clearError,
-    setValue } = useForm<FormData>({ mode: 'onBlur', defaultValues: { release_year: `${CURRENT_YEAR}` } });
-  const { data: trackUploadInfo } = useQuery(TRACK_UPLOAD_DATA_QUERY, { fetchPolicy: 'network-only' });
-  const { createAlbum, loading: formWorking, data: uploadedAlbum } = useCreateAlbum();
+    setValue } = useForm<FormData>({ mode: 'onBlur', defaultValues: { release_year: `${CURRENT_YEAR}` } })
+  const { data: trackUploadInfo } = useQuery(TRACK_UPLOAD_DATA_QUERY, { fetchPolicy: 'network-only' })
+  const { createAlbum, loading: formWorking, data: uploadedAlbum } = useCreateAlbum()
   const {
     upload: uploadImg,
     uploading: imgUploading,
@@ -63,98 +64,98 @@ export default function AddAlbumScreen() {
     isValid: imgValid,
     errorMessage: imgErrorMessage,
     filename: cover
-  } = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose a cover.", headers: { public: true } });
+  } = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose a cover.", headers: { public: true } })
 
-  const [openAlbumSuccessDialog, setOpenAlbumSuccessDialog] = useState(false);
-  const [openAddArtistDialog, setOpenAddArtistDialog] = useState(false);
-  const [openInvalidFileSize, setOpenInvalidFileSize] = useState('');
-  const [artistList, setArtistList] = useState<ArtistData[]>([]);
+  const [openAlbumSuccessDialog, setOpenAlbumSuccessDialog] = useState(false)
+  const [openAddArtistDialog, setOpenAddArtistDialog] = useState(false)
+  const [openInvalidFileSize, setOpenInvalidFileSize] = useState('')
+  const [artistList, setArtistList] = useState<ArtistData[]>([])
   const [chosenArtistId, setChosenArtistId] = useState("")
-  const watchArtistValue = watch('artist_id');
+  const watchArtistValue = watch('artist_id')
 
   const goToAlbumsLibrary = () => {
-    history.push(Routes.user.manage.albums);
-  };
+    history.push(Routes.user.manage.albums)
+  }
 
-  const handleAlbumSucessDialogClose = () => setOpenAlbumSuccessDialog(false);
+  const handleAlbumSucessDialogClose = () => setOpenAlbumSuccessDialog(false)
 
   const handleAddArtistDialogClose = () => {
     if (!watchArtistValue || watchArtistValue === "add-artist") {
-      setValue('artist_id', "");
-      setError('artist_id', 'required', "You must choose an artist.");
+      setValue('artist_id', "")
+      setError('artist_id', 'required', "You must choose an artist.")
     }
 
-    setOpenAddArtistDialog(false);
+    setOpenAddArtistDialog(false)
   }
 
-  const handleOpenInvalidFileSizeClose = () => setOpenInvalidFileSize('');
+  const handleOpenInvalidFileSizeClose = () => setOpenInvalidFileSize('')
 
   const handleOnArtistCreated = ({ id, stage_name }: ArtistData) => {
-    const artistExist = artistList.find(artist => artist.id === id);
+    const artistExist = artistList.find(artist => artist.id === id)
 
     if (!artistExist) {
-      setArtistList(artistList => [{ id, stage_name }, ...artistList]);
+      setArtistList(artistList => [{ id, stage_name }, ...artistList])
     }
 
-    setChosenArtistId(id);
-  };
+    setChosenArtistId(id)
+  }
 
   useEffect(() => {
-    const artists = get(trackUploadInfo, 'me.artists_by_stage_name_asc.data');
+    const artists = get(trackUploadInfo, 'me.artists_by_stage_name_asc.data')
     if (artists) {
       setArtistList(
         artists.map(({ id, stage_name }: ArtistData) => ({ id, stage_name }))
       )
     }
     // eslint-disable-next-line
-  }, [get(trackUploadInfo, 'me.artists_by_stage_name_asc.data')]);
+  }, [get(trackUploadInfo, 'me.artists_by_stage_name_asc.data')])
 
   useEffect(() => {
     if (chosenArtistId) {
-      setValue('artist_id', chosenArtistId);
-      clearError('artist_id');
+      setValue('artist_id', chosenArtistId)
+      clearError('artist_id')
     }
     // eslint-disable-next-line
   }, [chosenArtistId])
 
   useEffect(() => {
     if (watchArtistValue === "add-artist") {
-      setOpenAddArtistDialog(true);
+      setOpenAddArtistDialog(true)
     }
-  }, [watchArtistValue]);
+  }, [watchArtistValue])
 
   const handleImageUpload = (
     event: React.ChangeEvent<HTMLInputElement>
-  ) => { uploadImg(getFile(event)); };
+  ) => { uploadImg(getFile(event)) }
 
   const handleInvalidImageSize = (filesize: number) => {
     setOpenInvalidFileSize(`
 		The file size exceeds 5 MB. <br />
 		Choose another one or reduce the size to upload.
 	`)
-  };
+  }
 
   const handleCreateAlbum = (values: FormData) => {
-    if (!cover) return;
+    if (!cover) return
 
     const album = {
       ...values,
       cover: cover || '',
       img_bucket: IMG_BUCKET,
-    };
+    }
 
 
-    console.table(album);
-    createAlbum(album);
-  };
+    console.table(album)
+    createAlbum(album)
+  }
 
   useEffect(() => {
     if (uploadedAlbum) {
       setOpenAlbumSuccessDialog(true)
     }
-  }, [uploadedAlbum]);
+  }, [uploadedAlbum])
 
-  const styles = createAlbumScreenStyles();
+  const styles = createAlbumScreenStyles()
 
   return (
     <CheckAuth className='react-transition scale-in'>
@@ -350,5 +351,5 @@ export default function AddAlbumScreen() {
         </DialogContentText>
       </AlertDialog>
     </CheckAuth >
-  );
+  )
 }

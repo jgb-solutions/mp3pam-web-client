@@ -1,7 +1,7 @@
-import React from "react";
-import GroupWorkIcon from '@material-ui/icons/GroupWork';
+import React from "react"
+import GroupWorkIcon from '@material-ui/icons/GroupWork'
 
-import HeaderTitle from "../../components/HeaderTitle";
+import HeaderTitle from "../../components/HeaderTitle"
 // import { useSelector } from "react-redux";
 
 // import ListTable from '../components/ListTable';
@@ -17,5 +17,5 @@ export default function ManageScreen() {
       {/* {!list && <h3>Your queue is empty!</h3>} */}
 
     </>
-  );
+  )
 }

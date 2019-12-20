@@ -1,26 +1,26 @@
-import React, { useEffect } from "react";
-import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
-import { get } from "lodash-es";
-import { Grid } from "@material-ui/core";
-import InfiniteScroll from 'react-infinite-scroller';
+import React, { useEffect } from "react"
+import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle'
+import { get } from "lodash-es"
+import { Grid } from "@material-ui/core"
+import InfiniteScroll from 'react-infinite-scroller'
 
-import Spinner from "../../components/Spinner";
-import HeaderTitle from "../../components/HeaderTitle";
-import useArtists from "../../hooks/useArtists";
-import ArtistThumbnail from "../../components/ArtistThumbnail";
-import { ArtistThumbnailData } from "../../components/ArtistScrollingList";
+import Spinner from "../../components/Spinner"
+import HeaderTitle from "../../components/HeaderTitle"
+import useArtists from "../../hooks/useArtists"
+import ArtistThumbnail from "../../components/ArtistThumbnail"
+import { ArtistThumbnailData } from "../../components/ArtistScrollingList"
 
 export default function BrowseArtistsScreen() {
-  const { loading, error, data, loadMoreArtists, hasMore } = useArtists();
-  const artists = get(data, 'artists');
+  const { loading, error, data, loadMoreArtists, hasMore } = useArtists()
+  const artists = get(data, 'artists')
   // fetch home data
   useEffect(() => {
-    console.log(data);
+    console.log(data)
   }, [data])
 
-  if (loading) return <Spinner.Full />;
+  if (loading) return <Spinner.Full />
 
-  if (error) return <p>Error Loading new data. Please refresh the page.</p>;
+  if (error) return <p>Error Loading new data. Please refresh the page.</p>
 
   return (
     <>
@@ -41,5 +41,5 @@ export default function BrowseArtistsScreen() {
         </Grid>
       </InfiniteScroll>
     </>
-  );
+  )
 }

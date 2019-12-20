@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export const ADD_TRACK_MUTATION = gql`
   mutation AddTrack($input: TrackInput!) {
@@ -55,7 +55,7 @@ export const UPDATE_PLAY_COUNT = gql`
   mutation UpdatePlayCount($input: PlayInput!) {
     updatePlayCount(input: $input)
   }
-`;
+`
 
 export const UPDATE_USER = gql`
   mutation UpdateUser($input: UpdateUserInput!) {
@@ -69,7 +69,7 @@ export const UPDATE_USER = gql`
       created_at
     }
   }
-`;
+`
 
 export const FACEOOK_LOGIN = gql`
   mutation facebookLogin($code: String!) {
@@ -86,4 +86,4 @@ export const FACEOOK_LOGIN = gql`
       token
     }
   }
-`;
+`

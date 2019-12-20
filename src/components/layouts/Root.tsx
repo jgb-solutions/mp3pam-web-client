@@ -1,10 +1,10 @@
-import React, { ReactNode } from 'react';
-import { CssBaseline, Grid, MuiThemeProvider, createMuiTheme } from '@material-ui/core';
-import { makeStyles } from "@material-ui/core/styles";
+import React, { ReactNode } from 'react'
+import { CssBaseline, Grid, MuiThemeProvider, createMuiTheme } from '@material-ui/core'
+import { makeStyles } from "@material-ui/core/styles"
 
-import Player from '../Player';
+import Player from '../Player'
 
-import colors from "../../utils/colors";
+import colors from "../../utils/colors"
 
 export const useStyles = makeStyles({
   '@global': {
@@ -25,17 +25,17 @@ export const useStyles = makeStyles({
     maxWidth: 1200,
     margin: '0 auto',
   },
-});
+})
 
 const theme = createMuiTheme({
   palette: {
     type: 'dark',
     // primary: colors.primary
   },
-});
+})
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  const styles = useStyles();
+  const styles = useStyles()
 
   return (
     <div className="transition-container">
@@ -47,5 +47,5 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Player />
       </MuiThemeProvider>
     </div>
-  );
-};
+  )
+}

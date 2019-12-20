@@ -1,11 +1,11 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import React from "react"
+import { makeStyles } from "@material-ui/core/styles"
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons"
+import { Link } from "react-router-dom"
 
-import { SMALL_SCREEN_SIZE } from "../utils/constants";
-import AlbumThumbnail from "./AlbumThumbnail";
-import { ArtistThumbnailData } from "./ArtistScrollingList";
+import { SMALL_SCREEN_SIZE } from "../utils/constants"
+import AlbumThumbnail from "./AlbumThumbnail"
+import { ArtistThumbnailData } from "./ArtistScrollingList"
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -37,35 +37,35 @@ const useStyles = makeStyles(theme => ({
     margin: 0,
     fontSize: 16
   }
-}));
+}))
 
 export interface AlbumThumbnailData {
   title: string,
   hash: string,
   cover_url: string,
   artist: {
-    hash: string;
-    stage_name: string;
-  };
-};
+    hash: string
+    stage_name: string
+  }
+}
 
 export const AlbumScrollingList = (props: { albums: AlbumThumbnailData[], category: string, browse: string }) => {
-  const { albums, category, browse } = props;
-  const styles = useStyles();
-  let domElement: any;
+  const { albums, category, browse } = props
+  const styles = useStyles()
+  let domElement: any
 
   const scroll = (dir: string) => {
-    const distance = 400;
+    const distance = 400
     if (dir === "left") {
-      domElement.scrollLeft -= distance;
+      domElement.scrollLeft -= distance
     } else {
-      domElement.scrollLeft += distance;
+      domElement.scrollLeft += distance
     }
 
-    console.log("clientWidth", domElement.clientWidth);
-    console.log("offsetWidth", domElement.offsetWidth);
-    console.log("scrollWidth", domElement.scrollWidth);
-  };
+    console.log("clientWidth", domElement.clientWidth)
+    console.log("offsetWidth", domElement.offsetWidth)
+    console.log("scrollWidth", domElement.scrollWidth)
+  }
 
   return (
     <div className={styles.container}>
@@ -75,14 +75,14 @@ export const AlbumScrollingList = (props: { albums: AlbumThumbnailData[], catego
         </Link>
         <div>
           <KeyboardArrowLeft onClick={() => scroll("left")} />
-          &nbsp;
+          &nbsp
 					<KeyboardArrowRight onClick={() => scroll("right")} />
         </div>
       </div>
       <div
         className={styles.list}
         ref={el => {
-          domElement = el;
+          domElement = el
         }}
       >
         {albums.map(album => (
@@ -90,5 +90,5 @@ export const AlbumScrollingList = (props: { albums: AlbumThumbnailData[], catego
         ))}
       </div>
     </div>
-  );
-};
+  )
+}

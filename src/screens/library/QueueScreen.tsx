@@ -1,14 +1,14 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { get } from "lodash-es";
+import React from "react"
+import { useSelector } from "react-redux"
+import { get } from "lodash-es"
 
-import QueueTable from '../../components/QueueTable';
-import AppStateInterface from "../../interfaces/AppStateInterface";
+import QueueTable from '../../components/QueueTable'
+import AppStateInterface from "../../interfaces/AppStateInterface"
 
 function QueueScreen() {
   const list = useSelector(
     ({ player: { list } }: AppStateInterface) => list
-  );
+  )
 
   return (
     <>
@@ -18,7 +18,7 @@ function QueueScreen() {
 
       <QueueTable />
     </>
-  );
+  )
 }
 
-export default QueueScreen;
+export default QueueScreen

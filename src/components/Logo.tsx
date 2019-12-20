@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/styles";
+import React from "react"
+import { Link } from "react-router-dom"
+import { makeStyles } from "@material-ui/styles"
 
-import Routes from "../routes";
+import Routes from "../routes"
 
 const useStyles = makeStyles({
   logo: {
@@ -13,13 +13,13 @@ const useStyles = makeStyles({
     marginBottom: 20,
     display: 'inline-block',
   },
-});
+})
 
 
 export default function Logo({ style, size }: { style?: string, size?: number }) {
-  const styles = useStyles();
+  const styles = useStyles()
 
-  let sizes = undefined;
+  let sizes = undefined
 
   if (size) {
     sizes = {
@@ -39,5 +39,5 @@ export default function Logo({ style, size }: { style?: string, size?: number })
         />
       </Link>
     </>
-  );
-};
+  )
+}

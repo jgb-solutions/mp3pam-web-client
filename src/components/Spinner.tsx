@@ -1,9 +1,9 @@
-import React from "react";
+import React from "react"
 
 type Props = {
   size?: number,
   className?: string,
-};
+}
 
 function Spinner({ size = 100, className }: Props) {
   return (
@@ -32,15 +32,15 @@ function Spinner({ size = 100, className }: Props) {
         />
       </path>
     </svg>
-  );
+  )
 }
 
 export const SpinnerFull = ({ size, className }: { size?: number, className?: string }) => (
   <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', paddingTop: 70 }}>
     <Spinner size={size} className={className} />
   </div>
-);
+)
 
-Spinner.Full = SpinnerFull;
+Spinner.Full = SpinnerFull
 
-export default Spinner;
+export default Spinner

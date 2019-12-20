@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from "react";
-import HeaderTitle from "../../components/HeaderTitle";
-import { useParams, useHistory } from "react-router-dom";
-import { get } from "lodash-es";
-import { useSelector, useDispatch } from 'react-redux';
-import Avatar from '@material-ui/core/Avatar';
-import { useMutation, useApolloClient } from '@apollo/react-hooks';
-import EditIcon from '@material-ui/icons/Edit';
-import useForm from 'react-hook-form';
-import { Grid } from "@material-ui/core";
-import ErrorIcon from '@material-ui/icons/Error';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import React, { useState, useEffect } from "react"
+import HeaderTitle from "../../components/HeaderTitle"
+import { useParams, useHistory } from "react-router-dom"
+import { get } from "lodash-es"
+import { useSelector, useDispatch } from 'react-redux'
+import Avatar from '@material-ui/core/Avatar'
+import { useMutation, useApolloClient } from '@apollo/react-hooks'
+import EditIcon from '@material-ui/icons/Edit'
+import useForm from 'react-hook-form'
+import { Grid } from "@material-ui/core"
+import ErrorIcon from '@material-ui/icons/Error'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import DialogContentText from '@material-ui/core/DialogContentText'
 
 
-import ProgressBar from "../../components/ProgressBar";
-import CheckAuth from "../../components/CheckAuth";
-import AppStateInterface from "../../interfaces/AppStateInterface";
-import { LOG_OUT_MUTATION, UPDATE_USER } from "../../graphql/mutations";
-import { LOG_OUT } from "../../store/actions/user_action_types";
-import { makeStyles } from "@material-ui/core";
-import colors from "../../utils/colors";
-import Button from "../../components/Button";
-import Routes from "../../routes";
-import { getFormattedDate, getFile } from "../../utils/helpers";
-import TextField from "../../components/TextField";
-import { IMG_BUCKET, MAX_IMG_FILE_SIZE } from "../../utils/constants";
-import TextIcon from "../../components/TextIcon";
-import UploadButton from "../../components/UploadButton";
-import useUpdateUser from "../../hooks/useUpdateUser";
-import useFileUpload from "../../hooks/useFileUpload";
-import AlertDialog from "../../components/AlertDialog";
-import Divider from "../../components/Divider";
+import ProgressBar from "../../components/ProgressBar"
+import CheckAuth from "../../components/CheckAuth"
+import AppStateInterface from "../../interfaces/AppStateInterface"
+import { LOG_OUT_MUTATION, UPDATE_USER } from "../../graphql/mutations"
+import { LOG_OUT } from "../../store/actions/user_action_types"
+import { makeStyles } from "@material-ui/core"
+import colors from "../../utils/colors"
+import Button from "../../components/Button"
+import Routes from "../../routes"
+import { getFormattedDate, getFile } from "../../utils/helpers"
+import TextField from "../../components/TextField"
+import { IMG_BUCKET, MAX_IMG_FILE_SIZE } from "../../utils/constants"
+import TextIcon from "../../components/TextIcon"
+import UploadButton from "../../components/UploadButton"
+import useUpdateUser from "../../hooks/useUpdateUser"
+import useFileUpload from "../../hooks/useFileUpload"
+import AlertDialog from "../../components/AlertDialog"
+import Divider from "../../components/Divider"
 
 
 export const useStyles = makeStyles({
@@ -45,34 +45,34 @@ export const useStyles = makeStyles({
   },
   successColor: { color: colors.success },
   errorColor: { color: colors.error },
-});
+})
 
-const NOT_AVAILABLE = `Not Available`;
+const NOT_AVAILABLE = `Not Available`
 
 export interface FormData {
-  id: string;
-  name?: string;
-  email?: string;
-  telephone?: string;
+  id: string
+  name?: string
+  email?: string
+  telephone?: string
 };
 
 export interface UserFormData extends FormData {
-  avatar?: string;
-  img_bucket?: string;
+  avatar?: string
+  img_bucket?: string
 }
 
 export default function AccountScreen() {
-  const params = useParams();
+  const params = useParams()
   const history = useHistory()
-  const editMode = get(params, 'editMode', false);
-  const dispatch = useDispatch();
-  const client = useApolloClient();
-  const [shouldEdit, setShouldEdit] = useState(editMode);
-  const [openInvalidFileSize, setOpenInvalidFileSize] = useState('');
-  const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser);
+  const editMode = get(params, 'editMode', false)
+  const dispatch = useDispatch()
+  const client = useApolloClient()
+  const [shouldEdit, setShouldEdit] = useState(editMode)
+  const [openInvalidFileSize, setOpenInvalidFileSize] = useState('')
+  const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser)
   const [logOutMutation, { data: logged_out }] = useMutation(LOG_OUT_MUTATION)
-  const userData = get(currentUser, 'data');
-  const styles = useStyles();
+  const userData = get(currentUser, 'data')
+  const styles = useStyles()
   const { register,
     handleSubmit,
     errors,
@@ -88,8 +88,8 @@ export default function AccountScreen() {
       email: get(userData, 'email'),
       telephone: get(userData, 'telephone')
     }
-  });
-  const { updateUser, loading, data: updatedUserData, error } = useUpdateUser();
+  })
+  const { updateUser, loading, data: updatedUserData, error } = useUpdateUser()
   const {
     upload: uploadImg,
     uploading: imgUploading,
@@ -98,19 +98,19 @@ export default function AccountScreen() {
     isValid: imgValid,
     errorMessage: imgErrorMessage,
     filename: avatar
-  } = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose an avatar.", headers: { public: true } });
+  } = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose an avatar.", headers: { public: true } })
 
   const logout = () => {
-    logOutMutation();
-    client.resetStore();
-    dispatch({ type: LOG_OUT });
-    history.push(Routes.pages.home);
-  };
+    logOutMutation()
+    client.resetStore()
+    dispatch({ type: LOG_OUT })
+    history.push(Routes.pages.home)
+  }
 
   useEffect(() => {
     if (updatedUserData) {
-      dispatch({ type: UPDATE_USER, payload: { data: updatedUserData.updateUser } });
-      setShouldEdit(false);
+      dispatch({ type: UPDATE_USER, payload: { data: updatedUserData.updateUser } })
+      setShouldEdit(false)
     }
   }, [updatedUserData])
 
@@ -118,15 +118,15 @@ export default function AccountScreen() {
     const user: UserFormData = {
       ...values,
       avatar,
-    };
-
-    if (avatar) {
-      user.img_bucket = IMG_BUCKET;
     }
 
-    console.table(user);
-    updateUser(user);
-  };
+    if (avatar) {
+      user.img_bucket = IMG_BUCKET
+    }
+
+    console.table(user)
+    updateUser(user)
+  }
 
 
   const handleInvalidImageSize = (filesize: number) => {
@@ -134,11 +134,11 @@ export default function AccountScreen() {
 		The file size exceeds 5 MB. <br />
 		Choose another one or reduce the size to upload.
 	`)
-  };
+  }
 
   const handleImageUpload = (
     event: React.ChangeEvent<HTMLInputElement>
-  ) => { uploadImg(getFile(event)); };
+  ) => { uploadImg(getFile(event)) }
 
   return (
     <CheckAuth className='react-transition scale-in'>
@@ -327,5 +327,5 @@ export default function AccountScreen() {
       )
       }
     </CheckAuth >
-  );
-};
+  )
+}

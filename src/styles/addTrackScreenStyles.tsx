@@ -1,5 +1,5 @@
-import { makeStyles } from "@material-ui/core";
-import colors from "../utils/colors";
+import { makeStyles } from "@material-ui/core"
+import colors from "../utils/colors"
 
 export const addTrackScreenStyles = makeStyles({
   uploadButton: {
@@ -8,4 +8,4 @@ export const addTrackScreenStyles = makeStyles({
   },
   successColor: { color: colors.success },
   errorColor: { color: colors.error },
-});
+})

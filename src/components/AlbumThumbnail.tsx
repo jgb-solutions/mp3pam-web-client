@@ -1,19 +1,19 @@
-import React from "react";
+import React from "react"
 import {
   PlayCircleOutline,
   PauseCircleOutline
-} from "@material-ui/icons";
-import { useHistory } from "react-router";
-import { connect } from "react-redux";
-import IconButton from "@material-ui/core/IconButton";
-import { makeStyles } from "@material-ui/core/styles";
+} from "@material-ui/icons"
+import { useHistory } from "react-router"
+import { connect } from "react-redux"
+import IconButton from "@material-ui/core/IconButton"
+import { makeStyles } from "@material-ui/core/styles"
 
-import colors from "../utils/colors";
-import Routes from "../routes";
-import { get } from "lodash-es";
-import { SMALL_SCREEN_SIZE } from "../utils/constants";
-import { AlbumThumbnailData } from "./AlbumScrollingList";
-import { Link } from "react-router-dom";
+import colors from "../utils/colors"
+import Routes from "../routes"
+import { get } from "lodash-es"
+import { SMALL_SCREEN_SIZE } from "../utils/constants"
+import { AlbumThumbnailData } from "./AlbumScrollingList"
+import { Link } from "react-router-dom"
 
 const useStyles = makeStyles(theme => ({
   imgContainer: {
@@ -80,30 +80,30 @@ const useStyles = makeStyles(theme => ({
     textDecoration: 'none',
     cursor: 'pointer',
   }
-}));
+}))
 
 type Props = {
-  album: AlbumThumbnailData;
-  className?: string;
-  isPlaying: boolean;
-  albumHash: string;
-};
+  album: AlbumThumbnailData
+  className?: string
+  isPlaying: boolean
+  albumHash: string
+}
 
 const AlbumThumbnail = (props: Props) => {
-  const styles = useStyles();
-  const history = useHistory();
+  const styles = useStyles()
+  const history = useHistory()
 
-  const { album, albumHash, isPlaying } = props;
+  const { album, albumHash, isPlaying } = props
 
   const goToAlbumPage = () => {
-    const route = Routes.album.detailPage(album.hash);
-    history.push(route, { albumParam: album });
-  };
+    const route = Routes.album.detailPage(album.hash)
+    history.push(route, { albumParam: album })
+  }
 
   const goToArtistPage = () => {
-    const route = Routes.artist.detailPage(album.artist.hash);
-    history.push(route, { albumParam: album });
-  };
+    const route = Routes.artist.detailPage(album.artist.hash)
+    history.push(route, { albumParam: album })
+  }
 
   return (
     <div className={props.className}>
@@ -133,12 +133,12 @@ const AlbumThumbnail = (props: Props) => {
         </span>
       </p>
     </div>
-  );
-};
+  )
+}
 
 export default connect(
   ({ player }: any) => ({
     albumHash: get(player, 'album.hash'),
     isPlaying: player.isPlaying
   })
-)(AlbumThumbnail);
+)(AlbumThumbnail)

@@ -1,13 +1,14 @@
-import React, { ReactNode } from 'react';
-import { Grid } from '@material-ui/core';
-import Hidden from '@material-ui/core/Hidden';
+import React, { ReactNode } from 'react'
+import { Grid } from '@material-ui/core'
+import Hidden from '@material-ui/core/Hidden'
 
-import Left from '../Left';
-import Right from '../Right';
-import Content from '../Content';
-import Header from '../Header';
+import Left from '../Left'
+// import Right from '../Right';
+// // import RightSidebar from '../RightSidebar'
+import Content from '../Content'
+import Header from '../Header'
 
-import { mainLayoutStyles } from '../../styles/mainLayoutStyles';
+import { mainLayoutStyles } from '../../styles/mainLayoutStyles'
 
 
 export default function MainLayout({ children }: { children: ReactNode }) {
@@ -32,5 +33,5 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         </Grid>
       </Hidden>
     </>
-  );
-};
+  )
+}

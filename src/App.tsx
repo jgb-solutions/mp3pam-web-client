@@ -1,81 +1,81 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { createHttpLink } from 'apollo-link-http';
-import { onError } from 'apollo-link-error';
-import { ApolloLink } from 'apollo-link';
-import { setContext } from 'apollo-link-context';
-import { ApolloProvider } from '@apollo/react-hooks';
-import { get } from 'lodash-es';
+import React from 'react'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { ApolloClient } from 'apollo-client'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { createHttpLink } from 'apollo-link-http'
+import { onError } from 'apollo-link-error'
+import { ApolloLink } from 'apollo-link'
+import { setContext } from 'apollo-link-context'
+import { ApolloProvider } from '@apollo/react-hooks'
+import { get } from 'lodash-es'
 
 // Show Screens
-import TrackDetailScreen from './screens/TrackDetailScreen';
+import TrackDetailScreen from './screens/TrackDetailScreen'
 // Main screens
-import HomeScreen from './screens/HomeScreen';
-import UsersScreen from './screens/UsersScreen';
-import QueueScreen from './screens/library/QueueScreen';
-import AboutScreen from './screens/AboutScreen';
-import AddTrackScreen from './screens/manage/AddTrackScreen';
-import SearchScreen from './screens/SearchScreen';
-import FourOFourScreen from './screens/FourOFourScreen';
-import Main from './components/layouts/Main';
+import HomeScreen from './screens/HomeScreen'
+import UsersScreen from './screens/UsersScreen'
+import QueueScreen from './screens/library/QueueScreen'
+import AboutScreen from './screens/AboutScreen'
+import AddTrackScreen from './screens/manage/AddTrackScreen'
+import SearchScreen from './screens/SearchScreen'
+import FourOFourScreen from './screens/FourOFourScreen'
+import Main from './components/layouts/Main'
 // Library/Favorites Screens
-import LibraryScreen from './screens/library/LibraryScreen';
-import YourTracksScreen from './screens/library/YourTracksScreen';
-import YourAlbumsScreen from './screens/library/YourAlbumsScreen';
-import YourArtistsScreen from './screens/library/YourArtistsScreen';
-// import YourPodcastsScreen from './screens/library/YourPodcastsScreen';
+import LibraryScreen from './screens/library/LibraryScreen'
+import YourTracksScreen from './screens/library/YourTracksScreen'
+import YourAlbumsScreen from './screens/library/YourAlbumsScreen'
+import YourArtistsScreen from './screens/library/YourArtistsScreen'
+// import YourPodcastsScreen from './screens/library/YourPodcastsScreen'
 // Browse screens
-import BrowseScreen from './screens/browse/BrowseScreen';
-import BrowseTracksScreen from './screens/browse/BrowseTracksScreen';
-import BrowseAlbumsScreen from './screens/browse/BrowseAlbumsScreen';
-import BrowseArtistsScreen from './screens/browse/BrowseArtistsScreen';
-// import BrowsePodcastsScreen from './screens/browse/BrowsePodcastsScreen';
-import BrowsePlaylistsScreen from './screens/browse/BrowsePlaylistsScreen';
+import BrowseScreen from './screens/browse/BrowseScreen'
+import BrowseTracksScreen from './screens/browse/BrowseTracksScreen'
+import BrowseAlbumsScreen from './screens/browse/BrowseAlbumsScreen'
+import BrowseArtistsScreen from './screens/browse/BrowseArtistsScreen'
+// import BrowsePodcastsScreen from './screens/browse/BrowsePodcastsScreen'
+import BrowsePlaylistsScreen from './screens/browse/BrowsePlaylistsScreen'
 
 
 // Manage Screens
-import ManageScreen from './screens/manage/ManageScreen';
-import ManageTracksScreen from './screens/manage/ManageTracksScreen';
-import ManageArtistsScreen from './screens/manage/ManageArtistsScreen';
-import ManageAlbumsScreen from './screens/manage/ManageAlbumsScreen';
-// import AddPodcastScreen from './screens/manage/AddPodcastScreen';
-import CreateAlbumScreen from './screens/manage/CreateAlbumScreen';
-import AddArtistScreen from './screens/manage/AddArtistScreen';
-// import CreatePlaylistScreen from './screens/manage/CreatePlaylistScreen';
-import YourPlaylistsScreen from './screens/library/YourPlaylistsScreen';
+import ManageScreen from './screens/manage/ManageScreen'
+import ManageTracksScreen from './screens/manage/ManageTracksScreen'
+import ManageArtistsScreen from './screens/manage/ManageArtistsScreen'
+import ManageAlbumsScreen from './screens/manage/ManageAlbumsScreen'
+// import AddPodcastScreen from './screens/manage/AddPodcastScreen'
+import CreateAlbumScreen from './screens/manage/CreateAlbumScreen'
+import AddArtistScreen from './screens/manage/AddArtistScreen'
+// import CreatePlaylistScreen from './screens/manage/CreatePlaylistScreen'
+import YourPlaylistsScreen from './screens/library/YourPlaylistsScreen'
 // Auth screens
-import FacebookAuth from './screens/auth/FacebookAuth';
+import FacebookAuth from './screens/auth/FacebookAuth'
 
 // Account Screens
-import AccountScreen from './screens/user/AccountScreen';
-import LoginScreen from './screens/auth/LoginScreen';
+import AccountScreen from './screens/user/AccountScreen'
+import LoginScreen from './screens/auth/LoginScreen'
 
 // Download Screens
-import DownloadScreen from './screens/DownloadScreen';
+import DownloadScreen from './screens/DownloadScreen'
 
 //  Routers
-import Routes from './routes';
+import Routes from './routes'
 
 // Redux Store
-import persistedStore from './store';
+import persistedStore from './store'
 
 // Global Style
-import './App.css';
-import './styles/react-transitions.css';
+import './App.css'
+import './styles/react-transitions.css'
 
-import { LOG_OUT } from './store/actions/user_action_types';
-import Plain from './components/layouts/Plain';
-import Root from './components/layouts/Root';
+import { LOG_OUT } from './store/actions/user_action_types'
+import Plain from './components/layouts/Plain'
+import Root from './components/layouts/Root'
 
-const { store, persistor } = persistedStore();
+const { store, persistor } = persistedStore()
 
 export const API_URL = process.env.NODE_ENV === 'development'
   ? `http://api.mp3pam.loc/graphql`
-  : `https://api.mp3pam.com/graphql`;
+  : `https://api.mp3pam.com/graphql`
 
 // Apollo Client
 const client = new ApolloClient({
@@ -87,10 +87,10 @@ const client = new ApolloClient({
             statusCode === 401 &&
             !window.location.pathname.startsWith('/login')
           ) {
-            client.clearStore();
-            store.dispatch({ type: LOG_OUT });
+            client.clearStore()
+            store.dispatch({ type: LOG_OUT })
           }
-        });
+        })
       }
 
       if (networkError) {
@@ -100,7 +100,7 @@ const client = new ApolloClient({
         //   variables: {
         //     text: 'There was a network problem. Please check your connection',
         //   },
-        // });
+        // })
       }
     }),
     // auth link
@@ -121,7 +121,7 @@ const client = new ApolloClient({
     })
   ]),
   cache: new InMemoryCache(),
-});
+})
 
 export default function App() {
   return (
@@ -312,5 +312,5 @@ export default function App() {
         </PersistGate>
       </Provider>
     </ApolloProvider>
-  );
+  )
 }

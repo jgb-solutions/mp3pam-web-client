@@ -1,30 +1,30 @@
-import React, { useState, useEffect, ReactNode } from "react";
-import useForm from 'react-hook-form';
-import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import { useHistory } from "react-router-dom";
-import { Grid } from "@material-ui/core";
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import InstagramIcon from '@material-ui/icons/Instagram';
-import YouTubeIcon from '@material-ui/icons/YouTube';
+import React, { useState, useEffect, ReactNode } from "react"
+import useForm from 'react-hook-form'
+import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import ErrorIcon from '@material-ui/icons/Error'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import { useHistory } from "react-router-dom"
+import { Grid } from "@material-ui/core"
+import FacebookIcon from '@material-ui/icons/Facebook'
+import TwitterIcon from '@material-ui/icons/Twitter'
+import InstagramIcon from '@material-ui/icons/Instagram'
+import YouTubeIcon from '@material-ui/icons/YouTube'
 
-import ProgressBar from "../../components/ProgressBar";
-import TextField from "../../components/TextField";
-import Button from '../../components/Button';
-import UploadButton from '../../components/UploadButton';
-import CheckAuth from "../../components/CheckAuth";
-import HeaderTitle from "../../components/HeaderTitle";
-import useFileUpload from "../../hooks/useFileUpload";
-import TextIcon from "../../components/TextIcon";
-import { addArtistScreenStyles } from "../../styles/addArtistScreenStyles";
-import useAddArtist from '../../hooks/useAddArtist';
-import Routes from "../../routes";
-import AlertDialog from "../../components/AlertDialog";
-import { getFile } from "../../utils/helpers";
-import { IMG_BUCKET, MAX_IMG_FILE_SIZE, MIN_SOCIAL_MEDIA_USERNAME_LENGTH, MIN_ARTIST_BIO_LENGTH } from "../../utils/constants";
+import ProgressBar from "../../components/ProgressBar"
+import TextField from "../../components/TextField"
+import Button from '../../components/Button'
+import UploadButton from '../../components/UploadButton'
+import CheckAuth from "../../components/CheckAuth"
+import HeaderTitle from "../../components/HeaderTitle"
+import useFileUpload from "../../hooks/useFileUpload"
+import TextIcon from "../../components/TextIcon"
+import { addArtistScreenStyles } from "../../styles/addArtistScreenStyles"
+import useAddArtist from '../../hooks/useAddArtist'
+import Routes from "../../routes"
+import AlertDialog from "../../components/AlertDialog"
+import { getFile } from "../../utils/helpers"
+import { IMG_BUCKET, MAX_IMG_FILE_SIZE, MIN_SOCIAL_MEDIA_USERNAME_LENGTH, MIN_ARTIST_BIO_LENGTH } from "../../utils/constants"
 
 
 type IconFieldProps = {
@@ -46,24 +46,24 @@ export function IconField({ icon, field, hasError }: IconFieldProps) {
 }
 
 export interface FormData {
-  name: string;
-  stage_name: string;
-  bio?: string;
-  facebook?: string;
-  twitter?: string;
-  isntagram?: string;
-  youtube?: string;
+  name: string
+  stage_name: string
+  bio?: string
+  facebook?: string
+  twitter?: string
+  isntagram?: string
+  youtube?: string
 };
 
 export interface ArtistData extends FormData {
-  poster?: string;
-  img_bucket: string;
+  poster?: string
+  img_bucket: string
 }
 
 export default function AddArtistScreen() {
-  const history = useHistory();
-  const { register, handleSubmit, errors, formState } = useForm<FormData>({ mode: 'onBlur' });
-  const { addArtist, loading: formWorking, data: uploadedArtist } = useAddArtist();
+  const history = useHistory()
+  const { register, handleSubmit, errors, formState } = useForm<FormData>({ mode: 'onBlur' })
+  const { addArtist, loading: formWorking, data: uploadedArtist } = useAddArtist()
   const {
     upload: uploadImg,
     uploading: imgUploading,
@@ -72,50 +72,50 @@ export default function AddArtistScreen() {
     isValid: imgValid,
     errorMessage: imgErrorMessage,
     filename: poster
-  } = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose a poster.", headers: { public: true } });
+  } = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose a poster.", headers: { public: true } })
 
-  const [openArtistSuccessDialog, setOpenArtistSuccessDialog] = useState(false);
-  const [openInvalidFileSize, setOpenInvalidFileSize] = useState('');
+  const [openArtistSuccessDialog, setOpenArtistSuccessDialog] = useState(false)
+  const [openInvalidFileSize, setOpenInvalidFileSize] = useState('')
 
-  const goToArtistsLibrary = () => history.push(Routes.user.manage.artists);
+  const goToArtistsLibrary = () => history.push(Routes.user.manage.artists)
 
-  const handleArtistSucessDialogClose = () => setOpenArtistSuccessDialog(false);
+  const handleArtistSucessDialogClose = () => setOpenArtistSuccessDialog(false)
 
-  const handleOpenInvalidFileSizeClose = () => setOpenInvalidFileSize('');
+  const handleOpenInvalidFileSizeClose = () => setOpenInvalidFileSize('')
 
 
   const handleImageUpload = (
     event: React.ChangeEvent<HTMLInputElement>
-  ) => { uploadImg(getFile(event)); };
+  ) => { uploadImg(getFile(event)) }
 
   const handleInvalidImageSize = (filesize: number) => {
     setOpenInvalidFileSize(`
 		The file size exceeds 5 MB. <br />
 		Choose another one or reduce the size to upload.
 	`)
-  };
+  }
 
   const handleAddArtist = (values: FormData) => {
-    if (!poster) return;
+    if (!poster) return
 
     const artist = {
       ...values,
       poster: poster || '',
       img_bucket: IMG_BUCKET
-    };
+    }
 
 
-    console.table(artist);
-    addArtist(artist);
-  };
+    console.table(artist)
+    addArtist(artist)
+  }
 
   useEffect(() => {
     if (uploadedArtist) {
       setOpenArtistSuccessDialog(true)
     }
-  }, [uploadedArtist]);
+  }, [uploadedArtist])
 
-  const styles = addArtistScreenStyles();
+  const styles = addArtistScreenStyles()
 
   return (
     <CheckAuth className='react-transition scale-in'>
@@ -374,5 +374,5 @@ export default function AddArtistScreen() {
         </DialogContentText>
       </AlertDialog>
     </CheckAuth >
-  );
+  )
 }

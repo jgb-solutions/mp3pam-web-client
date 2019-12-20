@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { darken, makeStyles } from "@material-ui/core/styles";
-import { Link, useParams, useHistory } from "react-router-dom";
-import { get } from 'lodash';
-import InfoIcon from '@material-ui/icons/Info';
-import LineWeightIcon from '@material-ui/icons/LineWeight';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import ShareIcon from '@material-ui/icons/Share';
-import FindReplaceIcon from '@material-ui/icons/FindReplace';
+import React, { useEffect } from "react"
+import { connect } from "react-redux"
+import { darken, makeStyles } from "@material-ui/core/styles"
+import { Link, useParams, useHistory } from "react-router-dom"
+import { get } from 'lodash'
+import InfoIcon from '@material-ui/icons/Info'
+import LineWeightIcon from '@material-ui/icons/LineWeight'
+import GetAppIcon from '@material-ui/icons/GetApp'
+import ShareIcon from '@material-ui/icons/Share'
+import FindReplaceIcon from '@material-ui/icons/FindReplace'
+
 
 import {
   FacebookShareButton,
@@ -20,27 +21,27 @@ import {
   TelegramIcon,
   WhatsappIcon,
   EmailIcon,
-} from 'react-share';
+} from 'react-share'
 
-import Routes from "../routes";
-import colors from "../utils/colors";
-import More from "../components/More";
-import Tabs, { TabItem } from "../components/Tabs";
-import useTrackDetail from '../hooks/useTrackDetail';
-import Heart from "../components/Heart";
-import Button from "../components/Button";
-import ListInterface, { SoundInterface } from "../interfaces/ListInterface";
-import * as playerActions from "../store/actions/playerActions";
-import AppStateInterface from "../interfaces/AppStateInterface";
-import { Grid, Hidden } from "@material-ui/core";
-import { SMALL_SCREEN_SIZE, APP_NAME, DOMAIN, SEO_TRACK_TYPE, TWITTER_HANDLE } from "../utils/constants";
-import Spinner from "../components/Spinner";
-import { TrackScrollingList } from "../components/TrackScrollingList";
-import useRelatedTracks from "../hooks/useRelatedTracks";
-import SEO from "../components/SEO";
-import Download from "../components/Download";
-import FourOrFour from "../components/FourOrFour";
-import HeaderTitle from "../components/HeaderTitle";
+import Routes from "../routes"
+import colors from "../utils/colors"
+import More from "../components/More"
+import Tabs, { TabItem } from "../components/Tabs"
+import useTrackDetail from '../hooks/useTrackDetail'
+import Heart from "../components/Heart"
+import Button from "../components/Button"
+import ListInterface, { SoundInterface } from "../interfaces/ListInterface"
+import * as playerActions from "../store/actions/playerActions"
+import AppStateInterface from "../interfaces/AppStateInterface"
+import { Grid, Hidden } from "@material-ui/core"
+import { SMALL_SCREEN_SIZE, APP_NAME, DOMAIN, SEO_TRACK_TYPE, TWITTER_HANDLE } from "../utils/constants"
+import Spinner from "../components/Spinner"
+import { TrackScrollingList } from "../components/TrackScrollingList"
+import useRelatedTracks from "../hooks/useRelatedTracks"
+import SEO from "../components/SEO"
+import Download from "../components/Download"
+import FourOrFour from "../components/FourOrFour"
+import HeaderTitle from "../components/HeaderTitle"
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -110,43 +111,43 @@ const useStyles = makeStyles(theme => ({
   ctaButtons: {
     marginTop: 10,
   },
-}));
+}))
 
 type Props = {
-  playList(list: ListInterface): void;
-  pauseList(): void;
-  resumeList(): void;
-  playNext(soundList: SoundInterface[]): void;
-  addToQueue(soundList: SoundInterface[]): void;
-  isPlaying: boolean;
-  playingListHash: string;
-  currentTime: number;
-};
+  playList(list: ListInterface): void
+  pauseList(): void
+  resumeList(): void
+  playNext(soundList: SoundInterface[]): void
+  addToQueue(soundList: SoundInterface[]): void
+  isPlaying: boolean
+  playingListHash: string
+  currentTime: number
+}
 
 const TrackDetailScreen = (props: Props) => {
-  const styles = useStyles();
-  const params = useParams();
-  const history = useHistory();
-  const hash = get(params, 'hash');
-  const { loading: relatedLoading, data: relatedTracksData, fetchRelatedTracks } = useRelatedTracks(hash);
-  const relatedTracks = get(relatedTracksData, 'relatedTracks');
+  const styles = useStyles()
+  const params = useParams()
+  const history = useHistory()
+  const hash = get(params, 'hash')
+  const { loading: relatedLoading, data: relatedTracksData, fetchRelatedTracks } = useRelatedTracks(hash)
+  const relatedTracks = get(relatedTracksData, 'relatedTracks')
 
-  const { data, loading, error } = useTrackDetail(hash);
-  const track = get(data, 'track');
+  const { data, loading, error } = useTrackDetail(hash)
+  const track = get(data, 'track')
 
   const makeList = () => {
-    const { hash } = track;
+    const { hash } = track
 
     const list: ListInterface = {
       hash,
       sounds: makeSoundList()
-    };
+    }
 
-    return list;
-  };
+    return list
+  }
 
   const makeSoundList = () => {
-    const { hash, title, poster_url, artist, audio_url } = track;
+    const { hash, title, poster_url, artist, audio_url } = track
 
     return [{
       hash,
@@ -157,30 +158,30 @@ const TrackDetailScreen = (props: Props) => {
       play_url: audio_url,
       type: 'track',
     }]
-  };
+  }
 
   useEffect(() => {
     if (data) {
-      fetchRelatedTracks();
+      fetchRelatedTracks()
     }
   }, [data])
 
   const togglePlay = () => {
     if (props.isPlaying && props.playingListHash === track.hash) {
-      props.pauseList();
+      props.pauseList()
     }
 
     if (!props.isPlaying && props.playingListHash === track.hash) {
-      props.resumeList();
+      props.resumeList()
     }
 
     if (props.playingListHash !== track.hash) {
-      props.playList(makeList());
+      props.playList(makeList())
     }
-  };
+  }
 
 
-  if (loading) return <Spinner.Full />;
+  if (loading) return <Spinner.Full />
 
 
   if (error) {
@@ -188,9 +189,9 @@ const TrackDetailScreen = (props: Props) => {
   }
 
   const getTabs = () => {
-    const url = window.location.href;
-    const title = `Listen to ${track.title} by ${track.artist.stage_name}`;
-    const hashtags = `${APP_NAME} music track share`;
+    const url = window.location.href
+    const title = `Listen to ${track.title} by ${track.artist.stage_name}`
+    const hashtags = `${APP_NAME} music track share`
     const tabs: TabItem[] = [
       {
         icon: <ShareIcon />,
@@ -235,7 +236,7 @@ const TrackDetailScreen = (props: Props) => {
           </>
         )
       }
-    ];
+    ]
 
     if (track.allowDownload) {
       tabs.push({
@@ -286,7 +287,7 @@ const TrackDetailScreen = (props: Props) => {
       })
     }
 
-    return tabs;
+    return tabs
   }
 
   const getMoreOptions = () => {
@@ -298,28 +299,28 @@ const TrackDetailScreen = (props: Props) => {
       {
         name: 'Go To Artist',
         method: () => {
-          history.push(Routes.artist.detailPage(track.artist.hash));
+          history.push(Routes.artist.detailPage(track.artist.hash))
         }
       },
       // { name: 'Remove from your Liked Tracks', method: () => { } },
       // { name: 'Add To Playlist', method: () => { } },
-    ];
+    ]
 
     if (track.album) {
       options.push({
         name: 'Go To Album',
         method: () => {
-          history.push(Routes.album.detailPage(track.album.hash));
+          history.push(Routes.album.detailPage(track.album.hash))
         }
-      });
+      })
     }
 
     options.push({
       name: 'Add To Queue',
       method: () => props.addToQueue(makeSoundList())
-    });
+    })
 
-    return options;
+    return options
   }
 
   return track ? (
@@ -413,7 +414,7 @@ const TrackDetailScreen = (props: Props) => {
         </h3>
         <FourOrFour />
       </>
-    );
+    )
 }
 
 export default connect(
@@ -429,4 +430,4 @@ export default connect(
     playNext: playerActions.playNext,
     addToQueue: playerActions.addToQueue,
   }
-)(TrackDetailScreen);
+)(TrackDetailScreen)

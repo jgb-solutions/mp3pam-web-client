@@ -1,32 +1,32 @@
-import React, { ReactNode } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import BaseTabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import React, { ReactNode } from 'react'
+import AppBar from '@material-ui/core/AppBar'
+import BaseTabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
 
 interface TabPanelProps {
-  children: any;
-  index: any;
-  selected: any;
+  children: any
+  index: any
+  selected: any
 }
 
 function TabPanel(props: TabPanelProps) {
-  const { children, selected, index } = props;
+  const { children, selected, index } = props
 
-  return selected === index && children;
+  return selected === index && children
 }
 
 function a11yProps(index: any) {
   return {
     id: `scrollable-auto-tab-${index}`,
     'aria-controls': `scrollable-auto-tabpanel-${index}`,
-  };
+  }
 }
 
 export interface TabItem {
-  icon?: any;
-  label: string;
-  value: ReactNode;
-};
+  icon?: any
+  label: string
+  value: ReactNode
+}
 
 type TabsProps = {
   tabs: TabItem[],
@@ -34,12 +34,12 @@ type TabsProps = {
 }
 
 export default function Tabs(props: TabsProps) {
-  const { tabs, title } = props;
-  const [selected, setSelected] = React.useState(tabs.length > 2 ? 2 : 0);
+  const { tabs, title } = props
+  const [selected, setSelected] = React.useState(tabs.length > 2 ? 2 : 0)
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setSelected(newValue);
-  };
+    setSelected(newValue)
+  }
 
   return (
     <>
@@ -67,5 +67,5 @@ export default function Tabs(props: TabsProps) {
         </TabPanel>
       ))}
     </>
-  );
+  )
 }
