@@ -24,22 +24,28 @@ export default function BrowseAlbumsScreen() {
 
   return (
     <>
-      <HeaderTitle icon={<AlbumIcon />} text="Browse Albums" />
-      <InfiniteScroll
-        pageStart={1}
-        loadMore={loadMoreAlbums}
-        hasMore={hasMore}
-        loader={<Spinner key={1} />}
-        useWindow={false}
-      >
-        <Grid container spacing={2}>
-          {albums.data.map((album: AlbumThumbnailData) => (
-            <Grid item xs={4} md={3} sm={4} key={album.hash}>
-              <AlbumThumbnail album={album} />
+      {albums.data.length ? (
+        <>
+          <HeaderTitle icon={<AlbumIcon />} text="Browse Albums" />
+          <InfiniteScroll
+            pageStart={1}
+            loadMore={loadMoreAlbums}
+            hasMore={hasMore}
+            loader={<Spinner key={1} />}
+            useWindow={false}
+          >
+            <Grid container spacing={2}>
+              {albums.data.map((album: AlbumThumbnailData) => (
+                <Grid item xs={4} md={3} sm={4} key={album.hash}>
+                  <AlbumThumbnail album={album} />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      </InfiniteScroll>
+          </InfiniteScroll>
+        </>
+      ) : (
+          <HeaderTitle icon={<AlbumIcon />} text="No albums yet" />
+        )}
     </>
   )
 }

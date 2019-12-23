@@ -144,6 +144,32 @@ export const FETCH_TRACK = gql`
   }
 `
 
+export const FETCH_ARTIST = gql`
+  query artistDetail($hash: String!) {
+    artist(hash: $hash) {
+      hash
+      name
+      stage_name
+      poster_url
+      bio
+      facebook_url
+      twitter_url
+      youtube_url
+      instagram_url
+      tracks {
+        hash
+        title
+        poster_url
+      }
+      albums {
+        hash
+        title
+        cover_url
+      }
+    }
+  }
+`
+
 export const FETCH_DOWNLOAD_URL = gql`
   query download($input: DownloadInput!) {
     download(input: $input) {

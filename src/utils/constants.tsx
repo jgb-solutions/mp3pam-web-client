@@ -26,3 +26,5 @@ export const DOMAIN = `https://staging.mp3pam.com`
 export const FB_APP_ID = `232624100615967`
 export const TWITTER_HANDLE = `mp3pam`
 export const SEO_TRACK_TYPE = `music.song`
+export const SEO_ARTIST_TYPE = `music:musician`
+export const SEO_ALBUM_TYPE = `music:album`

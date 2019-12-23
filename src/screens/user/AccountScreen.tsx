@@ -73,13 +73,11 @@ export default function AccountScreen() {
   const [logOutMutation, { data: logged_out }] = useMutation(LOG_OUT_MUTATION)
   const userData = get(currentUser, 'data')
   const styles = useStyles()
-  const { register,
+  const {
+    register,
     handleSubmit,
     errors,
-    formState,
-    watch,
-    setError,
-    clearError,
+    reset,
     setValue
   } = useForm<FormData>({
     mode: 'onBlur', defaultValues: {
@@ -89,7 +87,7 @@ export default function AccountScreen() {
       telephone: get(userData, 'telephone')
     }
   })
-  const { updateUser, loading, data: updatedUserData, error } = useUpdateUser()
+  const { updateUser, loading, data: updatedUserData } = useUpdateUser()
   const {
     upload: uploadImg,
     uploading: imgUploading,
@@ -109,9 +107,18 @@ export default function AccountScreen() {
 
   useEffect(() => {
     if (updatedUserData) {
-      dispatch({ type: UPDATE_USER, payload: { data: updatedUserData.updateUser } })
+      const userData = updatedUserData.updateUser
+
+      dispatch({ type: UPDATE_USER, payload: { data: userData } })
+
+      const { id, name, email, telephone } = userData
+
+      reset({ id, name, email, telephone })
+
       setShouldEdit(false)
     }
+
+    // eslint-disable-next-line
   }, [updatedUserData])
 
   const handleUpdateUser = (values: FormData) => {
@@ -131,7 +138,7 @@ export default function AccountScreen() {
 
   const handleInvalidImageSize = (filesize: number) => {
     setOpenInvalidFileSize(`
-		The file size exceeds 5 MB. <br />
+		The file size exceeds 1 MB. <br />
 		Choose another one or reduce the size to upload.
 	`)
   }
@@ -167,7 +174,7 @@ export default function AccountScreen() {
                       })}
                       name="name"
                       id="name"
-                      label="Name *"
+                      label="Name"
                       type="text"
                       margin="normal"
                       error={!!errors.name}
@@ -182,10 +189,12 @@ export default function AccountScreen() {
                   </Grid>
                   <Grid item xs={12} sm>
                     <TextField
-                      inputRef={register}
+                      inputRef={register({
+                        required: "Your email is required.",
+                      })}
                       name="email"
                       id="email"
-                      label="Email *"
+                      label="Email"
                       type="email"
                       margin="normal"
                       error={!!errors.email}
@@ -203,6 +212,7 @@ export default function AccountScreen() {
                   <Grid item xs={12} sm>
                     <TextField
                       inputRef={register({
+                        required: "Your phone number is required.",
                         minLength: {
                           value: 8,
                           message: "The phone number must be at least 8 characters."
@@ -210,7 +220,7 @@ export default function AccountScreen() {
                       })}
                       name="telephone"
                       id="telephone"
-                      label="Phone *"
+                      label="Phone"
                       type="text"
                       margin="normal"
                       error={!!errors.telephone}
@@ -223,7 +233,34 @@ export default function AccountScreen() {
                       style={{ marginBottom: 15 }}
                     />
                   </Grid>
+
                   <Grid item xs={12} sm>
+                    <TextField
+                      inputRef={register({
+                        minLength: {
+                          value: 6,
+                          message: "The password must be at least 6 characters."
+                        }
+                      })}
+                      name="password"
+                      id="password"
+                      label="New Password"
+                      type="password"
+                      margin="normal"
+                      error={!!errors.password}
+                      helperText={errors.password && (
+                        <TextIcon
+                          icon={<ErrorIcon className={styles.errorColor} />}
+                          text={<span className={styles.errorColor}>{errors.password.message}</span>}
+                        />
+                      )}
+                      style={{ marginBottom: 15 }}
+                    />
+                  </Grid>
+                </Grid>
+
+                <Grid container direction='row' spacing={2}>
+                  <Grid item xs={12} sm={6}>
                     <Grid container direction='row' alignItems='center' spacing={1} className={styles.uploadButton}>
                       <Grid item xs={9}>
                         <UploadButton

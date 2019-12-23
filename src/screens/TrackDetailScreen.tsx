@@ -8,7 +8,11 @@ import LineWeightIcon from '@material-ui/icons/LineWeight'
 import GetAppIcon from '@material-ui/icons/GetApp'
 import ShareIcon from '@material-ui/icons/Share'
 import FindReplaceIcon from '@material-ui/icons/FindReplace'
-
+import FacebookIcon from '@material-ui/icons/Facebook'
+import TwitterIcon from '@material-ui/icons/Twitter'
+import TelegramIcon from '@material-ui/icons/Telegram'
+import WhatsappIcon from '@material-ui/icons/WhatsApp'
+import EmailIcon from '@material-ui/icons/Email'
 
 import {
   FacebookShareButton,
@@ -16,11 +20,6 @@ import {
   TelegramShareButton,
   WhatsappShareButton,
   EmailShareButton,
-  FacebookIcon,
-  TwitterIcon,
-  TelegramIcon,
-  WhatsappIcon,
-  EmailIcon,
 } from 'react-share'
 
 import Routes from "../routes"
@@ -205,7 +204,7 @@ const TrackDetailScreen = (props: Props) => {
                   url={url}
                   quote={title}
                   hashtag={hashtags.split(' ').join(' #')}>
-                  <FacebookIcon size={48} />
+                  <FacebookIcon style={{ fontSize: 48, cursor: 'pointer', color: colors.facebook }} />
                 </FacebookShareButton>
               </Grid>
               <Grid item>
@@ -214,22 +213,22 @@ const TrackDetailScreen = (props: Props) => {
                   title={title}
                   via={TWITTER_HANDLE}
                   hashtags={hashtags.split(' ')}>
-                  <TwitterIcon size={48} />
+                  <TwitterIcon style={{ fontSize: 48, cursor: 'pointer', color: colors.twitter }} />
                 </TwitterShareButton>
               </Grid>
               <Grid item>
                 <WhatsappShareButton url={url} title={title}>
-                  <WhatsappIcon size={48} />
+                  <WhatsappIcon style={{ fontSize: 48, cursor: 'pointer', color: colors.whatsapp }} />
                 </WhatsappShareButton>
               </Grid>
               <Grid item>
                 <TelegramShareButton url={url} title={title}>
-                  <TelegramIcon size={48} />
+                  <TelegramIcon style={{ fontSize: 48, cursor: 'pointer', color: colors.telegram }} />
                 </TelegramShareButton>
               </Grid>
               <Grid item>
                 <EmailShareButton url={url} subject={title} body={title}>
-                  <EmailIcon size={48} />
+                  <EmailIcon style={{ fontSize: 48, cursor: 'pointer' }} />
                 </EmailShareButton>
               </Grid>
             </Grid>

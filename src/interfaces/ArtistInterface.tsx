@@ -1,9 +1,21 @@
 export default interface ArtistInterface {
-	avatar: string
-	bio?: string | null
-	musics: string
+	hash: string
 	name: string
-	stageName: string
-	url: string
-	verified: boolean
+	stage_name: string
+	poster_url: string
+	bio: string
+	facebook_url: string
+	twitter_url: string
+	youtube_url: string
+	instagram_url: string
+	tracks: {
+		hash: string
+		title: string
+		poster_url: string
+	}[]
+	albums: {
+		hash: string
+		title: string
+		cover_url: string
+	}[]
 }
