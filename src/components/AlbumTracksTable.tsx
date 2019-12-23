@@ -7,10 +7,9 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 
 import colors from '../utils/colors'
-import PlayPause from './PlayPause'
 import { useSelector } from 'react-redux'
 import AppStateInterface from '../interfaces/AppStateInterface'
-import { SoundInterface } from '../interfaces/ListInterface'
+import AlbumInterface, { AlbumTrackInterface } from '../interfaces/AlbumInterface'
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -37,10 +36,10 @@ const StyledTableCell = withStyles(theme => ({
   },
 }))(TableCell)
 
-export default function QueueTable() {
+export default function AlbumTracksTable({ album }: { album: AlbumInterface }) {
   const styles = useStyles()
 
-  const { currentSound, currentPlayingIndex, queueList, list } = useSelector(
+  const { currentSound, currentPlayingIndex } = useSelector(
     (appState: AppStateInterface) => appState.player
   )
 
@@ -48,31 +47,36 @@ export default function QueueTable() {
     <Table className={styles.table} size="small">
       <TableHead>
         <TableRow>
-          <StyledTableCell>&nbsp;</StyledTableCell>
+          <StyledTableCell># Number</StyledTableCell>
           <StyledTableCell>Title</StyledTableCell>
-          <StyledTableCell>By</StyledTableCell>
-          <StyledTableCell>Type</StyledTableCell>
-          <StyledTableCell>&nbsp;</StyledTableCell>
+          <StyledTableCell>Play</StyledTableCell>
+          <StyledTableCell>Download</StyledTableCell>
+          {/* <StyledTableCell>By</StyledTableCell> */}
         </TableRow>
       </TableHead>
       <TableBody>
-        {!!list && queueList.map((sound: SoundInterface, index: number) => {
+        {album.tracks.map((track: AlbumTrackInterface, index: number) => {
           const color = currentSound &&
-            sound.hash === currentSound.hash &&
+            track.hash === currentSound.hash &&
             index === currentPlayingIndex ? colors.primary
             : undefined
 
           return (
             <TableRow key={index} style={{
-              borderBottom: queueList.length - 1 === index ? '' : '1px solid white',
+              borderBottom: album.tracks.length - 1 === index ? '' : '1px solid white',
             }}>
-              <StyledTableCell style={{ width: '10%', minWidth: '60px' }}>
-                <PlayPause sound={sound} list={list} />
-                {/* <Heart /> */}
+              <StyledTableCell style={{ width: '4%' }}>
+                {track.number}
               </StyledTableCell>
-              <StyledTableCell style={{ width: '30%', color }}>{sound.title}</StyledTableCell>
-              <StyledTableCell style={{ width: '35%', color }}>{sound.author_name}</StyledTableCell>
-              <StyledTableCell style={{ width: '20%', color }}>{sound.type.toUpperCase()}</StyledTableCell>
+              {/* <StyledTableCell style={{ width: '10%', minWidth: '60px' }}> */}
+              {/* <PlayPause track={track} /> */}
+              {/* <Heart /> */}
+              {/* </StyledTableCell> */}
+              <StyledTableCell style={{ width: '90%', color }}>{track.title}</StyledTableCell>
+              <StyledTableCell style={{ width: '1.5%', color }}>{track.play_count}</StyledTableCell>
+              <StyledTableCell style={{ width: '1.5%', color }}>{track.download_count}</StyledTableCell>
+              {/* <StyledTableCell style={{ width: '35%', color }}>{album.artist.stage_name}</StyledTableCell> */}
+              {/* <StyledTableCell style={{ width: '20%', color }}>{track.type.toUpperCase()}</StyledTableCell> */}
               {/* <StyledTableCell>
                 <More />
               </StyledTableCell> */}

@@ -1,6 +1,3 @@
-import CategoryInterface from "./CategoryInterface"
-import ArtistInterface from "./ArtistInterface"
-
 export default interface TrackInterface {
 	title: string
 	hash: string

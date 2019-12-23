@@ -70,7 +70,7 @@ export const ArtistScrollingList = (props: { artists: ArtistThumbnailData[], cat
         </Link>
         <div>
           <KeyboardArrowLeft onClick={() => scroll("left")} />
-          &nbsp
+          &nbsp;
 					<KeyboardArrowRight onClick={() => scroll("right")} />
         </div>
       </div>

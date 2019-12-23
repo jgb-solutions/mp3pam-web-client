@@ -13,7 +13,6 @@ import Routes from "../routes"
 import { get } from "lodash-es"
 import { SMALL_SCREEN_SIZE } from "../utils/constants"
 import { AlbumThumbnailData } from "./AlbumScrollingList"
-import { Link } from "react-router-dom"
 
 const useStyles = makeStyles(theme => ({
   imgContainer: {

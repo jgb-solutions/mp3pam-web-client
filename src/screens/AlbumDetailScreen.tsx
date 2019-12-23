@@ -4,8 +4,6 @@ import { darken, makeStyles } from "@material-ui/core/styles"
 import { Link, useParams, useHistory } from "react-router-dom"
 import { get } from 'lodash'
 import InfoIcon from '@material-ui/icons/Info'
-import LineWeightIcon from '@material-ui/icons/LineWeight'
-import GetAppIcon from '@material-ui/icons/GetApp'
 import ShareIcon from '@material-ui/icons/Share'
 import FindReplaceIcon from '@material-ui/icons/FindReplace'
 import FacebookIcon from '@material-ui/icons/Facebook'
@@ -13,6 +11,7 @@ import TwitterIcon from '@material-ui/icons/Twitter'
 import TelegramIcon from '@material-ui/icons/Telegram'
 import WhatsappIcon from '@material-ui/icons/WhatsApp'
 import EmailIcon from '@material-ui/icons/Email'
+import MusicNoteIcon from '@material-ui/icons/MusicNote'
 
 import {
   FacebookShareButton,
@@ -26,16 +25,17 @@ import Routes from "../routes"
 import colors from "../utils/colors"
 import More from "../components/More"
 import Tabs, { TabItem } from "../components/Tabs"
-import useTrackDetail from '../hooks/useTrackDetail'
+import AlbumTracksTable from "../components/AlbumTracksTable"
+import useAlbumDetail from '../hooks/useAlbumDetail'
 import Button from "../components/Button"
 import ListInterface, { SoundInterface } from "../interfaces/ListInterface"
 import * as playerActions from "../store/actions/playerActions"
 import AppStateInterface from "../interfaces/AppStateInterface"
 import { Grid, Hidden } from "@material-ui/core"
-import { SMALL_SCREEN_SIZE, APP_NAME, DOMAIN, SEO_TRACK_TYPE, TWITTER_HANDLE } from "../utils/constants"
+import { SMALL_SCREEN_SIZE, APP_NAME, DOMAIN, SEO_ALBUM_TYPE, TWITTER_HANDLE } from "../utils/constants"
 import Spinner from "../components/Spinner"
-import { TrackScrollingList } from "../components/TrackScrollingList"
-import useRelatedTracks from "../hooks/useRelatedTracks"
+import { AlbumScrollingList } from "../components/AlbumScrollingList"
+import useRandomAlbums from "../hooks/useRandomAlbums"
 import SEO from "../components/SEO"
 import FourOrFour from "../components/FourOrFour"
 import HeaderTitle from "../components/HeaderTitle"
@@ -121,19 +121,19 @@ type Props = {
   currentTime: number
 }
 
-const TrackDetailScreen = (props: Props) => {
+const AlbumDetailScreen = (props: Props) => {
   const styles = useStyles()
   const params = useParams()
   const history = useHistory()
   const hash = get(params, 'hash')
-  const { loading: relatedLoading, data: relatedTracksData, fetchRelatedTracks } = useRelatedTracks(hash)
-  const relatedTracks = get(relatedTracksData, 'relatedTracks')
+  const { loading: randomLoading, data: randomAlbumsData, fetchRandomAlbums } = useRandomAlbums(hash)
+  const randomAlbums = get(randomAlbumsData, 'randomAlbums')
 
-  const { data, loading, error } = useTrackDetail(hash)
-  const track = get(data, 'track')
+  const { data, loading, error } = useAlbumDetail(hash)
+  const album = get(data, 'album')
 
   const makeList = () => {
-    const { hash } = track
+    const { hash } = album
 
     const list: ListInterface = {
       hash,
@@ -144,36 +144,34 @@ const TrackDetailScreen = (props: Props) => {
   }
 
   const makeSoundList = () => {
-    const { hash, title, poster_url, artist, audio_url } = track
-
-    return [{
+    return album.tracks.map(({ hash, title, poster_url, audio_url }) => ({
       hash,
       title,
       image: poster_url,
-      author_name: artist.stage_name,
-      author_hash: artist.hash,
+      author_name: album.artist.stage_name,
+      author_hash: album.artist.hash,
       play_url: audio_url,
       type: 'track',
-    }]
+    }))
   }
 
   useEffect(() => {
     if (data) {
-      fetchRelatedTracks()
+      fetchRandomAlbums()
     }
     // eslint-disable-next-line
   }, [data])
 
   const togglePlay = () => {
-    if (props.isPlaying && props.playingListHash === track.hash) {
+    if (props.isPlaying && props.playingListHash === album.hash) {
       props.pauseList()
     }
 
-    if (!props.isPlaying && props.playingListHash === track.hash) {
+    if (!props.isPlaying && props.playingListHash === album.hash) {
       props.resumeList()
     }
 
-    if (props.playingListHash !== track.hash) {
+    if (props.playingListHash !== album.hash) {
       props.playList(makeList())
     }
   }
@@ -183,13 +181,13 @@ const TrackDetailScreen = (props: Props) => {
 
 
   if (error) {
-    return (<h1>Error loading track detail. Please reload page.</h1>)
+    return (<h1>Error loading album detail. Please reload page.</h1>)
   }
 
   const getTabs = () => {
     const url = window.location.href
-    const title = `Listen to ${track.title} by ${track.artist.stage_name}`
-    const hashtags = `${APP_NAME} music track share`
+    const title = `Listen to ${album.title} by ${album.artist.stage_name}`
+    const hashtags = `${APP_NAME} music album share`
     const tabs: TabItem[] = [
       {
         icon: <ShareIcon />,
@@ -236,52 +234,19 @@ const TrackDetailScreen = (props: Props) => {
       }
     ]
 
-    if (track.allowDownload) {
+    if (album.detail) {
       tabs.push({
-        icon: <GetAppIcon />,
-        label: "Download",
-        value: (
-          <>
-            <p>
-              File Size: {track.audio_file_size}
-            </p>
-            <Button
-              size="large"
-              style={{ minWidth: 150 }}
-              onClick={() => history.push(Routes.download.trackPage(track.hash))}>
-              Download
-            </Button>
-          </>
-        )
+        icon: <InfoIcon />,
+        label: "Detail",
+        value: <p dangerouslySetInnerHTML={{ __html: album.detail }} style={{ wordWrap: 'normal' }} />
       })
     }
 
-    tabs.push({
-      icon: <InfoIcon />,
-      label: "Detail",
-      value: (
-        <>
-          <p className={styles.listByAuthor}>
-            <span className={styles.listBy}>Play: </span>
-            <span className={styles.listAuthor}>
-              {track.play_count}
-            </span>
-
-            <span className={styles.listBy}>, Download: </span>
-            <span className={styles.listAuthor}>
-              {track.download_count}
-            </span>
-          </p>
-          {track.detail && <p dangerouslySetInnerHTML={{ __html: track.detail }} style={{ wordWrap: 'normal' }} />}
-        </>
-      )
-    })
-
-    if (track.lyrics) {
+    if (album.tracks.length) {
       tabs.push({
-        icon: <LineWeightIcon />,
-        label: "Lyrics",
-        value: <p dangerouslySetInnerHTML={{ __html: track.lyrics }} style={{ wordWrap: 'normal' }} />
+        icon: <MusicNoteIcon />,
+        label: "Tracks",
+        value: <AlbumTracksTable album={album} />
       })
     }
 
@@ -297,21 +262,12 @@ const TrackDetailScreen = (props: Props) => {
       {
         name: 'Go To Artist',
         method: () => {
-          history.push(Routes.artist.detailPage(track.artist.hash))
+          history.push(Routes.artist.detailPage(album.artist.hash))
         }
       },
-      // { name: 'Remove from your Liked Tracks', method: () => { } },
+      // { name: 'Remove from your Liked Albums', method: () => { } },
       // { name: 'Add To Playlist', method: () => { } },
     ]
-
-    if (track.album) {
-      options.push({
-        name: 'Go To Album',
-        method: () => {
-          history.push(Routes.album.detailPage(track.album.hash))
-        }
-      })
-    }
 
     options.push({
       name: 'Add To Queue',
@@ -321,40 +277,37 @@ const TrackDetailScreen = (props: Props) => {
     return options
   }
 
-  return track ? (
+  return album ? (
     <div className="react-transition flip-in-x-reverse">
       <Grid container spacing={2}>
         <Grid item sm={4} xs={12} className={styles.imageContainer}>
-          <img src={track.poster_url} alt={track.title} className={styles.image} />
+          <img src={album.cover_url} alt={album.title} className={styles.image} />
         </Grid>
         <Grid item sm={8} xs={12} className={styles.detailsWrapper}>
           <div className={styles.listDetails}>
-            <h5 className={styles.listType}>Track</h5>
-            <h1 className={styles.listName}>{track.title}</h1>
+            <h5 className={styles.listType}>Album</h5>
+            <h1 className={styles.listName}>{album.title}</h1>
             <p className={styles.listByAuthor} style={{ marginBottom: 5 }}>
               <span className={styles.listBy}>By </span>
               <Link
-                to={Routes.artist.detailPage(track.artist.hash)}
+                to={Routes.artist.detailPage(album.artist.hash)}
                 className={styles.listAuthor}
               >
-                {track.artist.stage_name}
+                {album.artist.stage_name}
               </Link>
-
-              <span className={styles.listBy}>, In </span>
-              <Link
-                to={Routes.genre.detailPage(track.genre.slug)}
-                className={styles.listAuthor}
-              >
-                {track.genre.name}
-              </Link>
+              <br />
+              <span className={styles.listBy}>Released In </span>
+              <span className={styles.listAuthor} style={{ textDecoration: 'none' }}>
+                {album.release_year}
+              </span>
             </p>
             <Grid className={styles.ctaButtons} container spacing={2}>
               <Grid item xs={2} implementation="css" smUp component={Hidden} />
-              <Grid item>
-                <Button style={{ width: 100 }} onClick={togglePlay}>
-                  {(props.playingListHash !== track.hash) && "Play"}
-                  {(props.isPlaying && props.playingListHash === track.hash) && "Pause"}
-                  {(!props.isPlaying && props.playingListHash === track.hash) && "Resume"}
+              <Grid item >
+                <Button fullWidth style={{ width: 100 }} onClick={togglePlay}>
+                  {(props.playingListHash !== album.hash) && "Play"}
+                  {(props.isPlaying && props.playingListHash === album.hash) && "Pause"}
+                  {(!props.isPlaying && props.playingListHash === album.hash) && "Resume"}
                   {/* todo // using props.currentTime > 0  to display rsesume or replay */}
                 </Button>
               </Grid>
@@ -380,34 +333,34 @@ const TrackDetailScreen = (props: Props) => {
       <br />
       <br />
 
-      {relatedLoading && <Spinner.Full />}
-      {relatedTracks && (
-        <TrackScrollingList
-          category="Related Tracks"
-          tracks={relatedTracks}
-          browse={Routes.browse.tracks}
+      {randomLoading && <Spinner.Full />}
+      {randomAlbums && (
+        <AlbumScrollingList
+          category="Other Albums Your Might Like"
+          albums={randomAlbums}
+          browse={Routes.browse.albums}
         />
       )}
       {/* handling SEO */}
       <SEO
-        title={`${track.title} by ${track.artist.stage_name}`}
-        url={`${DOMAIN}/track/${track.hash}`}
-        description={`Listen to ${track.title} by ${track.artist.stage_name} on ${APP_NAME}`}
-        type={SEO_TRACK_TYPE}
-        image={track.poster_url}
-        artist={`${DOMAIN}/artist/${track.artist.hash}`}
+        title={`${album.title} (album) by ${album.artist.stage_name}`}
+        url={`${DOMAIN}/album/${album.hash}`}
+        description={`Listen to ${album.title} by ${album.artist.stage_name} on ${APP_NAME}`}
+        type={SEO_ALBUM_TYPE}
+        image={album.cover_url}
+        artist={`${DOMAIN}/artist/${album.artist.hash}`}
       />
     </div>
   ) : (
       <>
-        <HeaderTitle icon={<FindReplaceIcon />} text="OOPS! The Track was not found." />
+        <HeaderTitle icon={<FindReplaceIcon />} text="OOPS! The Album was not found." />
         <h3>
           Go to the <Link style={{ color: 'white' }} to={Routes.pages.home}>home page</Link>{' '}
           or
           {' '}
           <Link
             style={{ cursor: 'pointer', textDecoration: 'underline', color: colors.white }}
-            to={Routes.browse.tracks}>browse other tracks.
+            to={Routes.browse.albums}>browse other albums.
           </Link>.
         </h3>
         <FourOrFour />
@@ -428,4 +381,4 @@ export default connect(
     playNext: playerActions.playNext,
     addToQueue: playerActions.addToQueue,
   }
-)(TrackDetailScreen)
+)(AlbumDetailScreen)

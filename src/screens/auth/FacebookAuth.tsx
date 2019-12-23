@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useLocation, useHistory, Redirect } from 'react-router'
-import gql from 'graphql-tag'
 import queryString from 'query-string'
 import { useApolloClient } from '@apollo/react-hooks'
 import { useDispatch } from 'react-redux'

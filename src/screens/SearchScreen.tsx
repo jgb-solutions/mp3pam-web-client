@@ -37,14 +37,16 @@ export default function SearchScreen() {
 				dispatch({ type: SAVE_SEARCH, payload: { term, data } })
 			}
 		}
+		// eslint-disable-next-line
 	}, [resultData])
 
 	useEffect(() => {
 		const searchTerm = term.trim()
-		if (searchTerm.length >= 2 && searchTerm != lastSearchTerm) {
+		if (searchTerm.length >= 2 && searchTerm !== lastSearchTerm) {
 			debounceSearch(term)
 			setLastSearchTerm(searchTerm)
 		}
+		// eslint-disable-next-line
 	}, [term])
 
 	if (loading) return <Spinner.Full />

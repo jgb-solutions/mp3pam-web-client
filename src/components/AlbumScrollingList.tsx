@@ -5,7 +5,6 @@ import { Link } from "react-router-dom"
 
 import { SMALL_SCREEN_SIZE } from "../utils/constants"
 import AlbumThumbnail from "./AlbumThumbnail"
-import { ArtistThumbnailData } from "./ArtistScrollingList"
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -75,7 +74,7 @@ export const AlbumScrollingList = (props: { albums: AlbumThumbnailData[], catego
         </Link>
         <div>
           <KeyboardArrowLeft onClick={() => scroll("left")} />
-          &nbsp
+          &nbsp;
 					<KeyboardArrowRight onClick={() => scroll("right")} />
         </div>
       </div>

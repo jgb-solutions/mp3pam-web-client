@@ -1,6 +1,5 @@
 import React from "react"
 import { useSelector } from "react-redux"
-import { get } from "lodash-es"
 
 import QueueTable from '../../components/QueueTable'
 import AppStateInterface from "../../interfaces/AppStateInterface"

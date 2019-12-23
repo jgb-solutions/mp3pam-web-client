@@ -25,9 +25,9 @@ const browsingMenu = [
 ]
 
 const favoriteMenu = [
-	{ name: "Tracks", to: Routes.user.library.tracks, icon: <MusicNoteIcon /> },
-	{ name: "Artists", to: Routes.user.library.artists, icon: <PersonPinCircleIcon /> },
-	{ name: "Albums", to: Routes.user.library.albums, icon: <AlbumIcon /> },
+	// { name: "Tracks", to: Routes.user.library.tracks, icon: <MusicNoteIcon /> },
+	// { name: "Artists", to: Routes.user.library.artists, icon: <PersonPinCircleIcon /> },
+	// { name: "Albums", to: Routes.user.library.albums, icon: <AlbumIcon /> },
 	// { name: "PlayLists", to: Routes.user.library.playlists, icon: <PlaylistAddIcon /> },
 	// { name: "Podcasts", to: Routes.user.library.podcasts, icon: <MicIcon /> },
 	{ name: "Queue", to: Routes.user.library.queue, icon: <QueueMusicIcon /> },
@@ -90,8 +90,8 @@ const Left = (props: Props) => {
 			</div>
 
 			{/* Favorite Menu */}
-			{/* <div>
-				<p>
+			<div>
+				{/* <p>
 					<NavLink
 						activeClassName={styles.activeClassName}
 						exact
@@ -100,7 +100,7 @@ const Left = (props: Props) => {
 						onClick={closeDrawer}>
 						What You Like
 					</NavLink>
-				</p>
+				</p> */}
 				{favoriteMenu.map((menuItem, index) => (
 					<NavLink
 						activeClassName={styles.activeClassName}
@@ -113,7 +113,7 @@ const Left = (props: Props) => {
 						<span className={styles.linkText}>{menuItem.name}</span>
 					</NavLink>
 				))}
-			</div> */}
+			</div>
 		</>
 	)
 }

@@ -75,6 +75,30 @@ export const FETCH_RELATED_TRACKS = gql`
   }
 `
 
+export const FETCH_RANDOM_ARTISTS = gql`
+  query randomArtistsData($input: RandomArtistsInput!) {
+    randomArtists(input: $input) {
+      hash
+      name
+      poster_url
+    }
+  }
+`
+
+export const FETCH_RANDOM_ALBUMS = gql`
+  query randomAlbumsData($input: RandomAlbumsInput!) {
+    randomAlbums(input: $input) {
+      hash
+      title
+      cover_url
+      artist {
+        hash
+        stage_name
+      }
+    }
+  }
+`
+
 export const FETCH_ARTISTS = gql`
   query artistsData($page: Int, $take: Int, $orderBy: [OrderByClause!]) {
     # Latest 10 artists
@@ -165,6 +189,31 @@ export const FETCH_ARTIST = gql`
         hash
         title
         cover_url
+      }
+    }
+  }
+`
+
+export const FETCH_ALBUM = gql`
+  query albumDetail($hash: String!) {
+    album(hash: $hash) {
+      title
+      hash
+      cover_url
+      detail
+      release_year
+      tracks {
+        hash
+        title
+        poster_url
+        audio_url
+        number
+        play_count
+        download_count
+      }
+      artist {
+        hash
+        stage_name
       }
     }
   }

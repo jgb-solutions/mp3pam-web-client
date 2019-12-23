@@ -70,7 +70,7 @@ export default function AccountScreen() {
   const [shouldEdit, setShouldEdit] = useState(editMode)
   const [openInvalidFileSize, setOpenInvalidFileSize] = useState('')
   const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser)
-  const [logOutMutation, { data: logged_out }] = useMutation(LOG_OUT_MUTATION)
+  const [logOutMutation] = useMutation(LOG_OUT_MUTATION)
   const userData = get(currentUser, 'data')
   const styles = useStyles()
   const {
@@ -78,7 +78,6 @@ export default function AccountScreen() {
     handleSubmit,
     errors,
     reset,
-    setValue
   } = useForm<FormData>({
     mode: 'onBlur', defaultValues: {
       id: get(userData, 'id'),
@@ -93,8 +92,8 @@ export default function AccountScreen() {
     uploading: imgUploading,
     isUploaded: imgUploaded,
     percentUploaded: imgPercentUploaded,
-    isValid: imgValid,
-    errorMessage: imgErrorMessage,
+    // isValid: imgValid,
+    // errorMessage: imgErrorMessage,
     filename: avatar
   } = useFileUpload({ bucket: IMG_BUCKET, message: "You must choose an avatar.", headers: { public: true } })
 

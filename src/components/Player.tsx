@@ -19,12 +19,11 @@ import IconButton from "@material-ui/core/IconButton"
 import { useHistory } from "react-router-dom"
 import { Drawer, Slide } from "@material-ui/core"
 
-import Heart from "./Heart"
 import Slider from "./Slider"
 import Routes from '../routes'
 import { debounce } from "../utils/helpers"
 import { ALL, ONE, NONE, SECONDS_TO_UPDATE_PLAY_COUNT } from '../utils/constants'
-import ListInterface, { SoundInterface } from "../interfaces/ListInterface"
+import { SoundInterface } from "../interfaces/ListInterface"
 import PlayerInterface from "../interfaces/PlayerInterface"
 import * as playerActions from "../store/actions/playerActions"
 import {
@@ -101,11 +100,12 @@ function Player(props: Props) {
 	}
 
 	const onEnded = () => {
-		const sounds = get(state.list, 'sounds', [])
+		const sounds = state.queueList
 		const { repeat } = state
 
 		const currentSound = state.currentSound
 		if (!currentSound) return
+
 		const currentSoundIndex = findIndex(currentSound, sounds)
 		const totalSoundsIndexes = sounds.length - 1
 
@@ -369,9 +369,7 @@ function Player(props: Props) {
 
 		if (storePlayerData.action === PLAY_NEXT) {
 			const currentSound = get(state, 'currentSound')
-			const listHash = get(state, 'list.hash')
 			const stateSoundList: any[] = get(state, 'list.sounds')
-			const storeSoundList: any[] = get(storePlayerData, 'list.sounds')
 
 			if (currentSound) {
 				const index = findIndex(currentSound, stateSoundList)

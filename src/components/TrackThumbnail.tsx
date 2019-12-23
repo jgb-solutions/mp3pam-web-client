@@ -12,8 +12,7 @@ import colors from "../utils/colors"
 import Routes from "../routes"
 import { get } from "lodash-es"
 import { SMALL_SCREEN_SIZE } from "../utils/constants"
-import { TrackWithArtistThumbnailData, ArtistThumbnailData } from "./TrackScrollingList"
-import { Link } from "react-router-dom"
+import { TrackWithArtistThumbnailData } from "./TrackScrollingList"
 import AppStateInterface from "../interfaces/AppStateInterface"
 
 const useStyles = makeStyles(theme => ({

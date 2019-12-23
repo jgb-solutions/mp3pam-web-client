@@ -3,7 +3,6 @@ import { Redirect, useLocation, useHistory } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { useApolloClient } from '@apollo/react-hooks'
 import useForm from 'react-hook-form'
-import gql from "graphql-tag"
 import { Grid } from "@material-ui/core"
 import { makeStyles } from "@material-ui/styles"
 import ErrorIcon from '@material-ui/icons/Error'

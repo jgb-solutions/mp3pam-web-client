@@ -65,12 +65,14 @@ export default function Download(input: Props) {
       updateDownloadCount()
       window.location.href = data.download.url
     }
+    // eslint-disable-next-line
   }, [count])
 
   useEffect(() => {
     if (data) {
       startDownload()
     }
+    // eslint-disable-next-line
   }, [data])
 
   if (loading) return <Spinner.Full />

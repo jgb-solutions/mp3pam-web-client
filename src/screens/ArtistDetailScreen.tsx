@@ -1,12 +1,8 @@
 import React, { useEffect, ReactNode } from "react"
-import { connect } from "react-redux"
 import { darken, makeStyles } from "@material-ui/core/styles"
-import { Link, useParams, useHistory } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { get } from 'lodash'
 import InfoIcon from '@material-ui/icons/Info'
-import LineWeightIcon from '@material-ui/icons/LineWeight'
-import GetAppIcon from '@material-ui/icons/GetApp'
-import FaceIcon from '@material-ui/icons/Face'
 import FacebookIcon from '@material-ui/icons/Facebook'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import InstagramIcon from '@material-ui/icons/Instagram'
@@ -28,25 +24,18 @@ import {
 
 import Routes from "../routes"
 import colors from "../utils/colors"
-import More from "../components/More"
 import Tabs, { TabItem } from "../components/Tabs"
 import useArtistDetail from '../hooks/useArtistDetail'
-import Heart from "../components/Heart"
-import Button from "../components/Button"
-import ListInterface, { SoundInterface } from "../interfaces/ListInterface"
-import * as playerActions from "../store/actions/playerActions"
-import AppStateInterface from "../interfaces/AppStateInterface"
-import { Grid, Hidden } from "@material-ui/core"
+import { Grid } from "@material-ui/core"
 import { SMALL_SCREEN_SIZE, APP_NAME, DOMAIN, SEO_ARTIST_TYPE, TWITTER_HANDLE } from "../utils/constants"
 import Spinner from "../components/Spinner"
 import { ArtistScrollingList } from "../components/ArtistScrollingList"
-// import useRelatedArtists from "../hooks/useRelatedArtists"
+import useRandomArtists from "../hooks/useRandomArtists"
 import SEO from "../components/SEO"
 import FourOrFour from "../components/FourOrFour"
 import HeaderTitle from "../components/HeaderTitle"
 import { CSSProperties } from "@material-ui/core/styles/withStyles"
 import TrackThumbnail from "../components/TrackThumbnail"
-import { TrackWithArtistThumbnailData } from "../components/TrackScrollingList"
 import AlbumThumbnail from "../components/AlbumThumbnail"
 
 export const LinkWrapper = (
@@ -138,18 +127,18 @@ const useStyles = makeStyles(theme => ({
 export default function ArtistDetailScreen() {
   const styles = useStyles()
   const params = useParams()
-  const history = useHistory()
   const hash = get(params, 'hash')
-  // const { loading: relatedLoading, data: relatedArtistsData, fetchRelatedArtists } = useRelatedArtists(hash)
-  // const relatedArtists = get(relatedArtistsData, 'relatedArtists')
+  const { loading: randomLoading, data: randomArtistsData, fetchRandomdArtists } = useRandomArtists(hash)
+  const randomArtists = get(randomArtistsData, 'randomArtists')
 
   const { data, loading, error } = useArtistDetail(hash)
   const artist = get(data, 'artist')
 
   useEffect(() => {
     if (data) {
-      // fetchRelatedArtists()
+      fetchRandomdArtists()
     }
+    // eslint-disable-next-line
   }, [data])
 
 
@@ -157,7 +146,7 @@ export default function ArtistDetailScreen() {
 
 
   if (error) {
-    return (<h1>There was an error fetching the list</h1>)
+    return (<h1>Error loading artist detail. Please reload page.</h1>)
   }
 
   const getTabs = () => {
@@ -336,14 +325,15 @@ export default function ArtistDetailScreen() {
       <br />
       <br />
 
-      {/* {relatedLoading && <Spinner.Full />}
-      {relatedArtists && (
+      {randomLoading && <Spinner.Full />}
+      {randomArtists && (
         <ArtistScrollingList
-          category="Related Artists"
-          artists={relatedArtists}
+          category="Other Artists You Might Like"
+          artists={randomArtists}
           browse={Routes.browse.artists}
         />
-      )} */}
+      )}
+
       {/* handling SEO */}
       <SEO
         title={`${artist.name} on ${APP_NAME}`}
