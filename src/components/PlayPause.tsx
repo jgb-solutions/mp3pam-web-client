@@ -41,11 +41,11 @@ type Props = {
   isPlaying: boolean,
   resumeSound(): void,
   pauseSound(): void,
-  list: ListInterface,
+  list: any,
   sound: SoundInterface,
   playingListHash: string,
   currentSound?: SoundInterface,
-  playList(list: ListInterface): void,
+  playList(list: ListInterface, sound?: SoundInterface): void,
   playSound: (sound: SoundInterface) => void,
 }
 
@@ -96,7 +96,7 @@ function PlayPause({
 
       if (playingListHash !== list.hash) {
         console.log('play list')
-        playList(list)
+        playList(list, sound)
       }
     }
   }

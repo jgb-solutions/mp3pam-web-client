@@ -13,6 +13,7 @@ export default interface PlayerInterface {
 	updateHack: string,
 	currentPlayingIndex?: number
 	currentSound?: SoundInterface
+	sound?: SoundInterface
 	list?: ListInterface
 	soundList: SoundInterface[]
 	queueList: SoundInterface[]

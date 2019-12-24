@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import Home from "@material-ui/icons/Home"
 
 import Spinner from '../components/Spinner'
@@ -12,13 +12,13 @@ import Routes from "../routes"
 export default function HomeScreen() {
 	const { loading, error, homeData } = useHome()
 	// fetch home data
-	useEffect(() => {
-		console.log(homeData)
-	}, [homeData])
+	// useEffect(() => {
+	// 	console.log(homeData)
+	// }, [homeData])
 
 	if (loading) return <Spinner.Full />
 
-	if (error) return <p>Error Loading new data. Please refresh the page.</p>
+	if (error) return <h1>Error Loading the homepage data. Please refresh the page.</h1>
 
 	return (
 		<>

@@ -111,7 +111,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 type Props = {
-  playList(list: ListInterface): void
+  playList(list: ListInterface, sound?: SoundInterface): void
   pauseList(): void
   resumeList(): void
   playNext(soundList: SoundInterface[]): void
@@ -246,7 +246,7 @@ const AlbumDetailScreen = (props: Props) => {
       tabs.push({
         icon: <MusicNoteIcon />,
         label: "Tracks",
-        value: <AlbumTracksTable album={album} />
+        value: <AlbumTracksTable album={album} list={makeList()} />
       })
     }
 

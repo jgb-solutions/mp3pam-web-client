@@ -1,4 +1,5 @@
 import { get } from "lodash-es"
+import { SoundInterface } from "../interfaces/ListInterface"
 
 export function debounce(fn: () => void, delay: number, timeoutId: number): void {
   clearTimeout(timeoutId)
@@ -23,3 +24,13 @@ export function getFormattedDate(dateString: string) {
 
   return month + '/' + day + '/' + year
 }
+
+export const makeSoundFromTrack = (({ hash, title, poster_url, audio_url, artist }: any): SoundInterface => ({
+  hash,
+  title,
+  image: poster_url,
+  author_name: artist.stage_name,
+  author_hash: artist.hash,
+  play_url: audio_url,
+  type: 'track',
+}))

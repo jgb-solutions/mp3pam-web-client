@@ -15,10 +15,10 @@ export const syncState = (updatedState: Object) => ({
 	payload: { updatedState }
 })
 
-export const playList = (list: ListInterface) => {
+export const playList = (list: ListInterface, sound?: SoundInterface) => {
 	return {
 		type: PLAY_LIST,
-		payload: { list, action: PLAY }
+		payload: { list, sound, action: PLAY }
 	}
 }
 

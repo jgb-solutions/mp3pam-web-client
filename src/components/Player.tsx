@@ -13,7 +13,7 @@ import {
 } from "@material-ui/icons"
 import MoreIcon from '@material-ui/icons/MoreVert'
 import { get } from "lodash-es"
-import { connect } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import React, { useState, useEffect } from "react"
 import IconButton from "@material-ui/core/IconButton"
 import { useHistory } from "react-router-dom"
@@ -38,18 +38,15 @@ import useUpdatePlayCount from "../hooks/useUpdatePlayCount"
 const audio = new Audio()
 let syncStateTimeoutId: number
 
-type Props = {
-	syncState(state: any): void
-	storePlayerData: PlayerInterface
-}
-
-function Player(props: Props) {
+export default function Player() {
+	const styles = PlayerStyle()
 	const history = useHistory()
+	const dispatch = useDispatch()
 	const { updatePlayCount } = useUpdatePlayCount()
 	const [loggedHash, setLoggedHash] = useState('')
 	const [drawerOPen, setDrawerOpen] = useState(false)
-	const { storePlayerData, syncState } = props
-	const styles = PlayerStyle()
+	const storePlayerData = useSelector((appState: AppStateInterface) => appState.player)
+	const syncState = (state: any) => dispatch(playerActions.syncState(state))
 	const [state, setState] = useState<PlayerInterface>({
 		...storePlayerData,
 		isPlaying: false,
@@ -342,7 +339,7 @@ function Player(props: Props) {
 				action: PLAY,
 				list: storePlayerData.list,
 				queueList: get(storePlayerData, 'list.sounds'),
-				currentSound: get(storePlayerData, 'list.sounds')[0]
+				currentSound: get(storePlayerData, 'sound') || get(storePlayerData, 'list.sounds')[0]
 			}))
 		}
 
@@ -404,10 +401,11 @@ function Player(props: Props) {
 		switch (storePlayerData.action) {
 			case PLAY_SOUND:
 				console.log('called play sound')
+				console.log(storePlayerData.sound)
 				setState(prevState => ({
 					...prevState,
 					action: PLAY_SOUND,
-					currentSound: get(storePlayerData, 'currentSound')
+					currentSound: get(storePlayerData, 'sound')
 				}))
 				break
 			case PAUSE_SOUND:
@@ -645,12 +643,3 @@ function Player(props: Props) {
 		</Slide>
 	)
 }
-
-export default connect(
-	({ player }: AppStateInterface) => ({
-		storePlayerData: player
-	}),
-	{
-		syncState: playerActions.syncState
-	}
-)(Player)
