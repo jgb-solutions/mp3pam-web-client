@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import MusicNoteIcon from '@material-ui/icons/MusicNote'
 import { get } from "lodash-es"
 import { Grid } from "@material-ui/core"
@@ -13,10 +13,6 @@ import { TrackWithArtistThumbnailData } from "../../components/TrackScrollingLis
 export default function BrowseTracksScreen() {
   const { loading, error, data, loadMoreTracks, hasMore } = useTracks()
   const tracks = get(data, 'tracks')
-  // fetch home data
-  useEffect(() => {
-    console.log(data)
-  }, [data])
 
   if (loading) return <Spinner.Full />
 

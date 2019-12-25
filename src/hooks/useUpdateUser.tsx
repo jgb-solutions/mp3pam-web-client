@@ -28,7 +28,6 @@ export default function useUpdateUser(): Props {
   })
 
   const updateUser = (input: UserProps) => {
-    console.log(input)
     updateUserMutation({
       variables: { input }
     })

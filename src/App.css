@@ -14,3 +14,9 @@
   background-color: rgba(205, 27, 84, 0.2);
   outline: 1px solid slategrey;
 }
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

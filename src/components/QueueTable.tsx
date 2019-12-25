@@ -11,6 +11,9 @@ import PlayPause from './PlayPause'
 import { useSelector } from 'react-redux'
 import AppStateInterface from '../interfaces/AppStateInterface'
 import { SoundInterface } from '../interfaces/ListInterface'
+import { Link } from 'react-router-dom'
+import Routes from '../routes'
+import { get } from 'lodash-es'
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -18,6 +21,11 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3),
     overflowX: 'auto',
   },
+  link: {
+    color: 'white',
+    textDecoration: 'none',
+    fontWeight: 'bold'
+  }
 }))
 
 const StyledTableCell = withStyles(theme => ({
@@ -61,6 +69,10 @@ export default function QueueTable() {
             sound.hash === currentSound.hash &&
             index === currentPlayingIndex ? colors.primary
             : undefined
+          const soundPage = get(Routes, `${sound.type}`).detailPage(sound.hash)
+          const authorPage = sound.type === 'track' ?
+            Routes.artist.detailPage(sound.author_hash) :
+            Routes.podcast.goToAuthorDetail(sound.author_hash)
 
           return (
             <TableRow key={index} style={{
@@ -70,8 +82,12 @@ export default function QueueTable() {
                 <PlayPause sound={sound} list={list} />
                 {/* <Heart /> */}
               </StyledTableCell>
-              <StyledTableCell style={{ width: '30%', color }}>{sound.title}</StyledTableCell>
-              <StyledTableCell style={{ width: '35%', color }}>{sound.author_name}</StyledTableCell>
+              <StyledTableCell style={{ width: '30%', color }}>
+                <Link to={soundPage} className={styles.link} style={{ color }}>{sound.title}</Link>
+              </StyledTableCell>
+              <StyledTableCell style={{ width: '35%' }}>
+                <Link to={authorPage} className={styles.link} style={{ color }}>{sound.author_name}</Link>
+              </StyledTableCell>
               <StyledTableCell style={{ width: '20%', color }}>{sound.type.toUpperCase()}</StyledTableCell>
               {/* <StyledTableCell>
                 <More />

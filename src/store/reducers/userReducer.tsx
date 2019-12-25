@@ -19,7 +19,6 @@ export default function (
     case LOG_OUT:
       return INITIAL_USER_STATE
     case UPDATE_USER:
-      console.log(payload)
       return { ...userState, ...payload }
     default:
       return userState

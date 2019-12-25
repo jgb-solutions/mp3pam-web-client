@@ -56,10 +56,6 @@ export const ArtistScrollingList = (props: { artists: ArtistThumbnailData[], cat
     } else {
       domElement.scrollLeft += distance
     }
-
-    console.log("clientWidth", domElement.clientWidth)
-    console.log("offsetWidth", domElement.offsetWidth)
-    console.log("scrollWidth", domElement.scrollWidth)
   }
 
   return (

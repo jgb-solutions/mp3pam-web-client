@@ -13,6 +13,8 @@ import AlbumInterface, { AlbumTrackInterface } from '../interfaces/AlbumInterfac
 import PlayPause from './PlayPause'
 import { makeSoundFromTrack } from '../utils/helpers'
 import ListInterface from '../interfaces/ListInterface'
+import { Link } from 'react-router-dom'
+import Routes from '../routes'
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -20,6 +22,11 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3),
     overflowX: 'auto',
   },
+  link: {
+    color: 'white',
+    textDecoration: 'none',
+    fontWeight: 'bold'
+  }
 }))
 
 const StyledTableCell = withStyles(theme => ({
@@ -44,7 +51,7 @@ type Props = { album: AlbumInterface, list: ListInterface }
 export default function AlbumTracksTable({ album, list }: Props) {
   const styles = useStyles()
 
-  const { currentSound, currentPlayingIndex } = useSelector(
+  const { currentSound } = useSelector(
     (appState: AppStateInterface) => appState.player
   )
 
@@ -63,8 +70,7 @@ export default function AlbumTracksTable({ album, list }: Props) {
       <TableBody>
         {album.tracks.map((track: AlbumTrackInterface, index: number) => {
           const color = currentSound &&
-            track.hash === currentSound.hash &&
-            index === currentPlayingIndex ? colors.primary
+            track.hash === currentSound.hash ? colors.primary
             : undefined
 
           return (
@@ -78,7 +84,9 @@ export default function AlbumTracksTable({ album, list }: Props) {
                 <PlayPause sound={makeSoundFromTrack({ ...track, artist: album.artist })} list={list} />
                 {/* <Heart /> */}
               </StyledTableCell>
-              <StyledTableCell style={{ width: '90%', color }}>{track.title}</StyledTableCell>
+              <StyledTableCell style={{ width: '90%', color }}>
+                <Link to={Routes.track.detailPage(track.hash)} className={styles.link} style={{ color }}>{track.title}</Link>
+              </StyledTableCell>
               {/* <StyledTableCell style={{ width: '1.5%', color }}>{track.play_count}</StyledTableCell> */}
               {/* <StyledTableCell style={{ width: '1.5%', color }}>{track.download_count}</StyledTableCell> */}
               {/* <StyledTableCell style={{ width: '35%', color }}>{album.artist.stage_name}</StyledTableCell> */}

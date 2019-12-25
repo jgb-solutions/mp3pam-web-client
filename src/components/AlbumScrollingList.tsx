@@ -60,10 +60,6 @@ export const AlbumScrollingList = (props: { albums: AlbumThumbnailData[], catego
     } else {
       domElement.scrollLeft += distance
     }
-
-    console.log("clientWidth", domElement.clientWidth)
-    console.log("offsetWidth", domElement.offsetWidth)
-    console.log("scrollWidth", domElement.scrollWidth)
   }
 
   return (

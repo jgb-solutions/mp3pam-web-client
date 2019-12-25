@@ -79,13 +79,11 @@ function LoginScreen() {
         query: FACEBOOK_LOGIN_URL,
       })
       if (errors) {
-        console.log(errors)
         setLoginError(fbMessage)
       }
       window.location = facebookLoginUrl.url
     } catch (error) {
       setLoginError(fbMessage)
-      console.log(error)
     }
   }
 

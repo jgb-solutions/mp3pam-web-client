@@ -151,7 +151,7 @@ export default function ArtistDetailScreen() {
 
   const getTabs = () => {
     const url = window.location.href
-    const title = `${artist.name} on ${APP_NAME}`
+    const title = `${artist.stage_name} on ${APP_NAME}`
     const hashtags = `${APP_NAME} music artist share`
     const tabs: TabItem[] = [
       {
@@ -272,12 +272,12 @@ export default function ArtistDetailScreen() {
     <div className="react-transition flip-in-x-reverse">
       <Grid container spacing={2}>
         <Grid item sm={4} xs={12} className={styles.imageContainer}>
-          <img src={artist.poster_url} alt={artist.name} className={styles.image} />
+          <img src={artist.poster_url} alt={artist.stage_name} className={styles.image} />
         </Grid>
         <Grid item sm={8} xs={12} className={styles.detailsWrapper}>
           <div className={styles.listDetails}>
             <h5 className={styles.listType}>Artist</h5>
-            <h1 className={styles.listName}>{artist.name}</h1>
+            <h1 className={styles.listName}>{artist.stage_name}</h1>
             <Grid container spacing={2}>
               {artist.facebook_url && (
                 <Grid item>
@@ -336,9 +336,9 @@ export default function ArtistDetailScreen() {
 
       {/* handling SEO */}
       <SEO
-        title={`${artist.name} on ${APP_NAME}`}
+        title={`${artist.stage_name} on ${APP_NAME}`}
         url={`${DOMAIN}/artist/${artist.hash}`}
-        description={`Listen to ${artist.name} on ${APP_NAME}`}
+        description={`Listen to ${artist.stage_name} on ${APP_NAME}`}
         type={SEO_ARTIST_TYPE}
         image={artist.poster_url}
         artist={`${DOMAIN}/artist/${artist.hash}`}

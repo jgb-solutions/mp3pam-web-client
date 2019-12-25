@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle'
 import { get } from "lodash-es"
 import { Grid } from "@material-ui/core"
@@ -13,10 +13,6 @@ import { ArtistThumbnailData } from "../../components/ArtistScrollingList"
 export default function BrowseArtistsScreen() {
   const { loading, error, data, loadMoreArtists, hasMore } = useArtists()
   const artists = get(data, 'artists')
-  // fetch home data
-  useEffect(() => {
-    console.log(data)
-  }, [data])
 
   if (loading) return <Spinner.Full />
 

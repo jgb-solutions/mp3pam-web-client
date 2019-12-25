@@ -11,10 +11,6 @@ import Routes from "../routes"
 
 export default function HomeScreen() {
 	const { loading, error, homeData } = useHome()
-	// fetch home data
-	// useEffect(() => {
-	// 	console.log(homeData)
-	// }, [homeData])
 
 	if (loading) return <Spinner.Full />
 

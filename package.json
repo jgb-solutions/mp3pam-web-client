@@ -1,5 +1,5 @@
 {
-  "name": "app.mp3pam",
+  "name": "mp3pam.client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

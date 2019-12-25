@@ -18,6 +18,7 @@ import React, { useState, useEffect } from "react"
 import IconButton from "@material-ui/core/IconButton"
 import { useHistory } from "react-router-dom"
 import { Drawer, Slide } from "@material-ui/core"
+import LoopIcon from '@material-ui/icons/Loop'
 
 import Slider from "./Slider"
 import Routes from '../routes'
@@ -42,6 +43,7 @@ export default function Player() {
 	const styles = PlayerStyle()
 	const history = useHistory()
 	const dispatch = useDispatch()
+	const [soundLoading, setSoundLoading] = useState(false)
 	const { updatePlayCount } = useUpdatePlayCount()
 	const [loggedHash, setLoggedHash] = useState('')
 	const [drawerOPen, setDrawerOpen] = useState(false)
@@ -139,6 +141,8 @@ export default function Player() {
 	const play = () => {
 		if (!state.currentSound) return
 
+		setSoundLoading(true)
+
 		setLoggedHash('')
 
 		const currentPlayingIndex = findIndex(
@@ -158,9 +162,11 @@ export default function Player() {
 		audio.play().then(
 			() => {
 				// console.log("started playing...");
+				setSoundLoading(false)
 			},
 			error => {
 				console.log("failed because " + error)
+				setSoundLoading(false)
 				setState(prevState => ({
 					...prevState,
 					isPlaying: false
@@ -400,8 +406,6 @@ export default function Player() {
 	useEffect(() => {
 		switch (storePlayerData.action) {
 			case PLAY_SOUND:
-				console.log('called play sound')
-				console.log(storePlayerData.sound)
 				setState(prevState => ({
 					...prevState,
 					action: PLAY_SOUND,
@@ -552,26 +556,39 @@ export default function Player() {
 							<IconButton onClick={playPrevious}>
 								<SkipPrevious className={styles.icon} />
 							</IconButton>
-							<IconButton
-								// className={styles.playPause}
-								onClick={togglePlay}
-							>
-								{state.isPlaying && (
-									<PauseCircleOutline
+
+							<IconButton onClick={togglePlay} disabled={soundLoading}>
+								{soundLoading ? (
+									<LoopIcon
 										className={styles.icon}
-										style={{ fontSize: 42 }}
+										style={{
+											fontSize: 42,
+											color: colors.primary,
+											animation: 'spin 0.5s linear infinite'
+										}}
 									/>
-								)}
-								{!state.isPlaying && (
-									<PlayCircleOutline
-										className={styles.icon}
-										style={{ fontSize: 42 }}
-									/>
-								)}
+								) : (
+										<>
+											{state.isPlaying && (
+												<PauseCircleOutline
+													className={styles.icon}
+													style={{ fontSize: 42 }}
+												/>
+											)}
+											{!state.isPlaying && (
+												<PlayCircleOutline
+													className={styles.icon}
+													style={{ fontSize: 42 }}
+												/>
+											)}
+										</>
+									)}
 							</IconButton>
+
 							<IconButton onClick={playNext}>
 								<SkipNext className={styles.icon} />
 							</IconButton>
+
 							<IconButton onClick={toggleRepeat}>
 								{state.repeat === NONE && <Repeat className={styles.icon} />}
 								{state.repeat === ALL && (
@@ -640,6 +657,6 @@ export default function Player() {
 				</div>
 				</Drawer>
 			</div>
-		</Slide>
+		</Slide >
 	)
 }

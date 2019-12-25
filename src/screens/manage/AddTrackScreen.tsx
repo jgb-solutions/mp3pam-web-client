@@ -85,7 +85,6 @@ export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistF
 	useEffect(() => {
 		if (artistData) {
 			handleClose()
-			console.log(artistData)
 			onArtistCreated(artistData.addArtist)
 		}
 		// eslint-disable-next-line
