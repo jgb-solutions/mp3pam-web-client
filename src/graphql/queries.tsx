@@ -61,6 +61,30 @@ export const FETCH_TRACKS = gql`
   }
 `
 
+export const FETCH_TRACKS_BY_GENRE = gql`
+  query tracksDataByGenre($page: Int, $take: Int, $orderBy: [OrderByClause!], $slug: String!) {
+    genre(slug: $slug) {
+      name
+    }
+
+    tracksByGenre(take: $take, page: $page, orderBy: $orderBy, slug: $slug) {
+      data {
+        hash
+        title
+        poster_url
+        artist {
+          stage_name
+          hash
+        }
+      }
+      paginatorInfo {
+        hasMorePages
+        currentPage
+      }
+    }
+  }
+`
+
 export const FETCH_RELATED_TRACKS = gql`
   query relatedTracksData($input: RelatedTracksInput!) {
     relatedTracks(input: $input) {
@@ -81,6 +105,15 @@ export const FETCH_RANDOM_ARTISTS = gql`
       hash
       name
       poster_url
+    }
+  }
+`
+
+export const FETCH_GENRES = gql`
+  query fetchGenres {
+    genres {
+      name
+      slug
     }
   }
 `
@@ -239,10 +272,8 @@ export const UPLOAD_URL_QUERY = gql`
 export const TRACK_UPLOAD_DATA_QUERY = gql`
   query fetchTrackUploadData {
     genres {
-			data {
-				id
-				name
-			}
+      id
+      name
   	}
     me {
       artists_by_stage_name_asc(take: 50) {

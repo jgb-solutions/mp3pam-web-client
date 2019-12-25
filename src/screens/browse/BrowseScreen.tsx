@@ -1,20 +1,32 @@
 import React from "react"
-// import { useSelector } from "react-redux";
+import { get } from "lodash-es"
+import { Grid } from "@material-ui/core"
+import FolderOpenIcon from '@material-ui/icons/FolderOpen'
 
-// import ListTable from '../components/ListTable';
-// import AppStateInterface from "../interfaces/AppStateInterface";
+import Spinner from "../../components/Spinner"
+import HeaderTitle from "../../components/HeaderTitle"
+import useGenres from "../../hooks/useGenres"
+import GenreThumbnail, { GenreInterface } from "../../components/GenreThumbnail"
 
-function BrowseScreen() {
-  // const list = useSelector(({ player }: AppStateInterface) => player.list);
+export default function BrowseScreen() {
+  const { loading, error, data } = useGenres()
+  const genres = get(data, 'genres')
+
+  if (loading) return <Spinner.Full />
+
+  if (error) return <p>Error Loading new data. Please refresh the page.</p>
 
   return (
     <>
-      <h1>Browse</h1>
+      <HeaderTitle icon={<FolderOpenIcon />} text="Browse Genres" />
 
-      {/* {!list && <h3>Your queue is empty!</h3>} */}
-
+      <Grid container spacing={2}>
+        {genres.map((genre: GenreInterface) => (
+          <Grid item xs={6} md={3} sm={4} key={genre.slug}>
+            <GenreThumbnail genre={genre} />
+          </Grid>
+        ))}
+      </Grid>
     </>
   )
 }
-
-export default BrowseScreen

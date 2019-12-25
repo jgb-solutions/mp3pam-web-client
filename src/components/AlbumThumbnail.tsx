@@ -17,12 +17,15 @@ import { AlbumThumbnailData } from "./AlbumScrollingList"
 const useStyles = makeStyles(theme => ({
   imgContainer: {
     backgroundSize: "contain",
+    backgroundRepeat: 'no-repeat',
     cursor: "pointer",
     width: 175,
     height: 175,
+    maxWidth: '100%',
+    maxHeight: '100%',
     position: "relative",
     marginBottom: 10,
-    display: "flex",
+    // display: "flex",
     alignItems: "center",
     justifyContent: "center",
     [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {

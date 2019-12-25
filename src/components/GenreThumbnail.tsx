@@ -1,19 +1,17 @@
 import React from "react"
-import {
-  PlayCircleOutline,
-  PauseCircleOutline
-} from "@material-ui/icons"
+import { PlayCircleOutline } from "@material-ui/icons"
 import { useHistory } from "react-router"
-import { connect } from "react-redux"
 import IconButton from "@material-ui/core/IconButton"
 import { makeStyles } from "@material-ui/core/styles"
 
 import colors from "../utils/colors"
 import Routes from "../routes"
-import { get } from "lodash-es"
 import { SMALL_SCREEN_SIZE } from "../utils/constants"
-import { TrackWithArtistThumbnailData } from "./TrackScrollingList"
-import AppStateInterface from "../interfaces/AppStateInterface"
+
+export interface GenreInterface {
+  name: string
+  slug: string
+}
 
 const useStyles = makeStyles(theme => ({
   imgContainer: {
@@ -29,23 +27,17 @@ const useStyles = makeStyles(theme => ({
     // display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
-      width: 100,
-      height: 100,
-    },
   },
   transparentBackground: {
-    opacity: 0,
+    opacity: 0.7,
     position: "absolute",
     backgroundColor: "#000",
     width: "100%",
     height: "100%",
     display: "flex",
+    flexDirection: 'column',
     alignItems: "center",
     justifyContent: "center",
-    "&:hover": {
-      opacity: 0.7
-    }
   },
   icon: {
     fontSize: 75,
@@ -58,6 +50,7 @@ const useStyles = makeStyles(theme => ({
   title: {
     margin: 0,
     fontSize: 14,
+    fontWeight: 'bold',
     color: colors.white,
     [theme.breakpoints.down(SMALL_SCREEN_SIZE)]: {
       fontSize: 12,
@@ -86,63 +79,37 @@ const useStyles = makeStyles(theme => ({
 }))
 
 type Props = {
-  track: TrackWithArtistThumbnailData
+  genre: GenreInterface
   className?: string
   style?: object,
-  isPlaying: boolean
-  listId: string
 }
 
-const TrackThumbnail = (props: Props) => {
+export default function GenreThumbnail(props: Props) {
   const styles = useStyles()
   const history = useHistory()
 
-  const { track, listId, isPlaying } = props
+  const { genre } = props
 
-  const goToTrackPage = () => {
-    const route = Routes.track.detailPage(track.hash)
-    history.push(route, { hash: track.hash })
-  }
-
-  const goToArtistPage = () => {
-    const route = Routes.artist.detailPage(track.artist.hash)
-    history.push(route, { hash: track.artist.hash })
+  const goToGenrePage = () => {
+    history.push(Routes.genre.detailPage(genre.slug))
   }
 
   return (
     <div className={props.className} style={props.style}>
       <div
         className={styles.imgContainer}
-        style={{ backgroundImage: `url(${track.poster_url})` }}
+        style={{ backgroundImage: `url(/assets/images/genres.jpg)` }}
       >
         <div
           className={styles.transparentBackground}
-          onClick={goToTrackPage}
+          onClick={goToGenrePage}
         >
           <IconButton>
-            {(isPlaying && listId === track.hash) && (
-              <PauseCircleOutline className={styles.icon} />
-            )}
-            {(!isPlaying || (isPlaying && listId !== track.hash)) && (
-              <PlayCircleOutline className={styles.icon} />
-            )}
+            <PlayCircleOutline className={styles.icon} />
           </IconButton>
+          <h3 className={styles.title}>{genre.name}</h3>
         </div>
       </div>
-      <h3 className={styles.title}>{track.title}</h3>
-      <p className={styles.details}>
-        {/* by: */}
-        <span onClick={goToArtistPage} className={styles.link}>
-          {track.artist.stage_name}
-        </span>
-      </p>
     </div>
   )
 }
-
-export default connect(
-  ({ player }: AppStateInterface) => ({
-    listId: get(player, 'list.id'),
-    isPlaying: player.isPlaying
-  })
-)(TrackThumbnail)

@@ -35,6 +35,8 @@ import BrowseScreen from './screens/browse/BrowseScreen'
 import BrowseTracksScreen from './screens/browse/BrowseTracksScreen'
 import BrowseAlbumsScreen from './screens/browse/BrowseAlbumsScreen'
 import BrowseArtistsScreen from './screens/browse/BrowseArtistsScreen'
+import BrowseTracksByGenreScreen from './screens/browse/BrowseTracksByGenreScreen'
+
 // import BrowsePodcastsScreen from './screens/browse/BrowsePodcastsScreen'
 import BrowsePlaylistsScreen from './screens/browse/BrowsePlaylistsScreen'
 
@@ -146,6 +148,11 @@ export default function App() {
                 <Route path={Routes.browse.tracks}>
                   <Main>
                     <BrowseTracksScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.genre.show}>
+                  <Main>
+                    <BrowseTracksByGenreScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.browse.albums}>

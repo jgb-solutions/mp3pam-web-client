@@ -26,8 +26,8 @@ const Routes = {
 		detailPage: (hash: string) => `/episode/${hash}`,
 	},
 	genre: {
-		show: `/genre/:hash`,
-		detailPage: (hash: string) => `/genre/${hash}`,
+		show: `/browse-:slug-tracks`,
+		detailPage: (slug: string) => `/browse-${slug}-tracks`,
 	},
 	podcast: {
 		show: `/podcast/:hash`,
