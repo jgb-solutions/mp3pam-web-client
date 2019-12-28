@@ -28,19 +28,19 @@ export default function HomeScreen() {
 				/>
 			)}
 
-			{homeData.latestAlbums && (
-				<AlbumScrollingList
-					category="New Albums"
-					albums={homeData.latestAlbums.data}
-					browse={Routes.browse.albums}
-				/>
-			)}
-
 			{homeData.latestArtists && (
 				<ArtistScrollingList
 					category="New Artists"
 					artists={homeData.latestArtists.data}
 					browse={Routes.browse.artists}
+				/>
+			)}
+
+			{homeData.latestAlbums && (
+				<AlbumScrollingList
+					category="New Albums"
+					albums={homeData.latestAlbums.data}
+					browse={Routes.browse.albums}
 				/>
 			)}
 		</>

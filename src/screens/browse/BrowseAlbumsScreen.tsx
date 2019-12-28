@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import AlbumIcon from '@material-ui/icons/Album'
 import { get } from "lodash-es"
 import { Grid } from "@material-ui/core"
@@ -13,10 +13,6 @@ import { AlbumThumbnailData } from "../../components/AlbumScrollingList"
 export default function BrowseAlbumsScreen() {
   const { loading, error, data, loadMoreAlbums, hasMore } = useAlbums()
   const albums = get(data, 'albums')
-  // fetch home data
-  useEffect(() => {
-    console.log(data)
-  }, [data])
 
   if (loading) return <Spinner.Full />
 

@@ -19,6 +19,7 @@ export const RELATED_TRACKS_NUMBER = 10
 export const RANDOM_ARTISTS_NUMBER = 6
 export const RANDOM_ALBUMS_NUMBER = 6
 export const HOMEPAGE_PER_PAGE_NUMBER = 10
+export const MANAGE_PAGE_PER_PAGE_NUMBER = 10
 export const FETCH_ALBUMS_NUMBER = 24
 export const FETCH_TRACKS_NUMBER = 24
 export const FETCH_ARTISTS_NUMBER = 24

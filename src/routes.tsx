@@ -12,14 +12,17 @@ const Routes = {
 	album: {
 		show: `/album/:hash`,
 		detailPage: (hash: string) => `/album/${hash}`,
+		editPage: (hash: string) => `/manage-albums/${hash}`,
 	},
 	artist: {
 		show: `/artist/:hash`,
 		detailPage: (hash: string) => `/artist/${hash}`,
+		editPage: (hash: string) => `/manage-artists/${hash}`,
 	},
 	track: {
 		show: `/track/:hash`,
 		detailPage: (hash: string) => `/track/${hash}`,
+		editPage: (hash: string) => `/manage-tracks/${hash}`,
 	},
 	episode: {
 		show: `/episode/:hash`,
@@ -32,7 +35,14 @@ const Routes = {
 	podcast: {
 		show: `/podcast/:hash`,
 		detailPage: (hash: string) => `/podcast/${hash}`,
-		goToAuthorDetail: (authorID: string) => `/author/${authorID}`
+		goToAuthorDetail: (authorID: string) => `/author/${authorID}`,
+		editPage: (hash: string) => `/manage-podcasts/${hash}`,
+	},
+	playlist: {
+		show: `/playlist/:hash`,
+		detailPage: (hash: string) => `/playlist/${hash}`,
+		goToAuthorDetail: (authorID: string) => `/author/${authorID}`,
+		editPage: (hash: string) => `/manage-playlists/${hash}`,
 	},
 	download: {
 		audio: `/download/:type/:hash`,

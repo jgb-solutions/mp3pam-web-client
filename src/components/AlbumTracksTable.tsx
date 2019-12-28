@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const StyledTableCell = withStyles(theme => ({
+export const StyledTableCell = withStyles(theme => ({
   head: {
     color: colors.grey,
     textTransform: 'uppercase',

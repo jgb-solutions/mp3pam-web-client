@@ -16,7 +16,7 @@ export const FETCH_HOME = gql`
     }
 
     # latest 1o artists
-    latestArtists: artists(take: 10, orderBy: [{ field: "created_at", order: DESC }]) {
+    latestArtists: artists(take: $take, orderBy: $orderBy) {
       data {
         stage_name
         hash
@@ -25,7 +25,7 @@ export const FETCH_HOME = gql`
     }
 
     # latest 1o albums
-    latestAlbums: albums(take: 10, orderBy: [{ field: "created_at", order: DESC }]) {
+    latestAlbums: albums(take: $take, orderBy: $orderBy) {
       data {
         title
         hash
@@ -34,6 +34,45 @@ export const FETCH_HOME = gql`
           stage_name
           hash
           poster_url
+        }
+      }
+    }
+  }
+`
+
+export const FETCH_MANAGE_SCREEN = gql`
+  query managePageData($page: Int, $take: Int) {
+    me {
+      latestTracks: tracks(take: $take, page: $page,) {
+        data {
+          hash
+          title
+          poster_url
+          artist {
+            stage_name
+            hash
+          }
+        }
+      }
+
+      latestArtists: artists(take: $take, page: $page) {
+        data {
+          stage_name
+          hash
+          poster_url
+        }
+      }
+
+      latestAlbums: albums(take: 10, page: $page) {
+        data {
+          title
+          hash
+          cover_url
+          artist {
+            stage_name
+            hash
+            poster_url
+          }
         }
       }
     }

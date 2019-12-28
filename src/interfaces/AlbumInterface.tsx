@@ -8,12 +8,15 @@ export interface AlbumTrackInterface {
   download_count: number
 }
 
-export default interface AlbumInterface {
+export interface AlbumPlainInterface {
   title: string
   hash: string
   cover_url: string
   detail: string
   release_year: number
+}
+
+export default interface AlbumInterface extends AlbumPlainInterface {
   tracks: AlbumTrackInterface[]
   artist: {
     hash: string
