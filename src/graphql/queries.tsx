@@ -210,6 +210,29 @@ export const FETCH_ALBUMS = gql`
   }
 `
 
+export const FETCH_MY_ALBUMS = gql`
+  query myAlbumsData($page: Int, $take: Int) {
+    me {
+      albums(take: $take, page: $page) {
+        data {
+          hash
+          title
+          cover_url
+          artist {
+            hash
+            stage_name
+            poster_url
+          }
+        }
+        paginatorInfo {
+          hasMorePages
+          currentPage
+        }
+      }
+    }
+  }
+`
+
 export const FETCH_TRACK = gql`
   query trackDetail($hash: String!) {
     track(hash: $hash) {

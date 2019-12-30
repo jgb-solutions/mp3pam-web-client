@@ -19,9 +19,9 @@ const useStyles = makeStyles(theme => ({
 export default function ManageScreen() {
   const styles = useStyles()
   const { loading, error, data } = useManage()
-  const latestTracks = get(data, 'me.latestTracks')
-  const latestArtists = get(data, 'me.latestArtists')
-  const latestAlbums = get(data, 'me.latestAlbums')
+  const latestTracks = get(data, 'me.latestTracks.data')
+  const latestArtists = get(data, 'me.latestArtists.data')
+  const latestAlbums = get(data, 'me.latestAlbums.data')
 
   if (loading) return <Spinner.Full />
 
@@ -31,30 +31,30 @@ export default function ManageScreen() {
     <>
       <HeaderTitle icon={<GroupWorkIcon />} text="Your Library" />
 
-      {latestTracks ? (
+      {latestTracks.length ? (
         <TrackScrollingList
           category="Your Latest Tracks"
-          tracks={latestTracks.data}
+          tracks={latestTracks}
           browse={Routes.user.manage.tracks}
         />
       ) : (
           <h3>You have no tracks yet. <Link className={styles.link} to={Routes.user.create.track}>Add a new track</Link>.</h3>
         )}
 
-      {latestArtists ? (
+      {latestArtists.length ? (
         <ArtistScrollingList
           category="Your Latest Artists"
-          artists={latestArtists.data}
+          artists={latestArtists}
           browse={Routes.user.manage.artists}
         />
       ) : (
-          <h3>You have no albums yet. <Link className={styles.link} to={Routes.user.create.album}>Add a new track</Link>.</h3>
+          <h3>You have no albums yet. <Link className={styles.link} to={Routes.user.create.album}>Create a new album</Link>.</h3>
         )}
 
-      {latestAlbums ? (
+      {latestAlbums.length ? (
         <AlbumScrollingList
           category="Your Latest Albums"
-          albums={latestAlbums.data}
+          albums={latestAlbums}
           browse={Routes.user.manage.albums}
         />
       ) : (

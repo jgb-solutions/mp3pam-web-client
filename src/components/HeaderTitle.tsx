@@ -1,5 +1,6 @@
 import React from 'react'
 import { makeStyles } from "@material-ui/core/styles"
+import { CSSProperties } from '@material-ui/core/styles/withStyles'
 
 const useStyles = makeStyles({
   container: {
@@ -18,8 +19,8 @@ const useStyles = makeStyles({
 type Props = {
   icon: React.ReactNode,
   text: string,
-  style?: object,
-  textStyle?: object,
+  style?: CSSProperties,
+  textStyle?: CSSProperties,
 }
 
 export default function HeaderTitle(props: Props) {

@@ -57,6 +57,14 @@ export const UPDATE_PLAY_COUNT = gql`
   }
 `
 
+export const DELETE_ALBUM = gql`
+  mutation DeleteAlbum($hash: String!) {
+    deleteAlbum(hash: $hash) {
+      success
+    }
+  }
+`
+
 export const UPDATE_USER = gql`
   mutation UpdateUser($input: UpdateUserInput!) {
     updateUser(input: $input) {

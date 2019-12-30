@@ -663,7 +663,7 @@ export default function AddTrackScreen() {
 			/>
 
 			{/* Handling invalid file sizes */}
-			{/* Success Dialog */}
+			{/* Invalid File Size Dialog */}
 			<AlertDialog
 				open={!!openInvalidFileSize}
 				handleClose={handleOpenInvalidFileSizeClose}>

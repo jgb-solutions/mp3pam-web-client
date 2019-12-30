@@ -1,20 +1,26 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import AlbumIcon from '@material-ui/icons/Album'
 import { get } from "lodash-es"
 import { makeStyles } from '@material-ui/core/styles'
-import InfiniteScroll from 'react-infinite-scroller'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import ErrorIcon from '@material-ui/icons/Error'
 
+import AlertDialog from "../../components/AlertDialog"
 import Spinner from "../../components/Spinner"
 import HeaderTitle from "../../components/HeaderTitle"
-import useAlbums from "../../hooks/useAlbums"
+import useMyAlbums from "../../hooks/useMyAlbums"
 import { StyledTableCell } from "../../components/AlbumTracksTable"
 import { AlbumPlainInterface } from "../../interfaces/AlbumInterface"
 import { Link } from "react-router-dom"
 import Routes from "../../routes"
+import Button from "../../components/Button"
+import colors from "../../utils/colors"
+import { DialogActions } from "@material-ui/core"
+import useDeleteAlbum from "../../hooks/useDeleteAlbum"
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -25,17 +31,39 @@ const useStyles = makeStyles(theme => ({
   link: {
     color: 'white',
     fontWeight: 'bold'
-  }
+  },
+  errorColor: { color: colors.error },
+  noBgButton: {
+    backgroundColor: colors.contentGrey,
+    border: `1px solid ${colors.primary}`
+  },
 }))
 
 export default function ManageAlbumsScreen() {
   const styles = useStyles()
-  const { loading, error, data, loadMoreAlbums, hasMore } = useAlbums()
-  const albums = get(data, 'albums')
+  const [albumHashToDelete, setAlbumHashToDelete] = useState('')
+  const { deleteAlbum, deleteAlbumResponse, deletingAlbum, errorDeletingAlbum } = useDeleteAlbum()
+  const { loading, error, data, refetch } = useMyAlbums()
+  const albums = get(data, 'me.albums')
 
   const confirmDelete = (hash: string) => {
-    alert(hash)
+    setAlbumHashToDelete(hash)
   }
+
+  const handleDeleteAlbum = (hash: string) => {
+    deleteAlbum(hash)
+  }
+
+  useEffect(() => {
+    if (deleteAlbumResponse || errorDeletingAlbum) {
+      setAlbumHashToDelete('')
+
+      if (deleteAlbumResponse) {
+        refetch()
+      }
+    }
+    // eslint-disable-next-line
+  }, [deleteAlbumResponse, errorDeletingAlbum])
 
   if (loading) return <Spinner.Full />
 
@@ -78,21 +106,34 @@ export default function ManageAlbumsScreen() {
               })}
             </TableBody>
           </Table>
-          <InfiniteScroll
-            pageStart={1}
-            loadMore={loadMoreAlbums}
-            hasMore={hasMore}
-            loader={<Spinner key={1} />}
-            useWindow={false}
-          >
-            {/* <Grid container spacing={2}>
-              <ManageAlbumTable albums={albums.data} />
-            </Grid> */}
-          </InfiniteScroll>
         </>
       ) : (
           <HeaderTitle icon={<AlbumIcon />} text="You have no albums yet" />
         )}
+
+      {/* Invalid File Size Dialog */}
+      <AlertDialog
+        open={!!albumHashToDelete}
+        handleClose={() => setAlbumHashToDelete('')}>
+        <HeaderTitle
+          textStyle={{ fontSize: 13 }}
+          icon={<ErrorIcon className={styles.errorColor} />}
+          text={`Are you sure you want to delete this album?`} />
+        <DialogContentText align='center'>
+        </DialogContentText>
+        <DialogActions>
+          <Button size='small' onClick={() => setAlbumHashToDelete('')}>
+            Cancel
+          </Button>
+          <Button
+            size='small'
+            onClick={() => handleDeleteAlbum(albumHashToDelete)}
+            className={styles.noBgButton}
+            disabled={deletingAlbum}>
+            Delete
+          </Button>
+        </DialogActions>
+      </AlertDialog>
     </>
   )
 }

@@ -34,7 +34,7 @@ import Divider from "../../components/Divider"
 
 
 export const useStyles = makeStyles({
-  facebookSignupButton: {
+  noBgButton: {
     width: 150,
     backgroundColor: colors.contentGrey,
     border: `1px solid ${colors.primary}`
@@ -300,7 +300,7 @@ export default function AccountScreen() {
                   type="button"
                   size='large'
                   style={{ marginTop: 15 }}
-                  className={styles.facebookSignupButton}
+                  className={styles.noBgButton}
                   onClick={() => setShouldEdit(false)}>
                   Cancel
                   </Button>
@@ -344,7 +344,7 @@ export default function AccountScreen() {
                   <Button
                     size='large'
                     onClick={() => setShouldEdit(true)}
-                    className={styles.facebookSignupButton}>
+                    className={styles.noBgButton}>
                     Edit Profile
                 </Button>
                 </p>
@@ -353,7 +353,7 @@ export default function AccountScreen() {
                   <Button
                     size='large'
                     onClick={logout}
-                    className={styles.facebookSignupButton}>
+                    className={styles.noBgButton}>
                     Log out
                 </Button>
                 </p>
