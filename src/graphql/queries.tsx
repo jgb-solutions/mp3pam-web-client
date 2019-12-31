@@ -217,12 +217,6 @@ export const FETCH_MY_ALBUMS = gql`
         data {
           hash
           title
-          cover_url
-          artist {
-            hash
-            stage_name
-            poster_url
-          }
         }
         paginatorInfo {
           hasMorePages

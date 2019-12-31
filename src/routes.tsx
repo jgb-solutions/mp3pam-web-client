@@ -11,8 +11,9 @@ const Routes = {
 	},
 	album: {
 		show: `/album/:hash`,
+		edit: `/manage-album/:hash`,
 		detailPage: (hash: string) => `/album/${hash}`,
-		editPage: (hash: string) => `/manage-albums/${hash}`,
+		editPage: (hash: string) => `/manage-album/${hash}`,
 	},
 	artist: {
 		show: `/artist/:hash`,

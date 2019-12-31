@@ -11,6 +11,7 @@ import { Grid } from "@material-ui/core"
 import ErrorIcon from '@material-ui/icons/Error'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import DialogContentText from '@material-ui/core/DialogContentText'
+import { makeStyles } from "@material-ui/core"
 
 
 import ProgressBar from "../../components/ProgressBar"
@@ -18,7 +19,6 @@ import CheckAuth from "../../components/CheckAuth"
 import AppStateInterface from "../../interfaces/AppStateInterface"
 import { LOG_OUT_MUTATION, UPDATE_USER } from "../../graphql/mutations"
 import { LOG_OUT } from "../../store/actions/user_action_types"
-import { makeStyles } from "@material-ui/core"
 import colors from "../../utils/colors"
 import Button from "../../components/Button"
 import Routes from "../../routes"
@@ -47,7 +47,7 @@ export const useStyles = makeStyles({
   errorColor: { color: colors.error },
 })
 
-const NOT_AVAILABLE = `Not Available`
+export const NOT_AVAILABLE = `Not Available`
 
 export interface FormData {
   id: string
@@ -362,6 +362,6 @@ export default function AccountScreen() {
         </>
       )
       }
-    </CheckAuth >
+    </CheckAuth>
   )
 }

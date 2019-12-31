@@ -14,7 +14,6 @@ import Spinner from "../../components/Spinner"
 import HeaderTitle from "../../components/HeaderTitle"
 import useMyAlbums from "../../hooks/useMyAlbums"
 import { StyledTableCell } from "../../components/AlbumTracksTable"
-import { AlbumPlainInterface } from "../../interfaces/AlbumInterface"
 import { Link } from "react-router-dom"
 import Routes from "../../routes"
 import Button from "../../components/Button"
@@ -84,7 +83,7 @@ export default function ManageAlbumsScreen() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {albums.data.map((album: AlbumPlainInterface, index: number) => {
+              {albums.data.map((album: { hash: string, title: string }, index: number) => {
                 return (
                   <TableRow key={index} style={{
                     borderBottom: albums.data.length - 1 === index ? '' : '1px solid white',
