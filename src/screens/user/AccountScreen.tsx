@@ -130,7 +130,7 @@ export default function AccountScreen() {
       user.img_bucket = IMG_BUCKET
     }
 
-    console.table(user)
+    // console.table(user)
     updateUser(user)
   }
 

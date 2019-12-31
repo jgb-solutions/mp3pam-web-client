@@ -21,13 +21,19 @@ type Props = {
   text: string,
   style?: CSSProperties,
   textStyle?: CSSProperties,
+  onClick?: () => void
 }
 
 export default function HeaderTitle(props: Props) {
   const styles = useStyles()
+  let propStyles: CSSProperties = {}
+
+  if (props.onClick) {
+    propStyles = { ...props.style, cursor: 'pointer' }
+  }
 
   return (
-    <div className={styles.container} style={props.style}>
+    <div className={styles.container} style={propStyles} onClick={props.onClick}>
       <div className={styles.icon} style={props.textStyle}>{props.icon}</div>
       <h1 className={styles.text} style={props.textStyle}>{props.text}</h1>
     </div>

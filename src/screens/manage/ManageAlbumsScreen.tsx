@@ -6,8 +6,8 @@ import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import DialogContentText from '@material-ui/core/DialogContentText'
 import ErrorIcon from '@material-ui/icons/Error'
+import DialogActions from "@material-ui/core/DialogActions"
 
 import AlertDialog from "../../components/AlertDialog"
 import Spinner from "../../components/Spinner"
@@ -18,13 +18,11 @@ import { Link } from "react-router-dom"
 import Routes from "../../routes"
 import Button from "../../components/Button"
 import colors from "../../utils/colors"
-import { DialogActions } from "@material-ui/core"
 import useDeleteAlbum from "../../hooks/useDeleteAlbum"
 
 const useStyles = makeStyles(theme => ({
   table: {
     width: '100%',
-    marginTop: theme.spacing(3),
     overflowX: 'auto',
   },
   link: {
@@ -110,7 +108,7 @@ export default function ManageAlbumsScreen() {
           <HeaderTitle icon={<AlbumIcon />} text="You have no albums yet" />
         )}
 
-      {/* Invalid File Size Dialog */}
+      {/* Deletion confirmation */}
       <AlertDialog
         open={!!albumHashToDelete}
         handleClose={() => setAlbumHashToDelete('')}>
@@ -118,8 +116,6 @@ export default function ManageAlbumsScreen() {
           textStyle={{ fontSize: 13 }}
           icon={<ErrorIcon className={styles.errorColor} />}
           text={`Are you sure you want to delete this album?`} />
-        <DialogContentText align='center'>
-        </DialogContentText>
         <DialogActions>
           <Button size='small' onClick={() => setAlbumHashToDelete('')}>
             Cancel

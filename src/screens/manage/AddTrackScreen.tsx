@@ -6,7 +6,7 @@ import MusicNoteIcon from '@material-ui/icons/MusicNote'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import ErrorIcon from '@material-ui/icons/Error'
 import DialogContentText from '@material-ui/core/DialogContentText'
-import { useHistory } from "react-router-dom"
+import { useHistory, useLocation } from "react-router-dom"
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle'
 import { Grid, FormControlLabel, Checkbox } from "@material-ui/core"
 import { useMutation } from '@apollo/react-hooks'
@@ -210,6 +210,10 @@ export function AddGenreForm({ open, handleClose, onGenreCreated }: AddGenreForm
 
 export default function AddTrackScreen() {
 	const history = useHistory()
+	const location = useLocation()
+
+	const { album_id, track_number } = location.state
+
 	const { register,
 		handleSubmit,
 		errors,
@@ -316,14 +320,14 @@ export default function AddTrackScreen() {
 	}, [get(trackUploadInfo, 'me.artists_by_stage_name_asc.data')])
 
 	useEffect(() => {
-		const genres = get(trackUploadInfo, 'genres.data')
+		const genres = get(trackUploadInfo, 'genres')
 		if (genres) {
 			setGenreList(
 				genres.map(({ id, name }: GenreData) => ({ id, name }))
 			)
 		}
 		// eslint-disable-next-line
-	}, [get(trackUploadInfo, 'genres.data')])
+	}, [get(trackUploadInfo, 'genres')])
 
 	useEffect(() => {
 		if (chosenArtistId) {
@@ -388,7 +392,9 @@ export default function AddTrackScreen() {
 			audioName: audioName || '',
 			audioFileSize: audioSize,
 			img_bucket: IMG_BUCKET,
-			audio_bucket: AUDIO_BUCKET
+			audio_bucket: AUDIO_BUCKET,
+			album_id: album_id || null,
+			number: track_number || null
 		}
 
 
@@ -643,9 +649,15 @@ export default function AddTrackScreen() {
 					<span>Track successfully added!</span>
 					<br />
 					<br />
-					<Button size='small' onClick={goToTracksLibrary} color="primary">
-						Go To Your Tracks
+					{album_id ? (
+						<Button size='small' onClick={() => history.goBack()} color="primary">
+							Go Back To Album
+						</Button>
+					) : (
+							<Button size='small' onClick={goToTracksLibrary} color="primary">
+								Go To Your Tracks
           </Button>
+						)}
 				</DialogContentText>
 			</AlertDialog>
 

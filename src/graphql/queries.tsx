@@ -218,9 +218,18 @@ export const FETCH_MY_ALBUMS = gql`
           hash
           title
         }
-        paginatorInfo {
-          hasMorePages
-          currentPage
+      }
+    }
+  }
+`
+
+export const FETCH_MY_TRACKS = gql`
+  query myAlbumsData($page: Int, $take: Int) {
+    me {
+      tracks(take: $take, page: $page) {
+        data {
+          hash
+          title
         }
       }
     }
@@ -286,6 +295,7 @@ export const FETCH_ARTIST = gql`
 export const FETCH_ALBUM = gql`
   query albumDetail($hash: String!) {
     album(hash: $hash) {
+      id
       title
       hash
       cover_url

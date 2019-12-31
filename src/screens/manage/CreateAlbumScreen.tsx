@@ -144,8 +144,7 @@ export default function AddAlbumScreen() {
       img_bucket: IMG_BUCKET,
     }
 
-
-    console.table(album)
+    // console.table(album)
     createAlbum(album)
   }
 

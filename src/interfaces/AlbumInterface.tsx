@@ -9,6 +9,7 @@ export interface AlbumTrackInterface {
 }
 
 export interface AlbumPlainInterface {
+  id: string
   title: string
   hash: string
   cover_url: string

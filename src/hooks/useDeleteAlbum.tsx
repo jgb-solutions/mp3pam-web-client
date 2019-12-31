@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/react-hooks'
 import { DELETE_ALBUM } from '../graphql/mutations'
 import { ApolloError } from 'apollo-client'
 
-type PlayCount = {
+type ReturnType = {
   deleteAlbum: (hash: string) => void,
   deleteAlbumResponse: {
     success: boolean
@@ -12,7 +12,7 @@ type PlayCount = {
   errorDeletingAlbum: ApolloError | undefined
 }
 
-export default function useDeleteAlbum(): PlayCount {
+export default function useDeleteAlbum(): ReturnType {
   const [deleteAlbumMutation, { data, loading, error }] = useMutation(DELETE_ALBUM, {
     fetchPolicy: 'no-cache',
   })
