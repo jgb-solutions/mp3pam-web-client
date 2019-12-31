@@ -104,8 +104,7 @@ export default function AddArtistScreen() {
       img_bucket: IMG_BUCKET
     }
 
-
-    console.table(artist)
+    // console.table(artist)
     addArtist(artist)
   }
 

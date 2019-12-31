@@ -75,12 +75,9 @@ import './styles/react-transitions.css'
 import { LOG_OUT } from './store/actions/user_action_types'
 import Plain from './components/layouts/Plain'
 import Root from './components/layouts/Root'
+import { API_URL } from './utils/constants'
 
 const { store, persistor } = persistedStore()
-
-export const API_URL = process.env.NODE_ENV === 'development'
-  ? `http://api.mp3pam.loc/graphql`
-  : `https://api.mp3pam.com/graphql`
 
 // Apollo Client
 const client = new ApolloClient({

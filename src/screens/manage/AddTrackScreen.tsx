@@ -398,7 +398,7 @@ export default function AddTrackScreen() {
 		}
 
 
-		console.table(track)
+		// console.table(track)
 		addTrack(track)
 	}
 
