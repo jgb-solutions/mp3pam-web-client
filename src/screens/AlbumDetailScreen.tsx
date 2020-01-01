@@ -334,13 +334,13 @@ const AlbumDetailScreen = (props: Props) => {
       <br />
 
       {randomLoading && <Spinner.Full />}
-      {randomAlbums && (
+      {randomAlbums ? (
         <AlbumScrollingList
           category="Other Albums Your Might Like"
           albums={randomAlbums}
           browse={Routes.browse.albums}
         />
-      )}
+      ) : null}
       {/* handling SEO */}
       <SEO
         title={`${album.title} (album) by ${album.artist.stage_name}`}

@@ -6,7 +6,7 @@ import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2"
 import reducers from "./reducers"
 
 const persistConfig = {
-	key: "v00000011",
+	key: `${process.env.NODE_ENV}-v000000001`,
 	storage,
 	whitelist: ["player", "search", "currentUser"],
 	stateReconciler: autoMergeLevel2

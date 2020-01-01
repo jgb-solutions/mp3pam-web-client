@@ -33,28 +33,6 @@ export const SEO_TRACK_TYPE = `music.song`
 export const SEO_ARTIST_TYPE = `music:musician`
 export const SEO_ALBUM_TYPE = `music:album`
 
-// const getApiUrl = () => {
-//   switch (process.env.NODE_ENV) {
-//     case 'development':
-//       return `http://api.mp3pam.loc/graphql`
-//     case 'test':
-//       return `https://staging.api.mp3pam.com/graphql`
-//     case 'production':
-//       return `https://api.mp3pam.com/graphql`
-//   }
-// }
-
-// const getDomainUrl = () => {
-//   switch (process.env.NODE_ENV) {
-//     case 'development':
-//       return `http://mp3pam.loc`
-//     case 'test':
-//       return `https://staging.mp3pam.com`
-//     case 'production':
-//       return `https://mp3pam.com`
-//   }
-// }
-
 export const DOMAIN = process.env.REACT_APP_DOMAIN || `https://mp3pam.com`
 
 export const API_URL = process.env.REACT_APP_API_URL || `https://api.mp3pam.com/graphql`
