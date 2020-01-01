@@ -334,7 +334,7 @@ const AlbumDetailScreen = (props: Props) => {
       <br />
 
       {randomLoading && <Spinner.Full />}
-      {randomAlbums ? (
+      {randomAlbums.length ? (
         <AlbumScrollingList
           category="Other Albums Your Might Like"
           albums={randomAlbums}
