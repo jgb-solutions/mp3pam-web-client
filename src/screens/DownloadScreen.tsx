@@ -23,7 +23,12 @@ export default function DownloadScreen() {
     <div style={{ maxWidth: 450, margin: '0 auto', textAlign: 'center' }}>
       <Logo size={300} />
 
-      <GoogleAdsense client={GOOGLE_ADS_CLIENT} slot="1295262381" />
+      {process.env.NODE_ENV === 'production' && (
+        <GoogleAdsense
+          client={GOOGLE_ADS_CLIENT}
+          slot="1295262381"
+        />
+      )}
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Download type={type} hash={hash} />
