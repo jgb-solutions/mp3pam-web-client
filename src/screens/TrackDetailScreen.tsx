@@ -381,7 +381,7 @@ const TrackDetailScreen = (props: Props) => {
       <br />
 
       {relatedLoading && <Spinner.Full />}
-      {relatedTracks.length ? (
+      {relatedTracks ? (
         <TrackScrollingList
           category="Related Tracks"
           tracks={relatedTracks}

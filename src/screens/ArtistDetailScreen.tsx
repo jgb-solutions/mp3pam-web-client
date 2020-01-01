@@ -326,7 +326,7 @@ export default function ArtistDetailScreen() {
       <br />
 
       {randomLoading && <Spinner.Full />}
-      {randomArtists.length ? (
+      {randomArtists ? (
         <ArtistScrollingList
           category="Other Artists You Might Like"
           artists={randomArtists}
