@@ -381,13 +381,13 @@ const TrackDetailScreen = (props: Props) => {
       <br />
 
       {relatedLoading && <Spinner.Full />}
-      {relatedTracks && (
+      {relatedTracks ? (
         <TrackScrollingList
           category="Related Tracks"
           tracks={relatedTracks}
           browse={Routes.browse.tracks}
         />
-      )}
+      ) : null}
       {/* handling SEO */}
       <SEO
         title={`${track.title} by ${track.artist.stage_name}`}

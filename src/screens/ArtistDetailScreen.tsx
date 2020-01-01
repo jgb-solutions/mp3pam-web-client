@@ -326,13 +326,13 @@ export default function ArtistDetailScreen() {
       <br />
 
       {randomLoading && <Spinner.Full />}
-      {randomArtists && (
+      {randomArtists ? (
         <ArtistScrollingList
           category="Other Artists You Might Like"
           artists={randomArtists}
           browse={Routes.browse.artists}
         />
-      )}
+      ) : null}
 
       {/* handling SEO */}
       <SEO
