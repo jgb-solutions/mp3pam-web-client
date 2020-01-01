@@ -212,7 +212,8 @@ export default function AddTrackScreen() {
 	const history = useHistory()
 	const location = useLocation()
 
-	const { album_id, track_number } = location.state
+	const album_id = get(location, 'state.album_id')
+	const track_number = get(location, 'state.track_number')
 
 	const { register,
 		handleSubmit,
