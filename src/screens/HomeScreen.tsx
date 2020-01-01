@@ -20,29 +20,29 @@ export default function HomeScreen() {
 		<>
 			<HeaderTitle icon={<Home />} text="Home" />
 
-			{homeData.latestTracks.data.length && (
+			{homeData.latestTracks.data.length ? (
 				<TrackScrollingList
 					category="New Tracks"
 					tracks={homeData.latestTracks.data}
 					browse={Routes.browse.tracks}
 				/>
-			)}
+			) : null}
 
-			{homeData.latestArtists.data.length && (
+			{homeData.latestArtists.data.length ? (
 				<ArtistScrollingList
 					category="New Artists"
 					artists={homeData.latestArtists.data}
 					browse={Routes.browse.artists}
 				/>
-			)}
+			) : null}
 
-			{homeData.latestAlbums.data.length && (
+			{homeData.latestAlbums.data.length ? (
 				<AlbumScrollingList
 					category="New Albums"
 					albums={homeData.latestAlbums.data}
 					browse={Routes.browse.albums}
 				/>
-			)}
+			) : null}
 		</>
 	)
 }
