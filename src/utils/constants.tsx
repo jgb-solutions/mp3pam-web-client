@@ -33,6 +33,8 @@ export const SEO_TRACK_TYPE = `music.song`
 export const SEO_ARTIST_TYPE = `music:musician`
 export const SEO_ALBUM_TYPE = `music:album`
 
-export const DOMAIN = process.env.REACT_APP_DOMAIN || `https://mp3pam.com`
+// Google Adsense
+export const GOOGLE_ADS_CLIENT = `ca-pub-3793163111580068`
 
+export const DOMAIN = process.env.REACT_APP_DOMAIN || `https://mp3pam.com`
 export const API_URL = process.env.REACT_APP_API_URL || `https://api.mp3pam.com/graphql`

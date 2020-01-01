@@ -1,9 +1,11 @@
 import React from "react"
 import { useParams } from "react-router-dom"
+import { get } from "lodash-es"
 
 import Logo from "../components/Logo"
 import Download from "../components/Download"
-import { get } from "lodash-es"
+import GoogleAdsense from "../components/GoogleAdsense"
+import { GOOGLE_ADS_CLIENT } from "../utils/constants"
 
 
 export interface Credentials {
@@ -20,6 +22,8 @@ export default function DownloadScreen() {
   return (
     <div style={{ maxWidth: 450, margin: '0 auto', textAlign: 'center' }}>
       <Logo size={300} />
+
+      <GoogleAdsense client={GOOGLE_ADS_CLIENT} slot="1295262381" />
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Download type={type} hash={hash} />

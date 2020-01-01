@@ -3,8 +3,7 @@ import { Grid } from '@material-ui/core'
 import Hidden from '@material-ui/core/Hidden'
 
 import Left from '../Left'
-// import Right from '../Right';
-// // import RightSidebar from '../RightSidebar'
+import Sidebar from '../Sidebar'
 import Content from '../Content'
 import Header from '../Header'
 
@@ -29,7 +28,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
 
       <Hidden smDown>
         <Grid item md={2} sm={2} xs={12} className={`${styles.col} ${styles.rightGrid}`}>
-          {/* <Right /> */}
+          <Sidebar />
         </Grid>
       </Hidden>
     </>
