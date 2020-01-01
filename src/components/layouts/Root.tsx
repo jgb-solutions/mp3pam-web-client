@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react'
 import { CssBaseline, Grid, MuiThemeProvider, createMuiTheme } from '@material-ui/core'
 import { makeStyles } from "@material-ui/core/styles"
+import { Helmet } from 'react-helmet'
 
 import Player from '../Player'
-
 import colors from "../../utils/colors"
 
 export const useStyles = makeStyles({
@@ -39,6 +39,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="transition-container">
+      {!!process.env.REACT_APP_SHOW_ADS && (
+        <Helmet>
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+          ></script>
+        </Helmet>
+      )}
+
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <Grid container className={`${styles.container} react-transition scale-in`}>

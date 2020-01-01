@@ -23,7 +23,7 @@ export default function DownloadScreen() {
     <div style={{ maxWidth: 450, margin: '0 auto', textAlign: 'center' }}>
       <Logo size={300} />
 
-      {process.env.NODE_ENV === 'production' && (
+      {!!process.env.REACT_APP_SHOW_ADS && (
         <GoogleAdsense
           client={GOOGLE_ADS_CLIENT}
           slot="1295262381"
