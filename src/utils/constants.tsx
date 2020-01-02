@@ -18,6 +18,7 @@ export const CURRENT_YEAR = new Date().getFullYear()
 export const RELATED_TRACKS_NUMBER = 10
 export const RANDOM_ARTISTS_NUMBER = 6
 export const RANDOM_ALBUMS_NUMBER = 6
+export const RANDOM_PLAYLISTS_NUMBER = 6
 export const HOMEPAGE_PER_PAGE_NUMBER = 10
 export const MANAGE_PAGE_PER_PAGE_NUMBER = 10
 export const FETCH_ALBUMS_NUMBER = 24
@@ -25,6 +26,7 @@ export const FETCH_MY_ALBUMS_NUMBER = 50
 export const FETCH_MY_TRACKS_NUMBER = 200
 export const FETCH_TRACKS_NUMBER = 24
 export const FETCH_ARTISTS_NUMBER = 24
+export const FETCH_PLAYLISTS_NUMBER = 24
 export const SECONDS_TO_UPDATE_PLAY_COUNT = 30
 export const APP_NAME = `MP3PAM`
 export const FB_APP_ID = `232624100615967`
@@ -32,6 +34,7 @@ export const TWITTER_HANDLE = `mp3pam`
 export const SEO_TRACK_TYPE = `music.song`
 export const SEO_ARTIST_TYPE = `music:musician`
 export const SEO_ALBUM_TYPE = `music:album`
+export const SEO_PLAYLIST_TYPE = `music.playlist`
 
 // Google Adsense
 export const GOOGLE_ADS_CLIENT = `ca-pub-3793163111580068`

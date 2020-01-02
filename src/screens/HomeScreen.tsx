@@ -6,6 +6,7 @@ import useHome from "../hooks/useHome"
 import HeaderTitle from "../components/HeaderTitle"
 import { TrackScrollingList } from "../components/TrackScrollingList"
 import { ArtistScrollingList } from "../components/ArtistScrollingList"
+import { PlaylistScrollingList } from "../components/PlaylistScrollingList"
 import { AlbumScrollingList } from "../components/AlbumScrollingList"
 import Routes from "../routes"
 
@@ -25,6 +26,14 @@ export default function HomeScreen() {
 					category="New Tracks"
 					tracks={homeData.latestTracks.data}
 					browse={Routes.browse.tracks}
+				/>
+			) : null}
+
+			{homeData.latestPlaylists.data.length ? (
+				<PlaylistScrollingList
+					category="New Playlists"
+					playlists={homeData.latestPlaylists.data}
+					browse={Routes.browse.playlists}
 				/>
 			) : null}
 

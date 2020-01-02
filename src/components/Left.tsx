@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom"
 import HomeIcon from "@material-ui/icons/Home"
 import MusicNoteIcon from '@material-ui/icons/MusicNote'
 import AlbumIcon from '@material-ui/icons/Album'
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd'
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle'
 import InfoIcon from '@material-ui/icons/Info'
 import QueueMusicIcon from '@material-ui/icons/QueueMusic'
@@ -18,9 +19,9 @@ const mainMenu = [
 
 const browsingMenu = [
 	{ name: "Tracks", to: Routes.browse.tracks, icon: <MusicNoteIcon /> },
+	{ name: "PlayLists", to: Routes.browse.playlists, icon: <PlaylistAddIcon /> },
 	{ name: "Artists", to: Routes.browse.artists, icon: <PersonPinCircleIcon /> },
 	{ name: "Albums", to: Routes.browse.albums, icon: <AlbumIcon /> },
-	// { name: "PlayLists", to: Routes.browse.playlists, icon: <PlaylistAddIcon /> },
 	// { name: "Podcasts", to: Routes.browse.podcasts, icon: <MicIcon /> },
 ]
 

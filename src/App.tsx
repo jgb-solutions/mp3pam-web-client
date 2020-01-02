@@ -15,6 +15,7 @@ import { get } from 'lodash-es'
 import TrackDetailScreen from './screens/TrackDetailScreen'
 import ArtistDetailScreen from './screens/ArtistDetailScreen'
 import AlbumDetailScreen from './screens/AlbumDetailScreen'
+import PlaylistDetailScreen from './screens/PlaylistDetailScreen'
 // Main screens
 import HomeScreen from './screens/HomeScreen'
 import UsersScreen from './screens/UsersScreen'
@@ -186,6 +187,11 @@ export default function App() {
                 <Route path={Routes.album.show}>
                   <Main>
                     <AlbumDetailScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.playlist.show}>
+                  <Main>
+                    <PlaylistDetailScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.artist.show}>

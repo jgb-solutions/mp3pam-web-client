@@ -2,12 +2,13 @@ import React, { useEffect } from 'react'
 import { useLocation, useHistory, Redirect } from 'react-router'
 import queryString from 'query-string'
 import { useApolloClient } from '@apollo/react-hooks'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import Routes from '../../routes'
 import Spinner from '../../components/Spinner'
 import { LOG_IN } from '../../store/actions/user_action_types'
 import { FACEOOK_LOGIN } from '../../graphql/mutations'
+import AppStateInterface from '../../interfaces/AppStateInterface'
 
 export default function FacebookAuth() {
   const client = useApolloClient()
@@ -15,6 +16,7 @@ export default function FacebookAuth() {
   const location = useLocation()
   const history = useHistory()
   const { code } = queryString.parse(location.search)
+  const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser)
 
   useEffect(() => {
     if (code) {
@@ -41,7 +43,12 @@ export default function FacebookAuth() {
       }
     } catch (error) {
       console.log(error)
+      history.push(Routes.pages.login)
     }
+  }
+
+  if (currentUser.loggedIn) {
+    return <Redirect to={Routes.pages.home} />
   }
 
   return code ? (

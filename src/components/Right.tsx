@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { NavLink } from "react-router-dom"
 import MusicNoteIcon from '@material-ui/icons/MusicNote'
 import AlbumIcon from '@material-ui/icons/Album'
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd'
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle'
 import { get } from 'lodash-es'
 import Avatar from '@material-ui/core/Avatar'
@@ -15,9 +16,9 @@ import { UserData } from '../interfaces/UserInterface'
 
 const CreateMenu = [
   { name: "Add Track", to: Routes.user.create.track, icon: <MusicNoteIcon /> },
+  { name: "Create PlayList", to: Routes.user.create.playlist, icon: <PlaylistAddIcon /> },
   { name: "Add Artist", to: Routes.user.create.artist, icon: <PersonPinCircleIcon /> },
   { name: "Create Album", to: Routes.user.create.album, icon: <AlbumIcon /> },
-  // { name: "Create PlayList", to: Routes.user.create.playlist, icon: <PlaylistAddIcon /> },
   // { name: "Add Podcast", to: Routes.user.create.podcast, icon: <MicIcon /> },
 ]
 

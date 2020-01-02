@@ -15,6 +15,15 @@ export const FETCH_HOME = gql`
       }
     }
 
+    # Latest 10 playlists
+    latestPlaylists: playlists(take: $take, page: $page, orderBy: $orderBy) {
+      data {
+        hash
+        title
+        cover_url
+      }
+    }
+
     # latest 1o artists
     latestArtists: artists(take: $take, orderBy: $orderBy) {
       data {
@@ -171,6 +180,16 @@ export const FETCH_RANDOM_ALBUMS = gql`
   }
 `
 
+export const FETCH_RANDOM_PLAYLISTS = gql`
+  query randomPlaylistsData($input: RandomPlaylistsInput!) {
+    randomPlaylists(input: $input) {
+      hash
+      title
+      cover_url
+    }
+  }
+`
+
 export const FETCH_ARTISTS = gql`
   query artistsData($page: Int, $take: Int, $orderBy: [OrderByClause!]) {
     # Latest 10 artists
@@ -179,6 +198,23 @@ export const FETCH_ARTISTS = gql`
         hash
         stage_name
         poster_url
+      }
+      paginatorInfo {
+        hasMorePages
+        currentPage
+      }
+    }
+  }
+`
+
+export const FETCH_PLAYLISTS = gql`
+  query playlistsData($page: Int, $take: Int, $orderBy: [OrderByClause!]) {
+    # Latest 10 playlists
+    playlists(take: $take, page: $page, orderBy: $orderBy) {
+      data {
+        hash
+        title
+        cover_url
       }
       paginatorInfo {
         hasMorePages
@@ -313,6 +349,33 @@ export const FETCH_ALBUM = gql`
       artist {
         hash
         stage_name
+      }
+    }
+  }
+`
+
+export const FETCH_PLAYLIST = gql`
+  query playlistDetail($hash: String!) {
+    playlist(hash: $hash) {
+      id
+      title
+      hash
+      cover_url
+      tracks {
+        hash
+        title
+        poster_url
+        audio_url
+        number
+        play_count
+        download_count
+        artist {
+          hash
+          stage_name
+        }
+      }
+      user {
+        name
       }
     }
   }
