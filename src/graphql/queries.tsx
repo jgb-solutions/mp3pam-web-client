@@ -52,7 +52,7 @@ export const FETCH_HOME = gql`
 export const FETCH_MANAGE_SCREEN = gql`
   query managePageData($page: Int, $take: Int) {
     me {
-      latestTracks: tracks(take: $take, page: $page,) {
+      latestTracks: tracks(take: $take, page: $page) {
         data {
           hash
           title
@@ -61,6 +61,14 @@ export const FETCH_MANAGE_SCREEN = gql`
             stage_name
             hash
           }
+        }
+      }
+
+      latestPlaylists: playlists(take: $take, page: $page,) {
+        data {
+          hash
+          title
+          cover_url
         }
       }
 

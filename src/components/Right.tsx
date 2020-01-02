@@ -24,9 +24,9 @@ const CreateMenu = [
 
 const libraryMenu = [
   { name: "Tracks", to: Routes.user.manage.tracks, icon: <MusicNoteIcon /> },
+  { name: "PlayLists", to: Routes.user.manage.playlists, icon: <PlaylistAddIcon /> },
   { name: "Artists", to: Routes.user.manage.artists, icon: <PersonPinCircleIcon /> },
   { name: "Albums", to: Routes.user.manage.albums, icon: <AlbumIcon /> },
-  // { name: "PlayLists", to: Routes.user.manage.playlists, icon: <PlaylistAddIcon /> },
   // { name: "Podcasts", to: Routes.user.manage.podcasts, icon: <MicIcon /> },
 ]
 

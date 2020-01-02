@@ -11,6 +11,7 @@ import { TrackScrollingList } from "../../components/TrackScrollingList"
 import { ArtistScrollingList } from "../../components/ArtistScrollingList"
 import { AlbumScrollingList } from "../../components/AlbumScrollingList"
 import Routes from "../../routes"
+import { PlaylistScrollingList } from "../../components/PlaylistScrollingList"
 
 const useStyles = makeStyles(theme => ({
   link: { color: "#fff", fontWeight: 'bold' },
@@ -22,6 +23,7 @@ export default function ManageScreen() {
   const latestTracks = get(data, 'me.latestTracks.data')
   const latestArtists = get(data, 'me.latestArtists.data')
   const latestAlbums = get(data, 'me.latestAlbums.data')
+  const latestPlaylists = get(data, 'me.latestPlaylists.data')
 
   if (loading) return <Spinner.Full />
 
@@ -41,6 +43,17 @@ export default function ManageScreen() {
           <h3>You have no tracks yet. <Link className={styles.link} to={Routes.user.create.track}>Add a new track</Link>.</h3>
         )}
 
+      {latestPlaylists.length ? (
+        <PlaylistScrollingList
+          category="Your Latest Playlists"
+          playlists={latestPlaylists}
+          browse={Routes.user.manage.playlists}
+        />
+      ) : (
+          <h3>You have no playlists yet. <Link className={styles.link} to={Routes.user.create.playlist}>Create a new playlist</Link>.</h3>
+        )
+      }
+
       {latestArtists.length ? (
         <ArtistScrollingList
           category="Your Latest Artists"
@@ -48,7 +61,7 @@ export default function ManageScreen() {
           browse={Routes.user.manage.artists}
         />
       ) : (
-          <h3>You have no albums yet. <Link className={styles.link} to={Routes.user.create.album}>Create a new album</Link>.</h3>
+          <h3>You have no artists yet. <Link className={styles.link} to={Routes.user.create.artist}>Add a new artist</Link>.</h3>
         )}
 
       {latestAlbums.length ? (
@@ -58,7 +71,7 @@ export default function ManageScreen() {
           browse={Routes.user.manage.albums}
         />
       ) : (
-          <h3>You have no artists yet. <Link className={styles.link} to={Routes.user.create.artist}>Add a new artist</Link>.</h3>
+          <h3>You have no albums yet. <Link className={styles.link} to={Routes.user.create.album}>Create a new album</Link>.</h3>
         )}
     </>
   )
