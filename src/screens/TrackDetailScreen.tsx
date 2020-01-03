@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { darken, makeStyles } from "@material-ui/core/styles"
 import { Link, useParams, useHistory } from "react-router-dom"
@@ -39,6 +39,8 @@ import useRelatedTracks from "../hooks/useRelatedTracks"
 import SEO from "../components/SEO"
 import FourOrFour from "../components/FourOrFour"
 import HeaderTitle from "../components/HeaderTitle"
+import AlertDialog from "../components/AlertDialog"
+import { AddTrackToPlaylist } from "./manage/PlaylistEditScreen"
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -126,6 +128,7 @@ const TrackDetailScreen = (props: Props) => {
   const params = useParams()
   const history = useHistory()
   const hash = get(params, 'hash')
+  const [openAddTrackToPlaylistPopup, setOpenAddTrackToPlaylistPopup] = useState(false)
   const { loading: relatedLoading, data: relatedTracksData, fetchRelatedTracks } = useRelatedTracks(hash)
   const relatedTracks = get(relatedTracksData, 'relatedTracks')
 
@@ -288,11 +291,19 @@ const TrackDetailScreen = (props: Props) => {
     return tabs
   }
 
+  const handleAddTrackToPlaylist = () => {
+    setOpenAddTrackToPlaylistPopup(true)
+  }
+
   const getMoreOptions = () => {
     let options = [
       {
         name: 'Play Next',
         method: () => props.playNext(makeSoundList())
+      },
+      {
+        name: 'Add To Playlist',
+        method: handleAddTrackToPlaylist
       },
       {
         name: 'Go To Artist',
@@ -397,6 +408,16 @@ const TrackDetailScreen = (props: Props) => {
         image={track.poster_url}
         artist={`${DOMAIN}/artist/${track.artist.hash}`}
       />
+
+      {openAddTrackToPlaylistPopup && (
+        <AddTrackToPlaylist
+          trackHash={track.hash}
+          onRequestClose={() => {
+            setOpenAddTrackToPlaylistPopup(false)
+          }
+          }
+        />
+      )}
     </div>
   ) : (
       <>

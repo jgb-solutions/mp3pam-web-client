@@ -267,6 +267,19 @@ export const FETCH_MY_ALBUMS = gql`
   }
 `
 
+export const FETCH_MY_PLAYLISTS = gql`
+  query myPlaylistsData($page: Int, $take: Int) {
+    me {
+      playlists(take: $take, page: $page) {
+        data {
+          hash
+          title
+        }
+      }
+    }
+  }
+`
+
 export const FETCH_MY_TRACKS = gql`
   query myAlbumsData($page: Int, $take: Int) {
     me {

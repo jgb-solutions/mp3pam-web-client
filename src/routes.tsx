@@ -41,6 +41,7 @@ const Routes = {
 	},
 	playlist: {
 		show: `/playlist/:hash`,
+		edit: `/manage-playlists/:hash`,
 		detailPage: (hash: string) => `/playlist/${hash}`,
 		goToAuthorDetail: (authorID: string) => `/author/${authorID}`,
 		editPage: (hash: string) => `/manage-playlists/${hash}`,

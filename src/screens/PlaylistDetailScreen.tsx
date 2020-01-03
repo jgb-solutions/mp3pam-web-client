@@ -40,10 +40,6 @@ import FourOrFour from "../components/FourOrFour"
 import HeaderTitle from "../components/HeaderTitle"
 
 const useStyles = makeStyles(theme => ({
-  row: {
-    display: "flex",
-    flexDirection: "row"
-  },
   imageContainer: {
     textAlign: 'center',
   },
@@ -59,17 +55,6 @@ const useStyles = makeStyles(theme => ({
   listBy: {
     color: darken(colors.white, 0.5),
     fontSize: 12
-  },
-  listAuthor: {
-    textDecoration: "none",
-    color: colors.white,
-    "&:hover": {
-      textDecoration: "underline"
-    },
-    "&:link": {
-      textDecoration: "none",
-      color: "white"
-    }
   },
   detailsWrapper: {
     [theme.breakpoints.up(SMALL_SCREEN_SIZE)]: {
@@ -278,8 +263,7 @@ const PlaylistDetailScreen = (props: Props) => {
             <h5 className={styles.listType}>Playlist</h5>
             <h1 className={styles.listName}>{playlist.title}</h1>
             <p className={styles.listByAuthor} style={{ marginBottom: 5 }}>
-              <span className={styles.listBy}>By </span>
-              <span className={styles.listAuthor}>{playlist.user.name}</span>
+              <span className={styles.listBy}>By </span> {playlist.user.name}
             </p>
             <Grid className={styles.ctaButtons} container spacing={2}>
               <Grid item xs={2} implementation="css" smUp component={Hidden} />

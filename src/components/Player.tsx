@@ -11,13 +11,12 @@ import {
 	VolumeMuteOutlined,
 	PlaylistPlayOutlined
 } from "@material-ui/icons"
-import MoreIcon from '@material-ui/icons/MoreVert'
 import { get } from "lodash-es"
 import { useDispatch, useSelector } from "react-redux"
 import React, { useState, useEffect } from "react"
 import IconButton from "@material-ui/core/IconButton"
 import { useHistory } from "react-router-dom"
-import { Drawer, Slide } from "@material-ui/core"
+import { Slide } from "@material-ui/core"
 import LoopIcon from '@material-ui/icons/Loop'
 
 import Slider from "./Slider"
@@ -46,7 +45,6 @@ export default function Player() {
 	const [soundLoading, setSoundLoading] = useState(false)
 	const { updatePlayCount } = useUpdatePlayCount()
 	const [loggedHash, setLoggedHash] = useState('')
-	const [drawerOPen, setDrawerOpen] = useState(false)
 	const storePlayerData = useSelector((appState: AppStateInterface) => appState.player)
 	const syncState = (state: any) => dispatch(playerActions.syncState(state))
 	const [state, setState] = useState<PlayerInterface>({
@@ -643,19 +641,6 @@ export default function Player() {
 						</div>
 					</div>
 				</div>
-				{/* Bottom Drawer */}
-				<IconButton
-					aria-label="Open left menu"
-					onClick={() => setDrawerOpen(true)}
-					color="inherit"
-					className={styles.bottomMenuIcon}>
-					<MoreIcon />
-				</IconButton>
-				<Drawer anchor='bottom' open={drawerOPen} onClose={() => setDrawerOpen(false)}>
-					<div className={styles.bottomDrawer}>
-						bottom content
-				</div>
-				</Drawer>
 			</div>
 		</Slide >
 	)

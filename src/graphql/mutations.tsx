@@ -65,9 +65,24 @@ export const DELETE_ALBUM = gql`
   }
 `
 
+export const DELETE_PLAYLIST = gql`
+  mutation DeletePlaylist($hash: String!) {
+    deletePlaylist(hash: $hash) {
+      success
+    }
+  }
+`
+
 export const DELETE_ALBUM_TRACK = gql`
   mutation DeleteAlbumTrack($hash: String!) {
     deleteAlbumTrack(hash: $hash) {
+      success
+    }
+  }
+`
+export const DELETE_PLAYLIST_TRACK = gql`
+  mutation DeletePlaylistTrack($trackHash: String!, $playlistHash: String!) {
+    deletePlaylistTrack(trackHash: $trackHash, playlistHash: $playlistHash) {
       success
     }
   }
@@ -76,6 +91,14 @@ export const DELETE_ALBUM_TRACK = gql`
 export const ADD_TRACK_TO_ALBUM = gql`
   mutation AddTrackToAlbum($input: AddTrackToAlbumInput!) {
     addTrackToAlbum(input: $input) {
+      success
+    }
+  }
+`
+
+export const ADD_TRACK_TO_PLAYLIST = gql`
+  mutation AddTrackToPlaylist($input: AddTrackToPlaylistInput!) {
+    addTrackToPlaylist(input: $input) {
       success
     }
   }

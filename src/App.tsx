@@ -47,7 +47,9 @@ import ManageScreen from './screens/manage/ManageScreen'
 import ManageTracksScreen from './screens/manage/ManageTracksScreen'
 import ManageArtistsScreen from './screens/manage/ManageArtistsScreen'
 import ManageAlbumsScreen from './screens/manage/ManageAlbumsScreen'
+import ManagePlaylistsScreen from './screens/manage/ManagePlaylistsScreen'
 import AlbumEditScreen from './screens/manage/AlbumEditScreen'
+import PlaylistEditScreen from './screens/manage/PlaylistEditScreen'
 // import AddPodcastScreen from './screens/manage/AddPodcastScreen'
 import CreateAlbumScreen from './screens/manage/CreateAlbumScreen'
 import AddArtistScreen from './screens/manage/AddArtistScreen'
@@ -280,11 +282,22 @@ export default function App() {
                 <Route path={Routes.user.manage.albums} exact>
                   <Main>
                     <ManageAlbumsScreen />
+                    <ManageAlbumsScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.user.manage.playlists} exact>
+                  <Main>
+                    <ManagePlaylistsScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.album.edit} exact>
                   <Main>
                     <AlbumEditScreen />
+                  </Main>
+                </Route>
+                <Route path={Routes.playlist.edit} exact>
+                  <Main>
+                    <PlaylistEditScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.user.create.track}>
