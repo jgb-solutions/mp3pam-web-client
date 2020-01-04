@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { connect } from "react-redux"
+import { connect, useSelector } from "react-redux"
 import { darken, makeStyles } from "@material-ui/core/styles"
 import { Link, useParams, useHistory } from "react-router-dom"
 import { get } from 'lodash'
@@ -13,6 +13,7 @@ import TwitterIcon from '@material-ui/icons/Twitter'
 import TelegramIcon from '@material-ui/icons/Telegram'
 import WhatsappIcon from '@material-ui/icons/WhatsApp'
 import EmailIcon from '@material-ui/icons/Email'
+import HeadsetIcon from '@material-ui/icons/Headset'
 
 import {
   FacebookShareButton,
@@ -130,6 +131,7 @@ const TrackDetailScreen = (props: Props) => {
   const hash = get(params, 'hash')
   const [openAddTrackToPlaylistPopup, setOpenAddTrackToPlaylistPopup] = useState(false)
   const { loading: relatedLoading, data: relatedTracksData, fetchRelatedTracks } = useRelatedTracks(hash)
+  const currentUser = useSelector(({ currentUser }: AppStateInterface) => currentUser)
   const relatedTracks = get(relatedTracksData, 'relatedTracks')
 
   const { data, loading, error } = useTrackDetail(hash)
@@ -259,26 +261,13 @@ const TrackDetailScreen = (props: Props) => {
       })
     }
 
-    tabs.push({
-      icon: <InfoIcon />,
-      label: "Detail",
-      value: (
-        <>
-          <p className={styles.listByAuthor}>
-            <span className={styles.listBy}>Play: </span>
-            <span className={styles.listAuthor}>
-              {track.play_count}
-            </span>
-
-            <span className={styles.listBy}>, Download: </span>
-            <span className={styles.listAuthor}>
-              {track.download_count}
-            </span>
-          </p>
-          {track.detail && <p dangerouslySetInnerHTML={{ __html: track.detail }} style={{ wordWrap: 'normal' }} />}
-        </>
-      )
-    })
+    if (track.detail) {
+      tabs.push({
+        icon: <InfoIcon />,
+        label: "Detail",
+        value: <p dangerouslySetInnerHTML={{ __html: track.detail }} style={{ wordWrap: 'normal' }} />
+      })
+    }
 
     if (track.lyrics) {
       tabs.push({
@@ -300,20 +289,22 @@ const TrackDetailScreen = (props: Props) => {
       {
         name: 'Play Next',
         method: () => props.playNext(makeSoundList())
-      },
-      {
+      }
+    ]
+
+    if (currentUser.loggedIn) {
+      options.push({
         name: 'Add To Playlist',
         method: handleAddTrackToPlaylist
-      },
-      {
-        name: 'Go To Artist',
-        method: () => {
-          history.push(Routes.artist.detailPage(track.artist.hash))
-        }
-      },
-      // { name: 'Remove from your Liked Tracks', method: () => { } },
-      // { name: 'Add To Playlist', method: () => { } },
-    ]
+      })
+    }
+
+    options.push({
+      name: 'Go To Artist',
+      method: () => {
+        history.push(Routes.artist.detailPage(track.artist.hash))
+      }
+    })
 
     if (track.album) {
       options.push({
@@ -358,6 +349,17 @@ const TrackDetailScreen = (props: Props) => {
               >
                 {track.genre.name}
               </Link>
+            </p>
+            <p className={styles.listByAuthor}>
+              <HeadsetIcon className={styles.listBy} /> {' '}
+              <span className={styles.listAuthor}>
+                {track.play_count}
+              </span>
+              &nbsp;&nbsp;_&nbsp;&nbsp;
+              <GetAppIcon className={styles.listBy} /> {' '}
+              <span className={styles.listAuthor}>
+                {track.download_count}
+              </span>
             </p>
             <Grid className={styles.ctaButtons} container spacing={2}>
               <Grid item xs={2} implementation="css" smUp component={Hidden} />
