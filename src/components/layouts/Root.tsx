@@ -39,12 +39,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="transition-container">
-      {!!process.env.REACT_APP_SHOW_ADS && (
-        <Helmet>
-          <script data-ad-client="ca-pub-3793163111580068" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        </Helmet>
-      )}
-
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <Grid container className={`${styles.container} react-transition scale-in`}>

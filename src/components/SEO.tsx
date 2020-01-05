@@ -32,7 +32,7 @@ export default function SEO({ title, url, description, type, image, artist, imag
         <meta property="og:type" content={type || "website"} />
         <meta property="og:image" content={imageContent} />
         {imageWidth && <meta property="og:image:width" content={`${imageWidth}`} />}
-        {imageHeight && <meta property="og:image:width" content={`${imageHeight}`} />}
+        {imageHeight && <meta property="og:image:height" content={`${imageHeight}`} />}
 
         <meta property="fb:app_id" content={FB_APP_ID} />
 
