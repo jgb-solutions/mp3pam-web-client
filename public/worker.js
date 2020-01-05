@@ -26,7 +26,7 @@ self.addEventListener("fetch", event => {
 })
 
 self.addEventListener("activate", event => {
-  var cacheWhiteList = ["pwa-task-manager"]
+  var cacheWhiteList = ["pwa-task-manager", "/"]
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
