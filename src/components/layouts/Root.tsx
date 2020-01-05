@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet'
 
 import Player from '../Player'
 import colors from "../../utils/colors"
+import SEO from '../SEO'
 
 export const useStyles = makeStyles({
   '@global': {
@@ -47,6 +48,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           ></script>
         </Helmet>
       )}
+
+      <SEO />
 
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
