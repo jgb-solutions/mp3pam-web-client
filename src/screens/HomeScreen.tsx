@@ -9,6 +9,7 @@ import { ArtistScrollingList } from "../components/ArtistScrollingList"
 import { PlaylistScrollingList } from "../components/PlaylistScrollingList"
 import { AlbumScrollingList } from "../components/AlbumScrollingList"
 import Routes from "../routes"
+import SEO from "../components/SEO"
 
 export default function HomeScreen() {
 	const { loading, error, homeData } = useHome()
@@ -20,6 +21,7 @@ export default function HomeScreen() {
 	return (
 		<>
 			<HeaderTitle icon={<Home />} text="Home" />
+			<SEO />
 
 			{homeData.latestTracks.data.length ? (
 				<TrackScrollingList

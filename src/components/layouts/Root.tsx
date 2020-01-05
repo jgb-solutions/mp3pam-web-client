@@ -49,8 +49,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </Helmet>
       )}
 
-      <SEO />
-
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <Grid container className={`${styles.container} react-transition scale-in`}>
