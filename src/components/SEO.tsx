@@ -20,7 +20,7 @@ export default function SEO({ title, url, description, type, image, artist, imag
       ${APP_NAME} is a free entertainment platform for sharing all kinds of sounds.
       Music, Podcast, and even Ad. You name it. Brought to you by JGB Solutions.
   `
-  const imageContent = image || `${DOMAIN}/social-media-share.png`
+  const imageContent = image || `${DOMAIN}/assets/images/social-media-share.png`
 
   return (
     <>
