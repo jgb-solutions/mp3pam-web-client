@@ -5,7 +5,6 @@ import { Helmet } from 'react-helmet'
 
 import Player from '../Player'
 import colors from "../../utils/colors"
-import SEO from '../SEO'
 
 export const useStyles = makeStyles({
   '@global': {
@@ -42,10 +41,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <div className="transition-container">
       {!!process.env.REACT_APP_SHOW_ADS && (
         <Helmet>
-          <script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-          ></script>
+          <script data-ad-client="ca-pub-3793163111580068" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         </Helmet>
       )}
 
