@@ -1,5 +1,5 @@
 var CACHE_NAME = "pwa-task-manager"
-var urlsToCache = [] // add url to cache
+var urlsToCache = ["/assets/images/logo-trans-red-white.png"]
 
 // Install  a service worker
 self.addEventListener("install", event => {

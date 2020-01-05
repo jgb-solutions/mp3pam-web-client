@@ -2,11 +2,10 @@ import { useMutation } from '@apollo/react-hooks'
 
 import { ADD_TRACK_TO_PLAYLIST } from '../graphql/mutations'
 import { ApolloError } from 'apollo-client'
-
-type InputProps = { playlistHash: string, trackHash: string }
+import { FETCH_PLAYLISTS } from '../graphql/queries'
 
 type ReturnType = {
-  addTrackToPlaylist: (input: InputProps) => void,
+  addTrackToPlaylist: (playlistHash: string, trackHash: string) => void,
   data: {
     success: boolean
   },
@@ -20,9 +19,11 @@ export default function useAddTrackToPlaylist(): ReturnType {
     fetchPolicy: 'no-cache',
   })
 
-  const addTrackToPlaylist = (input: InputProps) => {
+  const addTrackToPlaylist = (playlistHash: string, trackHash: string) => {
+    console.log(playlistHash, trackHash)
     addTrackToPlaylistMutation({
-      variables: { input }
+      variables: { playlistHash, trackHash },
+      refetchQueries: [{ query: FETCH_PLAYLISTS }]
     })
   }
 

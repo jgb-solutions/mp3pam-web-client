@@ -26,12 +26,12 @@ import Spinner from "../../components/Spinner"
 import useAddTrackToPlaylist from "../../hooks/useAddTrackToPlaylist"
 import FourOrFour from "../../components/FourOrFour"
 import HeaderTitle from "../../components/HeaderTitle"
-import useMyTracks from "../../hooks/useMyTracks"
 import AlertDialog from "../../components/AlertDialog"
 import CheckAuth from "../../components/CheckAuth"
-import PlaylistInterface from "../../interfaces/PlaylistInterface"
 import { StyledTableCell } from "../../components/PlaylistTracksTable"
 import useDeletePlaylistTrack from "../../hooks/useDeletePlaylistTrack"
+import useMyPlaylists from "../../hooks/useMyPlaylists"
+import useCreatePlaylist from "../../hooks/useCreatePlaylist"
 
 
 const useStyles = makeStyles(theme => ({
@@ -114,43 +114,61 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export const CreatePlaylistForm = ({ onNumberChange, tracks }: {
-  onNumberChange: (value: { track_number: number }) => void,
-  tracks: PlaylistTrackInterface[]
+export const CreatePlaylistForm = ({ onPlaylistCreate, playlists }: {
+  onPlaylistCreate: (hash: string) => void,
+  playlists: { title: string }[]
 }) => {
   const styles = useStyles()
+  const { createPlaylist, data, loading, error } = useCreatePlaylist()
   const {
     register,
     handleSubmit,
     errors
-  } = useForm<{ track_number: number }>({ mode: 'onBlur', defaultValues: { track_number: tracks.length + 1 } })
+  } = useForm<{ title: string }>({ mode: 'onBlur' })
+
+  useEffect(() => {
+    if (data) {
+      console.log(data)
+      onPlaylistCreate(data.CreatePlaylist.hash)
+    }
+    // eslint-disable-next-line
+  }, [data])
+
+  const handleCreatePlaylist = ({ title }: { title: string }) => {
+    createPlaylist(title)
+  }
+
+  if (loading) return <Spinner.Full />
+
+  if (error) {
+    return (<h3>Error creating the playlist. Please reload page.</h3>)
+  }
 
   return (
     <>
-      <form onSubmit={handleSubmit(onNumberChange)} noValidate>
+      <form onSubmit={handleSubmit(handleCreatePlaylist)} noValidate>
         <Grid container direction='row' spacing={2}>
           <Grid item xs={8}>
             <TextField
               inputRef={register({
-                required: "The track number is required.",
+                required: "The title of the playlist is required.",
                 validate: {
-                  positive_number: value => value > 0 || `The value can't be a negative number.`,
                   should_not_already_exists: value =>
-                    !tracks.map(track => track.number).find(number => number === parseInt(value)) ||
-                    `The track number already exists.`
+                    !playlists.map(playlists => playlists.title).find(title => title === value) ||
+                    `A playlist with the same  already exists.`
                 }
               })}
-              name="track_number"
-              id="track_number"
-              type="number"
-              error={!!errors.track_number}
-              helperText={errors.track_number && (
-                <span className={styles.errorColor}>{errors.track_number.message}</span>
+              name="title"
+              id="title"
+              type="text"
+              error={!!errors.title}
+              helperText={errors.title && (
+                <span className={styles.errorColor}>{errors.title.message}</span>
               )}
             />
           </Grid>
           <Grid item xs={4}>
-            <Button size='small' type="submit">Set</Button>
+            <Button size='small' type="submit">Create</Button>
           </Grid>
         </Grid>
       </form>
@@ -163,14 +181,15 @@ export const AddTrackToPlaylist = ({ trackHash, onRequestClose }: {
   onRequestClose: () => void,
 }) => {
   const styles = useStyles()
+  const [openCreatePlaylistPopup, setOpenCreatePlaylistPopup] = useState(false)
   const {
     addTrackToPlaylist,
     data: addTrackToPlaylistResponse,
     loading: addingTrackToPlaylist,
     error: errorAddingTrackToPlaylist
   } = useAddTrackToPlaylist()
-  const { loading, error, data } = useMyTracks()
-  const tracks = get(data, 'me.tracks.data')
+  const { loading, error, data } = useMyPlaylists()
+  const playlists = get(data, 'me.playlists.data')
 
   useEffect(() => {
     if (addTrackToPlaylistResponse) {
@@ -179,8 +198,8 @@ export const AddTrackToPlaylist = ({ trackHash, onRequestClose }: {
     // eslint-disable-next-line
   }, [addTrackToPlaylistResponse])
 
-  const handleAddTrackToPlaylist = (trackHash: string) => {
-    addTrackToPlaylist({ playlistHash: trackHash, trackHash: trackHash, })
+  const handleAddTrackToPlaylist = (playlistHash: string) => {
+    addTrackToPlaylist(playlistHash, trackHash)
   }
 
   if (loading) return <Spinner.Full />
@@ -196,33 +215,53 @@ export const AddTrackToPlaylist = ({ trackHash, onRequestClose }: {
   }
 
   return (
-    <>
-      {tracks ? (
+    <AlertDialog
+      open={true}
+      handleClose={onRequestClose}>
+      <HeaderTitle
+        textStyle={{ fontSize: 15 }}
+        icon={<FormatListNumberedIcon />}
+        text={`Choose from your playlists or create a new one`}
+      />
+
+      <p>
+        <Button
+          size='large'
+          onClick={() => setOpenCreatePlaylistPopup(true)}>
+          Create a new playlist
+        </Button>
+      </p>
+
+      {openCreatePlaylistPopup && (
+        <CreatePlaylistForm
+          playlists={playlists}
+          onPlaylistCreate={handleAddTrackToPlaylist}
+        />
+      )}
+
+      {/* {!openCreatePlaylistPopup ? (
+
+      ) : null } */}
+      {playlists ? (
         <>
-          <HeaderTitle icon={<MusicNoteIcon />} text="Tracks" />
+          <HeaderTitle icon={<FormatListNumberedIcon />} text="Your Playlists" />
 
           <Table className={styles.table} size="small">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>Title</StyledTableCell>
-                <StyledTableCell>&nbsp;</StyledTableCell>
-              </TableRow>
-            </TableHead>
             <TableBody>
-              {tracks.map((track: { hash: string, title: string }, index: number) => {
+              {playlists.map((playlist: { hash: string, title: string }, index: number) => {
                 return (
                   <TableRow key={index} style={{
-                    borderBottom: tracks.length - 1 === index ? '' : '1px solid white',
+                    borderBottom: playlists.length - 1 === index ? '' : '1px solid white',
                   }}>
                     <StyledTableCell style={{ width: '80%' }}>
-                      {track.title}
+                      {playlist.title}
                     </StyledTableCell>
                     <StyledTableCell style={{ width: '10%' }}>
                       <span
                         onClick={() => {
                           if (addingTrackToPlaylist) return
 
-                          handleAddTrackToPlaylist(track.hash)
+                          handleAddTrackToPlaylist(playlist.hash)
                         }}
                         className={styles.link}
                         style={{ cursor: 'pointer' }}>Add</span>
@@ -234,32 +273,18 @@ export const AddTrackToPlaylist = ({ trackHash, onRequestClose }: {
           </Table>
         </>
       ) : (
-          <HeaderTitle icon={<MusicNoteIcon />} text="This playlist has no tracks yet" />
+          <HeaderTitle icon={<FormatListNumberedIcon />} text="You have no playlists yet" />
         )}
-      {/* Choose from existing tracks form */}
-      {/* <AlertDialog
-        open={openAddTrackToPlaylistPopup}
-        handleClose={() => setOpenAddTrackToPlaylistPopup(false)}>
-        <HeaderTitle
-          textStyle={{ fontSize: 15 }}
-          icon={<FormatListNumberedIcon />}
-          text={`Choose from your tracks or add a new one`}
-        />
 
-        <AddTrackToPlaylist trackHash={track.hash} onRequestClose={() => {
-          setOpenAddTrackToPlaylistPopup(false)
-        }} />
-
-        <DialogActions>
-          <Button
-            size='small'
-            onClick={() => setOpenAddTrackToPlaylistPopup(false)}
-            className={styles.noBgButton}>
-            Cancel
+      <DialogActions>
+        <Button
+          size='small'
+          onClick={onRequestClose}
+          className={styles.noBgButton}>
+          Cancel
           </Button>
-        </DialogActions>
-      </AlertDialog> */}
-    </>
+      </DialogActions>
+    </AlertDialog >
   )
 }
 

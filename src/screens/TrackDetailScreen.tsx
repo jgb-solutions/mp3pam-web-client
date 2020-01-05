@@ -40,7 +40,6 @@ import useRelatedTracks from "../hooks/useRelatedTracks"
 import SEO from "../components/SEO"
 import FourOrFour from "../components/FourOrFour"
 import HeaderTitle from "../components/HeaderTitle"
-import AlertDialog from "../components/AlertDialog"
 import { AddTrackToPlaylist } from "./manage/PlaylistEditScreen"
 
 const useStyles = makeStyles(theme => ({
@@ -416,8 +415,7 @@ const TrackDetailScreen = (props: Props) => {
           trackHash={track.hash}
           onRequestClose={() => {
             setOpenAddTrackToPlaylistPopup(false)
-          }
-          }
+          }}
         />
       )}
     </div>

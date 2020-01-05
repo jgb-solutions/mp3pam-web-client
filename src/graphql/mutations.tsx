@@ -97,9 +97,16 @@ export const ADD_TRACK_TO_ALBUM = gql`
 `
 
 export const ADD_TRACK_TO_PLAYLIST = gql`
-  mutation AddTrackToPlaylist($input: AddTrackToPlaylistInput!) {
-    addTrackToPlaylist(input: $input) {
+  mutation AddTrackToPlaylist($playlistHash: String!, $trackHash: String!, ) {
+    addTrackToPlaylist(playlistHash: $playlistHash, trackHash: $trackHash) {
       success
+    }
+  }
+`
+export const CREATE_PLAYLIST = gql`
+  mutation CreatePlaylist($title: String!) {
+    CreatePlaylist(title: $title) {
+      hash
     }
   }
 `

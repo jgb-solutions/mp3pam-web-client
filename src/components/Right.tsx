@@ -16,7 +16,7 @@ import { UserData } from '../interfaces/UserInterface'
 
 const CreateMenu = [
   { name: "Add Track", to: Routes.user.create.track, icon: <MusicNoteIcon /> },
-  { name: "Create PlayList", to: Routes.user.create.playlist, icon: <PlaylistAddIcon /> },
+  // { name: "Create PlayList", to: Routes.user.create.playlist, icon: <PlaylistAddIcon /> },
   { name: "Add Artist", to: Routes.user.create.artist, icon: <PersonPinCircleIcon /> },
   { name: "Create Album", to: Routes.user.create.album, icon: <AlbumIcon /> },
   // { name: "Add Podcast", to: Routes.user.create.podcast, icon: <MicIcon /> },
