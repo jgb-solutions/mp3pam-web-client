@@ -9,6 +9,7 @@ import HeaderTitle from "../../components/HeaderTitle"
 import useArtists from "../../hooks/useArtists"
 import ArtistThumbnail from "../../components/ArtistThumbnail"
 import { ArtistThumbnailData } from "../../components/ArtistScrollingList"
+import SEO from "../../components/SEO"
 
 export default function BrowseArtistsScreen() {
   const { loading, error, data, loadMoreArtists, hasMore } = useArtists()
@@ -21,6 +22,8 @@ export default function BrowseArtistsScreen() {
   return (
     <>
       <HeaderTitle icon={<PersonPinCircleIcon />} text="Browse Artists" />
+      <SEO title={`Browse Artists`} />
+
       <InfiniteScroll
         pageStart={1}
         loadMore={loadMoreArtists}

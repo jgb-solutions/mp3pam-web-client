@@ -9,6 +9,7 @@ import HeaderTitle from "../../components/HeaderTitle"
 import usePlaylists from "../../hooks/usePlaylists"
 import PlaylistThumbnail from "../../components/PlaylistThumbnail"
 import { PlaylistThumbnailData } from "../../components/PlaylistScrollingList"
+import SEO from "../../components/SEO"
 
 export default function BrowsePlaylistsScreen() {
   const { loading, error, data, loadMorePlaylists, hasMore } = usePlaylists()
@@ -21,6 +22,8 @@ export default function BrowsePlaylistsScreen() {
   return (
     <>
       <HeaderTitle icon={<PersonPinCircleIcon />} text="Browse Playlists" />
+      <SEO title={`Browse Playlists`} />
+
       <InfiniteScroll
         pageStart={1}
         loadMore={loadMorePlaylists}

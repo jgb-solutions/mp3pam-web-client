@@ -62,7 +62,7 @@ const Right = (props: Props) => {
                 <span className={styles.linkIcon}>
                   <Avatar style={{ width: 20, height: 20 }} alt={user.name} src={user.avatar_url} />
                 </span>
-                <span className={styles.linkText}>Your Profile</span>
+                <span className={styles.linkText}>Your Account</span>
               </NavLink>
             </div>
 

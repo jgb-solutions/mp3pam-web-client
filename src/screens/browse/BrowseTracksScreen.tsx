@@ -9,6 +9,7 @@ import HeaderTitle from "../../components/HeaderTitle"
 import useTracks from "../../hooks/useTracks"
 import TrackThumbnail from "../../components/TrackThumbnail"
 import { TrackWithArtistThumbnailData } from "../../components/TrackScrollingList"
+import SEO from "../../components/SEO"
 
 export default function BrowseTracksScreen() {
   const { loading, error, data, loadMoreTracks, hasMore } = useTracks()
@@ -21,6 +22,8 @@ export default function BrowseTracksScreen() {
   return (
     <>
       <HeaderTitle icon={<MusicNoteIcon />} text="Browse Tracks" />
+      <SEO title={`Browse Tracks`} />
+
       <InfiniteScroll
         pageStart={1}
         loadMore={loadMoreTracks}

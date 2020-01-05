@@ -31,6 +31,7 @@ import useUpdateUser from "../../hooks/useUpdateUser"
 import useFileUpload from "../../hooks/useFileUpload"
 import AlertDialog from "../../components/AlertDialog"
 import Divider from "../../components/Divider"
+import SEO from "../../components/SEO"
 
 
 export const useStyles = makeStyles({
@@ -148,6 +149,7 @@ export default function AccountScreen() {
 
   return (
     <CheckAuth className='react-transition scale-in'>
+      <SEO title={`Your Account`} />
       {userData && (
         <>
           <HeaderTitle

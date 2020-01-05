@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import Logo from '../components/Logo'
 import LogoJGB from '../components/LogoJGB'
+import SEO from '../components/SEO'
 
 export default class AboutScreen extends Component {
   render() {
@@ -10,6 +11,7 @@ export default class AboutScreen extends Component {
         paddingTop: 150,
         textAlign: 'center',
       }}>
+        <SEO title={`About Us`} />
         <Logo />
         <p>
           MP3Pam is a free entertainment platform for sharing all kinds of audios. <br />

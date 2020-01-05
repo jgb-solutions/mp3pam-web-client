@@ -19,6 +19,7 @@ import Routes from "../../routes"
 import Button from "../../components/Button"
 import colors from "../../utils/colors"
 import useDeletePlaylist from "../../hooks/useDeletePlaylist"
+import SEO from "../../components/SEO"
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -68,6 +69,7 @@ export default function ManagePlaylistsScreen() {
 
   return (
     <>
+      <SEO title={`Your Playlists`} />
       {playlists.data.length ? (
         <>
           <HeaderTitle icon={<PlaylistAddIcon />} text="Your Playlists" />

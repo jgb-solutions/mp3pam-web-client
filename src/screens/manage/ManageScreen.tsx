@@ -12,6 +12,7 @@ import { ArtistScrollingList } from "../../components/ArtistScrollingList"
 import { AlbumScrollingList } from "../../components/AlbumScrollingList"
 import Routes from "../../routes"
 import { PlaylistScrollingList } from "../../components/PlaylistScrollingList"
+import SEO from "../../components/SEO"
 
 const useStyles = makeStyles(theme => ({
   link: { color: "#fff", fontWeight: 'bold' },
@@ -32,6 +33,7 @@ export default function ManageScreen() {
   return (
     <>
       <HeaderTitle icon={<GroupWorkIcon />} text="Your Library" />
+      <SEO title={`Your Library`} />
 
       {latestTracks.length ? (
         <TrackScrollingList

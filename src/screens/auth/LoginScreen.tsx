@@ -18,6 +18,7 @@ import { emailRegex } from "../../utils/validators"
 import AppStateInterface from "../../interfaces/AppStateInterface"
 import TextIcon from "../../components/TextIcon"
 import { LOG_USER_IN, FACEBOOK_LOGIN_URL } from "../../graphql/queries"
+import SEO from "../../components/SEO"
 
 const useStyles = makeStyles({
   facebookSignupButton: {
@@ -91,6 +92,8 @@ function LoginScreen() {
 
   return (
     <div style={{ maxWidth: 450, margin: '0 auto', textAlign: 'center' }}>
+      <SEO title={`Login To Your Account`} />
+
       <Logo size={300} />
       {/* <h1 style={{ fontSize: 12 }}>To continue, log in to MP3 Pam.</h1> */}
       <Button className={styles.facebookLoginButton} size='large' onClick={loginWithFacebook}>Log In With Facebook</Button>

@@ -28,6 +28,7 @@ import { ADD_GENRE_MUTATION } from "../../graphql/mutations"
 import { IMG_BUCKET, AUDIO_BUCKET, MAX_AUDIO_FILE_SIZE, MAX_IMG_FILE_SIZE, MIN_TRACK_LYRICS_LENGTH, MIN_TRACK_DETAIL_LENGTH } from "../../utils/constants"
 import { getFile } from "../../utils/helpers"
 import useAddArtist from "../../hooks/useAddArtist"
+import SEO from "../../components/SEO"
 
 export interface FormData {
 	title: string
@@ -414,6 +415,7 @@ export default function AddTrackScreen() {
 	return (
 		<CheckAuth className='react-transition scale-in'>
 			<HeaderTitle icon={<MusicNoteIcon />} text={`Add a new track`} />
+			<SEO title={`Add a new track`} />
 
 			<form onSubmit={handleSubmit(handleAddTrack)} noValidate>
 				<TextField

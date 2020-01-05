@@ -32,6 +32,7 @@ import CheckAuth from "../../components/CheckAuth"
 import AlbumInterface from "../../interfaces/AlbumInterface"
 import { StyledTableCell } from "../../components/AlbumTracksTable"
 import useDeleteAlbumTrack from "../../hooks/useDeleteAlbumTrack"
+import SEO from "../../components/SEO"
 
 
 const useStyles = makeStyles(theme => ({
@@ -303,6 +304,8 @@ export default function AlbumEditScreen() {
 
   return (
     <CheckAuth className="react-transition flip-in-x-reverse">
+      <SEO title={`Edit Album`} />
+
       {album ? (
         <>
           <HeaderTitle

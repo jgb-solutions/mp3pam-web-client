@@ -32,6 +32,7 @@ import { StyledTableCell } from "../../components/PlaylistTracksTable"
 import useDeletePlaylistTrack from "../../hooks/useDeletePlaylistTrack"
 import useMyPlaylists from "../../hooks/useMyPlaylists"
 import useCreatePlaylist from "../../hooks/useCreatePlaylist"
+import SEO from "../../components/SEO"
 
 
 const useStyles = makeStyles(theme => ({
@@ -331,6 +332,8 @@ export default function PlaylistEditScreen() {
 
   return (
     <CheckAuth className="react-transition flip-in-x-reverse">
+      <SEO title={`Edit Playlist`} />
+
       {playlist ? (
         <>
           <HeaderTitle

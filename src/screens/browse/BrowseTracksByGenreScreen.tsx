@@ -10,6 +10,7 @@ import HeaderTitle from "../../components/HeaderTitle"
 import useTracksByGenre from "../../hooks/useTracksByGenre"
 import TrackThumbnail from "../../components/TrackThumbnail"
 import { TrackWithArtistThumbnailData } from "../../components/TrackScrollingList"
+import SEO from "../../components/SEO"
 
 export default function BrowseTracksByGenreScreen() {
   const params = useParams()
@@ -25,6 +26,8 @@ export default function BrowseTracksByGenreScreen() {
   return (
     <>
       <HeaderTitle icon={<MusicNoteIcon />} text={`Browse ${genre ? genre.name : ''}  Tracks`} />
+      <SEO title={`Browse ${genre ? genre.name : ''}  Tracks`} />
+
       <InfiniteScroll
         pageStart={1}
         loadMore={loadMoreTracks}

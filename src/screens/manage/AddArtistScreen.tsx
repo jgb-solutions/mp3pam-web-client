@@ -25,6 +25,7 @@ import Routes from "../../routes"
 import AlertDialog from "../../components/AlertDialog"
 import { getFile } from "../../utils/helpers"
 import { IMG_BUCKET, MAX_IMG_FILE_SIZE, MIN_SOCIAL_MEDIA_USERNAME_LENGTH, MIN_ARTIST_BIO_LENGTH } from "../../utils/constants"
+import SEO from "../../components/SEO"
 
 
 type IconFieldProps = {
@@ -119,6 +120,7 @@ export default function AddArtistScreen() {
   return (
     <CheckAuth className='react-transition scale-in'>
       <HeaderTitle icon={<PersonPinCircleIcon />} text={`Add a new artist`} />
+      <SEO title={`Add a new artist`} />
 
       <form onSubmit={handleSubmit(handleAddArtist)} noValidate>
         <Grid container direction='row' spacing={2}>

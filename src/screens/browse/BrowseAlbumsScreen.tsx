@@ -9,6 +9,7 @@ import HeaderTitle from "../../components/HeaderTitle"
 import useAlbums from "../../hooks/useAlbums"
 import AlbumThumbnail from "../../components/AlbumThumbnail"
 import { AlbumThumbnailData } from "../../components/AlbumScrollingList"
+import SEO from "../../components/SEO"
 
 export default function BrowseAlbumsScreen() {
   const { loading, error, data, loadMoreAlbums, hasMore } = useAlbums()
@@ -23,6 +24,8 @@ export default function BrowseAlbumsScreen() {
       {albums.data.length ? (
         <>
           <HeaderTitle icon={<AlbumIcon />} text="Browse Albums" />
+          <SEO title={`Browse Albums`} />
+
           <InfiniteScroll
             pageStart={1}
             loadMore={loadMoreAlbums}

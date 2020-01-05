@@ -19,6 +19,7 @@ import Routes from "../../routes"
 import Button from "../../components/Button"
 import colors from "../../utils/colors"
 import useDeleteAlbum from "../../hooks/useDeleteAlbum"
+import SEO from "../../components/SEO"
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -71,6 +72,7 @@ export default function ManageAlbumsScreen() {
       {albums.data.length ? (
         <>
           <HeaderTitle icon={<AlbumIcon />} text="Your Albums" />
+          <SEO title={`Your Albums`} />
 
           <Table className={styles.table} size="small">
             <TableHead>

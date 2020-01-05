@@ -5,6 +5,7 @@ import { Link, useHistory } from "react-router-dom"
 import HeaderTitle from '../components/HeaderTitle'
 import Routes from '../routes'
 import FourOrFour from '../components/FourOrFour'
+import SEO from '../components/SEO'
 
 export default function FourOrFourScreen() {
   const history = useHistory()
@@ -14,6 +15,8 @@ export default function FourOrFourScreen() {
   return (
     <>
       <HeaderTitle icon={<FindReplaceIcon />} text="OOPS! Are You Lost?" />
+      <SEO title={`OOPS! NOT FOUND`} />
+
       <h3>Go to the <Link style={{ color: 'white' }} to={Routes.pages.home}>home page</Link>{' '}
         or <span style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={goBack}>go back</span>.</h3>
       <FourOrFour />

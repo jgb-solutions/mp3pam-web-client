@@ -26,6 +26,7 @@ import AlertDialog from "../../components/AlertDialog"
 import { IMG_BUCKET, MAX_IMG_FILE_SIZE, CURRENT_YEAR } from "../../utils/constants"
 import { AddArtistForm } from "./AddTrackScreen"
 import { getFile } from "../../utils/helpers"
+import SEO from "../../components/SEO"
 
 export interface FormData {
   title: string
@@ -159,6 +160,7 @@ export default function AddAlbumScreen() {
   return (
     <CheckAuth className='react-transition scale-in'>
       <HeaderTitle icon={<AlbumIcon />} text={`Create a new Album`} />
+      <SEO title={`Create a new album`} />
 
       <form onSubmit={handleSubmit(handleCreateAlbum)} noValidate>
         <Grid container direction='row' spacing={2}>

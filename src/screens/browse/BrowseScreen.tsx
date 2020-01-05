@@ -7,6 +7,7 @@ import Spinner from "../../components/Spinner"
 import HeaderTitle from "../../components/HeaderTitle"
 import useGenres from "../../hooks/useGenres"
 import GenreThumbnail, { GenreInterface } from "../../components/GenreThumbnail"
+import SEO from "../../components/SEO"
 
 export default function BrowseScreen() {
   const { loading, error, data } = useGenres()
@@ -19,6 +20,7 @@ export default function BrowseScreen() {
   return (
     <>
       <HeaderTitle icon={<FolderOpenIcon />} text="Browse Genres" />
+      <SEO title={`Browse Genres`} />
 
       <Grid container spacing={2}>
         {genres.map((genre: GenreInterface) => (

@@ -6,6 +6,7 @@ import Logo from "../components/Logo"
 import Download from "../components/Download"
 import GoogleAdsense from "../components/GoogleAdsense"
 import { GOOGLE_ADS_CLIENT } from "../utils/constants"
+import SEO from "../components/SEO"
 
 
 export interface Credentials {
@@ -21,6 +22,7 @@ export default function DownloadScreen() {
 
   return (
     <div style={{ maxWidth: 450, margin: '0 auto', textAlign: 'center' }}>
+      <SEO title={`Download ${type}`} />
       <Logo size={300} />
 
       {!!process.env.REACT_APP_SHOW_ADS && (

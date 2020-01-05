@@ -17,6 +17,7 @@ import ArtistThumbnail from "../components/ArtistThumbnail"
 import AlbumThumbnail from "../components/AlbumThumbnail"
 import { AlbumThumbnailData } from "../components/AlbumScrollingList"
 import { ArtistThumbnailData } from "../components/ArtistScrollingList"
+import SEO from "../components/SEO"
 
 
 export default function SearchScreen() {
@@ -53,19 +54,20 @@ export default function SearchScreen() {
 
 	if (error) return <p>Error Loading new data. Please refresh the page.</p>
 	const { tracks, albums, artists } = state
-
+	const title = (tracks.length || artists.length || albums.length) ? `
+					${tracks.length} track${tracks.length !== 1 ? 's' : ''},
+						${artists.length} artist${artists.length !== 1 ? 's' : ''}
+						and ${albums.length} album${albums.length !== 1 ? 's' : ''}
+						found ${term.length ? `for *${term}*` : 'from last search'}
+					` : `No results found ${term.length ? `for *${term}*` : ''}`
 	return (
 		<>
 			<HeaderTitle
 				icon={<SearchIcon />}
 				textStyle={{ fontSize: 16, textTransform: 'none', }}
-				text={(tracks.length || artists.length || albums.length) ? `
-					${tracks.length} track${tracks.length !== 1 ? 's' : ''},
-						${artists.length} artist${artists.length !== 1 ? 's' : ''}
-						and ${albums.length} album${albums.length !== 1 ? 's' : ''}
-						found ${term.length ? `for *${term}*` : 'from last search'}
-					` : `No results found ${term.length ? `for *${term}*` : ''}`}
+				text={title}
 			/>
+			<SEO title={title} />
 
 			{tracks.length ? (
 				<>
