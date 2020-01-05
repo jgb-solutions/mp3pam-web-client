@@ -37,9 +37,6 @@ export default function SEO({ title, url, description, type, image, artist, imag
         <meta property="fb:app_id" content={FB_APP_ID} />
 
         {artist && <meta property="music:musician" content={artist} />}
-        {/* <meta property="music:album" content="http://open.spotify.com/album/7rq68qYz66mNdPfidhIEFa" />
-        <meta property="music:album:track" content="2" />
-        <meta property="music:duration" content="236" /> */}
 
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content={`@${TWITTER_HANDLE}`} />
