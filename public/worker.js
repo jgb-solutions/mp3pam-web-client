@@ -1,5 +1,5 @@
 var CACHE_NAME = "mp3pam_service_worker_cache"
-var urlsToCache = ["/"]
+var urlsToCache = []
 
 // Install  a service worker
 self.addEventListener("install", event => {
@@ -17,14 +17,14 @@ self.addEventListener("install", event => {
 
 self.addEventListener("fetch", event => {
   event.respondWith(
-    // caches.match(event.request).then(function(response) {
-    //   // Cache hit - return response
-    //   if (response) {
-    //     return response
-    //   }
+    caches.match(event.request).then(function(response) {
+      //   // Cache hit - return response
+      //   if (response) {
+      //     return response
+      //   }
 
-    fetch(event.request),
-    // }),
+      return fetch(event.request)
+    }),
   )
 })
 

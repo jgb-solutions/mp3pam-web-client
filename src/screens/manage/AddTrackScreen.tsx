@@ -386,7 +386,7 @@ export default function AddTrackScreen() {
 
 	const handleInvalidImageSize = (filesize: number) => {
 		setOpenInvalidFileSize(`
-		The file size exceeds 5 MB. <br />
+		The file size exceeds 1 MB. <br />
 		Choose another one or reduce the size to upload.
 	`)
 	}

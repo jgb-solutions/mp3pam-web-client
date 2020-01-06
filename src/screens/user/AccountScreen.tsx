@@ -265,7 +265,7 @@ export default function AccountScreen() {
                     <Grid container direction='row' alignItems='center' spacing={1} className={styles.uploadButton}>
                       <Grid item xs={9}>
                         <UploadButton
-                          allowedFileSize={MAX_IMG_FILE_SIZE(1)}
+                          allowedFileSize={MAX_IMG_FILE_SIZE()}
                           onFileSizeInvalid={handleInvalidImageSize}
                           buttonSize='large'
                           accept="image/*"
