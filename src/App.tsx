@@ -282,7 +282,6 @@ export default function App() {
                 <Route path={Routes.user.manage.albums} exact>
                   <Main>
                     <ManageAlbumsScreen />
-                    <ManageAlbumsScreen />
                   </Main>
                 </Route>
                 <Route path={Routes.user.manage.playlists} exact>

@@ -65,6 +65,22 @@ export const DELETE_ALBUM = gql`
   }
 `
 
+export const DELETE_TRACK = gql`
+  mutation DeleteTrack($hash: String!) {
+    deleteTrack(hash: $hash) {
+      success
+    }
+  }
+`
+
+export const DELETE_ARTIST = gql`
+  mutation DeleteArtist($hash: String!) {
+    deleteArtist(hash: $hash) {
+      success
+    }
+  }
+`
+
 export const DELETE_PLAYLIST = gql`
   mutation DeletePlaylist($hash: String!) {
     deletePlaylist(hash: $hash) {

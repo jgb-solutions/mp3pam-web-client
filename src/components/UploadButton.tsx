@@ -21,6 +21,8 @@ type Props = {
   fullWidth?: boolean,
   allowedFileSize?: number,
   onFileSizeInvalid?: (fileSize: number) => void,
+  allowedFileType?: string,
+  onFileTypeInvalid?: (filetype: string) => void,
   onDimensionsInvalid?: (dimensions: ImageDimensions) => void
   validateImageDimensions?: (dimensions: ImageDimensions) => boolean
 }
@@ -38,6 +40,8 @@ const UploadButton = ({
   fullWidth,
   allowedFileSize,
   onFileSizeInvalid,
+  allowedFileType,
+  onFileTypeInvalid,
   onDimensionsInvalid,
   validateImageDimensions
 
@@ -57,6 +61,14 @@ const UploadButton = ({
       if (allowedFileSize && onFileSizeInvalid) {
         if (file.size > allowedFileSize) {
           onFileSizeInvalid(file.size)
+          return
+        }
+      }
+
+      if (allowedFileType && onFileTypeInvalid) {
+        const ext = file.name.split('.').pop() || ''
+        if (!allowedFileType.split(', ').includes(ext)) {
+          onFileTypeInvalid(file.name)
           return
         }
       }

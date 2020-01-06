@@ -281,12 +281,25 @@ export const FETCH_MY_PLAYLISTS = gql`
 `
 
 export const FETCH_MY_TRACKS = gql`
-  query myAlbumsData($page: Int, $take: Int) {
+  query myTracksData($page: Int, $take: Int) {
     me {
       tracks(take: $take, page: $page) {
         data {
           hash
           title
+        }
+      }
+    }
+  }
+`
+
+export const FETCH_MY_ARTISTS = gql`
+  query myArtistData($page: Int, $take: Int) {
+    me {
+      artists(take: $take, page: $page) {
+        data {
+          hash
+          stage_name
         }
       }
     }

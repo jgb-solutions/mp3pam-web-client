@@ -2,6 +2,7 @@ import { useMutation } from '@apollo/react-hooks'
 
 import { DELETE_ALBUM_TRACK } from '../graphql/mutations'
 import { ApolloError } from 'apollo-client'
+import { FETCH_TRACKS } from '../graphql/queries'
 
 type DeleteAlbumTrack = {
   deleteAlbumTrack: (hash: string) => void,
@@ -15,6 +16,7 @@ type DeleteAlbumTrack = {
 export default function useDeleteAlbumTrack(): DeleteAlbumTrack {
   const [deleteAlbumTrackMutation, { data, loading, error }] = useMutation(DELETE_ALBUM_TRACK, {
     fetchPolicy: 'no-cache',
+    refetchQueries: [{ query: FETCH_TRACKS }]
   })
 
   const deleteAlbumTrack = (hash: string) => {

@@ -35,7 +35,7 @@ export default function HeaderTitle(props: Props) {
   return (
     <div className={styles.container} style={propStyles} onClick={props.onClick}>
       <div className={styles.icon} style={props.textStyle}>{props.icon}</div>
-      <h1 className={styles.text} style={props.textStyle}>{props.text}</h1>
+      <h1 className={styles.text} style={props.textStyle} dangerouslySetInnerHTML={{ __html: props.text }} />
     </div>
   )
 }

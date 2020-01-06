@@ -378,6 +378,12 @@ export default function AddTrackScreen() {
 	`)
 	}
 
+	const handleInvalidAudioType = (filetype: string) => {
+		setOpenInvalidFileSize(`
+		You must choose an MP3 file.
+	`)
+	}
+
 	const handleInvalidImageSize = (filesize: number) => {
 		setOpenInvalidFileSize(`
 		The file size exceeds 5 MB. <br />
@@ -514,6 +520,8 @@ export default function AddTrackScreen() {
 									onFileSizeInvalid={handleInvalidAudioSize}
 									buttonSize='large'
 									accept=".mp3, audio/mp3"
+									allowedFileType="mp3"
+									onFileTypeInvalid={handleInvalidAudioType}
 									onChange={handleAudioUpload}
 									title="Choose the Track *"
 									disabled={audioUploaded}
