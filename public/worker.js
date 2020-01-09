@@ -3,6 +3,8 @@ var urlsToCache = []
 
 // Install  a service worker
 self.addEventListener("install", event => {
+  self.skipWaiting()
+
   // Perform install steps
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
