@@ -94,6 +94,7 @@ export default function useFileUpload({ bucket, message, headers }: Params): Upl
       const options = {
         headers: {
           "Content-Type": file.type,
+          'X-Requested-With': 'XMLHttpRequest',
           ...getHeaders()
         },
         onUploadProgress: (progressEvent: ProgressEvent) => {
