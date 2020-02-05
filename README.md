@@ -1,5 +1,5 @@
 # MP3Pam
-A free entertainment platform for sharing all kinds of sound. Music, Podcas and even Ad. You name it.
+A free entertainment platform for sharing all kinds of sound. Music, Podcast and even Ad. You name it.
 
 Some of the techs/libs/languages used in this project are: *React*/*TypeScript*/*JavaScript*/*Apollo Client*/*GraphQL*/*Redux*/*JSS*/*Material UI*
 
