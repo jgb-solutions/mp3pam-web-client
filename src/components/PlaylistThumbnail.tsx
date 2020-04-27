@@ -107,8 +107,8 @@ export default function PlaylistThumbnail(props: Props) {
           backgroundImage: `url(${Image.phoneCdnUrl(playlist.cover_url, {
             ulb: true,
             lb: {
-              width: 500,
-              height: 500
+              width: 250,
+              height: 250
             }
           })})`
         }}

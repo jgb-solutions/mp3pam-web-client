@@ -116,8 +116,8 @@ const AlbumThumbnail = (props: Props) => {
           backgroundImage: `url(${Image.phoneCdnUrl(album.cover_url, {
             ulb: true,
             lb: {
-              width: 500,
-              height: 500
+              width: 250,
+              height: 250
             }
           })})`
         }}
