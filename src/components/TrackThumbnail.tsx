@@ -14,6 +14,7 @@ import { get } from "lodash-es"
 import { SMALL_SCREEN_SIZE } from "../utils/constants"
 import { TrackWithArtistThumbnailData } from "./TrackScrollingList"
 import AppStateInterface from "../interfaces/AppStateInterface"
+import Image from "./Image"
 
 const useStyles = makeStyles(theme => ({
   imgContainer: {
@@ -113,7 +114,15 @@ const TrackThumbnail = (props: Props) => {
     <div className={props.className} style={props.style}>
       <div
         className={styles.imgContainer}
-        style={{ backgroundImage: `url(${track.poster_url})` }}
+        style={{
+          backgroundImage: `url(${Image.phoneCdnUrl(track.poster_url, {
+            ulb: true,
+            lb: {
+              width: 500,
+              height: 500
+            }
+          })})`
+        }}
       >
         <div
           className={styles.transparentBackground}

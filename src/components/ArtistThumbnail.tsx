@@ -8,6 +8,7 @@ import colors from "../utils/colors"
 import Routes from "../routes"
 import { SMALL_SCREEN_SIZE } from "../utils/constants"
 import { ArtistThumbnailData } from "./ArtistScrollingList"
+import Image from "./Image"
 
 const useStyles = makeStyles(theme => ({
   imgContainer: {
@@ -102,7 +103,15 @@ export default function ArtistThumbnail(props: Props) {
     <div className={props.className} style={props.style}>
       <div
         className={styles.imgContainer}
-        style={{ backgroundImage: `url(${artist.poster_url})` }}
+        style={{
+          backgroundImage: `url(${Image.phoneCdnUrl(artist.poster_url, {
+            ulb: true,
+            lb: {
+              width: 500,
+              height: 500
+            }
+          })})`
+        }}
       >
         <div
           className={styles.transparentBackground}

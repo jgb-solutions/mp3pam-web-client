@@ -33,6 +33,7 @@ import AppStateInterface from "../interfaces/AppStateInterface"
 import PlayerStyle from "../styles/PlayerStyle"
 import colors from "../utils/colors"
 import useUpdatePlayCount from "../hooks/useUpdatePlayCount"
+import Image from "./Image"
 
 // Setup Audio
 const audio = new Audio()
@@ -525,11 +526,27 @@ export default function Player() {
 								break
 						}
 					}}>
-						<img
-							src={state.currentSound ? state.currentSound.image : '/assets/images/loader.svg'}
-							className={styles.image}
-							alt={state.currentSound && state.currentSound.title}
-						/>
+						{state.currentSound ? (
+							<Image
+								src={state.currentSound.image}
+								className={styles.image}
+								alt={state.currentSound && state.currentSound.title}
+								photon={{
+									ulb: true,
+									lb: {
+										width: 55,
+										height: 55
+									}
+								}}
+							/>
+						) : (
+								<img
+									src={'/assets/images/loader.svg'}
+									className={styles.image}
+									alt={''}
+								/>
+							)}
+
 						<div className={styles.titleArtist}>
 							<span className={styles.title}>
 								{state.currentSound && state.currentSound.title}

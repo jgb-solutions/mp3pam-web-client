@@ -13,6 +13,7 @@ import Routes from "../routes"
 import { get } from "lodash-es"
 import { SMALL_SCREEN_SIZE } from "../utils/constants"
 import { AlbumThumbnailData } from "./AlbumScrollingList"
+import Image from "./Image"
 
 const useStyles = makeStyles(theme => ({
   imgContainer: {
@@ -111,7 +112,15 @@ const AlbumThumbnail = (props: Props) => {
     <div className={props.className}>
       <div
         className={styles.imgContainer}
-        style={{ backgroundImage: `url(${album.cover_url})` }}
+        style={{
+          backgroundImage: `url(${Image.phoneCdnUrl(album.cover_url, {
+            ulb: true,
+            lb: {
+              width: 500,
+              height: 500
+            }
+          })})`
+        }}
       >
         <div
           className={styles.transparentBackground}

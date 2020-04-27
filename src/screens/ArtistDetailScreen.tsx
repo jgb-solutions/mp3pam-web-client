@@ -37,6 +37,7 @@ import HeaderTitle from "../components/HeaderTitle"
 import { CSSProperties } from "@material-ui/core/styles/withStyles"
 import TrackThumbnail from "../components/TrackThumbnail"
 import AlbumThumbnail from "../components/AlbumThumbnail"
+import Image from "../components/Image"
 
 export const LinkWrapper = (
   { children, url, color, style, target }: {
@@ -272,7 +273,17 @@ export default function ArtistDetailScreen() {
     <div className="react-transition flip-in-x-reverse">
       <Grid container spacing={2}>
         <Grid item sm={4} xs={12} className={styles.imageContainer}>
-          <img src={artist.poster_url} alt={artist.stage_name} className={styles.image} />
+          <Image
+            src={artist.poster_url}
+            alt={artist.stage_name}
+            className={styles.image}
+            photon={{
+              ulb: true,
+              lb: {
+                width: 500,
+                height: 500
+              }
+            }} />
         </Grid>
         <Grid item sm={8} xs={12} className={styles.detailsWrapper}>
           <div className={styles.listDetails}>

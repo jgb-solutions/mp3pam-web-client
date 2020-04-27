@@ -39,6 +39,7 @@ import useRandomAlbums from "../hooks/useRandomAlbums"
 import SEO from "../components/SEO"
 import FourOrFour from "../components/FourOrFour"
 import HeaderTitle from "../components/HeaderTitle"
+import Image from "../components/Image"
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -281,7 +282,18 @@ const AlbumDetailScreen = (props: Props) => {
     <div className="react-transition flip-in-x-reverse">
       <Grid container spacing={2}>
         <Grid item sm={4} xs={12} className={styles.imageContainer}>
-          <img src={album.cover_url} alt={album.title} className={styles.image} />
+          <Image
+            src={album.cover_url}
+            alt={album.title}
+            className={styles.image}
+            photon={{
+              ulb: true,
+              lb: {
+                width: 500,
+                height: 500
+              }
+            }}
+          />
         </Grid>
         <Grid item sm={8} xs={12} className={styles.detailsWrapper}>
           <div className={styles.listDetails}>
