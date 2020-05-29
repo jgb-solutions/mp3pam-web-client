@@ -92,7 +92,7 @@ const Routes = {
 		shows: `/browse-shows`,
 	},
 	auth: {
-		facebook: `/login-facebook`
+		facebook: `/auth/facebook`
 	},
 	links: {
 		jgbSolutions: 'https://jgb.solutions'
