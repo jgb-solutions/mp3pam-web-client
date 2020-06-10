@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 export interface PlaylistThumbnailData {
   title: string,
   hash: string,
-  cover_url: string,
+  coverUrl: string,
 }
 
 export const PlaylistScrollingList = (props: { playlists: PlaylistThumbnailData[], category: string, browse: string }) => {

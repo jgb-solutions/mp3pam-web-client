@@ -71,8 +71,8 @@ export default function QueueTable() {
             : undefined
           const soundPage = get(Routes, `${sound.type}`).detailPage(sound.hash)
           const authorPage = sound.type === 'track' ?
-            Routes.artist.detailPage(sound.author_hash) :
-            Routes.podcast.goToAuthorDetail(sound.author_hash)
+            Routes.artist.detailPage(sound.authorHash) :
+            Routes.podcast.goToAuthorDetail(sound.authorHash)
 
           return (
             <TableRow key={index} style={{
@@ -86,7 +86,7 @@ export default function QueueTable() {
                 <Link to={soundPage} className={styles.link} style={{ color }}>{sound.title}</Link>
               </StyledTableCell>
               <StyledTableCell style={{ width: '35%' }}>
-                <Link to={authorPage} className={styles.link} style={{ color }}>{sound.author_name}</Link>
+                <Link to={authorPage} className={styles.link} style={{ color }}>{sound.authorName}</Link>
               </StyledTableCell>
               <StyledTableCell style={{ width: '20%', color }}>{sound.type.toUpperCase()}</StyledTableCell>
               {/* <StyledTableCell>

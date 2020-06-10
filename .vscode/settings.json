@@ -1,19 +1,23 @@
 {
   "workbench.colorCustomizations": {
-    "activityBar.background": "#8a2ca2",
+    "activityBar.background": "#e5366e",
     "activityBar.foreground": "#e7e7e7",
     "activityBar.inactiveForeground": "#e7e7e799",
-    "activityBarBadge.background": "#af9530",
-    "activityBarBadge.foreground": "#15202b",
-    "titleBar.activeBackground": "#68217a",
-    "titleBar.inactiveBackground": "#68217a99",
+    "activityBarBadge.background": "#23550b",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "titleBar.activeBackground": "#cd1b54",
+    "titleBar.inactiveBackground": "#cd1b5499",
     "titleBar.activeForeground": "#e7e7e7",
     "titleBar.inactiveForeground": "#e7e7e799",
-    "statusBar.background": "#68217a",
-    "statusBarItem.hoverBackground": "#8a2ca2",
-    "statusBar.foreground": "#e7e7e7"
+    "statusBar.background": "#cd1b54",
+    "statusBarItem.hoverBackground": "#e5366e",
+    "statusBar.foreground": "#e7e7e7",
+    "activityBar.activeBackground": "#e5366e",
+    "activityBar.activeBorder": "#23550b",
+    "statusBar.border": "#cd1b54",
+    "titleBar.border": "#cd1b54"
   },
-  "peacock.color": "#68217A",
+  "peacock.color": "#cd1b54",
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
   "typescript.tsdk": "node_modules/typescript/lib"

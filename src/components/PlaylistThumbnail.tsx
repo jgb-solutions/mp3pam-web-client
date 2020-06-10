@@ -104,7 +104,7 @@ export default function PlaylistThumbnail(props: Props) {
       <div
         className={styles.imgContainer}
         style={{
-          backgroundImage: `url(${Image.phoneCdnUrl(playlist.cover_url, {
+          backgroundImage: `url(${Image.phoneCdnUrl(playlist.coverUrl, {
             ulb: true,
             lb: {
               width: 250,

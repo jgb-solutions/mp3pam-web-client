@@ -25,12 +25,12 @@ export function getFormattedDate(dateString: string) {
   return month + '/' + day + '/' + year
 }
 
-export const makeSoundFromTrack = (({ hash, title, poster_url, audio_url, artist }: any): SoundInterface => ({
+export const makeSoundFromTrack = (({ hash, title, posterUrl, audio_url, artist }: any): SoundInterface => ({
   hash,
   title,
-  image: poster_url,
-  author_name: artist.stage_name,
-  author_hash: artist.hash,
-  play_url: audio_url,
+  image: posterUrl,
+  authorName: artist.stage_name,
+  authorHash: artist.hash,
+  playUrl: audio_url,
   type: 'track',
 }))

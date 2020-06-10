@@ -149,15 +149,15 @@ const TrackDetailScreen = (props: Props) => {
   }
 
   const makeSoundList = () => {
-    const { hash, title, poster_url, artist, audio_url } = track
+    const { hash, title, posterUrl, artist, audio_url } = track
 
     return [{
       hash,
       title,
-      image: poster_url,
-      author_name: artist.stage_name,
-      author_hash: artist.hash,
-      play_url: audio_url,
+      image: posterUrl,
+      authorName: artist.stage_name,
+      authorHash: artist.hash,
+      playUrl: audio_url,
       type: 'track',
     }]
   }
@@ -328,7 +328,7 @@ const TrackDetailScreen = (props: Props) => {
       <Grid container spacing={2}>
         <Grid item sm={4} xs={12} className={styles.imageContainer}>
           <Image
-            src={track.poster_url}
+            src={track.posterUrl}
             alt={track.title}
             className={styles.image}
             photon={{
@@ -417,7 +417,7 @@ const TrackDetailScreen = (props: Props) => {
         url={`${DOMAIN}/track/${track.hash}`}
         description={`Listen to ${track.title} by ${track.artist.stage_name} on ${APP_NAME}`}
         type={SEO_TRACK_TYPE}
-        image={track.poster_url}
+        image={track.posterUrl}
         artist={`${DOMAIN}/artist/${track.artist.hash}`}
       />
 

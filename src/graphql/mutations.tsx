@@ -136,7 +136,7 @@ export const UPDATE_USER = gql`
       active
       avatar_url
       telephone
-      created_at
+      inserted_at
     }
   }
 `
@@ -151,7 +151,7 @@ export const FACEOOK_LOGIN = gql`
         avatar_url
         telephone
         first_login
-        created_at
+        inserted_at
       }
       token
     }

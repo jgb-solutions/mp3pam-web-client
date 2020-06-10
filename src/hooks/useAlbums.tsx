@@ -10,12 +10,12 @@ export default function useAlbums() {
   const { loading, error, data, fetchMore } = useQuery(FETCH_ALBUMS, {
     variables: {
       take: FETCH_ALBUMS_NUMBER,
-      orderBy: [{ field: "created_at", order: 'DESC' }]
+      orderBy: [{ field: "inserted_at", order: 'DESC' }]
     }
   })
 
   const loadMoreAlbums = () => {
-    const { currentPage } = data.albums.paginatorInfo
+    const { currentPage } = data.albums.paginationInfo
 
     fetchMore({
       variables: {
@@ -25,7 +25,7 @@ export default function useAlbums() {
         const oldAlbums = get(previousResult, 'albums.data')
         const { data: newAlbums, ...newInfo } = get(fetchMoreResult, 'albums')
 
-        setHasMore(newInfo.paginatorInfo.hasMorePages)
+        setHasMore(newInfo.paginationInfo.hasMorePages)
 
         return {
           albums: {

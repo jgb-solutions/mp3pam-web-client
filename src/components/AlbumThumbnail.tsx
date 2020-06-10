@@ -113,7 +113,7 @@ const AlbumThumbnail = (props: Props) => {
       <div
         className={styles.imgContainer}
         style={{
-          backgroundImage: `url(${Image.phoneCdnUrl(album.cover_url, {
+          backgroundImage: `url(${Image.phoneCdnUrl(album.coverUrl, {
             ulb: true,
             lb: {
               width: 250,

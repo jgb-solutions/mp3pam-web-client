@@ -8,7 +8,7 @@ export default function useHome() {
     notifyOnNetworkStatusChange: true,
     variables: {
       take: HOMEPAGE_PER_PAGE_NUMBER,
-      orderBy: [{ field: "created_at", order: 'DESC' }]
+      orderBy: [{ field: "inserted_at", order: 'DESC' }]
     },
     // fetchPolicy: 'cache-and-network'
   })

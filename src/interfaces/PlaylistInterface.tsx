@@ -1,7 +1,7 @@
 export interface PlaylistTrackInterface {
   hash: string
   title: string
-  poster_url: string
+  posterUrl: string
   audio_url: string
   number: number
   play_count: number
@@ -16,7 +16,7 @@ export interface PlaylistPlainInterface {
   id: string
   title: string
   hash: string
-  cover_url: string
+  coverUrl: string
 }
 
 export default interface PlaylistInterface extends PlaylistPlainInterface {

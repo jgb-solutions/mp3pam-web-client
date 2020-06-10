@@ -10,13 +10,13 @@ export default function useTracksByGenre(slug: string) {
   const { loading, error, data, fetchMore } = useQuery(FETCH_TRACKS_BY_GENRE, {
     variables: {
       take: FETCH_TRACKS_NUMBER,
-      orderBy: [{ field: "created_at", order: 'DESC' }],
+      orderBy: [{ field: "inserted_at", order: 'DESC' }],
       slug
     }
   })
 
   const loadMoreTracks = () => {
-    const { currentPage } = data.tracksByGenre.paginatorInfo
+    const { currentPage } = data.tracksByGenre.paginationInfo
 
     fetchMore({
       variables: {
@@ -26,7 +26,7 @@ export default function useTracksByGenre(slug: string) {
         const oldTracks = get(previousResult, 'tracksByGenre.data')
         const { data: newTracks, ...newInfo } = get(fetchMoreResult, 'tracksByGenre')
 
-        setHasMore(newInfo.paginatorInfo.hasMorePages)
+        setHasMore(newInfo.paginationInfo.hasMorePages)
 
         return {
           tracksByGenre: {

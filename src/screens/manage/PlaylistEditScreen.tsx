@@ -339,7 +339,7 @@ export default function PlaylistEditScreen() {
           <HeaderTitle
             onClick={() => history.push(Routes.playlist.detailPage(playlist.hash))}
             icon={(
-              <Avatar style={{ width: 75, height: 75 }} alt={playlist.title} src={playlist.cover_url} />
+              <Avatar style={{ width: 75, height: 75 }} alt={playlist.title} src={playlist.coverUrl} />
             )}
             textStyle={{ paddingLeft: 10 }}
             text={playlist.title}

@@ -176,7 +176,7 @@ export default function Player() {
 
 	const prepareAudio = () => {
 		if (!state.currentSound) return
-		audio.src = state.currentSound.play_url
+		audio.src = state.currentSound.playUrl
 		// audio.load();
 	}
 
@@ -554,7 +554,7 @@ export default function Player() {
 							</span>
 							<br />
 							<span className={styles.artist}>
-								{state.currentSound && state.currentSound.author_name}
+								{state.currentSound && state.currentSound.authorName}
 							</span>
 						</div>
 					</div>

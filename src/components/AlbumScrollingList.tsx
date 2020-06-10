@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 export interface AlbumThumbnailData {
   title: string,
   hash: string,
-  cover_url: string,
+  coverUrl: string,
   artist: {
     hash: string
     stage_name: string

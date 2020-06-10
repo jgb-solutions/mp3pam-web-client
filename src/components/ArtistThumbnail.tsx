@@ -104,7 +104,7 @@ export default function ArtistThumbnail(props: Props) {
       <div
         className={styles.imgContainer}
         style={{
-          backgroundImage: `url(${Image.phoneCdnUrl(artist.poster_url, {
+          backgroundImage: `url(${Image.phoneCdnUrl(artist.posterUrl, {
             ulb: true,
             lb: {
               width: 250,

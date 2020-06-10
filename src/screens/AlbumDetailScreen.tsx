@@ -145,13 +145,13 @@ const AlbumDetailScreen = (props: Props) => {
   }
 
   const makeSoundList = () => {
-    return album.tracks.map(({ hash, title, poster_url, audio_url }) => ({
+    return album.tracks.map(({ hash, title, posterUrl, audio_url }) => ({
       hash,
       title,
-      image: poster_url,
-      author_name: album.artist.stage_name,
-      author_hash: album.artist.hash,
-      play_url: audio_url,
+      image: posterUrl,
+      authorName: album.artist.stage_name,
+      authorHash: album.artist.hash,
+      playUrl: audio_url,
       type: 'track',
     }))
   }
@@ -283,7 +283,7 @@ const AlbumDetailScreen = (props: Props) => {
       <Grid container spacing={2}>
         <Grid item sm={4} xs={12} className={styles.imageContainer}>
           <Image
-            src={album.cover_url}
+            src={album.coverUrl}
             alt={album.title}
             className={styles.image}
             photon={{
@@ -359,7 +359,7 @@ const AlbumDetailScreen = (props: Props) => {
         url={`${DOMAIN}/album/${album.hash}`}
         description={`Listen to ${album.title} by ${album.artist.stage_name} on ${APP_NAME}`}
         type={SEO_ALBUM_TYPE}
-        image={album.cover_url}
+        image={album.coverUrl}
         artist={`${DOMAIN}/artist/${album.artist.hash}`}
       />
     </div>

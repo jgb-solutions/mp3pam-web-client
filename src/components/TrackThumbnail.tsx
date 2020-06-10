@@ -115,7 +115,7 @@ const TrackThumbnail = (props: Props) => {
       <div
         className={styles.imgContainer}
         style={{
-          backgroundImage: `url(${Image.phoneCdnUrl(track.poster_url, {
+          backgroundImage: `url(${Image.phoneCdnUrl(track.posterUrl, {
             ulb: true,
             lb: {
               width: 250,

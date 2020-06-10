@@ -3,9 +3,9 @@ export interface SoundInterface {
 	hash: string,
 	title: string,
 	image: string
-	author_name: string
-	author_hash: string
-	play_url: string
+	authorName: string
+	authorHash: string
+	playUrl: string
 	type: string
 }
 

@@ -7,9 +7,9 @@ export const FETCH_HOME = gql`
       data {
         hash
         title
-        poster_url
+        posterUrl
         artist {
-          stage_name
+          stageName
           hash
         }
       }
@@ -20,16 +20,16 @@ export const FETCH_HOME = gql`
       data {
         hash
         title
-        cover_url
+        coverUrl
       }
     }
 
     # latest 1o artists
     latestArtists: artists(take: $take, orderBy: $orderBy) {
       data {
-        stage_name
+        stageName
         hash
-        poster_url
+        posterUrl
       }
     }
 
@@ -38,11 +38,11 @@ export const FETCH_HOME = gql`
       data {
         title
         hash
-        cover_url
+        coverUrl
         artist {
-          stage_name
+          stageName
           hash
-          poster_url
+          posterUrl
         }
       }
     }
@@ -56,9 +56,9 @@ export const FETCH_MANAGE_SCREEN = gql`
         data {
           hash
           title
-          poster_url
+          posterUrl
           artist {
-            stage_name
+            stageName
             hash
           }
         }
@@ -68,15 +68,15 @@ export const FETCH_MANAGE_SCREEN = gql`
         data {
           hash
           title
-          cover_url
+          coverUrl
         }
       }
 
       latestArtists: artists(take: $take, page: $page) {
         data {
-          stage_name
+          stageName
           hash
-          poster_url
+          posterUrl
         }
       }
 
@@ -84,11 +84,11 @@ export const FETCH_MANAGE_SCREEN = gql`
         data {
           title
           hash
-          cover_url
+          coverUrl
           artist {
-            stage_name
+            stageName
             hash
-            poster_url
+            posterUrl
           }
         }
       }
@@ -103,13 +103,13 @@ export const FETCH_TRACKS = gql`
       data {
         hash
         title
-        poster_url
+        posterUrl
         artist {
-          stage_name
+          stageName
           hash
         }
       }
-      paginatorInfo {
+      paginationInfo {
         hasMorePages
         currentPage
       }
@@ -127,13 +127,13 @@ export const FETCH_TRACKS_BY_GENRE = gql`
       data {
         hash
         title
-        poster_url
+        posterUrl
         artist {
-          stage_name
+          stageName
           hash
         }
       }
-      paginatorInfo {
+      paginationInfo {
         hasMorePages
         currentPage
       }
@@ -146,9 +146,9 @@ export const FETCH_RELATED_TRACKS = gql`
     relatedTracks(input: $input) {
       hash
       title
-      poster_url
+      posterUrl
       artist {
-        stage_name
+        stageName
         hash
       }
     }
@@ -160,7 +160,7 @@ export const FETCH_RANDOM_ARTISTS = gql`
     randomArtists(input: $input) {
       hash
       name
-      poster_url
+      posterUrl
     }
   }
 `
@@ -179,10 +179,10 @@ export const FETCH_RANDOM_ALBUMS = gql`
     randomAlbums(input: $input) {
       hash
       title
-      cover_url
+      coverUrl
       artist {
         hash
-        stage_name
+        stageName
       }
     }
   }
@@ -193,7 +193,7 @@ export const FETCH_RANDOM_PLAYLISTS = gql`
     randomPlaylists(input: $input) {
       hash
       title
-      cover_url
+      coverUrl
     }
   }
 `
@@ -204,10 +204,10 @@ export const FETCH_ARTISTS = gql`
     artists(take: $take, page: $page, orderBy: $orderBy) {
       data {
         hash
-        stage_name
-        poster_url
+        stageName
+        posterUrl
       }
-      paginatorInfo {
+      paginationInfo {
         hasMorePages
         currentPage
       }
@@ -222,9 +222,9 @@ export const FETCH_PLAYLISTS = gql`
       data {
         hash
         title
-        cover_url
+        coverUrl
       }
-      paginatorInfo {
+      paginationInfo {
         hasMorePages
         currentPage
       }
@@ -239,14 +239,14 @@ export const FETCH_ALBUMS = gql`
       data {
         hash
         title
-        cover_url
+        coverUrl
         artist {
           hash
-          stage_name
-          poster_url
+          stageName
+          posterUrl
         }
       }
-      paginatorInfo {
+      paginationInfo {
         hasMorePages
         currentPage
       }
@@ -299,7 +299,7 @@ export const FETCH_MY_ARTISTS = gql`
       artists(take: $take, page: $page) {
         data {
           hash
-          stage_name
+          stageName
         }
       }
     }
@@ -312,20 +312,20 @@ export const FETCH_TRACK = gql`
       title
       hash
       allowDownload
-      audio_url
-      poster_url
+      audioUrl
+      posterUrl
       featured
       detail
       lyrics
-      play_count
-	    download_count
-      audio_file_size
+      playCount
+	    downloadCount
+      audioFileSize
       genre {
         name
         slug
       }
       artist {
-        stage_name
+        stageName
         hash
       }
       album {
@@ -341,22 +341,22 @@ export const FETCH_ARTIST = gql`
     artist(hash: $hash) {
       hash
       name
-      stage_name
-      poster_url
+      stageName
+      posterUrl
       bio
-      facebook_url
-      twitter_url
-      youtube_url
-      instagram_url
+      facebookUrl
+      twitterUrl
+      youtubeUrl
+      instagramUrl
       tracks {
         hash
         title
-        poster_url
+        posterUrl
       }
       albums {
         hash
         title
-        cover_url
+        coverUrl
       }
     }
   }
@@ -368,21 +368,21 @@ export const FETCH_ALBUM = gql`
       id
       title
       hash
-      cover_url
+      coverUrl
       detail
       release_year
       tracks {
         hash
         title
-        poster_url
-        audio_url
+        posterUrl
+        audioUrl
         number
-        play_count
-        download_count
+        playCount
+        downloadCount
       }
       artist {
         hash
-        stage_name
+        stageName
       }
     }
   }
@@ -394,18 +394,18 @@ export const FETCH_PLAYLIST = gql`
       id
       title
       hash
-      cover_url
+      coverUrl
       tracks {
         hash
         title
-        poster_url
-        audio_url
+        posterUrl
+        audioUrl
         number
-        play_count
-        download_count
+        playCount
+        downloadCount
         artist {
           hash
-          stage_name
+          stageName
         }
       }
       user {
@@ -439,10 +439,10 @@ export const TRACK_UPLOAD_DATA_QUERY = gql`
       name
   	}
     me {
-      artists_by_stage_name_asc(take: 50) {
+      artists_by_stageName_asc(take: 50) {
         data {
           id
-          stage_name
+          stageName
         }
       }
     }
@@ -455,24 +455,24 @@ export const SEARCH_QUERY = gql`
       tracks {
         hash
         title
-        poster_url
+        posterUrl
         artist {
           hash
-          stage_name
+          stageName
         }
       }
       artists {
         hash
-        stage_name
-        poster_url
+        stageName
+        posterUrl
       }
       albums {
         hash
         title
-        cover_url
+        coverUrl
          artist {
           hash
-          stage_name
+          stageName
         }
       }
     }
@@ -487,9 +487,9 @@ export const LOG_USER_IN = gql`
         id
         name
         email
-        avatar_url
+        avatarUrl
         telephone
-        created_at
+        inserted_at
       }
     }
   }

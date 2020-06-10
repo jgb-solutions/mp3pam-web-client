@@ -311,7 +311,7 @@ export default function AlbumEditScreen() {
           <HeaderTitle
             onClick={() => history.push(Routes.album.detailPage(album.hash))}
             icon={(
-              <Avatar style={{ width: 75, height: 75 }} alt={album.title} src={album.cover_url} />
+              <Avatar style={{ width: 75, height: 75 }} alt={album.title} src={album.coverUrl} />
             )}
             textStyle={{ paddingLeft: 10 }}
             text={album.title}

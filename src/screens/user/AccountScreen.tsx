@@ -339,7 +339,7 @@ export default function AccountScreen() {
                 </p>
 
                 <p>
-                  <i>Account created on</i>: <b>{getFormattedDate(userData.created_at) || NOT_AVAILABLE}</b>
+                  <i>Account created on</i>: <b>{getFormattedDate(userData.inserted_at) || NOT_AVAILABLE}</b>
                 </p>
 
                 <p>

@@ -8,7 +8,7 @@ export const FETCH_USERS = gql`
   query allUsers {
     # 10 latest users
     users {
-      paginatorInfo {
+      paginationInfo {
         count
         currentPage
         firstItem

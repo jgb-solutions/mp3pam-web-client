@@ -12,7 +12,7 @@ export const LOG_USER_IN = gql`
         email
         active
         telephone
-        # created_at
+        # inserted_at
       }
     }
   }

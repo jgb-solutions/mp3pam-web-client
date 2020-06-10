@@ -10,12 +10,12 @@ export default function useTracks() {
   const { loading, error, data, fetchMore } = useQuery(FETCH_TRACKS, {
     variables: {
       take: FETCH_TRACKS_NUMBER,
-      orderBy: [{ field: "created_at", order: 'DESC' }]
+      orderBy: [{ field: "inserted_at", order: 'DESC' }]
     }
   })
 
   const loadMoreTracks = () => {
-    const { currentPage } = data.tracks.paginatorInfo
+    const { currentPage } = data.tracks.paginationInfo
 
     fetchMore({
       variables: {
@@ -25,7 +25,7 @@ export default function useTracks() {
         const oldTracks = get(previousResult, 'tracks.data')
         const { data: newTracks, ...newInfo } = get(fetchMoreResult, 'tracks')
 
-        setHasMore(newInfo.paginatorInfo.hasMorePages)
+        setHasMore(newInfo.paginationInfo.hasMorePages)
 
         return {
           tracks: {

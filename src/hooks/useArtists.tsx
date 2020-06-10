@@ -10,12 +10,12 @@ export default function useArtists() {
   const { loading, error, data, fetchMore } = useQuery(FETCH_ARTISTS, {
     variables: {
       take: FETCH_ARTISTS_NUMBER,
-      orderBy: [{ field: "created_at", order: 'DESC' }]
+      orderBy: [{ field: "inserted_at", order: 'DESC' }]
     }
   })
 
   const loadMoreArtists = () => {
-    const { currentPage } = data.artists.paginatorInfo
+    const { currentPage } = data.artists.paginationInfo
 
     fetchMore({
       variables: {
@@ -25,7 +25,7 @@ export default function useArtists() {
         const oldArtists = get(previousResult, 'artists.data')
         const { data: newArtists, ...newInfo } = get(fetchMoreResult, 'artists')
 
-        setHasMore(newInfo.paginatorInfo.hasMorePages)
+        setHasMore(newInfo.paginationInfo.hasMorePages)
 
         return {
           artists: {

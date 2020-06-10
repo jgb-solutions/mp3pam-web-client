@@ -87,9 +87,10 @@ const client = new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
-        graphQLErrors.forEach(({ message, extensions: { statusCode } }: any) => {
+        graphQLErrors.forEach(({ message, code }: { code?: number, message?: string }) => {
           if (
-            statusCode === 401 &&
+            code &&
+            code === 401 &&
             !window.location.pathname.startsWith('/login')
           ) {
             client.clearStore()

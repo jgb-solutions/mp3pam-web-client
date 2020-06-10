@@ -46,7 +46,7 @@ export interface ArtistThumbnailData {
 export interface TrackWithArtistThumbnailData {
   title: string
   hash: string
-  poster_url: string
+  posterUrl: string
   artist: ArtistThumbnailData
 }
 

@@ -2,7 +2,7 @@ export interface SearchData {
   tracks: {
     hash: string
     title: string
-    poster_url: string
+    posterUrl: string
     artist: {
       hash: string
       stage_name: string
@@ -12,13 +12,13 @@ export interface SearchData {
   artists: {
     hash: string
     stage_name: string
-    poster_url: string
+    posterUrl: string
   }[]
 
   albums: {
     hash: string
     title: string
-    cover_url: string
+    coverUrl: string
     artist: {
       hash: string
       stage_name: string

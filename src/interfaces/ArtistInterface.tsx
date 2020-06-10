@@ -2,7 +2,7 @@ export default interface ArtistInterface {
 	hash: string
 	name: string
 	stage_name: string
-	poster_url: string
+	posterUrl: string
 	bio: string
 	facebook_url: string
 	twitter_url: string
@@ -11,11 +11,11 @@ export default interface ArtistInterface {
 	tracks: {
 		hash: string
 		title: string
-		poster_url: string
+		posterUrl: string
 	}[]
 	albums: {
 		hash: string
 		title: string
-		cover_url: string
+		coverUrl: string
 	}[]
 }

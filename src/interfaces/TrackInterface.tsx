@@ -3,7 +3,7 @@ export default interface TrackInterface {
 	hash: string
 	allowDownload: boolean
 	audio_url: string
-	poster_url: string
+	posterUrl: string
 	featured: boolean
 	detail: string
 	lyrics: string

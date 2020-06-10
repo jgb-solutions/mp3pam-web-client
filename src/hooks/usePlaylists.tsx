@@ -10,12 +10,12 @@ export default function usePlaylists() {
   const { loading, error, data, fetchMore } = useQuery(FETCH_PLAYLISTS, {
     variables: {
       take: FETCH_PLAYLISTS_NUMBER,
-      orderBy: [{ field: "created_at", order: 'DESC' }]
+      orderBy: [{ field: "inserted_at", order: 'DESC' }]
     }
   })
 
   const loadMorePlaylists = () => {
-    const { currentPage } = data.playlists.paginatorInfo
+    const { currentPage } = data.playlists.paginationInfo
 
     fetchMore({
       variables: {
@@ -25,7 +25,7 @@ export default function usePlaylists() {
         const oldPlaylists = get(previousResult, 'playlists.data')
         const { data: newPlaylists, ...newInfo } = get(fetchMoreResult, 'playlists')
 
-        setHasMore(newInfo.paginatorInfo.hasMorePages)
+        setHasMore(newInfo.paginationInfo.hasMorePages)
 
         return {
           playlists: {

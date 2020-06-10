@@ -1,7 +1,7 @@
 export interface AlbumTrackInterface {
   hash: string
   title: string
-  poster_url: string
+  posterUrl: string
   audio_url: string
   number: number
   play_count: number
@@ -12,7 +12,7 @@ export interface AlbumPlainInterface {
   id: string
   title: string
   hash: string
-  cover_url: string
+  coverUrl: string
   detail: string
   release_year: number
 }

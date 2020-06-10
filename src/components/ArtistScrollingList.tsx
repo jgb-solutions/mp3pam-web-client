@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 export interface ArtistThumbnailData {
   stage_name: string,
   hash: string,
-  poster_url: string,
+  posterUrl: string,
 }
 
 export const ArtistScrollingList = (props: { artists: ArtistThumbnailData[], category: string, browse: string }) => {

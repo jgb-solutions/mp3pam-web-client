@@ -24,11 +24,11 @@
     />
     <meta name="twitter:image" content="/assets/images/social-media-share.png""
     /> -->
-    <script
+    <!-- <script
       data-ad-client="ca-pub-3793163111580068"
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-    ></script>
+    ></script> -->
     <title>MP3Pam</title>
     <style>
       body {
@@ -52,21 +52,21 @@
 
     <script>
       if ("serviceWorker" in navigator) {
-        window.addEventListener("load", function() {
+        window.addEventListener("load", function () {
           navigator.serviceWorker
             .register("/worker.js")
             .then(
-              function(registration) {
+              function (registration) {
                 console.log(
                   "Worker registration successful",
                   registration.scope,
                 )
               },
-              function(err) {
+              function (err) {
                 console.log("Worker registration failed", err)
               },
             )
-            .catch(function(err) {
+            .catch(function (err) {
               console.log(err)
             })
         })

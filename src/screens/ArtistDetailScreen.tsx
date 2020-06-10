@@ -216,7 +216,7 @@ export default function ArtistDetailScreen() {
           <>
             <br />
             <Grid container spacing={2}>
-              {artist.tracks.map((track: { title: string, hash: string, poster_url: string }) => {
+              {artist.tracks.map((track: { title: string, hash: string, posterUrl: string }) => {
                 const trackWithArtist = {
                   ...track,
                   artist: {
@@ -245,7 +245,7 @@ export default function ArtistDetailScreen() {
           <>
             <br />
             <Grid container spacing={2}>
-              {artist.albums.map((album: { title: string, hash: string, cover_url: string }) => {
+              {artist.albums.map((album: { title: string, hash: string, coverUrl: string }) => {
                 const albumWithArtist = {
                   ...album,
                   artist: {
@@ -274,7 +274,7 @@ export default function ArtistDetailScreen() {
       <Grid container spacing={2}>
         <Grid item sm={4} xs={12} className={styles.imageContainer}>
           <Image
-            src={artist.poster_url}
+            src={artist.posterUrl}
             alt={artist.stage_name}
             className={styles.image}
             photon={{
@@ -351,7 +351,7 @@ export default function ArtistDetailScreen() {
         url={`${DOMAIN}/artist/${artist.hash}`}
         description={`Listen to ${artist.stage_name} on ${APP_NAME}`}
         type={SEO_ARTIST_TYPE}
-        image={artist.poster_url}
+        image={artist.posterUrl}
         artist={`${DOMAIN}/artist/${artist.hash}`}
       />
     </div>

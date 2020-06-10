@@ -6,7 +6,7 @@ export interface UserData {
   email: string
   avatar_url: string
   telephone: string
-  created_at: string
+  inserted_at: string
 
 }
 
