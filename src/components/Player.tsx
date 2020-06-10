@@ -22,7 +22,7 @@ import LoopIcon from '@material-ui/icons/Loop'
 import Slider from "./Slider"
 import Routes from '../routes'
 import { debounce } from "../utils/helpers"
-import { ALL, ONE, NONE, SECONDS_TO_UPDATE_PLAY_COUNT } from '../utils/constants'
+import { ALL, ONE, NONE, SECONDS_TO_UPDATE_playCount } from '../utils/constants'
 import { SoundInterface } from "../interfaces/ListInterface"
 import PlayerInterface from "../interfaces/PlayerInterface"
 import * as playerActions from "../store/actions/playerActions"
@@ -183,7 +183,7 @@ export default function Player() {
 	const resume = () => {
 		audio.play()
 
-		if (state.currentTime < SECONDS_TO_UPDATE_PLAY_COUNT) {
+		if (state.currentTime < SECONDS_TO_UPDATE_playCount) {
 			setLoggedHash('')
 		}
 
@@ -449,7 +449,7 @@ export default function Player() {
 			if (
 				state.isPlaying &&
 				!loggedHash &&
-				Math.floor(state.currentTime) === SECONDS_TO_UPDATE_PLAY_COUNT
+				Math.floor(state.currentTime) === SECONDS_TO_UPDATE_playCount
 			) {
 				setLoggedHash(hash)
 				updatePlayCount({ hash, type })

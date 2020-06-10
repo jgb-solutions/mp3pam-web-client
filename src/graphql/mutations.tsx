@@ -45,13 +45,13 @@ export const LOG_OUT_MUTATION = gql`
   }
 `
 
-export const UPDATE_DOWNLOAD_COUNT = gql`
+export const UPDATE_downloadCount = gql`
   mutation UpdateDownloadCount($input: DownloadInput!) {
     updateDownloadCount(input: $input)
   }
 `
 
-export const UPDATE_PLAY_COUNT = gql`
+export const UPDATE_playCount = gql`
   mutation UpdatePlayCount($input: PlayInput!) {
     updatePlayCount(input: $input)
   }

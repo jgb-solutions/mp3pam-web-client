@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/react-hooks'
 
-import { UPDATE_PLAY_COUNT } from '../graphql/mutations'
+import { UPDATE_playCount } from '../graphql/mutations'
 
 
 type PlayProps = {
@@ -13,7 +13,7 @@ type PlayCount = {
 }
 
 export default function useUpdatePlayCount(): PlayCount {
-  const [updatePlayCountMutation] = useMutation(UPDATE_PLAY_COUNT, {
+  const [updatePlayCountMutation] = useMutation(UPDATE_playCount, {
     fetchPolicy: 'no-cache',
   })
 

@@ -363,12 +363,12 @@ const TrackDetailScreen = (props: Props) => {
             <p className={styles.listByAuthor}>
               <HeadsetIcon className={styles.listBy} /> {' '}
               <span className={styles.listAuthor}>
-                {track.play_count}
+                {track.playCount}
               </span>
               &nbsp;&nbsp;_&nbsp;&nbsp;
               <GetAppIcon className={styles.listBy} /> {' '}
               <span className={styles.listAuthor}>
-                {track.download_count}
+                {track.downloadCount}
               </span>
             </p>
             <Grid className={styles.ctaButtons} container spacing={2}>

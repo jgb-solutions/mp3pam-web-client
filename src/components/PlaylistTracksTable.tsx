@@ -87,8 +87,8 @@ export default function PlaylistTracksTable({ playlist, list }: Props) {
               <StyledTableCell style={{ width: '90%', color }}>
                 <Link to={Routes.track.detailPage(track.hash)} className={styles.link} style={{ color }}>{track.title}</Link>
               </StyledTableCell>
-              {/* <StyledTableCell style={{ width: '1.5%', color }}>{track.play_count}</StyledTableCell> */}
-              {/* <StyledTableCell style={{ width: '1.5%', color }}>{track.download_count}</StyledTableCell> */}
+              {/* <StyledTableCell style={{ width: '1.5%', color }}>{track.playCount}</StyledTableCell> */}
+              {/* <StyledTableCell style={{ width: '1.5%', color }}>{track.downloadCount}</StyledTableCell> */}
               {/* <StyledTableCell style={{ width: '35%', color }}>{playlist.artist.stage_name}</StyledTableCell> */}
               {/* <StyledTableCell style={{ width: '20%', color }}>{track.type.toUpperCase()}</StyledTableCell> */}
               {/* <StyledTableCell>

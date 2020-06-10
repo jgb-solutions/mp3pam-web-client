@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks'
 import { ApolloError } from 'apollo-client'
 
 import { FETCH_DOWNLOAD_URL } from '../graphql/queries'
-import { UPDATE_DOWNLOAD_COUNT } from '../graphql/mutations'
+import { UPDATE_downloadCount } from '../graphql/mutations'
 
 type TrackDetail = {
   data: {
@@ -23,7 +23,7 @@ export default function useDownload(input: DownloadProps): TrackDetail {
     variables: { input }
   })
 
-  const [updateDownloadCount] = useMutation(UPDATE_DOWNLOAD_COUNT, {
+  const [updateDownloadCount] = useMutation(UPDATE_downloadCount, {
     variables: { input },
     fetchPolicy: 'no-cache',
   })

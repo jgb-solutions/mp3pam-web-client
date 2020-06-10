@@ -4,8 +4,8 @@ export interface AlbumTrackInterface {
   posterUrl: string
   audio_url: string
   number: number
-  play_count: number
-  download_count: number
+  playCount: number
+  downloadCount: number
 }
 
 export interface AlbumPlainInterface {
