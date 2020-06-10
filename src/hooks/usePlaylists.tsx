@@ -25,6 +25,8 @@ export default function usePlaylists() {
         const oldPlaylists = get(previousResult, 'playlists.data')
         const { data: newPlaylists, ...newInfo } = get(fetchMoreResult, 'playlists')
 
+        if (newInfo.currentPage === currentPage) return
+
         setHasMore(newInfo.paginationInfo.hasMorePages)
 
         return {

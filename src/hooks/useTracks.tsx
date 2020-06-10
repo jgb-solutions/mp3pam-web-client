@@ -25,6 +25,8 @@ export default function useTracks() {
         const oldTracks = get(previousResult, 'tracks.data')
         const { data: newTracks, ...newInfo } = get(fetchMoreResult, 'tracks')
 
+        if (newInfo.currentPage === currentPage) return
+
         setHasMore(newInfo.paginationInfo.hasMorePages)
 
         return {
