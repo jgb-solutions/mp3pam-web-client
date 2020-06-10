@@ -25,7 +25,7 @@ export default function BrowseArtistsScreen() {
       <SEO title={`Browse Artists`} />
 
       <InfiniteScroll
-        pageStart={1}
+        //  pageStart={1}
         loadMore={loadMoreArtists}
         hasMore={hasMore}
         loader={<Spinner key={1} />}
