@@ -26,6 +26,10 @@ export default function useTracksByGenre(slug: string) {
         const oldTracks = get(previousResult, 'tracksByGenre.data')
         const { data: newTracks, ...newInfo } = get(fetchMoreResult, 'tracksByGenre')
 
+        if (currentPage === newInfo.paginationInfo.currentPage) {
+          setHasMore(false)
+        }
+
         setHasMore(newInfo.paginationInfo.hasMorePages)
 
         return {

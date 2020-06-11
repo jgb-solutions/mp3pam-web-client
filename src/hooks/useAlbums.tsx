@@ -25,7 +25,9 @@ export default function useAlbums() {
         const oldAlbums = get(previousResult, 'albums.data')
         const { data: newAlbums, ...newInfo } = get(fetchMoreResult, 'albums')
 
-        if (newInfo.paginationInfo.currentPage === currentPage) return
+        if (newInfo.paginationInfo.currentPage === currentPage) {
+          setHasMore(false)
+        }
 
         setHasMore(newInfo.paginationInfo.hasMorePages)
 

@@ -25,7 +25,9 @@ export default function useArtists() {
         const oldArtists = get(previousResult, 'artists.data')
         const { data: newArtists, ...newInfo } = get(fetchMoreResult, 'artists')
 
-        if (newInfo.paginationInfo.currentPage === currentPage) return
+        if (newInfo.paginationInfo.currentPage === currentPage) {
+          setHasMore(false)
+        }
 
         setHasMore(newInfo.paginationInfo.hasMorePages)
 
