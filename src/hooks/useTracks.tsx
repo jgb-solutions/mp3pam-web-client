@@ -8,6 +8,7 @@ import { FETCH_TRACKS_NUMBER } from '../utils/constants'
 export default function useTracks() {
   const [hasMore, setHasMore] = useState(true)
   const { loading, error, data, fetchMore } = useQuery(FETCH_TRACKS, {
+    notifyOnNetworkStatusChange: true,
     variables: {
       take: FETCH_TRACKS_NUMBER,
       orderBy: [{ field: "inserted_at", order: 'DESC' }]
@@ -24,10 +25,6 @@ export default function useTracks() {
       updateQuery: (previousResult, { fetchMoreResult }) => {
         const oldTracks = get(previousResult, 'tracks.data')
         const { data: newTracks, ...newInfo } = get(fetchMoreResult, 'tracks')
-
-        if (newInfo.paginationInfo.currentPage === currentPage) {
-          setHasMore(false)
-        }
 
         setHasMore(newInfo.paginationInfo.hasMorePages)
 

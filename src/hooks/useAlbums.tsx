@@ -8,6 +8,7 @@ import { FETCH_ALBUMS_NUMBER } from '../utils/constants'
 export default function useAlbums() {
   const [hasMore, setHasMore] = useState(true)
   const { loading, error, data, fetchMore } = useQuery(FETCH_ALBUMS, {
+    notifyOnNetworkStatusChange: true,
     variables: {
       take: FETCH_ALBUMS_NUMBER,
       orderBy: [{ field: "inserted_at", order: 'DESC' }]
@@ -24,10 +25,6 @@ export default function useAlbums() {
       updateQuery: (previousResult, { fetchMoreResult }) => {
         const oldAlbums = get(previousResult, 'albums.data')
         const { data: newAlbums, ...newInfo } = get(fetchMoreResult, 'albums')
-
-        if (newInfo.paginationInfo.currentPage === currentPage) {
-          setHasMore(false)
-        }
 
         setHasMore(newInfo.paginationInfo.hasMorePages)
 

@@ -8,6 +8,7 @@ import { FETCH_ARTISTS_NUMBER } from '../utils/constants'
 export default function useArtists() {
   const [hasMore, setHasMore] = useState(true)
   const { loading, error, data, fetchMore } = useQuery(FETCH_ARTISTS, {
+    notifyOnNetworkStatusChange: true,
     variables: {
       take: FETCH_ARTISTS_NUMBER,
       orderBy: [{ field: "inserted_at", order: 'DESC' }]
@@ -24,10 +25,6 @@ export default function useArtists() {
       updateQuery: (previousResult, { fetchMoreResult }) => {
         const oldArtists = get(previousResult, 'artists.data')
         const { data: newArtists, ...newInfo } = get(fetchMoreResult, 'artists')
-
-        if (newInfo.paginationInfo.currentPage === currentPage) {
-          setHasMore(false)
-        }
 
         setHasMore(newInfo.paginationInfo.hasMorePages)
 
