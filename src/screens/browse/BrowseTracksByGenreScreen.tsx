@@ -29,7 +29,7 @@ export default function BrowseTracksByGenreScreen() {
       <SEO title={`Browse ${genre ? genre.name : ''}  Tracks`} />
 
       <InfiniteScroll
-        //  pageStart={1}
+        pageStart={1}
         loadMore={loadMoreTracks}
         hasMore={hasMore}
         loader={<Spinner key={1} />}

@@ -27,7 +27,7 @@ export default function BrowseAlbumsScreen() {
           <SEO title={`Browse Albums`} />
 
           <InfiniteScroll
-            ////  pageStart={1}
+            pageStart={1}
             loadMore={loadMoreAlbums}
             hasMore={hasMore}
             loader={<Spinner key={1} />}

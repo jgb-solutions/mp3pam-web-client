@@ -25,7 +25,7 @@ export default function BrowsePlaylistsScreen() {
       <SEO title={`Browse Playlists`} />
 
       <InfiniteScroll
-        //  pageStart={1}
+        pageStart={1}
         loadMore={loadMorePlaylists}
         hasMore={hasMore}
         loader={<Spinner key={1} />}

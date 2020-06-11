@@ -25,7 +25,7 @@ export default function BrowseTracksScreen() {
       <SEO title={`Browse Tracks`} />
 
       <InfiniteScroll
-        //  pageStart={1}
+        pageStart={1}
         loadMore={loadMoreTracks}
         hasMore={hasMore}
         loader={<Spinner key={1} />}
