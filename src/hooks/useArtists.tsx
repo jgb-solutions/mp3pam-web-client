@@ -8,7 +8,7 @@ import { FETCH_ARTISTS_NUMBER } from '../utils/constants'
 export default function useArtists() {
   const [hasMore, setHasMore] = useState(true)
   const { loading, error, data, fetchMore } = useQuery(FETCH_ARTISTS, {
-    notifyOnNetworkStatusChange: true,
+
     variables: {
       take: FETCH_ARTISTS_NUMBER,
       orderBy: [{ field: "inserted_at", order: 'DESC' }]
@@ -16,6 +16,8 @@ export default function useArtists() {
   })
 
   const loadMoreArtists = () => {
+    if (loading) return
+
     const { currentPage } = data.artists.paginationInfo
 
     fetchMore({

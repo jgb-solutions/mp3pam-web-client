@@ -8,7 +8,7 @@ import { FETCH_PLAYLISTS_NUMBER } from '../utils/constants'
 export default function usePlaylists() {
   const [hasMore, setHasMore] = useState(true)
   const { loading, error, data, fetchMore } = useQuery(FETCH_PLAYLISTS, {
-    notifyOnNetworkStatusChange: true,
+
     variables: {
       take: FETCH_PLAYLISTS_NUMBER,
       orderBy: [{ field: "inserted_at", order: 'DESC' }]
@@ -16,6 +16,8 @@ export default function usePlaylists() {
   })
 
   const loadMorePlaylists = () => {
+    if (loading) return
+
     const { currentPage } = data.playlists.paginationInfo
 
     fetchMore({

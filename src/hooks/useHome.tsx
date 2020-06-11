@@ -5,7 +5,7 @@ import { HOMEPAGE_PER_PAGE_NUMBER } from '../utils/constants'
 
 export default function useHome() {
   const { loading, error, data: homeData } = useQuery(FETCH_HOME, {
-    notifyOnNetworkStatusChange: true,
+
     variables: {
       take: HOMEPAGE_PER_PAGE_NUMBER,
       orderBy: [{ field: "inserted_at", order: 'DESC' }]

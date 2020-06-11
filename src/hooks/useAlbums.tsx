@@ -8,7 +8,7 @@ import { FETCH_ALBUMS_NUMBER } from '../utils/constants'
 export default function useAlbums() {
   const [hasMore, setHasMore] = useState(true)
   const { loading, error, data, fetchMore } = useQuery(FETCH_ALBUMS, {
-    notifyOnNetworkStatusChange: true,
+
     variables: {
       take: FETCH_ALBUMS_NUMBER,
       orderBy: [{ field: "inserted_at", order: 'DESC' }]

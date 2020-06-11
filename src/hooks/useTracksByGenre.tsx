@@ -8,7 +8,7 @@ import { FETCH_TRACKS_NUMBER } from '../utils/constants'
 export default function useTracksByGenre(slug: string) {
   const [hasMore, setHasMore] = useState(true)
   const { loading, error, data, fetchMore } = useQuery(FETCH_TRACKS_BY_GENRE, {
-    notifyOnNetworkStatusChange: true,
+
     variables: {
       take: FETCH_TRACKS_NUMBER,
       orderBy: [{ field: "inserted_at", order: 'DESC' }],
@@ -17,6 +17,8 @@ export default function useTracksByGenre(slug: string) {
   })
 
   const loadMoreTracks = () => {
+    if (loading) return
+
     const { currentPage } = data.tracksByGenre.paginationInfo
 
     fetchMore({
