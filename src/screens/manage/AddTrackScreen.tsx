@@ -667,7 +667,7 @@ export default function AddTrackScreen() {
 					) : (
 							<Button size='small' onClick={goToTracksLibrary} color="primary">
 								Go To Your Tracks
-          </Button>
+							</Button>
 						)}
 				</DialogContentText>
 			</AlertDialog>

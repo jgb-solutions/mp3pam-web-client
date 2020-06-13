@@ -16,6 +16,8 @@ export default function useAlbums() {
   })
 
   const loadMoreAlbums = () => {
+    if (loading) return
+
     const { currentPage } = data.albums.paginationInfo
 
     fetchMore({

@@ -42,7 +42,7 @@
     "react-window": "^1.8.5",
     "redux": "^4.0.4",
     "redux-persist": "^5.10.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.9.5"
   },
   "scripts": {
     "start": "REACT_APP_API_URL=http://localhost:4000/api/graphql REACT_APP_DOMAIN=http://mp3pam.loc react-scripts start",

@@ -9,7 +9,7 @@ export default interface TrackInterface {
 	lyrics: string
 	playCount: number
 	downloadCount: number
-	audio_file_size: number
+	audioFileSize: number
 	genre: {
 		name: string
 		slug: string

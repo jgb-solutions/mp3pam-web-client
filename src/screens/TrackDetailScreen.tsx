@@ -248,7 +248,7 @@ const TrackDetailScreen = (props: Props) => {
         value: (
           <>
             <p>
-              File Size: {track.audio_file_size}
+              File Size: {track.audioFileSize}
             </p>
             <Button
               size="large"
