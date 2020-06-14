@@ -149,15 +149,15 @@ const TrackDetailScreen = (props: Props) => {
   }
 
   const makeSoundList = () => {
-    const { hash, title, posterUrl, artist, audio_url } = track
+    const { hash, title, posterUrl, artist, audioUrl } = track
 
     return [{
       hash,
       title,
       image: posterUrl,
-      authorName: artist.stage_name,
+      authorName: artist.stageName,
       authorHash: artist.hash,
-      playUrl: audio_url,
+      playUrl: audioUrl,
       type: 'track',
     }]
   }
@@ -193,7 +193,7 @@ const TrackDetailScreen = (props: Props) => {
 
   const getTabs = () => {
     const url = window.location.href
-    const title = `Listen to ${track.title} by ${track.artist.stage_name}`
+    const title = `Listen to ${track.title} by ${track.artist.stageName}`
     const hashtags = `${APP_NAME} music track share`
     const tabs: TabItem[] = [
       {
@@ -349,7 +349,7 @@ const TrackDetailScreen = (props: Props) => {
                 to={Routes.artist.detailPage(track.artist.hash)}
                 className={styles.listAuthor}
               >
-                {track.artist.stage_name}
+                {track.artist.stageName}
               </Link>
 
               <span className={styles.listBy}>, In </span>
@@ -413,9 +413,9 @@ const TrackDetailScreen = (props: Props) => {
       ) : null}
       {/* handling SEO */}
       <SEO
-        title={`${track.title} by ${track.artist.stage_name}`}
+        title={`${track.title} by ${track.artist.stageName}`}
         url={`${DOMAIN}/track/${track.hash}`}
-        description={`Listen to ${track.title} by ${track.artist.stage_name} on ${APP_NAME}`}
+        description={`Listen to ${track.title} by ${track.artist.stageName} on ${APP_NAME}`}
         type={SEO_TRACK_TYPE}
         image={track.posterUrl}
         artist={`${DOMAIN}/artist/${track.artist.hash}`}

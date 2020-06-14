@@ -39,7 +39,7 @@ export const useTrackScrollingListStyles = makeStyles(theme => ({
 }))
 
 export interface ArtistThumbnailData {
-  stage_name: string,
+  stageName: string,
   hash: string
 }
 

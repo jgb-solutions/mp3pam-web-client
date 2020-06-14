@@ -1,12 +1,10 @@
-// import TrackInterface from "./TrackInterface";
-
 export interface UserData {
   id: string
   name: string
   email: string
-  avatar_url: string
+  avatarUrl: string
   telephone: string
-  inserted_at: string
+  insertedAt: string
 
 }
 

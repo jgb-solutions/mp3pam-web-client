@@ -122,7 +122,7 @@ export default function ArtistThumbnail(props: Props) {
           </IconButton>
         </div>
       </div>
-      <h3 className={styles.title}>{artist.stage_name}</h3>
+      <h3 className={styles.title}>{artist.stageName}</h3>
     </div>
   )
 }

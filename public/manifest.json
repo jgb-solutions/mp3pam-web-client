@@ -18,7 +18,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/?utm_source=mp3_pam_pwa",
+  "startUrl": "/?utm_source=mp3_pam_pwa",
   "display": "standalone",
   "theme_color": "#cd1b54",
   "background_color": "#000000"

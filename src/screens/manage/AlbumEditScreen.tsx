@@ -318,11 +318,11 @@ export default function AlbumEditScreen() {
           />
 
           <p>
-            <i>Artist</i>: <b>{album.artist.stage_name}</b>
+            <i>Artist</i>: <b>{album.artist.stageName}</b>
           </p>
 
           <p>
-            <i>Release Year</i>: <b>{album.release_year}</b>
+            <i>Release Year</i>: <b>{album.releaseYear}</b>
           </p>
 
           <p>

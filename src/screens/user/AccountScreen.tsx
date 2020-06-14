@@ -154,7 +154,7 @@ export default function AccountScreen() {
         <>
           <HeaderTitle
             icon={(
-              <Avatar style={{ width: 75, height: 75 }} alt={userData.name} src={userData.avatar_url} />
+              <Avatar style={{ width: 75, height: 75 }} alt={userData.name} src={userData.avatarUrl} />
             )}
             textStyle={{ paddingLeft: 10 }}
             text={userData.name}
@@ -339,7 +339,7 @@ export default function AccountScreen() {
                 </p>
 
                 <p>
-                  <i>Account created on</i>: <b>{getFormattedDate(userData.inserted_at) || NOT_AVAILABLE}</b>
+                  <i>Account created on</i>: <b>{getFormattedDate(userData.insertedAt) || NOT_AVAILABLE}</b>
                 </p>
 
                 <p>

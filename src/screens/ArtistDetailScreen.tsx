@@ -152,7 +152,7 @@ export default function ArtistDetailScreen() {
 
   const getTabs = () => {
     const url = window.location.href
-    const title = `${artist.stage_name} on ${APP_NAME}`
+    const title = `${artist.stageName} on ${APP_NAME}`
     const hashtags = `${APP_NAME} music artist share`
     const tabs: TabItem[] = [
       {
@@ -221,7 +221,7 @@ export default function ArtistDetailScreen() {
                   ...track,
                   artist: {
                     hash: artist.hash,
-                    stage_name: artist.stage_name
+                    stageName: artist.stageName
                   }
                 }
 
@@ -250,7 +250,7 @@ export default function ArtistDetailScreen() {
                   ...album,
                   artist: {
                     hash: artist.hash,
-                    stage_name: artist.stage_name
+                    stageName: artist.stageName
                   }
                 }
 
@@ -275,7 +275,7 @@ export default function ArtistDetailScreen() {
         <Grid item sm={4} xs={12} className={styles.imageContainer}>
           <Image
             src={artist.posterUrl}
-            alt={artist.stage_name}
+            alt={artist.stageName}
             className={styles.image}
             photon={{
               ulb: true,
@@ -288,32 +288,32 @@ export default function ArtistDetailScreen() {
         <Grid item sm={8} xs={12} className={styles.detailsWrapper}>
           <div className={styles.listDetails}>
             <h5 className={styles.listType}>Artist</h5>
-            <h1 className={styles.listName}>{artist.stage_name}</h1>
+            <h1 className={styles.listName}>{artist.stageName}</h1>
             <Grid container spacing={2}>
-              {artist.facebook_url && (
+              {artist.facebookUrl && (
                 <Grid item>
-                  <LinkWrapper url={artist.facebook_url} target="_blank">
+                  <LinkWrapper url={artist.facebookUrl} target="_blank">
                     <FacebookIcon style={{ fontSize: 48, cursor: 'pointer', color: colors.facebook }} />
                   </LinkWrapper>
                 </Grid>
               )}
-              {artist.twitter_url && (
+              {artist.twitterUrl && (
                 <Grid item>
-                  <LinkWrapper url={artist.twitter_url} target="_blank">
+                  <LinkWrapper url={artist.twitterUrl} target="_blank">
                     <TwitterIcon style={{ fontSize: 48, color: colors.twitter }} />
                   </LinkWrapper>
                 </Grid>
               )}
-              {artist.instagram_url && (
+              {artist.instagramUrl && (
                 <Grid item>
-                  <LinkWrapper url={artist.instagram_url} target="_blank">
+                  <LinkWrapper url={artist.instagramUrl} target="_blank">
                     <InstagramIcon style={{ fontSize: 48, color: colors.instagram }} />
                   </LinkWrapper>
                 </Grid>
               )}
-              {artist.youtube_url && (
+              {artist.youtubeUrl && (
                 <Grid item>
-                  <LinkWrapper url={artist.youtube_url} target="_blank">
+                  <LinkWrapper url={artist.youtubeUrl} target="_blank">
                     <YouTubeIcon style={{ fontSize: 48, color: colors.youtube }} />
                   </LinkWrapper>
                 </Grid>
@@ -347,9 +347,9 @@ export default function ArtistDetailScreen() {
 
       {/* handling SEO */}
       <SEO
-        title={`${artist.stage_name} on ${APP_NAME}`}
+        title={`${artist.stageName} on ${APP_NAME}`}
         url={`${DOMAIN}/artist/${artist.hash}`}
-        description={`Listen to ${artist.stage_name} on ${APP_NAME}`}
+        description={`Listen to ${artist.stageName} on ${APP_NAME}`}
         type={SEO_ARTIST_TYPE}
         image={artist.posterUrl}
         artist={`${DOMAIN}/artist/${artist.hash}`}

@@ -14,7 +14,7 @@ export const MIN_SOCIAL_MEDIA_USERNAME_LENGTH = 3
 export const MIN_ARTIST_BIO_LENGTH = 300
 export const MIN_TRACK_LYRICS_LENGTH = 300
 export const MIN_TRACK_DETAIL_LENGTH = 20
-export const CURRENT_YEAR = new Date().getFullYear()
+export const CURRENTYear = new Date().getFullYear()
 export const RELATED_TRACKS_NUMBER = 10
 export const RANDOM_ARTISTS_NUMBER = 6
 export const RANDOM_ALBUMS_NUMBER = 6
@@ -42,5 +42,5 @@ export const SEO_PLAYLIST_TYPE = `music.playlist`
 export const GOOGLE_ADS_CLIENT = `ca-pub-3793163111580068`
 
 export const DOMAIN = process.env.REACT_APP_DOMAIN || `https://mp3pam.com`
-// export const API_URL = process.env.REACT_APP_API_URL || `https://api.mp3pam.com/graphql`
-export const API_URL = process.env.REACT_APP_API_URL || `https://staging-api.mp3pam.com/api/graphql`
+// export const APIUrl = process.env.REACT_APP_APIUrl || `https://api.mp3pam.com/graphql`
+export const APIUrl = process.env.REACT_APP_APIUrl || `https://staging-api.mp3pam.com/api/graphql`

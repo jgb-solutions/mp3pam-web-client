@@ -145,13 +145,13 @@ const AlbumDetailScreen = (props: Props) => {
   }
 
   const makeSoundList = () => {
-    return album.tracks.map(({ hash, title, posterUrl, audio_url }) => ({
+    return album.tracks.map(({ hash, title, posterUrl, audioUrl }) => ({
       hash,
       title,
       image: posterUrl,
-      authorName: album.artist.stage_name,
+      authorName: album.artist.stageName,
       authorHash: album.artist.hash,
-      playUrl: audio_url,
+      playUrl: audioUrl,
       type: 'track',
     }))
   }
@@ -187,7 +187,7 @@ const AlbumDetailScreen = (props: Props) => {
 
   const getTabs = () => {
     const url = window.location.href
-    const title = `Listen to ${album.title} by ${album.artist.stage_name}`
+    const title = `Listen to ${album.title} by ${album.artist.stageName}`
     const hashtags = `${APP_NAME} music album share`
     const tabs: TabItem[] = [
       {
@@ -305,12 +305,12 @@ const AlbumDetailScreen = (props: Props) => {
                 to={Routes.artist.detailPage(album.artist.hash)}
                 className={styles.listAuthor}
               >
-                {album.artist.stage_name}
+                {album.artist.stageName}
               </Link>
               <br />
               <span className={styles.listBy}>Released In </span>
               <span className={styles.listAuthor} style={{ textDecoration: 'none' }}>
-                {album.release_year}
+                {album.releaseYear}
               </span>
             </p>
             <Grid className={styles.ctaButtons} container spacing={2}>
@@ -355,9 +355,9 @@ const AlbumDetailScreen = (props: Props) => {
       ) : null}
       {/* handling SEO */}
       <SEO
-        title={`${album.title} (album) by ${album.artist.stage_name}`}
+        title={`${album.title} (album) by ${album.artist.stageName}`}
         url={`${DOMAIN}/album/${album.hash}`}
-        description={`Listen to ${album.title} by ${album.artist.stage_name} on ${APP_NAME}`}
+        description={`Listen to ${album.title} by ${album.artist.stageName} on ${APP_NAME}`}
         type={SEO_ALBUM_TYPE}
         image={album.coverUrl}
         artist={`${DOMAIN}/artist/${album.artist.hash}`}

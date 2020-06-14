@@ -128,13 +128,13 @@ const PlaylistDetailScreen = (props: Props) => {
   }
 
   const makeSoundList = () => {
-    return playlist.tracks.map(({ hash, title, posterUrl, audio_url, artist }) => ({
+    return playlist.tracks.map(({ hash, title, posterUrl, audioUrl, artist }) => ({
       hash,
       title,
       image: posterUrl,
-      authorName: artist.stage_name,
+      authorName: artist.stageName,
       authorHash: artist.hash,
-      playUrl: audio_url,
+      playUrl: audioUrl,
       type: 'track',
     }))
   }

@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export interface ArtistThumbnailData {
-  stage_name: string,
+  stageName: string,
   hash: string,
   posterUrl: string,
 }

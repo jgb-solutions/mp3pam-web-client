@@ -368,7 +368,7 @@ export default function PlaylistEditScreen() {
                           <Link to={Routes.track.detailPage(track.hash)} className={styles.link}>{track.title}</Link>
                         </StyledTableCell>
                         <StyledTableCell style={{ width: '40%' }}>
-                          <Link to={Routes.artist.detailPage(track.artist.hash)} className={styles.link}>{track.artist.stage_name}</Link>
+                          <Link to={Routes.artist.detailPage(track.artist.hash)} className={styles.link}>{track.artist.stageName}</Link>
                         </StyledTableCell>
                         <StyledTableCell style={{ width: '10%' }}>
                           <span

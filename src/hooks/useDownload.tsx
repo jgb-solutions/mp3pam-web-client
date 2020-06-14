@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { ApolloError } from 'apollo-client'
 
-import { FETCH_DOWNLOAD_URL } from '../graphql/queries'
+import { FETCH_DOWNLOADUrl } from '../graphql/queries'
 import { UPDATE_downloadCount } from '../graphql/mutations'
 
 type TrackDetail = {
@@ -19,7 +19,7 @@ type DownloadProps = {
 }
 
 export default function useDownload(input: DownloadProps): TrackDetail {
-  const { loading, error, data } = useQuery(FETCH_DOWNLOAD_URL, {
+  const { loading, error, data } = useQuery(FETCH_DOWNLOADUrl, {
     variables: { input }
   })
 

@@ -14,7 +14,7 @@ import Button from '../../components/Button'
 import UploadButton from '../../components/UploadButton'
 import CheckAuth from "../../components/CheckAuth"
 
-export const UPLOAD_URL = gql`
+export const UPLOADUrl = gql`
   query getUploadUrl($name: String!, $type: String!) {
     uploadUrl(name: $name, type: $type) {
      signedUrl
@@ -53,7 +53,7 @@ export default function AddTrackScreen() {
 
     try {
       const { data: { uploadUrl: { signedUrl, fileUrl } } } = await client.query({
-        query: UPLOAD_URL,
+        query: UPLOADUrl,
         variables: { name: file.name, type },
         fetchPolicy: 'network-only'
       })

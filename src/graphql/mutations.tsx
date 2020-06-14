@@ -14,7 +14,7 @@ export const ADD_ARTIST_MUTATION = gql`
   mutation AddArtist($input: ArtistInput!) {
     addArtist(input: $input) {
      id
-     stage_name
+     stageName
    }
   }
 `
@@ -134,9 +134,9 @@ export const UPDATE_USER = gql`
       name
       email
       active
-      avatar_url
+      avatarUrl
       telephone
-      inserted_at
+      insertedAt
     }
   }
 `
@@ -148,10 +148,10 @@ export const FACEOOK_LOGIN = gql`
         id
         name
         email
-        avatar_url
+        avatarUrl
         telephone
         first_login
-        inserted_at
+        insertedAt
       }
       token
     }

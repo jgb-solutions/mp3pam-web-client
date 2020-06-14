@@ -2,7 +2,7 @@ export interface AlbumTrackInterface {
   hash: string
   title: string
   posterUrl: string
-  audio_url: string
+  audioUrl: string
   number: number
   playCount: number
   downloadCount: number
@@ -14,13 +14,13 @@ export interface AlbumPlainInterface {
   hash: string
   coverUrl: string
   detail: string
-  release_year: number
+  releaseYear: number
 }
 
 export default interface AlbumInterface extends AlbumPlainInterface {
   tracks: AlbumTrackInterface[]
   artist: {
     hash: string
-    stage_name: string
+    stageName: string
   }
 }

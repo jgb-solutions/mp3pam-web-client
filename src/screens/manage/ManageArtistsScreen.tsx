@@ -82,13 +82,13 @@ export default function ManageArtistsScreen() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {artists.data.map((artist: { hash: string, stage_name: string }, index: number) => {
+              {artists.data.map((artist: { hash: string, stageName: string }, index: number) => {
                 return (
                   <TableRow key={index} style={{
                     borderBottom: artists.data.length - 1 === index ? '' : '1px solid white',
                   }}>
                     <StyledTableCell style={{ width: '90%' }}>
-                      <Link to={Routes.artist.detailPage(artist.hash)} className={styles.link}>{artist.stage_name}</Link>
+                      <Link to={Routes.artist.detailPage(artist.hash)} className={styles.link}>{artist.stageName}</Link>
                     </StyledTableCell>
                     <StyledTableCell style={{ width: '10%' }}>
                       <span

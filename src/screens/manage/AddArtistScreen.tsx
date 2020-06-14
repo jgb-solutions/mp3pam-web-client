@@ -48,7 +48,7 @@ export function IconField({ icon, field, hasError }: IconFieldProps) {
 
 export interface FormData {
   name: string
-  stage_name: string
+  stageName: string
   bio?: string
   facebook?: string
   twitter?: string
@@ -148,16 +148,16 @@ export default function AddArtistScreen() {
               inputRef={register({
                 required: "The Stage Name of the artist is required.",
               })}
-              name="stage_name"
-              id="stage_name"
+              name="stageName"
+              id="stageName"
               label="Stage Name *"
               type="text"
               margin="normal"
-              error={!!errors.stage_name}
-              helperText={errors.stage_name && (
+              error={!!errors.stageName}
+              helperText={errors.stageName && (
                 <TextIcon
                   icon={<ErrorIcon className={styles.errorColor} />}
-                  text={<span className={styles.errorColor}>{errors.stage_name.message}</span>}
+                  text={<span className={styles.errorColor}>{errors.stageName.message}</span>}
                 />
               )}
               style={{ marginBottom: 15 }}

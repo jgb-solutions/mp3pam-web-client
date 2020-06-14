@@ -78,7 +78,7 @@ import './styles/react-transitions.css'
 import { LOG_OUT } from './store/actions/user_action_types'
 import Plain from './components/layouts/Plain'
 import Root from './components/layouts/Root'
-import { API_URL } from './utils/constants'
+import { APIUrl } from './utils/constants'
 
 const { store, persistor } = persistedStore()
 
@@ -123,7 +123,7 @@ const client = new ApolloClient({
     }),
     // http link
     createHttpLink({
-      uri: API_URL,
+      uri: APIUrl,
     })
   ]),
   cache: new InMemoryCache(),

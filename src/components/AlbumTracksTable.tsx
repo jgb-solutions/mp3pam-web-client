@@ -89,7 +89,7 @@ export default function AlbumTracksTable({ album, list }: Props) {
               </StyledTableCell>
               {/* <StyledTableCell style={{ width: '1.5%', color }}>{track.playCount}</StyledTableCell> */}
               {/* <StyledTableCell style={{ width: '1.5%', color }}>{track.downloadCount}</StyledTableCell> */}
-              {/* <StyledTableCell style={{ width: '35%', color }}>{album.artist.stage_name}</StyledTableCell> */}
+              {/* <StyledTableCell style={{ width: '35%', color }}>{album.artist.stageName}</StyledTableCell> */}
               {/* <StyledTableCell style={{ width: '20%', color }}>{track.type.toUpperCase()}</StyledTableCell> */}
               {/* <StyledTableCell>
                 <More />

@@ -102,7 +102,7 @@ const Header = (props: Props) => {
             {
               currentUser.loggedIn && currentUser.data ? (
                 <div className={styles.avatarWrapper} onClick={() => setDrawerRightOpen(true)}>
-                  <Avatar alt={currentUser.data.name} src={currentUser.data.avatar_url} className={styles.avatar} />
+                  <Avatar alt={currentUser.data.name} src={currentUser.data.avatarUrl} className={styles.avatar} />
                   <KeyboardArrowDownIcon />
                 </div>
               ) : (

@@ -2,13 +2,13 @@ export interface PlaylistTrackInterface {
   hash: string
   title: string
   posterUrl: string
-  audio_url: string
+  audioUrl: string
   number: number
   playCount: number
   downloadCount: number
   artist: {
     hash: string
-    stage_name: string
+    stageName: string
   }
 }
 

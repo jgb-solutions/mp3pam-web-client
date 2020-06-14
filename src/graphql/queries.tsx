@@ -370,7 +370,7 @@ export const FETCH_ALBUM = gql`
       hash
       coverUrl
       detail
-      release_year
+      releaseYear
       tracks {
         hash
         title
@@ -415,7 +415,7 @@ export const FETCH_PLAYLIST = gql`
   }
 `
 
-export const FETCH_DOWNLOAD_URL = gql`
+export const FETCH_DOWNLOADUrl = gql`
   query download($input: DownloadInput!) {
     download(input: $input) {
       url
@@ -423,7 +423,7 @@ export const FETCH_DOWNLOAD_URL = gql`
   }
 `
 
-export const UPLOAD_URL_QUERY = gql`
+export const UPLOADUrl_QUERY = gql`
   query getUploadUrl($input: UploadUrlInput!) {
     uploadUrl(input: $input) {
      signedUrl
@@ -489,7 +489,7 @@ export const LOG_USER_IN = gql`
         email
         avatarUrl
         telephone
-        inserted_at
+        insertedAt
       }
     }
   }

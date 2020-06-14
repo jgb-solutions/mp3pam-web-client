@@ -5,13 +5,13 @@ export interface SearchData {
     posterUrl: string
     artist: {
       hash: string
-      stage_name: string
+      stageName: string
     }
   }[]
 
   artists: {
     hash: string
-    stage_name: string
+    stageName: string
     posterUrl: string
   }[]
 
@@ -21,7 +21,7 @@ export interface SearchData {
     coverUrl: string
     artist: {
       hash: string
-      stage_name: string
+      stageName: string
     }
   }[]
 }

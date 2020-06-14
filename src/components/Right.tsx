@@ -60,7 +60,7 @@ const Right = (props: Props) => {
                 className={`${styles.link} ${styles.mainMenuLink}`}
                 onClick={closeDrawer}>
                 <span className={styles.linkIcon}>
-                  <Avatar style={{ width: 20, height: 20 }} alt={user.name} src={user.avatar_url} />
+                  <Avatar style={{ width: 20, height: 20 }} alt={user.name} src={user.avatarUrl} />
                 </span>
                 <span className={styles.linkText}>Your Account</span>
               </NavLink>

@@ -41,7 +41,7 @@ export interface FormData {
 
 export interface ArtistData {
 	id: string
-	stage_name: string
+	stageName: string
 };
 
 export interface GenreData {
@@ -65,7 +65,7 @@ type AddArtistFormProps = {
 
 type AddArtistFormData = {
 	name: string,
-	stage_name: string,
+	stageName: string,
 	img_bucket: string
 }
 
@@ -127,16 +127,16 @@ export function AddArtistForm({ open, handleClose, onArtistCreated }: AddArtistF
 				inputRef={register({
 					required: "The stage name is required.",
 				})}
-				name="stage_name"
-				id="stage_name"
+				name="stageName"
+				id="stageName"
 				label="Stage Name *"
 				type="text"
 				margin="normal"
-				error={!!errors.stage_name}
-				helperText={errors.stage_name && (
+				error={!!errors.stageName}
+				helperText={errors.stageName && (
 					<TextIcon
 						icon={<ErrorIcon className={styles.errorColor} />}
-						text={<span className={styles.errorColor}>{errors.stage_name.message}</span>}
+						text={<span className={styles.errorColor}>{errors.stageName.message}</span>}
 					/>
 				)}
 			/>
@@ -291,11 +291,11 @@ export default function AddTrackScreen() {
 
 	const handleOpenInvalidFileSizeClose = () => setOpenInvalidFileSize('')
 
-	const handleOnArtistCreated = ({ id, stage_name }: ArtistData) => {
+	const handleOnArtistCreated = ({ id, stageName }: ArtistData) => {
 		const artistExist = artistList.find(artist => artist.id === id)
 
 		if (!artistExist) {
-			setArtistList(artistList => [{ id, stage_name }, ...artistList])
+			setArtistList(artistList => [{ id, stageName }, ...artistList])
 		}
 
 		setChosenArtistId(id)
@@ -312,14 +312,14 @@ export default function AddTrackScreen() {
 	}
 
 	useEffect(() => {
-		const artists = get(trackUploadInfo, 'me.artists_by_stage_name_asc.data')
+		const artists = get(trackUploadInfo, 'me.artists_by_stageName_asc.data')
 		if (artists) {
 			setArtistList(
-				artists.map(({ id, stage_name }: ArtistData) => ({ id, stage_name }))
+				artists.map(({ id, stageName }: ArtistData) => ({ id, stageName }))
 			)
 		}
 		// eslint-disable-next-line
-	}, [get(trackUploadInfo, 'me.artists_by_stage_name_asc.data')])
+	}, [get(trackUploadInfo, 'me.artists_by_stageName_asc.data')])
 
 	useEffect(() => {
 		const genres = get(trackUploadInfo, 'genres')
@@ -467,8 +467,8 @@ export default function AddTrackScreen() {
 							</optgroup>
 							{artistList.length && (
 								<optgroup label="------">
-									{artistList.map(({ id, stage_name }: ArtistData) => (
-										<option key={id} value={id}>{stage_name}</option>
+									{artistList.map(({ id, stageName }: ArtistData) => (
+										<option key={id} value={id}>{stageName}</option>
 									))}
 								</optgroup>
 							)}

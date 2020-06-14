@@ -142,7 +142,7 @@ const TrackThumbnail = (props: Props) => {
       <p className={styles.details}>
         {/* by: */}
         <span onClick={goToArtistPage} className={styles.link}>
-          {track.artist.stage_name}
+          {track.artist.stageName}
         </span>
       </p>
     </div>

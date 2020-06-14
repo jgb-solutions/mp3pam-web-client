@@ -23,21 +23,21 @@ import { createAlbumScreenStyles } from "../../styles/createAlbumScreenStyles"
 import useCreateAlbum from '../../hooks/useCreateAlbum'
 import Routes from "../../routes"
 import AlertDialog from "../../components/AlertDialog"
-import { IMG_BUCKET, MAX_IMG_FILE_SIZE, CURRENT_YEAR } from "../../utils/constants"
+import { IMG_BUCKET, MAX_IMG_FILE_SIZE, CURRENTYear } from "../../utils/constants"
 import { AddArtistForm } from "./AddTrackScreen"
 import { getFile } from "../../utils/helpers"
 import SEO from "../../components/SEO"
 
 export interface FormData {
   title: string
-  release_year: string
+  releaseYear: string
   artist_id: string
   detail: string
 };
 
 export interface ArtistData {
   id: string
-  stage_name: string
+  stageName: string
 };
 
 export interface AlbumData extends FormData {
@@ -54,7 +54,7 @@ export default function AddAlbumScreen() {
     watch,
     setError,
     clearError,
-    setValue } = useForm<FormData>({ mode: 'onBlur', defaultValues: { release_year: `${CURRENT_YEAR}` } })
+    setValue } = useForm<FormData>({ mode: 'onBlur', defaultValues: { releaseYear: `${CURRENTYear}` } })
   const { data: trackUploadInfo } = useQuery(TRACK_UPLOAD_DATA_QUERY, { fetchPolicy: 'network-only' })
   const { createAlbum, loading: formWorking, data: uploadedAlbum } = useCreateAlbum()
   const {
@@ -91,25 +91,25 @@ export default function AddAlbumScreen() {
 
   const handleOpenInvalidFileSizeClose = () => setOpenInvalidFileSize('')
 
-  const handleOnArtistCreated = ({ id, stage_name }: ArtistData) => {
+  const handleOnArtistCreated = ({ id, stageName }: ArtistData) => {
     const artistExist = artistList.find(artist => artist.id === id)
 
     if (!artistExist) {
-      setArtistList(artistList => [{ id, stage_name }, ...artistList])
+      setArtistList(artistList => [{ id, stageName }, ...artistList])
     }
 
     setChosenArtistId(id)
   }
 
   useEffect(() => {
-    const artists = get(trackUploadInfo, 'me.artists_by_stage_name_asc.data')
+    const artists = get(trackUploadInfo, 'me.artists_by_stageName_asc.data')
     if (artists) {
       setArtistList(
-        artists.map(({ id, stage_name }: ArtistData) => ({ id, stage_name }))
+        artists.map(({ id, stageName }: ArtistData) => ({ id, stageName }))
       )
     }
     // eslint-disable-next-line
-  }, [get(trackUploadInfo, 'me.artists_by_stage_name_asc.data')])
+  }, [get(trackUploadInfo, 'me.artists_by_stageName_asc.data')])
 
   useEffect(() => {
     if (chosenArtistId) {
@@ -190,19 +190,19 @@ export default function AddAlbumScreen() {
                 required: "The release year of the album is required.",
                 validate: {
                   length: value => value.length === 4 || 'The release year must be exactly 4 characters long.',
-                  release_year: value => value <= CURRENT_YEAR || `The release year must be ${CURRENT_YEAR} or less.`,
+                  releaseYear: value => value <= CURRENTYear || `The release year must be ${CURRENTYear} or less.`,
                 }
               })}
-              name="release_year"
-              id="release_year"
+              name="releaseYear"
+              id="releaseYear"
               label="Release Year *"
               type="number"
               margin="normal"
-              error={!!errors.release_year}
-              helperText={errors.release_year && (
+              error={!!errors.releaseYear}
+              helperText={errors.releaseYear && (
                 <TextIcon
                   icon={<ErrorIcon className={styles.errorColor} />}
-                  text={<span className={styles.errorColor}>{errors.release_year.message}</span>}
+                  text={<span className={styles.errorColor}>{errors.releaseYear.message}</span>}
                 />
               )}
               style={{ marginBottom: 15 }}
@@ -234,8 +234,8 @@ export default function AddAlbumScreen() {
               </optgroup>
               {artistList.length && (
                 <optgroup label="------">
-                  {artistList.map(({ id, stage_name }: ArtistData) => (
-                    <option key={id} value={id}>{stage_name}</option>
+                  {artistList.map(({ id, stageName }: ArtistData) => (
+                    <option key={id} value={id}>{stageName}</option>
                   ))}
                 </optgroup>
               )}

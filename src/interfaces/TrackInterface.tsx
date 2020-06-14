@@ -2,7 +2,7 @@ export default interface TrackInterface {
 	title: string
 	hash: string
 	allowDownload: boolean
-	audio_url: string
+	audioUrl: string
 	posterUrl: string
 	featured: boolean
 	detail: string
@@ -15,7 +15,7 @@ export default interface TrackInterface {
 		slug: string
 	}
 	artist: {
-		stage_name: string
+		stageName: string
 		hash: string
 	}
 	album: {

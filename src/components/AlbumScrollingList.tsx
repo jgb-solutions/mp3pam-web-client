@@ -44,7 +44,7 @@ export interface AlbumThumbnailData {
   coverUrl: string,
   artist: {
     hash: string
-    stage_name: string
+    stageName: string
   }
 }
 
