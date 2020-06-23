@@ -5,7 +5,7 @@ export interface UserData {
   avatarUrl: string
   telephone: string
   insertedAt: string
-
+  firstLogin?: boolean
 }
 
 export default interface UserInterface {

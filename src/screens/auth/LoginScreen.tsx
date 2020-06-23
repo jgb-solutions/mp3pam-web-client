@@ -75,17 +75,17 @@ function LoginScreen() {
 
   const loginWithFacebook = async () => {
     const fbMessage = "An error occurred with the Facebook login."
-    try {
-      const { data: { facebookLoginUrl }, errors } = await client.query({
-        query: FACEBOOK_LOGIN_URL,
-      })
-      if (errors) {
-        setLoginError(fbMessage)
-      }
-      window.location = facebookLoginUrl.url
-    } catch (error) {
-      setLoginError(fbMessage)
-    }
+    // try {
+    //   const { data: { facebookLoginUrl }, errors } = await client.query({
+    //     query: FACEBOOK_LOGIN_URL,
+    //   })
+    //   if (errors) {
+    //     setLoginError(fbMessage)
+    //   }
+    window.location.href = "http://localhost:4000/auth/facebook"
+    // } catch (error) {
+    // setLoginError(fbMessage)
+    // }
   }
 
   if (currentUser.loggedIn) return <Redirect to={from} />

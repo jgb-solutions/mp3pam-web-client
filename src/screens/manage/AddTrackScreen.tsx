@@ -312,14 +312,15 @@ export default function AddTrackScreen() {
 	}
 
 	useEffect(() => {
-		const artists = get(trackUploadInfo, 'me.artists_by_stageName_asc.data')
+		const artists = get(trackUploadInfo, 'me.artists')
+		console.log(artists)
 		if (artists) {
 			setArtistList(
 				artists.map(({ id, stageName }: ArtistData) => ({ id, stageName }))
 			)
 		}
 		// eslint-disable-next-line
-	}, [get(trackUploadInfo, 'me.artists_by_stageName_asc.data')])
+	}, [get(trackUploadInfo, 'me.artists')])
 
 	useEffect(() => {
 		const genres = get(trackUploadInfo, 'genres')

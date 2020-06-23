@@ -439,11 +439,9 @@ export const TRACK_UPLOAD_DATA_QUERY = gql`
       name
   	}
     me {
-      artists_by_stageName_asc(take: 50) {
-        data {
-          id
-          stageName
-        }
+      artists {
+        id
+        stageName
       }
     }
   }
