@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const FETCH_HOME = gql`
-  query homePageData($page: Int, $first: Int, $orderBy: [OrderByClause!]) {
+  query homePageData($page: String, $first: String, $orderBy: [OrderByClause!]) {
     # Latest 10 tracks
     latestTracks: tracks(first: $first, page: $page, orderBy: $orderBy) {
       data {
@@ -80,7 +80,7 @@ export const FETCH_MANAGE_SCREEN = gql`
         }
       }
 
-      latestAlbums: albums(first: 10, page: $page) {
+      latestAlbums: albums(first: $first, page: $page) {
         data {
           title
           hash
