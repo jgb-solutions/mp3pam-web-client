@@ -8,7 +8,7 @@ export default function useRandomAlbums(hash: string) {
     variables: {
       input: {
         hash,
-        take: RANDOM_ALBUMS_NUMBER
+        first: RANDOM_ALBUMS_NUMBER
       }
     }
   })

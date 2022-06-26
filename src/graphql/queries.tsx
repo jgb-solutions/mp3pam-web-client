@@ -1,9 +1,9 @@
 import gql from 'graphql-tag'
 
 export const FETCH_HOME = gql`
-  query homePageData($page: Int, $take: Int, $orderBy: [OrderByClause!]) {
+  query homePageData($page: Int, $first: Int, $orderBy: [OrderByClause!]) {
     # Latest 10 tracks
-    latestTracks: tracks(take: $take, page: $page, orderBy: $orderBy) {
+    latestTracks: tracks(first: $first, page: $page, orderBy: $orderBy) {
       data {
         hash
         title
@@ -16,7 +16,7 @@ export const FETCH_HOME = gql`
     }
 
     # Latest 10 playlists
-    latestPlaylists: playlists(take: $take, page: $page, orderBy: $orderBy) {
+    latestPlaylists: playlists(first: $first, page: $page, orderBy: $orderBy) {
       data {
         hash
         title
@@ -25,7 +25,7 @@ export const FETCH_HOME = gql`
     }
 
     # latest 1o artists
-    latestArtists: artists(take: $take, orderBy: $orderBy) {
+    latestArtists: artists(first: $first, orderBy: $orderBy) {
       data {
         stage_name
         hash
@@ -34,7 +34,7 @@ export const FETCH_HOME = gql`
     }
 
     # latest 1o albums
-    latestAlbums: albums(take: $take, orderBy: $orderBy) {
+    latestAlbums: albums(first: $first, orderBy: $orderBy) {
       data {
         title
         hash
@@ -50,9 +50,9 @@ export const FETCH_HOME = gql`
 `
 
 export const FETCH_MANAGE_SCREEN = gql`
-  query managePageData($page: Int, $take: Int) {
+  query managePageData($page: Int, $first: Int) {
     me {
-      latestTracks: tracks(take: $take, page: $page) {
+      latestTracks: tracks(first: $first, page: $page) {
         data {
           hash
           title
@@ -64,7 +64,7 @@ export const FETCH_MANAGE_SCREEN = gql`
         }
       }
 
-      latestPlaylists: playlists(take: $take, page: $page,) {
+      latestPlaylists: playlists(first: $first, page: $page,) {
         data {
           hash
           title
@@ -72,7 +72,7 @@ export const FETCH_MANAGE_SCREEN = gql`
         }
       }
 
-      latestArtists: artists(take: $take, page: $page) {
+      latestArtists: artists(first: $first, page: $page) {
         data {
           stage_name
           hash
@@ -80,7 +80,7 @@ export const FETCH_MANAGE_SCREEN = gql`
         }
       }
 
-      latestAlbums: albums(take: 10, page: $page) {
+      latestAlbums: albums(first: 10, page: $page) {
         data {
           title
           hash
@@ -97,9 +97,9 @@ export const FETCH_MANAGE_SCREEN = gql`
 `
 
 export const FETCH_TRACKS = gql`
-  query tracksData($page: Int, $take: Int, $orderBy: [OrderByClause!]) {
+  query tracksData($page: Int, $first: Int, $orderBy: [OrderByClause!]) {
     # Latest 10 tracks
-    tracks(take: $take, page: $page, orderBy: $orderBy) {
+    tracks(first: $first, page: $page, orderBy: $orderBy) {
       data {
         hash
         title
@@ -118,12 +118,12 @@ export const FETCH_TRACKS = gql`
 `
 
 export const FETCH_TRACKS_BY_GENRE = gql`
-  query tracksDataByGenre($page: Int, $take: Int, $orderBy: [OrderByClause!], $slug: String!) {
+  query tracksDataByGenre($page: Int, $first: Int, $orderBy: [OrderByClause!], $slug: String!) {
     genre(slug: $slug) {
       name
     }
 
-    tracksByGenre(take: $take, page: $page, orderBy: $orderBy, slug: $slug) {
+    tracksByGenre(first: $first, page: $page, orderBy: $orderBy, slug: $slug) {
       data {
         hash
         title
@@ -199,9 +199,9 @@ export const FETCH_RANDOM_PLAYLISTS = gql`
 `
 
 export const FETCH_ARTISTS = gql`
-  query artistsData($page: Int, $take: Int, $orderBy: [OrderByClause!]) {
+  query artistsData($page: Int, $first: Int, $orderBy: [OrderByClause!]) {
     # Latest 10 artists
-    artists(take: $take, page: $page, orderBy: $orderBy) {
+    artists(first: $first, page: $page, orderBy: $orderBy) {
       data {
         hash
         stage_name
@@ -216,9 +216,9 @@ export const FETCH_ARTISTS = gql`
 `
 
 export const FETCH_PLAYLISTS = gql`
-  query playlistsData($page: Int, $take: Int, $orderBy: [OrderByClause!]) {
+  query playlistsData($page: Int, $first: Int, $orderBy: [OrderByClause!]) {
     # Latest 10 playlists
-    playlists(take: $take, page: $page, orderBy: $orderBy) {
+    playlists(first: $first, page: $page, orderBy: $orderBy) {
       data {
         hash
         title
@@ -233,9 +233,9 @@ export const FETCH_PLAYLISTS = gql`
 `
 
 export const FETCH_ALBUMS = gql`
-  query albumsData($page: Int, $take: Int, $orderBy: [OrderByClause!]) {
+  query albumsData($page: Int, $first: Int, $orderBy: [OrderByClause!]) {
     # Latest 10 albums
-    albums(take: $take, page: $page, orderBy: $orderBy) {
+    albums(first: $first, page: $page, orderBy: $orderBy) {
       data {
         hash
         title
@@ -255,9 +255,9 @@ export const FETCH_ALBUMS = gql`
 `
 
 export const FETCH_MY_ALBUMS = gql`
-  query myAlbumsData($page: Int, $take: Int) {
+  query myAlbumsData($page: Int, $first: Int) {
     me {
-      albums(take: $take, page: $page) {
+      albums(first: $first, page: $page) {
         data {
           hash
           title
@@ -268,9 +268,9 @@ export const FETCH_MY_ALBUMS = gql`
 `
 
 export const FETCH_MY_PLAYLISTS = gql`
-  query myPlaylistsData($page: Int, $take: Int) {
+  query myPlaylistsData($page: Int, $first: Int) {
     me {
-      playlists(take: $take, page: $page) {
+      playlists(first: $first, page: $page) {
         data {
           hash
           title
@@ -281,9 +281,9 @@ export const FETCH_MY_PLAYLISTS = gql`
 `
 
 export const FETCH_MY_TRACKS = gql`
-  query myTracksData($page: Int, $take: Int) {
+  query myTracksData($page: Int, $first: Int) {
     me {
-      tracks(take: $take, page: $page) {
+      tracks(first: $first, page: $page) {
         data {
           hash
           title
@@ -294,9 +294,9 @@ export const FETCH_MY_TRACKS = gql`
 `
 
 export const FETCH_MY_ARTISTS = gql`
-  query myArtistData($page: Int, $take: Int) {
+  query myArtistData($page: Int, $first: Int) {
     me {
-      artists(take: $take, page: $page) {
+      artists(first: $first, page: $page) {
         data {
           hash
           stage_name
@@ -439,7 +439,7 @@ export const TRACK_UPLOAD_DATA_QUERY = gql`
       name
   	}
     me {
-      artists_by_stage_name_asc(take: 50) {
+      artists_by_stage_name_asc(first: 50) {
         data {
           id
           stage_name

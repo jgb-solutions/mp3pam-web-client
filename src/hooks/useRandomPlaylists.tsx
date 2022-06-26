@@ -8,7 +8,7 @@ export default function useRandomPlaylists(hash: string) {
     variables: {
       input: {
         hash,
-        take: RANDOM_PLAYLISTS_NUMBER
+        first: RANDOM_PLAYLISTS_NUMBER
       }
     }
   })

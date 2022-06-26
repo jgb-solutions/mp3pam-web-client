@@ -6,7 +6,7 @@ import { FETCH_MY_ALBUMS_NUMBER } from '../utils/constants'
 export default function useMyAlbums() {
   return useQuery(FETCH_MY_ALBUMS, {
     variables: {
-      take: FETCH_MY_ALBUMS_NUMBER,
+      first: FETCH_MY_ALBUMS_NUMBER,
     }
   })
 }

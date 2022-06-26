@@ -8,7 +8,7 @@ export default function useRelatedTracks(hash: string) {
     variables: {
       input: {
         hash,
-        take: RELATED_TRACKS_NUMBER
+        first: RELATED_TRACKS_NUMBER
       }
     }
   })

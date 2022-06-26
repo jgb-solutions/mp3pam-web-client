@@ -9,8 +9,8 @@ export default function usePlaylists() {
   const [hasMore, setHasMore] = useState(true)
   const { loading, error, data, fetchMore } = useQuery(FETCH_PLAYLISTS, {
     variables: {
-      take: FETCH_PLAYLISTS_NUMBER,
-      orderBy: [{ field: "created_at", order: 'DESC' }]
+      first: FETCH_PLAYLISTS_NUMBER,
+      orderby: [{ column: "created_at", order: 'DESC' }]
     }
   })
 

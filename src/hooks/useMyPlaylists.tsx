@@ -6,7 +6,7 @@ import { FETCH_MY_PLAYLISTS_NUMBER } from '../utils/constants'
 export default function useMyPlaylists() {
   return useQuery(FETCH_MY_PLAYLISTS, {
     variables: {
-      take: FETCH_MY_PLAYLISTS_NUMBER,
+      first: FETCH_MY_PLAYLISTS_NUMBER,
     }
   })
 }

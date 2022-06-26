@@ -6,7 +6,7 @@ import { MANAGE_PAGE_PER_PAGE_NUMBER } from '../utils/constants'
 export default function useManage() {
   return useQuery(FETCH_MANAGE_SCREEN, {
     variables: {
-      take: MANAGE_PAGE_PER_PAGE_NUMBER,
+      first: MANAGE_PAGE_PER_PAGE_NUMBER,
     },
     fetchPolicy: "network-only"
   })

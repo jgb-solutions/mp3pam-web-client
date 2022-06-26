@@ -9,8 +9,8 @@ export default function useArtists() {
   const [hasMore, setHasMore] = useState(true)
   const { loading, error, data, fetchMore } = useQuery(FETCH_ARTISTS, {
     variables: {
-      take: FETCH_ARTISTS_NUMBER,
-      orderBy: [{ field: "created_at", order: 'DESC' }]
+      first: FETCH_ARTISTS_NUMBER,
+      orderby: [{ column: "created_at", order: 'DESC' }]
     }
   })
 

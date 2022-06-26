@@ -9,8 +9,8 @@ export default function useTracksByGenre(slug: string) {
   const [hasMore, setHasMore] = useState(true)
   const { loading, error, data, fetchMore } = useQuery(FETCH_TRACKS_BY_GENRE, {
     variables: {
-      take: FETCH_TRACKS_NUMBER,
-      orderBy: [{ field: "created_at", order: 'DESC' }],
+      first: FETCH_TRACKS_NUMBER,
+      orderby: [{ column: "created_at", order: 'DESC' }],
       slug
     }
   })

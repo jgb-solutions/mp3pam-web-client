@@ -8,7 +8,7 @@ export default function useRandomArtists(hash: string) {
     variables: {
       input: {
         hash,
-        take: RANDOM_ARTISTS_NUMBER
+        first: RANDOM_ARTISTS_NUMBER
       }
     }
   })
